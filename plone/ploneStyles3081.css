@@ -1,0 +1,309 @@
+/* - edrn.css - */
+/* http://edrndemo.org/portal_css/edrn.css?original=1 */
+/* */
+/* */
+/* */
+ul.quicklinks {
+margin: 10px 0 0 10px;
+list-style: none;
+padding: 0;
+font-size: 85%;
+}
+.quicklinks li {
+border: 1px solid;
+border-color: #ccc #bbb #b6b6b6 #ccc;
+margin: 0 0 3px 0;
+background: #f1f1f1 url(http://edrndemo.org/s-bg.gif) top left repeat-x;
+}
+.quicklinks li a {
+display: block;
+padding: 13px 0px 13px 60px;
+text-decoration: none;
+}
+.quicklinks li a, .quicklinks li a:link, .quicklinks li a:visited {
+background-position: 4px 50%;
+background-repeat: no-repeat;
+color: #436976;
+}
+ul.quicklinks li a:hover, ul.quicklinks li a:active {
+background-position:-462px 50%;
+background-repeat:no-repeat;
+color:#004;
+text-decoration:none;
+}
+.q-cal a {background: url(s-cal.gif);}
+.q-dcp a {background: url(s-dcp.gif);}
+.q-cbrg a {background: url(s-cbrg.gif);}
+.q-find a {background: url(s-find.gif);}
+.q-fund a {background: url(s-fund.gif);}
+.q-book a {background: url(s-book.gif);}
+.quicklinks li a:hover {
+background-color: #fff;
+color: #f00;
+}
+/* */
+h3 {
+font-size: 140%;
+border-bottom: none;
+font-weight: bold;
+margin-top: 2em;
+}
+/* */
+.documentContent p a {
+border-bottom: 1px #cccccc solid;
+}
+.documentContent li a {
+border-bottom: 1px #cccccc solid;
+}
+.documentContent dd a {
+border-bottom: 1px #cccccc solid;
+}
+/* */
+.state-visible {
+color: #537986;
+}
+.state-private {
+color: Red;
+}
+.state-published {
+color: #436976;
+}
+.state-pending {
+color: #FFA500;
+}
+.state-expired {
+color: #76797c;
+}
+.syndicated {
+color: #008000;
+}
+/* */
+.context, .documentEditable * .context {
+background: transparent url(http://edrndemo.org/link-right.gif) 4px 3px no-repeat;
+cursor: pointer;
+font-size: 85%;
+padding: 1px 1px 1px 15px;
+text-transform: none;
+}
+/* */
+.ekeAppTitle {
+font-size: 200%;
+border-bottom: none;
+margin-bottom: 0.5em;
+}
+div.ekeApplication {
+background: white;
+width: 100%;
+padding: 15px;
+}
+div.ekeAppRounded * legend {
+font-size: 120%;
+background: #eee url(http://edrndemo.org/eke-form-legend.gif) repeat-x top left;
+}
+div.ekeAppRounded * .error .fieldRequired {
+color: #ffce7b;
+}
+div.ekeAppRounded * .fieldRequired {
+background: url(http://edrndemo.org/required.gif) center left no-repeat;
+padding: 0 0 0 8px;
+color: #eee;
+}
+/* */
+div.ekeAppRounded * dl.collapsible {
+border: 1px solid #8cacbb !important;
+margin: 2em 0 0 0;
+padding: 0;
+}
+div.ekeAppRounded * dl.collapsible dt.collapsibleHeader {
+display: block;
+font-weight: normal;
+float: left;
+background: #eee;
+line-height: 1.2em;
+vertical-align: middle;
+font-size: 120%;
+position: relative;
+top: -1.1em;
+width: auto;
+margin: 0 0 -0.6em 1em;
+padding: 1em;
+}
+div.ekeAppRounded * dl.collapsible dd.collapsibleContent {
+margin: 0;
+padding: 0 1em;
+clear: left;
+}
+/* */
+div.ekeAppRounded * dl.collapsible dd.collapsibleContent > dl {
+margin: 0;
+padding: 0;
+}
+div.ekeAppRounded * dl.expandedBlockCollapsible dt.collapsibleHeader {
+padding: 0.5em 6px 0.5em 22px; /**/
+background: #eee url(treeExpanded.gif) no-repeat 6px 50%;
+cursor: pointer;
+}
+div.ekeAppRounded * dl.collapsedBlockCollapsible {
+border: none !important;
+height: 1em;
+width: auto;
+}
+div.ekeAppRounded * dl.collapsedBlockCollapsible dt.collapsibleHeader {
+float: none;
+position: static;
+margin: 0;
+padding: 0 0 0 22px;
+line-height: 1em;
+background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
+cursor: pointer;
+}
+div.ekeAppRounded * dl.collapsedBlockCollapsible dd.collapsibleContent {
+display: none;
+}
+/* */
+div.ekeAppRounded * .error {
+background: #ffce7b url(http://edrndemo.org/error-bg.gif) repeat-x top left;
+border: 0;
+padding: 1em;
+margin: 0 0 0 0;
+width: 95%;
+z-index: 1;
+}
+div.ekeAppRounded {
+width: 100%;
+background: #eee url(eke-tr.gif) no-repeat top right;
+}
+div.ekeAppRounded div {
+background: transparent url(eke-tl.gif) no-repeat top left;
+}
+div.ekeAppRounded div div {
+background: transparent url(eke-br.gif) no-repeat bottom right;
+}
+div.ekeAppRounded div div div {
+background: transparent url(eke-bl.gif) no-repeat bottom left;
+padding: 15px
+}
+div.ekeAppRounded div div div div {
+background-image: none;
+background-color: transparent;
+padding: 0px;
+}
+/* */
+div.ekeAppRounded * thead tr th {
+background: transparent url(thead-bg.gif) repeat-x top left;
+padding: 0.5em 0.2em 0 0.2em;
+}
+div.ekeAppRounded * tr.even {
+background: transparent url(tbody-even.gif) repeat-x top left;
+}
+div.ekeAppRounded * tr.odd {
+background: transparent url(tbody-odd.gif) repeat-x top left;
+}
+div.ekeAppRounded * tbody tr td {
+padding: 0 0.2em 0 0.2em;
+}
+.ekeTitle {
+text-align: center;
+font-size: 200%;
+font-weight: bold;
+color: white;
+background: #b60303;
+border-top: 1px dashed white;
+}
+.ekeAbstract {
+font-style: italic;
+}
+/* */
+#portal-logo {
+text-align: center;
+background-color: #a90101;
+border: 0;
+margin: 0 0 0 0;
+padding: 0;
+display: block
+overflow: hidden;
+padding-top: 81px;
+height: 0px !important;
+height /**/: 81px;
+width: 788px;
+}
+#portal-logo a {
+display: block;
+text-decoration: none;
+overflow: hidden;
+border: 0;
+margin: 0;
+padding: 0;
+cursor: pointer;
+}
+#portal-top {
+/* */
+margin: 0;
+padding: 0;
+background-color: transparent;
+}
+/* */
+#portal-searchbox {
+float: right;
+clear: right;
+background-color: transparent;
+margin: 0 0 -2px 0;
+padding: 0 0 0 0;
+text-align: right;
+text-transform: none;
+white-space: nowrap;
+z-index: 2;
+}
+#portal-advanced-search {
+margin-top: 0.2em;
+clear: both;
+}
+#portal-advanced-search a {
+color: #76797c;
+text-decoration: none;
+text-transform: none;
+}
+/* */
+#portal-globalnav {
+text-align: center;
+font-size: 11px;
+background-color: #b70003;
+padding: 10px 0em 6px 2em;
+white-space: nowrap;
+list-style: none;
+margin: 0;
+height: auto;
+line-height: normal;
+text-transform: none;
+}
+#portal-globalnav li {
+display: inline;
+text-transform: none;
+}
+#portal-globalnav li a {
+/* */
+background-color: #656559;
+border-color: white;
+border-width: 1px;
+border-style: solid solid none solid;
+color: white;
+height: auto;
+margin-right: -5px;
+padding: 7px 1.5em 6px 1.5em;
+text-decoration: none;
+text-transform: none;
+}
+#portal-globalnav li.selected a {
+/* */
+background-color: #4c483e;
+border: 1px solid white;
+border-bottom: none;
+color: white;
+}
+#portal-globalnav li a:hover {
+background-color: #4c483e;
+border-color: white;
+border-bottom-color: #4c483e;
+color: white;
+}
+/* */

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<page>
+	<database>
+		<query>
+			<!-- SELECT -->
+			<select>
+				<!-- FROM marker -->
+				<table name="publication">
+					<!-- desired fields -->
+					<field name="pubMedID"/>
+					<field name="title"/>
+					<field name="journal"/>
+					<field name="volume"/>
+					<field name="issue"/>
+					<field name="year"/>
+				</table>
+				<where>
+					<!--  WHERE marker.ID = $_GET['m'] -->
+					<clause table="publication" field="ID" value="p" source="GET" />
+				</where>
+			</select>
+			<update>
+				<table name="publication" />
+				<where>
+					<clause table="publication" field="ID" value="p" source="GET" />
+				</where>
+			</update>
+		</query>
+	</database>
+	
+	<form id="frmMarker">
+		<banner title="Edit Publication" colspan="2"/>
+		<row>
+			<cell type="label" value="PubMed ID:"/>
+			<cell type="text" id="pubmedid" size="35" db="pubMedID"/>
+		</row>
+		<row>
+			<cell type="label" value="Title:"/>
+			<cell type="text" id="title" size="45"  db="title"/>
+		</row>
+		<row>
+			<cell type="label" value="Journal:"/>
+			<cell type="text" id="journal" size="45"  db="journal"/>
+		</row>
+		<row>
+			<cell type="label" value="Volume"/>
+			<cell type="text" id="volume" db="volume"/>
+		</row>
+		<row>
+			<cell type="label" value="Issue:"/>
+			<cell type="text" id="issue" size="15"  db="issue"/>
+		</row>
+		<row>
+			<cell type="label" value="Year:"/>
+			<cell type="text" id="year" size="4" valid="number,1900" db="year"/>
+		</row>
+	</form>
+</page>

@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+/**
+ * EDRN Biomarker Database - Interface Definitions
+ * 
+ * Author: ahart (andrew.f.hart@jpl.nasa.gov)
+ * Date: 24.July.2007
+ *
+ *
+ * This file contains common style definitions for the edrn biomarker database
+ *
+**/
+.centered {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.important {
+	font-weight:bold;	
+}

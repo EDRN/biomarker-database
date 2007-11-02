@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<page>
+	<database>
+		<query>
+			<!-- SELECT -->
+			<select>
+				<!-- FROM Biomarker -->
+				<table name="biomarker">
+					<!-- desired fields -->
+					<field name="BiomarkerID"/>
+					<field name="PanelID"/>
+					<field name="Title"/>
+					<field name="Description"/>
+					<field name="QAState"/>
+					<field name="Phase"/>
+					<field name="Security"/>
+					<field name="Type"/>
+				</table>
+				<where>
+					<!--  WHERE marker.ID = $_GET['m'] -->
+					<clause table="biomarker" field="ID" value="m" source="GET" />
+				</where>
+			</select>
+			<update>
+				<table name="biomarker" />
+				<where>
+					<clause table="biomarker" field="ID" value="m" source="GET" />
+				</where>
+			</update>
+		</query>
+	</database>
+	
+	<form id="frmMarker">
+		<banner title="Edit Biomarker" colspan="2"/>
+		<row>
+			<cell type="label" value="Title (Long Name):"/>
+			<cell type="text" id="Title" size="35" db="Title"/>
+		</row>
+		<row>
+			<cell type="label" value="Identifier:"/>
+			<cell type="text" id="BiomarkerID" size="35" db="BiomarkerID"/>
+		</row>
+		<row>
+			<cell type="label" value="Phase:"/>
+			<cell type="select" id="phase" options="1:One (I),2:Two (II),3:Three (III),4:Four (IV),5:Five (V)" db="Phase"/>
+		</row>
+		<row>
+			<cell type="label" value="Security:"/>
+			<cell type="select" id="security" options="public:Public,private:Private" db="Security"/>
+		</row>
+		<row>
+			<cell type="label" value="Type:"/>
+			<cell type="select" id="type" size="35" options="epigenetic:Epigenetic,gene:Gene,protein:Protein" db="Type"/>
+		</row>
+		<row>
+			<cell type="label" value="Short Biomarker Description:"/>
+			<cell type="text" id="description" size="50" rows="5" db="Description"/>
+		</row>
+	</form>
+</page>
