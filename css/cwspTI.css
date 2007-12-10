@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+input.cwspTI[type="text"] {
+	color:#444;
+
+}
+
+.focused {
+	background:#eef;
+}
