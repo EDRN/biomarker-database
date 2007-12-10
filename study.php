@@ -39,10 +39,10 @@
 		<span class="titleDetails"><?php if($validObject){ echo $object->getTitle();}?></span>
 		</h2>
 		<div class="smallLinks">
-			<a href="study.php?view=basics&objId=<?echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'basics')? 'class="activeLink"' : '';?>>Basics</a>&nbsp; |
-			<a href="study.php?view=biomarkerorgans&objId=<?echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'biomarkerorgans')? 'class="activeLink"' : '';?>>Biomarkers/Organs</a>&nbsp; |
-			<a href="study.php?view=publications&objId=<? echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'publications')? 'class="activeLink"' : '';?>>Publications</a>&nbsp; |
-			<a href="study.php?view=resources&objId=<?echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'resources')? 'class="activeLink"' : '';?>>Resources</a>
+			<a href="study.php?view=basics&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'basics')? 'class="activeLink"' : '';?>>Basics</a>&nbsp; |
+			<a href="study.php?view=biomarkerorgans&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'biomarkerorgans')? 'class="activeLink"' : '';?>>Biomarkers/Organs</a>&nbsp; |
+			<a href="study.php?view=publications&objId=<?php  echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'publications')? 'class="activeLink"' : '';?>>Publications</a>&nbsp; |
+			<a href="study.php?view=resources&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'resources')? 'class="activeLink"' : '';?>>Resources</a>
 		</div>
 		<?php 
 			if (!$validObject){
