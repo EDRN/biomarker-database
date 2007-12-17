@@ -79,7 +79,10 @@
 						$co = new objBiomarker($XPress,$containerId);
 						break;
 					case 'Study':
-						$co = new objStudy($Xpress,$containerId);
+						$co = new objStudy($XPress,$containerId);
+						break;
+					case 'BiomarkerOrganData':
+						$co = new objBiomarmerOrganData($XPress,$containerId);
 						break;
 					default:
 						break;
