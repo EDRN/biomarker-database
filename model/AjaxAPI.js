@@ -1,6 +1,6 @@
 // Javascript
 
-	var siteBaseUrl = 'http://localhost/noo';
+	var siteBaseUrl = 'http://url/of/project/root';
 
 	var XPressJS = {
 		Version: '1.0',

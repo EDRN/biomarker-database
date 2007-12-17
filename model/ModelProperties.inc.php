@@ -1,10 +1,10 @@
 <?php
 	// Configurable Model Properties:
 	class Modeler {
-		const DSN = "mysql://root:root@localhost/bmdb5";
-		const ROOT_DIR = "/Applications/MAMP/htdocs/noo";
-		const CWSP_PATH = "/Applications/MAMP/htdocs/cwsp";
-		const PEAR_PATH = "/Applications/MAMP/htdocs/PEAR/pear/php";
+		const DSN = "mysql://user:pass@server/database";
+		const ROOT_DIR = "/path/to/project/root";
+		const CWSP_PATH = "/path/to/cwsp/library";
+		const PEAR_PATH = "/path/to/pear/library";
 	}
 
 	// PHP Include Path modifications:
