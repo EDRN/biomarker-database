@@ -172,7 +172,7 @@ class objBiomarkerAlias {
 		$this->save();
 		$this->link("Biomarker",$BiomarkerId,"Aliases");
 	}
-	public function inflate($parentObjects) {
+	public function inflate($parentObjects = array()) {
 		if ($this->equals($parentObjects)) {
 			return false;
 		}
@@ -240,7 +240,7 @@ class objBiomarkerAlias {
 	public function unlink($variable,$remoteIDs = ''){
 		switch ($variable){
 			case "Biomarker":
-				$q = "DELETE FROM xr_Biomarker_BiomarkerAlias WHERE BiomarkerAliasID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerAliasVar = \"Biomarker\" ";
+				$q = "DELETE FROM xr_Biomarker_BiomarkerAlias WHERE BiomarkerAliasID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerAliasVar = \"Biomarker\" ";
 				break;
 			default:
 				break;
@@ -261,6 +261,14 @@ class objBiomarkerAlias {
 			}
 		}
 		return false;
+	}
+	public function toJSON(){
+		$json = '{';
+		$json .= "\"objId\": \"{$this->objId}\", ";
+		$json .= "\"Alias\": \"{$this->Alias}\", ";
+		$json .= "\"Biomarker\": ".(($this->getBiomarker() != null)? $this->getBiomarker()->toJSON() : "{}").",";
+		$json .= "\"_objectType\": \"BiomarkerAlias\"}";
+		return ($json);
 	}
 	public function associate($objectID,$variableName) {
 		switch ($variableName) {

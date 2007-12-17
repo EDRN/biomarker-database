@@ -249,7 +249,7 @@ class objPerson {
 	public function create(){
 		$this->save();
 	}
-	public function inflate($parentObjects) {
+	public function inflate($parentObjects = array()) {
 		if ($this->equals($parentObjects)) {
 			return false;
 		}
@@ -323,7 +323,7 @@ class objPerson {
 	public function unlink($variable,$remoteIDs = ''){
 		switch ($variable){
 			case "Site":
-				$q = "DELETE FROM xr_Person_Site WHERE PersonID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND SiteID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND PersonVar = \"Site\" ";
+				$q = "DELETE FROM xr_Person_Site WHERE PersonID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND SiteID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND PersonVar = \"Site\" ";
 				break;
 			default:
 				break;
@@ -344,6 +344,26 @@ class objPerson {
 			}
 		}
 		return false;
+	}
+	public function toJSON(){
+		$json = '{';
+		$json .= "\"objId\": \"{$this->objId}\", ";
+		$json .= "\"FirstName\": \"{$this->FirstName}\", ";
+		$json .= "\"LastName\": \"{$this->LastName}\", ";
+		$json .= "\"Title\": \"{$this->Title}\", ";
+		$json .= "\"Specialty\": \"{$this->Specialty}\", ";
+		$json .= "\"Phone\": \"{$this->Phone}\", ";
+		$json .= "\"Fax\": \"{$this->Fax}\", ";
+		$json .= "\"Email\": \"{$this->Email}\", ";
+		$json .= "\"Site\": [";
+		$jsonSnippets = array();
+		foreach ($this->Site as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"_objectType\": \"Person\"}";
+		return ($json);
 	}
 	public function associate($objectID,$variableName) {
 		switch ($variableName) {

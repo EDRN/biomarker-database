@@ -3,6 +3,7 @@ require_once("ModelProperties.inc.php");
 
 
 if (isset($_POST['action'])){
+	include_once("AjaxHandlerExtensions.php");
 	// UPDATES TO EXISTING FIELDS // 
 	if ($_POST['action'] == "update"){
 		$type = $_POST['objType'];
@@ -473,27 +474,27 @@ if (isset($_POST['action'])){
 				case "BiomarkerAlias":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerAlias\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerStudyData":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Resource":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -505,7 +506,7 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objBiomarkerAlias($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -517,27 +518,27 @@ if (isset($_POST['action'])){
 				case "BiomarkerStudyData":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Publication":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Resource":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -549,17 +550,22 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Study":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					return;
+				case "Resource":
+					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
+					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -571,7 +577,7 @@ if (isset($_POST['action'])){
 				case "BiomarkerOrganData":
 					$obj1 = new objOrgan($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -583,27 +589,27 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Organ":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Organ\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Resource":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -615,17 +621,22 @@ if (isset($_POST['action'])){
 				case "BiomarkerOrganData":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Study":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					return;
+				case "Resource":
+					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
+					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -637,27 +648,27 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerStudyData":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Study":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -669,17 +680,27 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					return;
+				case "BiomarkerStudyData":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					return;
+				case "BiomarkerOrganStudyData":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				case "Study":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -691,7 +712,7 @@ if (isset($_POST['action'])){
 				case "Person":
 					$obj1 = new objSite($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "OK";
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Person\",\"containerObjectId\": {$_POST['obj2Id']}}";
 					return;
 				default:break;
 			}
@@ -703,6 +724,270 @@ if (isset($_POST['action'])){
 				case "Site":
 					$obj1 = new objPerson($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Site\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					return;
+				default:break;
+			}
+		}
+	} else if ($_POST['action'] == 'dissociate'){
+		// DISSOCIATIONS BETWEEN EXISTING OBJECTS //
+		if ($_POST['obj1Type'] == "Biomarker"){
+			$localType  = "Biomarker";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "BiomarkerAlias":
+					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerStudyData":
+					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganData":
+					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Publication":
+					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Resource":
+					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "BiomarkerAlias"){
+			$localType  = "BiomarkerAlias";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Biomarker":
+					$obj1 = new objBiomarkerAlias($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "Study"){
+			$localType  = "Study";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "BiomarkerStudyData":
+					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganStudyData":
+					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganData":
+					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Publication":
+					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Resource":
+					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "BiomarkerStudyData"){
+			$localType  = "BiomarkerStudyData";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Biomarker":
+					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Study":
+					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Publication":
+					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Resource":
+					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "Organ"){
+			$localType  = "Organ";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "BiomarkerOrganData":
+					$obj1 = new objOrgan($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "BiomarkerOrganData"){
+			$localType  = "BiomarkerOrganData";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Biomarker":
+					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Organ":
+					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Resource":
+					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Publication":
+					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganStudyData":
+					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "BiomarkerOrganStudyData"){
+			$localType  = "BiomarkerOrganStudyData";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "BiomarkerOrganData":
+					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Study":
+					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Publication":
+					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Resource":
+					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "Publication"){
+			$localType  = "Publication";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Biomarker":
+					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerStudyData":
+					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganData":
+					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganStudyData":
+					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Study":
+					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "Resource"){
+			$localType  = "Resource";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Biomarker":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerStudyData":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganData":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "BiomarkerOrganStudyData":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				case "Study":
+					$obj1 = new objResource($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "Site"){
+			$localType  = "Site";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Person":
+					$obj1 = new objSite($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
+					echo "OK";
+					return;
+				default:break;
+			}
+		}
+		if ($_POST['obj1Type'] == "Person"){
+			$localType  = "Person";
+			$remoteType = "{$_POST['obj2Type']}";
+			switch($remoteType){
+				case "Site":
+					$obj1 = new objPerson($XPress,$_POST['obj1Id']);
+					$obj1->unlink($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
 					echo "OK";
 					return;
 				default:break;
@@ -713,67 +998,78 @@ if (isset($_POST['action'])){
 		if ($_POST['objType'] == "Biomarker"){
 			$obj = new objBiomarker($XPress);
 			$obj->create($_POST['Title']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerAlias"){
 			$obj = new objBiomarkerAlias($XPress);
 			$obj->create($_POST['BiomarkerId']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "Study"){
 			$obj = new objStudy($XPress);
 			$obj->create($_POST['Title']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerStudyData"){
 			$obj = new objBiomarkerStudyData($XPress);
 			$obj->create($_POST['StudyId'],$_POST['BiomarkerId']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "Organ"){
 			$obj = new objOrgan($XPress);
 			$obj->create($_POST['Name']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerOrganData"){
 			$obj = new objBiomarkerOrganData($XPress);
 			$obj->create($_POST['OrganId'],$_POST['BiomarkerId']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerOrganStudyData"){
 			$obj = new objBiomarkerOrganStudyData($XPress);
 			$obj->create($_POST['StudyId'],$_POST['BiomarkerOrganDataId']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "Publication"){
 			$obj = new objPublication($XPress);
 			$obj->create($_POST['PubMedID']);
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "Resource"){
 			$obj = new objResource($XPress);
 			$obj->create();
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "Site"){
 			$obj = new objSite($XPress);
 			$obj->create();
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "Person"){
 			$obj = new objPerson($XPress);
 			$obj->create();
-			echo $obj->getObjId();
+			$obj->inflate();
+			echo $obj->toJSON();
 			return;
 		}
 	} else if ($_POST['action'] == 'delete'){

@@ -371,7 +371,7 @@ class objStudy {
 		$this->Title = $Title;
 		$this->save();
 	}
-	public function inflate($parentObjects) {
+	public function inflate($parentObjects = array()) {
 		if ($this->equals($parentObjects)) {
 			return false;
 		}
@@ -522,19 +522,19 @@ class objStudy {
 	public function unlink($variable,$remoteIDs = ''){
 		switch ($variable){
 			case "Biomarkers":
-				$q = "DELETE FROM xr_BiomarkerStudyData_Study WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerStudyDataID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"Biomarkers\" ";
+				$q = "DELETE FROM xr_BiomarkerStudyData_Study WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerStudyDataID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"Biomarkers\" ";
 				break;
 			case "BiomarkerOrganDatas":
-				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Study WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganStudyDataID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"BiomarkerOrganDatas\" ";
+				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Study WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganStudyDataID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"BiomarkerOrganDatas\" ";
 				break;
 			case "BiomarkerOrgans":
-				$q = "DELETE FROM xr_Study_BiomarkerOrganData WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganDataID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"BiomarkerOrgans\" ";
+				$q = "DELETE FROM xr_Study_BiomarkerOrganData WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganDataID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"BiomarkerOrgans\" ";
 				break;
 			case "Publications":
-				$q = "DELETE FROM xr_Study_Publication WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND PublicationID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"Publications\" ";
+				$q = "DELETE FROM xr_Study_Publication WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND PublicationID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"Publications\" ";
 				break;
 			case "Resources":
-				$q = "DELETE FROM xr_Study_Resource WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND ResourceID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"Resources\" ";
+				$q = "DELETE FROM xr_Study_Resource WHERE StudyID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND ResourceID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND StudyVar = \"Resources\" ";
 				break;
 			default:
 				break;
@@ -555,6 +555,55 @@ class objStudy {
 			}
 		}
 		return false;
+	}
+	public function toJSON(){
+		$json = '{';
+		$json .= "\"objId\": \"{$this->objId}\", ";
+		$json .= "\"EDRNID\": \"{$this->EDRNID}\", ";
+		$json .= "\"FHCRC_ID\": \"{$this->FHCRC_ID}\", ";
+		$json .= "\"DMCC_ID\": \"{$this->DMCC_ID}\", ";
+		$json .= "\"Title\": \"{$this->Title}\", ";
+		$json .= "\"Abstract\": \"{$this->Abstract}\", ";
+		$json .= "\"BiomarkerPopulationCharacteristics\": \"{$this->BiomarkerPopulationCharacteristics}\", ";
+		$json .= "\"Design\": \"{$this->Design}\", ";
+		$json .= "\"BiomarkerStudyType\": \"{$this->BiomarkerStudyType}\", ";
+		$json .= "\"Biomarkers\": [";
+		$jsonSnippets = array();
+		foreach ($this->Biomarkers as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"BiomarkerOrgans\": [";
+		$jsonSnippets = array();
+		foreach ($this->BiomarkerOrgans as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"BiomarkerOrganDatas\": [";
+		$jsonSnippets = array();
+		foreach ($this->BiomarkerOrganDatas as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"Publications\": [";
+		$jsonSnippets = array();
+		foreach ($this->Publications as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"Resources\": [";
+		$jsonSnippets = array();
+		foreach ($this->Resources as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"_objectType\": \"Study\"}";
+		return ($json);
 	}
 	public function associate($objectID,$variableName) {
 		switch ($variableName) {

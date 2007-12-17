@@ -174,6 +174,14 @@ CREATE TABLE xr_BiomarkerStudyData_Publication (
 	PRIMARY KEY (`BiomarkerStudyDataID`,`PublicationID`,`BiomarkerStudyDataVar`,`PublicationVar`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
 
+CREATE TABLE xr_BiomarkerStudyData_Resource (
+	`BiomarkerStudyDataID` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the BiomarkerStudyData',
+	`ResourceID` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the Resource',
+	`BiomarkerStudyDataVar` enum('null','Resources') DEFAULT 'null' COMMENT 'the BiomarkerStudyData variable for this relationship',
+	`ResourceVar` enum('null','BiomarkerStudies') DEFAULT 'null' COMMENT 'the Resource variable for this relationship',
+	PRIMARY KEY (`BiomarkerStudyDataID`,`ResourceID`,`BiomarkerStudyDataVar`,`ResourceVar`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
+
 CREATE TABLE xr_BiomarkerOrganData_Organ (
 	`BiomarkerOrganDataID` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the BiomarkerOrganData',
 	`OrganID` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the Organ',
@@ -220,6 +228,14 @@ CREATE TABLE xr_BiomarkerOrganStudyData_Publication (
 	`BiomarkerOrganStudyDataVar` enum('null','Publications') DEFAULT 'null' COMMENT 'the BiomarkerOrganStudyData variable for this relationship',
 	`PublicationVar` enum('null','BiomarkerOrganStudies') DEFAULT 'null' COMMENT 'the Publication variable for this relationship',
 	PRIMARY KEY (`BiomarkerOrganStudyDataID`,`PublicationID`,`BiomarkerOrganStudyDataVar`,`PublicationVar`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
+
+CREATE TABLE xr_BiomarkerOrganStudyData_Resource (
+	`BiomarkerOrganStudyDataID` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the BiomarkerOrganStudyData',
+	`ResourceID` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the Resource',
+	`BiomarkerOrganStudyDataVar` enum('null','Resources') DEFAULT 'null' COMMENT 'the BiomarkerOrganStudyData variable for this relationship',
+	`ResourceVar` enum('null','BiomarkerOrganStudies') DEFAULT 'null' COMMENT 'the Resource variable for this relationship',
+	PRIMARY KEY (`BiomarkerOrganStudyDataID`,`ResourceID`,`BiomarkerOrganStudyDataVar`,`ResourceVar`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
 
 CREATE TABLE xr_Study_BiomarkerOrganData (

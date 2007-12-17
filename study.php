@@ -23,6 +23,8 @@
 	$p->includeJS('js/scriptaculous-js-1.7.0/lib/prototype.js');
 	$p->includeJS('js/scriptaculous-js-1.7.0/src/scriptaculous.js');
 	$p->includeJS('js/textInputs.js');
+	$p->includeJS('model/AjaxAPI.js');
+	$p->includeJS('model/AjaxAPIExtensions.js');
 	$p->includeJS('model/AjaxHandler.js');
 	$p->includeCSS('css/whiteflour.css');
 	$p->includeCSS('css/cwspTI.css');

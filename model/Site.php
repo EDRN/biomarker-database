@@ -171,7 +171,7 @@ class objSite {
 	public function create(){
 		$this->save();
 	}
-	public function inflate($parentObjects) {
+	public function inflate($parentObjects = array()) {
 		if ($this->equals($parentObjects)) {
 			return false;
 		}
@@ -239,7 +239,7 @@ class objSite {
 	public function unlink($variable,$remoteIDs = ''){
 		switch ($variable){
 			case "Staff":
-				$q = "DELETE FROM xr_Person_Site WHERE SiteID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND PersonID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND SiteVar = \"Staff\" ";
+				$q = "DELETE FROM xr_Person_Site WHERE SiteID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND PersonID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND SiteVar = \"Staff\" ";
 				break;
 			default:
 				break;
@@ -260,6 +260,20 @@ class objSite {
 			}
 		}
 		return false;
+	}
+	public function toJSON(){
+		$json = '{';
+		$json .= "\"objId\": \"{$this->objId}\", ";
+		$json .= "\"Name\": \"{$this->Name}\", ";
+		$json .= "\"Staff\": [";
+		$jsonSnippets = array();
+		foreach ($this->Staff as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"_objectType\": \"Site\"}";
+		return ($json);
 	}
 	public function associate($objectID,$variableName) {
 		switch ($variableName) {

@@ -306,9 +306,15 @@ table.browser th {
 	color:#555;	
 }
 div.warn {
-	background-color:#ff8;
+	background-color:#ffa;
 	border:solid 2px #fc0;	
 	border-right:0px;
+	background:url(../assets/icons/warn.png) 6px 0px no-repeat;
+	background-color:#ff8;
+}
+div.warn h3 {
+	margin-left:50px;	
+	margin-bottom:30px;
 }
 div.info 
 {	

@@ -192,7 +192,7 @@ class objOrgan {
 		$this->Name = $Name;
 		$this->save();
 	}
-	public function inflate($parentObjects) {
+	public function inflate($parentObjects = array()) {
 		if ($this->equals($parentObjects)) {
 			return false;
 		}
@@ -260,7 +260,7 @@ class objOrgan {
 	public function unlink($variable,$remoteIDs = ''){
 		switch ($variable){
 			case "OrganDatas":
-				$q = "DELETE FROM xr_BiomarkerOrganData_Organ WHERE OrganID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganDataID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND OrganVar = \"OrganDatas\" ";
+				$q = "DELETE FROM xr_BiomarkerOrganData_Organ WHERE OrganID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganDataID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND OrganVar = \"OrganDatas\" ";
 				break;
 			default:
 				break;
@@ -281,6 +281,20 @@ class objOrgan {
 			}
 		}
 		return false;
+	}
+	public function toJSON(){
+		$json = '{';
+		$json .= "\"objId\": \"{$this->objId}\", ";
+		$json .= "\"Name\": \"{$this->Name}\", ";
+		$json .= "\"OrganDatas\": [";
+		$jsonSnippets = array();
+		foreach ($this->OrganDatas as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"_objectType\": \"Organ\"}";
+		return ($json);
 	}
 	public function associate($objectID,$variableName) {
 		switch ($variableName) {

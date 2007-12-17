@@ -30,6 +30,7 @@ class BiomarkerOrganStudyData {
 						$o->Study = '';
 						$o->BiomarkerOrganData = '';
 						$o->Publications = array();
+						$o->Resources = array();
 					} else { // Be greedy, fetch as much as possible
 						$po = $parentObjects;
 						$po[] = &$o;
@@ -39,6 +40,8 @@ class BiomarkerOrganStudyData {
 						if ($o->BiomarkerOrganData == null){$o->BiomarkerOrganData = '';}
 						$o->Publications = BiomarkerOrganStudyDataXref::retrieve($o,"Publication",$po,$lazyFetch,$limit,"Publications");
 						if ($o->Publications == null){$o->Publications = array();}
+						$o->Resources = BiomarkerOrganStudyDataXref::retrieve($o,"Resource",$po,$lazyFetch,$limit,"Resources");
+						if ($o->Resources == null){$o->Resources = array();}
 					}
 				}
 				if ($limit == 1) { return $o; /* Return a single built object */}
@@ -66,6 +69,7 @@ class BiomarkerOrganStudyData {
 			$obj->Study = '';
 			$obj->BiomarkerOrganData = '';
 			$obj->Publications = array();
+			$obj->Resources = array();
 		} else { // Be greedy, fetch as much as possible
 			$limit = 0; // get all children
 			$obj->Study = BiomarkerOrganStudyDataXref::retrieve($obj,"Study",array($obj),$lazyFetch,1,"Study");
@@ -74,6 +78,8 @@ class BiomarkerOrganStudyData {
 			if ($obj->BiomarkerOrganData == null){$obj->BiomarkerOrganData = '';}
 			$obj->Publications = BiomarkerOrganStudyDataXref::retrieve($obj,"Publication",array($obj),$lazyFetch,$limit,"Publications");
 			if ($obj->Publications == null){$obj->Publications = array();}
+			$obj->Resources = BiomarkerOrganStudyDataXref::retrieve($obj,"Resource",array($obj),$lazyFetch,$limit,"Resources");
+			if ($obj->Resources == null){$obj->Resources = array();}
 		}
 		return $obj;
 	}
@@ -84,6 +90,7 @@ class BiomarkerOrganStudyData {
 		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganData_BiomarkerOrganStudyData` WHERE BiomarkerOrganStudyDataID IN (".implode(",",$objectIDs).")");
 		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganStudyData_Study` WHERE BiomarkerOrganStudyDataID IN (".implode(",",$objectIDs).")");
 		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganStudyData_Publication` WHERE BiomarkerOrganStudyDataID IN (".implode(",",$objectIDs).")");
+		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganStudyData_Resource` WHERE BiomarkerOrganStudyDataID IN (".implode(",",$objectIDs).")");
 		//Finally, delete the objects themselves
 		$db->safeQuery("DELETE FROM `BiomarkerOrganStudyData` WHERE ID IN (".implode(",",$objectIDs).")");
 	}
@@ -94,6 +101,7 @@ class BiomarkerOrganStudyData {
 		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganData_BiomarkerOrganStudyData` WHERE BiomarkerOrganStudyDataID = $objID");
 		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganStudyData_Study` WHERE BiomarkerOrganStudyDataID = $objID");
 		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganStudyData_Publication` WHERE BiomarkerOrganStudyDataID = $objID");
+		$db->safeQuery("DELETE FROM `xr_BiomarkerOrganStudyData_Resource` WHERE BiomarkerOrganStudyDataID = $objID");
 		//Finally, delete the object itself
 		$db->safeQuery("DELETE FROM `BiomarkerOrganStudyData` WHERE ID = $objID");
 	}
@@ -120,6 +128,9 @@ class BiomarkerOrganStudyData {
 	public static function attach_Publication($object,$Publication){
 		$object->Publications[] = $Publication;
 	}
+	public static function attach_Resource($object,$Resource){
+		$object->Resources[] = $Resource;
+	}
 }
 
 class BiomarkerOrganStudyDataVars {
@@ -133,6 +144,7 @@ class BiomarkerOrganStudyDataVars {
 	const BIO_STUDY = "Study";
 	const BIO_BIOMARKERORGANDATA = "BiomarkerOrganData";
 	const BIO_PUBLICATIONS = "Publications";
+	const BIO_RESOURCES = "Resources";
 }
 
 class objBiomarkerOrganStudyData {
@@ -149,6 +161,7 @@ class objBiomarkerOrganStudyData {
 	public $Study = '';
 	public $BiomarkerOrganData = '';
 	public $Publications = array();
+	public $Resources = array();
 
 
 	public function __construct(&$XPressObj,$objId = 0) {
@@ -190,6 +203,7 @@ class objBiomarkerOrganStudyData {
 		$this->Study = '';
 		$this->BiomarkerOrganData = '';
 		$this->Publications = array();
+		$this->Resources = array();
 	}
 
 	// Accessor Functions
@@ -222,6 +236,9 @@ class objBiomarkerOrganStudyData {
 	}
 	public function getPublications() {
 		 return $this->Publications;
+	}
+	public function getResources() {
+		 return $this->Resources;
 	}
 
 	// Mutator Functions 
@@ -272,7 +289,7 @@ class objBiomarkerOrganStudyData {
 		$this->link("Study",$StudyId,"BiomarkerOrganDatas");
 		$this->link("BiomarkerOrganData",$BiomarkerOrganDataId,"StudyDatas");
 	}
-	public function inflate($parentObjects) {
+	public function inflate($parentObjects = array()) {
 		if ($this->equals($parentObjects)) {
 			return false;
 		}
@@ -316,6 +333,19 @@ class objBiomarkerOrganStudyData {
 			}
 			$rcount++;
 		}
+		// Inflate "Resources":
+		$q = "SELECT ResourceID AS objId FROM xr_BiomarkerOrganStudyData_Resource WHERE BiomarkerOrganStudyDataID = {$this->objId} AND BiomarkerOrganStudyDataVar = \"Resources\" ";
+		$r  = $this->XPress->Database->safeQuery($q);
+		$rcount = 0;
+		while ($result = $r->fetchRow(DB_FETCHMODE_ASSOC)) {
+			if ($limit > 0 && $rcount > $limit){break;}
+			// Retrieve the objects one by one... (limit = 1 per request) 
+			$obj = new objResource($this->XPress);
+			if ($obj->initialize($result['objId'],true,$parentObjects) ){
+				$this->Resources[] = $obj;
+			}
+			$rcount++;
+		}
 		return true;
 	}
 	public function save() {
@@ -344,6 +374,7 @@ class objBiomarkerOrganStudyData {
 		$this->unlink(BiomarkerOrganStudyDataVars::BIO_STUDY);
 		$this->unlink(BiomarkerOrganStudyDataVars::BIO_BIOMARKERORGANDATA);
 		$this->unlink(BiomarkerOrganStudyDataVars::BIO_PUBLICATIONS);
+		$this->unlink(BiomarkerOrganStudyDataVars::BIO_RESOURCES);
 		//Delete object from the database
 		$q = "DELETE FROM `BiomarkerOrganStudyData` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -369,6 +400,11 @@ class objBiomarkerOrganStudyData {
 				$q0 = "INSERT INTO xr_BiomarkerOrganStudyData_Publication (BiomarkerOrganStudyDataID,PublicationID,BiomarkerOrganStudyDataVar".(($remoteVar == '')? '' : ',PublicationVar').") VALUES($this->objId,$remoteID,\"Publications\"".(($remoteVar == '')? '' : ",\"{$remoteVar}\"").");";
 				$q1 = "UPDATE xr_BiomarkerOrganStudyData_Publication SET BiomarkerOrganStudyDataVar=\"{$variable}\" ".(($remoteVar == '')? '' : ', PublicationVar="{$remoteVar}" ')." WHERE BiomarkerOrganStudyDataID=$this->objId AND PublicationID=$remoteID LIMIT 1 ";
 				break;
+			case "Resources":
+				$q  = "SELECT COUNT(*) FROM xr_BiomarkerOrganStudyData_Resource WHERE BiomarkerOrganStudyDataID=$this->objId AND ResourceID=$remoteID ";
+				$q0 = "INSERT INTO xr_BiomarkerOrganStudyData_Resource (BiomarkerOrganStudyDataID,ResourceID,BiomarkerOrganStudyDataVar".(($remoteVar == '')? '' : ',ResourceVar').") VALUES($this->objId,$remoteID,\"Resources\"".(($remoteVar == '')? '' : ",\"{$remoteVar}\"").");";
+				$q1 = "UPDATE xr_BiomarkerOrganStudyData_Resource SET BiomarkerOrganStudyDataVar=\"{$variable}\" ".(($remoteVar == '')? '' : ', ResourceVar="{$remoteVar}" ')." WHERE BiomarkerOrganStudyDataID=$this->objId AND ResourceID=$remoteID LIMIT 1 ";
+				break;
 			default:
 				break;
 		}
@@ -383,13 +419,16 @@ class objBiomarkerOrganStudyData {
 	public function unlink($variable,$remoteIDs = ''){
 		switch ($variable){
 			case "BiomarkerOrganData":
-				$q = "DELETE FROM xr_BiomarkerOrganData_BiomarkerOrganStudyData WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganDataID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"BiomarkerOrganData\" ";
+				$q = "DELETE FROM xr_BiomarkerOrganData_BiomarkerOrganStudyData WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerOrganDataID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"BiomarkerOrganData\" ";
 				break;
 			case "Study":
-				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Study WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND StudyID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"Study\" ";
+				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Study WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND StudyID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"Study\" ";
 				break;
 			case "Publications":
-				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Publication WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND PublicationID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"Publications\" ";
+				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Publication WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND PublicationID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"Publications\" ";
+				break;
+			case "Resources":
+				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Resource WHERE BiomarkerOrganStudyDataID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND ResourceID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerOrganStudyDataVar = \"Resources\" ";
 				break;
 			default:
 				break;
@@ -411,6 +450,34 @@ class objBiomarkerOrganStudyData {
 		}
 		return false;
 	}
+	public function toJSON(){
+		$json = '{';
+		$json .= "\"objId\": \"{$this->objId}\", ";
+		$json .= "\"Sensitivity\": \"{$this->Sensitivity}\", ";
+		$json .= "\"Specificity\": \"{$this->Specificity}\", ";
+		$json .= "\"PPV\": \"{$this->PPV}\", ";
+		$json .= "\"NPV\": \"{$this->NPV}\", ";
+		$json .= "\"Assay\": \"{$this->Assay}\", ";
+		$json .= "\"Technology\": \"{$this->Technology}\", ";
+		$json .= "\"Study\": ".(($this->getStudy() != null)? $this->getStudy()->toJSON() : "{}").",";
+		$json .= "\"BiomarkerOrganData\": ".(($this->getBiomarkerOrganData() != null)? $this->getBiomarkerOrganData()->toJSON() : "{}").",";
+		$json .= "\"Publications\": [";
+		$jsonSnippets = array();
+		foreach ($this->Publications as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"Resources\": [";
+		$jsonSnippets = array();
+		foreach ($this->Resources as $var){
+			$jsonSnippets[] = $var->toJSON();
+		}
+		$json .= implode(",",$jsonSnippets);
+		$json .= "], ";
+		$json .= "\"_objectType\": \"BiomarkerOrganStudyData\"}";
+		return ($json);
+	}
 	public function associate($objectID,$variableName) {
 		switch ($variableName) {
 			case "Study":
@@ -421,6 +488,9 @@ class objBiomarkerOrganStudyData {
 				break;
 			case "Publications":
 				BiomarkerOrganStudyDataXref::createByIDs($this->ID,"Publication",$objectID,"Publications");
+				break;
+			case "Resources":
+				BiomarkerOrganStudyDataXref::createByIDs($this->ID,"Resource",$objectID,"Resources");
 				break;
 			default: 
 				return false;
@@ -437,6 +507,9 @@ class objBiomarkerOrganStudyData {
 				break;
 			case "Publications":
 				BiomarkerOrganStudyDataXref::deleteByIDs($this->ID,"Publication",$objectID,"Publications");
+				break;
+			case "Resources":
+				BiomarkerOrganStudyDataXref::deleteByIDs($this->ID,"Resource",$objectID,"Resources");
 				break;
 			default:
 				return false;
@@ -701,6 +774,11 @@ class BiomarkerOrganStudyDataXref {
 				$q0 = "INSERT INTO xr_BiomarkerOrganStudyData_Publication (BiomarkerOrganStudyDataID,PublicationID,BiomarkerOrganStudyDataVar) VALUES($localID,$remoteID,\"Publications\");";
 				$q1 = "UPDATE xr_BiomarkerOrganStudyData_Publication SET BiomarkerOrganStudyDataVar=\"{$variableName}\" WHERE BiomarkerOrganStudyDataID=$localID AND PublicationID=$remoteID LIMIT 1 ";
 				break;
+			case "Resources":
+				$q  = "SELECT COUNT(*) FROM xr_BiomarkerOrganStudyData_Resource WHERE BiomarkerOrganStudyDataID=$localID AND ResourceID=$remoteID LIMIT 1 ";
+				$q0 = "INSERT INTO xr_BiomarkerOrganStudyData_Resource (BiomarkerOrganStudyDataID,ResourceID,BiomarkerOrganStudyDataVar) VALUES($localID,$remoteID,\"Resources\");";
+				$q1 = "UPDATE xr_BiomarkerOrganStudyData_Resource SET BiomarkerOrganStudyDataVar=\"{$variableName}\" WHERE BiomarkerOrganStudyDataID=$localID AND ResourceID=$remoteID LIMIT 1 ";
+				break;
 			default:
 				break;
 		}
@@ -724,6 +802,9 @@ class BiomarkerOrganStudyDataXref {
 				break;
 			case "Publications":
 				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Publication WHERE BiomarkerOrganStudyDataID = $localID AND PublicationID = $remoteID AND BiomarkerOrganStudyDataVar = \"Publications\" LIMIT 1";
+				break;
+			case "Resources":
+				$q = "DELETE FROM xr_BiomarkerOrganStudyData_Resource WHERE BiomarkerOrganStudyDataID = $localID AND ResourceID = $remoteID AND BiomarkerOrganStudyDataVar = \"Resources\" LIMIT 1";
 				break;
 			default:
 				break;
@@ -771,6 +852,18 @@ class BiomarkerOrganStudyDataXref {
 					$rcount++;
 				}
 				break;
+			case "Resources":
+				$q = "SELECT ResourceID AS ID FROM xr_BiomarkerOrganStudyData_Resource WHERE BiomarkerOrganStudyDataID = {$local->ID} AND BiomarkerOrganStudyDataVar = \"Resources\" ";
+				$db = new cwsp_db(Modeler::DSN);
+				$r  = $db->safeQuery($q);
+				$rcount = 0;
+				while ($result = $r->fetchRow(DB_FETCHMODE_ASSOC)) {
+					if ($limit > 0 && $rcount > $limit){break;}
+					// Retrieve the objects one by one... (limit = 1 per request) 
+					$objects[] = Resource::Retrieve(array("ID"),array("{$result['ID']}"),$parentObjects,$lazyFetch,1);
+					$rcount++;
+				}
+				break;
 			default:
 				break;
 		}
@@ -792,6 +885,9 @@ class BiomarkerOrganStudyDataXref {
 				break;
 			case "Publications":
 				$q = "DELETE FROM `xr_BiomarkerOrganStudyData_Publication` WHERE BiomarkerOrganStudyDataID = $objectID AND BiomarkerOrganStudyDataVar = \"Publications\" ";
+				break;
+			case "Resources":
+				$q = "DELETE FROM `xr_BiomarkerOrganStudyData_Resource` WHERE BiomarkerOrganStudyDataID = $objectID AND BiomarkerOrganStudyDataVar = \"Resources\" ";
 				break;
 			default:
 				break;
@@ -822,6 +918,12 @@ class BiomarkerOrganStudyDataActions {
 	}
 	public static function dissociatePublication($BiomarkerOrganStudyDataID,$PublicationID){
 		BiomarkerOrganStudyDataXref::deleteByIDs($BiomarkerOrganStudyDataID,"Publication",$PublicationID,"Publications");
+	}
+	public static function associateResource($BiomarkerOrganStudyDataID,$ResourceID){
+		BiomarkerOrganStudyDataXref::createByIDs($BiomarkerOrganStudyDataID,"Resource",$ResourceID,"Resources");
+	}
+	public static function dissociateResource($BiomarkerOrganStudyDataID,$ResourceID){
+		BiomarkerOrganStudyDataXref::deleteByIDs($BiomarkerOrganStudyDataID,"Resource",$ResourceID,"Resources");
 	}
 }
 

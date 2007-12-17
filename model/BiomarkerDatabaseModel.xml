@@ -135,6 +135,7 @@
 		<has quantity="one"  type="parent" class="study" name="study" visibility="public"/>
 		<has quantity="one"  type="parent" class="biomarker" name="biomarker" visibility="public"/>
 		<has quantity="many" type="peer" class="publication" name="publications" visibility="public"/>
+		<has quantity="many" type="peer" class="resource" name="resources" visibility="public"/>
 	</relation>
 	
 	<relation object="biomarker_organ_data">
@@ -149,6 +150,7 @@
 		<has quantity="one" type="parent" class="study" name="study" visibility="public"/>
 		<has quantity="one" type="parent" class="biomarker_organ_data" name="biomarkerOrganData" visibility="public"/>
 		<has quantity="many" type="peer" class="publication" name="publications" visibility="public"/>
+		<has quantity="many" type="peer" class="resource" name="resources" visibility="public"/>
 	</relation>
 
 	<relation object="organ">
@@ -174,6 +176,8 @@
 	<relation object="resource">
 		<has quantity="many" type="peer" class="biomarker" onDeletePeer="persist" name="biomarkers" visibility="public"/>
 		<has quantity="many" type="peer" class="biomarker_organ_data" onDeletePeer="persist" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_study_data" onDeletePeer="persist" name="biomarker_organ_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_study_data" onDeletePeer="persist" name="biomarker_studies" visibility="public"/>
 		<has quantity="many" type="peer" class="study" onDeletePeer="persist" name="studies" visibility="public"/>
 	</relation>
 	
