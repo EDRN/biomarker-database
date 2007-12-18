@@ -28,8 +28,8 @@
 		</h2>
 		<div class="smallLinks">
 			<a href="biomarkerorgan.php?view=basics&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'basics')? 'class="activeLink"' : '';?>>Basics</a>&nbsp; |
-			<a href="biomarkerorgan.php?view=biomarker&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'biomarker')? 'class="activeLink"' : '';?>>Biomarker</a>&nbsp; |
 			<a href="biomarkerorgan.php?view=studies&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'studies')? 'class="activeLink"' : '';?>>Studies</a>&nbsp; |
+			<a href="biomarkerorgan.php?view=biomarker&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'biomarker')? 'class="activeLink"' : '';?>>Biomarker</a>&nbsp; |
 			<a href="biomarkerorgan.php?view=publications&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'publications')? 'class="activeLink"' : '';?>>Publications</a>&nbsp; |
 			<a href="biomarkerorgan.php?view=resources&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'resources')? 'class="activeLink"' : '';?>>Resources</a>
 		</div>
