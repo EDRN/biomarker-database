@@ -60,11 +60,14 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'PublicationSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      resp = jss.evalJSON(true);
+      response = jss.evalJSON(true);
+      message     = response.AjaxMessage;
+      description = message.Description;
+      content     = message.Content;
       new Ajax.Request(
         siteBaseUrl + '/util/ifcomponents.php',{
           method:'get',
-          parameters:'action=display&type=PublicationSummary&objId='+resp.objId+'&containerObjectType='+resp.containerObjectType+'&containerObjectId='+resp.containerObjectId,
+          parameters:'action=display&type=PublicationSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
           onSuccess: function (transport){
             insertContent(divId,transport.responseText);
           }});
@@ -77,11 +80,14 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'PublicationShortSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      resp = jss.evalJSON(true);
+      response = jss.evalJSON(true);
+      message     = response.AjaxMessage;
+      description = message.Description;
+      content     = message.Content;
       new Ajax.Request(
         siteBaseUrl + '/util/ifcomponents.php',{
           method:'get',
-          parameters:'action=display&type=PublicationShortSummary&objId='+resp.objId+'&containerObjectType='+resp.containerObjectType+'&containerObjectId='+resp.containerObjectId,
+          parameters:'action=display&type=PublicationShortSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
           onSuccess: function (transport){
             insertContent(divId,transport.responseText);
           }});
@@ -95,11 +101,13 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'ResourceSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      resp = jss.evalJSON(true);
+      response = jss.evalJSON(true);
+      description = response.AjaxMessage.Description;
+      content  = response.AjaxMessage.Content;
       new Ajax.Request(
         siteBaseUrl + '/util/ifcomponents.php',{
           method:'get',
-          parameters:'action=display&type=ResourceSummary&objId='+resp.objId+'&containerObjectType='+resp.containerObjectType+'&containerObjectId='+resp.containerObjectId,
+          parameters:'action=display&type=ResourceSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
           onSuccess: function (transport){
             insertContent(divId,transport.responseText);
           }});
@@ -112,11 +120,14 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'ResourceShortSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      resp = jss.evalJSON(true);
+      response = jss.evalJSON(true);
+      message     = response.AjaxMessage;
+      description = message.Description;
+      content     = message.Content;
       new Ajax.Request(
         siteBaseUrl + '/util/ifcomponents.php',{
           method:'get',
-          parameters:'action=display&type=ResourceShortSummary&objId='+resp.objId+'&containerObjectType='+resp.containerObjectType+'&containerObjectId='+resp.containerObjectId,
+          parameters:'action=display&type=ResourceShortSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
           onSuccess: function (transport){
             insertContent(divId,transport.responseText);
           }});

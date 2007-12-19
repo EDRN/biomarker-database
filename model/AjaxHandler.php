@@ -474,27 +474,27 @@ if (isset($_POST['action'])){
 				case "BiomarkerAlias":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerAlias\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Biomarker\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerAlias\"}}}";
 					return;
 				case "BiomarkerStudyData":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Biomarker\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerStudyData\"}}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Biomarker\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganData\"}}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Biomarker\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Publication\"}}}";
 					return;
 				case "Resource":
 					$obj1 = new objBiomarker($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Biomarker\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Resource\"}}}";
 					return;
 				default:break;
 			}
@@ -506,7 +506,7 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objBiomarkerAlias($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerAlias\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Biomarker\"}}}";
 					return;
 				default:break;
 			}
@@ -518,27 +518,27 @@ if (isset($_POST['action'])){
 				case "BiomarkerStudyData":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Study\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerStudyData\"}}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Study\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganStudyData\"}}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Study\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganData\"}}}";
 					return;
 				case "Publication":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Study\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Publication\"}}}";
 					return;
 				case "Resource":
 					$obj1 = new objStudy($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Study\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Resource\"}}}";
 					return;
 				default:break;
 			}
@@ -550,22 +550,22 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Biomarker\"}}}";
 					return;
 				case "Study":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Study\"}}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Publication\"}}}";
 					return;
 				case "Resource":
 					$obj1 = new objBiomarkerStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Resource\"}}}";
 					return;
 				default:break;
 			}
@@ -577,7 +577,7 @@ if (isset($_POST['action'])){
 				case "BiomarkerOrganData":
 					$obj1 = new objOrgan($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Organ\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganData\"}}}";
 					return;
 				default:break;
 			}
@@ -589,27 +589,27 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Biomarker\"}}}";
 					return;
 				case "Organ":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Organ\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Organ\"}}}";
 					return;
 				case "Resource":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Resource\"}}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Publication\"}}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objBiomarkerOrganData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganStudyData\"}}}";
 					return;
 				default:break;
 			}
@@ -621,22 +621,22 @@ if (isset($_POST['action'])){
 				case "BiomarkerOrganData":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganData\"}}}";
 					return;
 				case "Study":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Study\"}}}";
 					return;
 				case "Publication":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Publication\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Publication\"}}}";
 					return;
 				case "Resource":
 					$obj1 = new objBiomarkerOrganStudyData($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Resource\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"BiomarkerOrganStudyData\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Resource\"}}}";
 					return;
 				default:break;
 			}
@@ -648,27 +648,27 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Publication\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Biomarker\"}}}";
 					return;
 				case "BiomarkerStudyData":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Publication\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerStudyData\"}}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Publication\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganData\"}}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Publication\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganStudyData\"}}}";
 					return;
 				case "Study":
 					$obj1 = new objPublication($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Publication\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Study\"}}}";
 					return;
 				default:break;
 			}
@@ -680,27 +680,27 @@ if (isset($_POST['action'])){
 				case "Biomarker":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Biomarker\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Resource\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Biomarker\"}}}";
 					return;
 				case "BiomarkerStudyData":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Resource\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerStudyData\"}}}";
 					return;
 				case "BiomarkerOrganData":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Resource\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganData\"}}}";
 					return;
 				case "BiomarkerOrganStudyData":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"BiomarkerOrganStudyData\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Resource\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"BiomarkerOrganStudyData\"}}}";
 					return;
 				case "Study":
 					$obj1 = new objResource($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Study\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Resource\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Study\"}}}";
 					return;
 				default:break;
 			}
@@ -712,7 +712,7 @@ if (isset($_POST['action'])){
 				case "Person":
 					$obj1 = new objSite($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Person\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Site\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Person\"}}}";
 					return;
 				default:break;
 			}
@@ -724,7 +724,7 @@ if (isset($_POST['action'])){
 				case "Site":
 					$obj1 = new objPerson($XPress,$_POST['obj1Id']);
 					$obj1->link($_POST['obj1Attr'],$_POST['obj2Id'],$_POST['obj2Attr']);
-					echo "{\"objId\":{$_POST['obj1Id']},\"containerObjectType\": \"Site\",\"containerObjectId\": {$_POST['obj2Id']}}";
+					echo "{\"AjaxMessage\": {  \"Description\": \"The ids and types of the newly linked objects\", \"Content\": { \"obj1Id\":{$_POST['obj1Id']}, \"obj1Type\":\"Person\", \"obj2Id\":{$_POST['obj2Id']}, \"obj2Type\":\"Site\"}}}";
 					return;
 				default:break;
 			}
