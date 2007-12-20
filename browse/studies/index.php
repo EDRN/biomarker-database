@@ -33,7 +33,7 @@
 		echo "<tr><td style=\"width:280px;\"><a href=\"../../study.php?view=basics&objId={$study['objId']}\">{$study['Title']}</td>"
 			."<td style=\"text-align:center;\">{$study['DMCC_ID']}</td>";
 			if ($study['Abstract'] != ''){
-				echo "<td>".substr($study['Abstract'],0,300)."...</td></tr>";
+				echo "<td>".substr($study['Abstract'],0,300).((strlen($study['Abstract']) > 300)? "..." : "")."</td></tr>";
 			} else {
 				echo "<td><span class=\"hint\"><em>no abstract available</em></span></td></tr>";
 			}
