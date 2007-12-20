@@ -333,7 +333,7 @@ END;
 			return <<<END
 			<div class="overview" id="overview{$od->getObjId()}">
 				<h3>
-					<a href="biomarkerorgan.php?view=basics&objId={$od->getObjId()}">{$od->getOrgan()->getName()}</a>&nbsp;
+					<a href="biomarkerorgan.php?view=studies&objId={$od->getObjId()}">{$od->getOrgan()->getName()}</a>&nbsp;
 					<span class="titleAction pseudolink grey" onclick="BiomarkerOrganData.Delete({$od->getObjId()},new AjaxNotify.Create('overview{$od->getObjId()}','Deleted'));">
 						(delete)
 					</span>
