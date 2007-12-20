@@ -285,7 +285,7 @@ class objStudy {
 		 return $this->Title;
 	}
 	public function getAbstract() {
-		 return $this->Abstract;
+		 return htmlspecialchars_decode($this->Abstract,ENT_QUOTES);
 	}
 	public function getBiomarkerPopulationCharacteristics() {
 		 return $this->BiomarkerPopulationCharacteristics;

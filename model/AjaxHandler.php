@@ -141,7 +141,7 @@ if (isset($_POST['action'])){
 					case "Abstract":
 						$ovalue = $obj->getAbstract();
 						$obj->setAbstract($val);
-						echo $val;
+						echo stripslashes($val);
 						break;
 					case "BiomarkerPopulationCharacteristics":
 						$ovalue = $obj->getBiomarkerPopulationCharacteristics();
