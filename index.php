@@ -2,7 +2,7 @@
 	require_once("model/ModelProperties.inc.php");
 	
 	// Page Header Setup
-	$p = new cwsp_page("EDRN - Biomarker Database v0.4 Beta");
+	$p = new cwsp_page("EDRN - Biomarker Database v0.4 Beta","text/html; charset=UTF-8");
 	$p->includeJS('js/scriptaculous-js-1.7.0/lib/prototype.js');
 	$p->includeJS('js/scriptaculous-js-1.7.0/src/scriptaculous.js');
 	$p->includeJS('js/textInputs.js');
