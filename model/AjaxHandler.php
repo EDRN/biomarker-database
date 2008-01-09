@@ -156,7 +156,15 @@ if (isset($_POST['action'])){
 					case "BiomarkerPopulationCharacteristics":
 						$ovalue = $obj->getBiomarkerPopulationCharacteristics();
 						$obj->setBiomarkerPopulationCharacteristics($val);
-						echo stripslashes(htmlspecialchars_decode($val));
+						switch($val){
+							case 1:
+								echo "Case Control"; break;
+							case 2:
+								echo "Second Choice"; break;
+							case 3:
+								echo "Third Choice"; break;
+							default: echo stripslashes($val); break;
+						}
 						break;
 					case "Design":
 						$ovalue = $obj->getDesign();

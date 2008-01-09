@@ -32,7 +32,7 @@
 		<attr name="DMCC_ID" type="string:80" null="no" visibility="public" comment="from fhcrc website"/>
 		<attr name="Title" type="string:80" null="no" unique="yes" visibility="public"/>
 		<attr name="Abstract" type="string:5000" null="no" visibility="public"/>
-		<attr name="BiomarkerPopulationCharacteristics" type="string:5000" null="no" visibility="public"/>
+		<attr name="BiomarkerPopulationCharacteristics" type="enum:Case Control,Second Choice,Third Choice" null="no" visibility="public"/>
 		<attr name="Design" type="string:50" null="no" visibility="public" comment="fhcrc StudyDesign field"/>
 		<attr name="BiomarkerStudyType" type="enum:Registered,Unregistered" default="Unregistered" null="no" visibility="public" comment="whether or not the study is an EDRN study"/>
 	</object>
