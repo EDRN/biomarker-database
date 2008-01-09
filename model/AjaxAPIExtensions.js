@@ -3,10 +3,8 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'BiomarkerOrganSummary',
     Build: function(strJSON,divId){
       jss = String((strJSON));
-      alert(jss);
       try {
         obj = jss.evalJSON(true);
-        alert(obj);
         str = '<div class=\"overview\" style="margin-top:9px;" id="overview'+obj.objId+'">'
             + '<h3><a href="biomarkerorgan.php?view=basics&objId='+obj.objId+'">'+obj.Organ.Name+'</a>&nbsp;&nbsp;<span class="titleAction pseudolink grey" onclick="BiomarkerOrganData.Delete('+obj.objId+',new AjaxNotify.Create(\'overview'+obj.objId+'\',\'Info\'));">(delete)</span></h3>'
             + '<table>'
@@ -19,7 +17,6 @@ MessageFormat.extend(MessageFormat,{
       } catch (e){
         str = 'An error was encountered while drawing the content. Please refresh the page.';
       }  
-      alert(str);
       Element.insert(divId,str);
     }
   }}
