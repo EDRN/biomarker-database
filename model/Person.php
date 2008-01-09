@@ -294,6 +294,8 @@ class objPerson {
 	public function delete(){
 		//Intelligently unlink this object from any other objects
 		$this->unlink(PersonVars::PER_SITE);
+		//Delete this object's child objects
+
 		//Delete object from the database
 		$q = "DELETE FROM `Person` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -346,34 +348,7 @@ class objPerson {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"FirstName\": \"{$this->FirstName}\", ";
-		$json .= "\"LastName\": \"{$this->LastName}\", ";
-		$json .= "\"Title\": \"{$this->Title}\", ";
-		$json .= "\"Specialty\": \"{$this->Specialty}\", ";
-		$json .= "\"Phone\": \"{$this->Phone}\", ";
-		$json .= "\"Fax\": \"{$this->Fax}\", ";
-		$json .= "\"Email\": \"{$this->Email}\", ";
-		$json .= "\"Site\": [";
-		$jsonSnippets = array();
-		foreach ($this->Site as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"Person\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Site":
-				PersonXref::createByIDs($this->ID,"Site",$objectID,"Site");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

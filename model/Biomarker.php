@@ -487,6 +487,17 @@ class objBiomarker {
 		$this->unlink(BiomarkerVars::BIO_ORGANDATAS);
 		$this->unlink(BiomarkerVars::BIO_PUBLICATIONS);
 		$this->unlink(BiomarkerVars::BIO_RESOURCES);
+		//Delete this object's child objects
+		foreach ($this->Aliases as $obj){
+			$obj->delete();
+		}
+		foreach ($this->Studies as $obj){
+			$obj->delete();
+		}
+		foreach ($this->OrganDatas as $obj){
+			$obj->delete();
+		}
+
 		//Delete object from the database
 		$q = "DELETE FROM `Biomarker` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -571,76 +582,7 @@ class objBiomarker {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"EKE_ID\": \"{$this->EKE_ID}\", ";
-		$json .= "\"BiomarkerID\": \"{$this->BiomarkerID}\", ";
-		$json .= "\"PanelID\": \"{$this->PanelID}\", ";
-		$json .= "\"Title\": \"{$this->Title}\", ";
-		$json .= "\"Description\": \"{$this->Description}\", ";
-		$json .= "\"QAState\": \"{$this->QAState}\", ";
-		$json .= "\"Phase\": \"{$this->Phase}\", ";
-		$json .= "\"Security\": \"{$this->Security}\", ";
-		$json .= "\"Type\": \"{$this->Type}\", ";
-		$json .= "\"Aliases\": [";
-		$jsonSnippets = array();
-		foreach ($this->Aliases as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Studies\": [";
-		$jsonSnippets = array();
-		foreach ($this->Studies as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"OrganDatas\": [";
-		$jsonSnippets = array();
-		foreach ($this->OrganDatas as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Publications\": [";
-		$jsonSnippets = array();
-		foreach ($this->Publications as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Resources\": [";
-		$jsonSnippets = array();
-		foreach ($this->Resources as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"Biomarker\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Aliases":
-				BiomarkerXref::createByIDs($this->ID,"BiomarkerAlias",$objectID,"Aliases");
-				break;
-			case "Studies":
-				BiomarkerXref::createByIDs($this->ID,"BiomarkerStudyData",$objectID,"Studies");
-				break;
-			case "OrganDatas":
-				BiomarkerXref::createByIDs($this->ID,"BiomarkerOrganData",$objectID,"OrganDatas");
-				break;
-			case "Publications":
-				BiomarkerXref::createByIDs($this->ID,"Publication",$objectID,"Publications");
-				break;
-			case "Resources":
-				BiomarkerXref::createByIDs($this->ID,"Resource",$objectID,"Resources");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

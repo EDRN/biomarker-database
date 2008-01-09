@@ -2,9 +2,12 @@ MessageFormat.extend(MessageFormat,{
   BiomarkerOrganSummary: {
     Tag: 'BiomarkerOrganSummary',
     Build: function(strJSON,divId){
-      jss = String(strJSON);
-      obj = jss.evalJSON(true);
-      str = '<div class=\"overview\" style="margin-top:9px;" id="overview'+obj.objId+'">'
+      jss = String((strJSON));
+      alert(jss);
+      try {
+        obj = jss.evalJSON(true);
+        alert(obj);
+        str = '<div class=\"overview\" style="margin-top:9px;" id="overview'+obj.objId+'">'
             + '<h3><a href="biomarkerorgan.php?view=basics&objId='+obj.objId+'">'+obj.Organ.Name+'</a>&nbsp;&nbsp;<span class="titleAction pseudolink grey" onclick="BiomarkerOrganData.Delete('+obj.objId+',new AjaxNotify.Create(\'overview'+obj.objId+'\',\'Info\'));">(delete)</span></h3>'
             + '<table>'
             + '<tr><td>Sensitivity (Min/Max): </td><td>'+((obj.SensitivityMin == '')? '0' : obj.SensitivityMin)+' / '+((obj.SensitivityMax == '')? '0' : obj.SensitivityMax)+'</td></tr>'
@@ -13,6 +16,10 @@ MessageFormat.extend(MessageFormat,{
             + '<tr><td>Positive Predictive Value (Min/Max): </td><td>'+((obj.PPVMin == '')? '0' : obj.PPVMin)+' / '+((obj.PPVMax == '')? '0' : obj.PPVMax)+'</td></tr>'
             + '</table>'
             + '</div>';
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+      }  
+      alert(str);
       Element.insert(divId,str);
     }
   }}
@@ -23,15 +30,19 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'BiomarkerStudySummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      obj = jss.evalJSON(true);
-      new Ajax.Request(
-          siteBaseUrl + '/util/ifcomponents.php',{
-            method:'get',
-            parameters:'action=display&type=BiomarkerStudyDisplay&objId='+obj.objId,
-            onSuccess: function (transport){
-              insertContent(divId,transport.responseText);
-            }});
-      
+      try {
+        obj = jss.evalJSON(true);
+        new Ajax.Request(
+            siteBaseUrl + '/util/ifcomponents.php',{
+              method:'get',
+              parameters:'action=display&type=BiomarkerStudyDisplay&objId='+obj.objId,
+              onSuccess: function (transport){
+                insertContent(divId,transport.responseText);
+              }});
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+        Element.insert(divId,str);
+      }
     }
   }}
 );
@@ -41,15 +52,19 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'BiomarkerOrganStudySummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      obj = jss.evalJSON(true);
-      new Ajax.Request(
-          siteBaseUrl + '/util/ifcomponents.php',{
-            method:'get',
-            parameters:'action=display&type=BiomarkerOrganStudyDisplay&objId='+obj.objId,
-            onSuccess: function (transport){
-              insertContent(divId,transport.responseText);
-            }});
-      
+      try {
+        obj = jss.evalJSON(true);
+        new Ajax.Request(
+            siteBaseUrl + '/util/ifcomponents.php',{
+              method:'get',
+              parameters:'action=display&type=BiomarkerOrganStudyDisplay&objId='+obj.objId,
+              onSuccess: function (transport){
+                insertContent(divId,transport.responseText);
+              }});
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+        Element.insert(divId,str);
+      }
     }
   }}
 );
@@ -60,17 +75,22 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'PublicationSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      response = jss.evalJSON(true);
-      message     = response.AjaxMessage;
-      description = message.Description;
-      content     = message.Content;
-      new Ajax.Request(
-        siteBaseUrl + '/util/ifcomponents.php',{
-          method:'get',
-          parameters:'action=display&type=PublicationSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
-          onSuccess: function (transport){
-            insertContent(divId,transport.responseText);
-          }});
+      try {
+        response = jss.evalJSON(true);
+        message     = response.AjaxMessage;
+        description = message.Description;
+        content     = message.Content;
+        new Ajax.Request(
+          siteBaseUrl + '/util/ifcomponents.php',{
+            method:'get',
+            parameters:'action=display&type=PublicationSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
+            onSuccess: function (transport){
+              insertContent(divId,transport.responseText);
+            }});
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+        Element.insert(divId,str);
+      }
     }
   }}
 );
@@ -80,17 +100,22 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'PublicationShortSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      response = jss.evalJSON(true);
-      message     = response.AjaxMessage;
-      description = message.Description;
-      content     = message.Content;
-      new Ajax.Request(
-        siteBaseUrl + '/util/ifcomponents.php',{
-          method:'get',
-          parameters:'action=display&type=PublicationShortSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
-          onSuccess: function (transport){
-            insertContent(divId,transport.responseText);
-          }});
+      try {
+        response = jss.evalJSON(true);
+        message     = response.AjaxMessage;
+        description = message.Description;
+        content     = message.Content;
+        new Ajax.Request(
+          siteBaseUrl + '/util/ifcomponents.php',{
+            method:'get',
+            parameters:'action=display&type=PublicationShortSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
+            onSuccess: function (transport){
+              insertContent(divId,transport.responseText);
+            }});
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+        Element.insert(divId,str);
+      }
     }
   }}
 );
@@ -101,16 +126,21 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'ResourceSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      response = jss.evalJSON(true);
-      description = response.AjaxMessage.Description;
-      content  = response.AjaxMessage.Content;
-      new Ajax.Request(
-        siteBaseUrl + '/util/ifcomponents.php',{
-          method:'get',
-          parameters:'action=display&type=ResourceSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
-          onSuccess: function (transport){
-            insertContent(divId,transport.responseText);
-          }});
+      try {
+        response = jss.evalJSON(true);
+        description = response.AjaxMessage.Description;
+        content  = response.AjaxMessage.Content;
+        new Ajax.Request(
+          siteBaseUrl + '/util/ifcomponents.php',{
+            method:'get',
+            parameters:'action=display&type=ResourceSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
+            onSuccess: function (transport){
+              insertContent(divId,transport.responseText);
+            }});
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+        Element.insert(divId,str);
+      }
     }
   }}
 );
@@ -120,17 +150,23 @@ MessageFormat.extend(MessageFormat,{
     Tag: 'ResourceShortSummary',
     Build: function(strJSON,divId){
       jss = String(strJSON);
-      response = jss.evalJSON(true);
-      message     = response.AjaxMessage;
-      description = message.Description;
-      content     = message.Content;
-      new Ajax.Request(
-        siteBaseUrl + '/util/ifcomponents.php',{
-          method:'get',
-          parameters:'action=display&type=ResourceShortSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
-          onSuccess: function (transport){
-            insertContent(divId,transport.responseText);
-          }});
+      try {
+        response = jss.evalJSON(true);
+        message     = response.AjaxMessage;
+        description = message.Description;
+        content     = message.Content;
+        new Ajax.Request(
+          siteBaseUrl + '/util/ifcomponents.php',{
+            method:'get',
+            parameters:'action=display&type=ResourceShortSummary&objId='+content.obj1Id+'&containerObjectType='+content.obj2Type+'&containerObjectId='+content.obj2Id,
+            onSuccess: function (transport){
+              insertContent(divId,transport.responseText);
+            }});
+      } catch (e){
+        str = 'An error was encountered while drawing the content. Please refresh the page.';
+        str += '<br/>'+e.name+': '+e.message;
+        Element.insert(divId,str);
+      }
     }
   }}
 );
@@ -147,7 +183,7 @@ function createAndAssociateResource(resUrl,resDesc,objType,objId,objAjaxNotify){
   new Ajax.Request(
         siteBaseUrl + '/model/AjaxHandler.php',{
         method:'post',
-        parameters:'action=createAndAssociateResource&resUrl='+resUrl+'&resDesc='+resDesc+'&objType='+objType+'&objId='+objId,
+        parameters:'action=createAndAssociateResource&resUrl='+encodeURIComponent(resUrl)+'&resDesc='+encodeURIComponent(resDesc)+'&objType='+objType+'&objId='+objId,
         onSuccess: function (transport){
           ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
         }});

@@ -375,6 +375,8 @@ class objBiomarkerStudyData {
 		$this->unlink(BiomarkerStudyDataVars::BIO_BIOMARKER);
 		$this->unlink(BiomarkerStudyDataVars::BIO_PUBLICATIONS);
 		$this->unlink(BiomarkerStudyDataVars::BIO_RESOURCES);
+		//Delete this object's child objects
+
 		//Delete object from the database
 		$q = "DELETE FROM `BiomarkerStudyData` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -451,51 +453,7 @@ class objBiomarkerStudyData {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"Sensitivity\": \"{$this->Sensitivity}\", ";
-		$json .= "\"Specificity\": \"{$this->Specificity}\", ";
-		$json .= "\"PPV\": \"{$this->PPV}\", ";
-		$json .= "\"NPV\": \"{$this->NPV}\", ";
-		$json .= "\"Assay\": \"{$this->Assay}\", ";
-		$json .= "\"Technology\": \"{$this->Technology}\", ";
-		$json .= "\"Study\": ".(($this->getStudy() != null)? $this->getStudy()->toJSON() : "{}").",";
-		$json .= "\"Biomarker\": ".(($this->getBiomarker() != null)? $this->getBiomarker()->toJSON() : "{}").",";
-		$json .= "\"Publications\": [";
-		$jsonSnippets = array();
-		foreach ($this->Publications as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Resources\": [";
-		$jsonSnippets = array();
-		foreach ($this->Resources as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"BiomarkerStudyData\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Study":
-				BiomarkerStudyDataXref::createByIDs($this->ID,"Study",$objectID,"Study");
-				break;
-			case "Biomarker":
-				BiomarkerStudyDataXref::createByIDs($this->ID,"Biomarker",$objectID,"Biomarker");
-				break;
-			case "Publications":
-				BiomarkerStudyDataXref::createByIDs($this->ID,"Publication",$objectID,"Publications");
-				break;
-			case "Resources":
-				BiomarkerStudyDataXref::createByIDs($this->ID,"Resource",$objectID,"Resources");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

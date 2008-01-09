@@ -17,23 +17,68 @@
 			switch ($objType){
 				case 'Biomarker':
 					$obj->link("Biomarkers",$objId,"Resources");
-					echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
+					echo "{\"AjaxMessage\": { "
+							.	" \"Description\": \"The ids and types of the newly linked objects\","
+							.	" \"Content\": {"
+							.		" \"obj1Id\":\"{$obj->getObjId()}\","
+							.		" \"obj1Type\":\"{$obj->_getType()}\","
+							.		" \"obj2Id\":\"{$objId}\","
+							.		" \"obj2Type\":\"{$objType}\""
+							.		"}"
+							.	"}}";
+					//echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
 					break;
 				case 'BiomarkerOrganData':
 					$obj->link("BiomarkerOrgans",$objId,"Resources");
-					echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
+					echo "{\"AjaxMessage\": { "
+							.	" \"Description\": \"The ids and types of the newly linked objects\","
+							.	" \"Content\": {"
+							.		" \"obj1Id\":\"{$obj->getObjId()}\","
+							.		" \"obj1Type\":\"{$obj->_getType()}\","
+							.		" \"obj2Id\":\"{$objId}\","
+							.		" \"obj2Type\":\"{$objType}\""
+							.		"}"
+							.	"}}";
+					//echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
 					break;
 				case 'BiomarkerStudyData':
 					$obj->link("BiomarkerStudies",$objId,"Resources");
-					echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
+					echo "{\"AjaxMessage\": { "
+							.	" \"Description\": \"The ids and types of the newly linked objects\","
+							.	" \"Content\": {"
+							.		" \"obj1Id\":\"{$obj->getObjId()}\","
+							.		" \"obj1Type\":\"{$obj->_getType()}\","
+							.		" \"obj2Id\":\"{$objId}\","
+							.		" \"obj2Type\":\"{$objType}\""
+							.		"}"
+							.	"}}";
+					//echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
 					break;
 				case 'BiomarkerOrganStudyData':
 					$obj->link("BiomarkerOrganStudies",$objId,"Resources");
-					echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
+					echo "{\"AjaxMessage\": { "
+							.	" \"Description\": \"The ids and types of the newly linked objects\","
+							.	" \"Content\": {"
+							.		" \"obj1Id\":\"{$obj->getObjId()}\","
+							.		" \"obj1Type\":\"{$obj->_getType()}\","
+							.		" \"obj2Id\":\"{$objId}\","
+							.		" \"obj2Type\":\"{$objType}\""
+							.		"}"
+							.	"}}";
+					//echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
 					break;
 				case 'Study':
 					$obj->link("Studies",$objId,"Resources");
-					echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
+					echo "{\"AjaxMessage\": { "
+							.	" \"Description\": \"The ids and types of the newly linked objects\","
+							.	" \"Content\": {"
+							.		" \"obj1Id\":\"{$obj->getObjId()}\","
+							.		" \"obj1Type\":\"{$obj->_getType()}\","
+							.		" \"obj2Id\":\"{$objId}\","
+							.		" \"obj2Type\":\"{$objType}\""
+							.		"}"
+							.	"}}";
+					//echo "{\"objId\":{$obj->getObjId()},\"containerObjectType\":\"{$objType}\",\"containerObjectId\": {$objId}}";
 					break;
 				default:
 					break;

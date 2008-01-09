@@ -231,6 +231,11 @@ class objOrgan {
 	public function delete(){
 		//Intelligently unlink this object from any other objects
 		$this->unlink(OrganVars::ORG_ORGANDATAS);
+		//Delete this object's child objects
+		foreach ($this->OrganDatas as $obj){
+			$obj->delete();
+		}
+
 		//Delete object from the database
 		$q = "DELETE FROM `Organ` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -283,28 +288,7 @@ class objOrgan {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"Name\": \"{$this->Name}\", ";
-		$json .= "\"OrganDatas\": [";
-		$jsonSnippets = array();
-		foreach ($this->OrganDatas as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"Organ\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "OrganDatas":
-				OrganXref::createByIDs($this->ID,"BiomarkerOrganData",$objectID,"OrganDatas");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

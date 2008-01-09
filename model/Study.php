@@ -285,7 +285,7 @@ class objStudy {
 		 return $this->Title;
 	}
 	public function getAbstract() {
-		 return htmlspecialchars_decode($this->Abstract,ENT_QUOTES);
+		 return $this->Abstract;
 	}
 	public function getBiomarkerPopulationCharacteristics() {
 		 return $this->BiomarkerPopulationCharacteristics;
@@ -473,6 +473,17 @@ class objStudy {
 		$this->unlink(StudyVars::STU_BIOMARKERORGANDATAS);
 		$this->unlink(StudyVars::STU_PUBLICATIONS);
 		$this->unlink(StudyVars::STU_RESOURCES);
+		//Delete this object's child objects
+		foreach ($this->Biomarkers as $obj){
+			$obj->delete();
+		}
+		foreach ($this->BiomarkerOrgans as $obj){
+			$obj->delete();
+		}
+		foreach ($this->BiomarkerOrganDatas as $obj){
+			$obj->delete();
+		}
+
 		//Delete object from the database
 		$q = "DELETE FROM `Study` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -557,75 +568,7 @@ class objStudy {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"EDRNID\": \"{$this->EDRNID}\", ";
-		$json .= "\"FHCRC_ID\": \"{$this->FHCRC_ID}\", ";
-		$json .= "\"DMCC_ID\": \"{$this->DMCC_ID}\", ";
-		$json .= "\"Title\": \"{$this->Title}\", ";
-		$json .= "\"Abstract\": \"{$this->Abstract}\", ";
-		$json .= "\"BiomarkerPopulationCharacteristics\": \"{$this->BiomarkerPopulationCharacteristics}\", ";
-		$json .= "\"Design\": \"{$this->Design}\", ";
-		$json .= "\"BiomarkerStudyType\": \"{$this->BiomarkerStudyType}\", ";
-		$json .= "\"Biomarkers\": [";
-		$jsonSnippets = array();
-		foreach ($this->Biomarkers as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"BiomarkerOrgans\": [";
-		$jsonSnippets = array();
-		foreach ($this->BiomarkerOrgans as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"BiomarkerOrganDatas\": [";
-		$jsonSnippets = array();
-		foreach ($this->BiomarkerOrganDatas as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Publications\": [";
-		$jsonSnippets = array();
-		foreach ($this->Publications as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Resources\": [";
-		$jsonSnippets = array();
-		foreach ($this->Resources as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"Study\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Biomarkers":
-				StudyXref::createByIDs($this->ID,"BiomarkerStudyData",$objectID,"Biomarkers");
-				break;
-			case "BiomarkerOrgans":
-				StudyXref::createByIDs($this->ID,"BiomarkerOrganData",$objectID,"BiomarkerOrgans");
-				break;
-			case "BiomarkerOrganDatas":
-				StudyXref::createByIDs($this->ID,"BiomarkerOrganStudyData",$objectID,"BiomarkerOrganDatas");
-				break;
-			case "Publications":
-				StudyXref::createByIDs($this->ID,"Publication",$objectID,"Publications");
-				break;
-			case "Resources":
-				StudyXref::createByIDs($this->ID,"Resource",$objectID,"Resources");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

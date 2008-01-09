@@ -429,6 +429,8 @@ class objPublication {
 		$this->unlink(PublicationVars::PUB_BIOMARKERORGANSTUDIES);
 		$this->unlink(PublicationVars::PUB_BIOMARKERSTUDIES);
 		$this->unlink(PublicationVars::PUB_STUDIES);
+		//Delete this object's child objects
+
 		//Delete object from the database
 		$q = "DELETE FROM `Publication` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -513,74 +515,7 @@ class objPublication {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"PubMedID\": \"{$this->PubMedID}\", ";
-		$json .= "\"Title\": \"{$this->Title}\", ";
-		$json .= "\"Author\": \"{$this->Author}\", ";
-		$json .= "\"Journal\": \"{$this->Journal}\", ";
-		$json .= "\"Volume\": \"{$this->Volume}\", ";
-		$json .= "\"Issue\": \"{$this->Issue}\", ";
-		$json .= "\"Year\": \"{$this->Year}\", ";
-		$json .= "\"Biomarkers\": [";
-		$jsonSnippets = array();
-		foreach ($this->Biomarkers as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"BiomarkerOrgans\": [";
-		$jsonSnippets = array();
-		foreach ($this->BiomarkerOrgans as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"BiomarkerOrganStudies\": [";
-		$jsonSnippets = array();
-		foreach ($this->BiomarkerOrganStudies as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"BiomarkerStudies\": [";
-		$jsonSnippets = array();
-		foreach ($this->BiomarkerStudies as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"Studies\": [";
-		$jsonSnippets = array();
-		foreach ($this->Studies as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"Publication\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Biomarkers":
-				PublicationXref::createByIDs($this->ID,"Biomarker",$objectID,"Biomarkers");
-				break;
-			case "BiomarkerOrgans":
-				PublicationXref::createByIDs($this->ID,"BiomarkerOrganData",$objectID,"BiomarkerOrgans");
-				break;
-			case "BiomarkerOrganStudies":
-				PublicationXref::createByIDs($this->ID,"BiomarkerOrganStudyData",$objectID,"BiomarkerOrganStudies");
-				break;
-			case "BiomarkerStudies":
-				PublicationXref::createByIDs($this->ID,"BiomarkerStudyData",$objectID,"BiomarkerStudies");
-				break;
-			case "Studies":
-				PublicationXref::createByIDs($this->ID,"Study",$objectID,"Studies");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

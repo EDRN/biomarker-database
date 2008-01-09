@@ -210,6 +210,8 @@ class objSite {
 	public function delete(){
 		//Intelligently unlink this object from any other objects
 		$this->unlink(SiteVars::SIT_STAFF);
+		//Delete this object's child objects
+
 		//Delete object from the database
 		$q = "DELETE FROM `Site` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -262,28 +264,7 @@ class objSite {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"Name\": \"{$this->Name}\", ";
-		$json .= "\"Staff\": [";
-		$jsonSnippets = array();
-		foreach ($this->Staff as $var){
-			$jsonSnippets[] = $var->toJSON();
-		}
-		$json .= implode(",",$jsonSnippets);
-		$json .= "], ";
-		$json .= "\"_objectType\": \"Site\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Staff":
-				SiteXref::createByIDs($this->ID,"Person",$objectID,"Staff");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {

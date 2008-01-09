@@ -211,6 +211,8 @@ class objBiomarkerAlias {
 	public function delete(){
 		//Intelligently unlink this object from any other objects
 		$this->unlink(BiomarkerAliasVars::BIO_BIOMARKER);
+		//Delete this object's child objects
+
 		//Delete object from the database
 		$q = "DELETE FROM `BiomarkerAlias` WHERE `objId` = $this->objId ";
 		$r = $this->XPress->Database->safeQuery($q);
@@ -263,22 +265,7 @@ class objBiomarkerAlias {
 		return false;
 	}
 	public function toJSON(){
-		$json = '{';
-		$json .= "\"objId\": \"{$this->objId}\", ";
-		$json .= "\"Alias\": \"{$this->Alias}\", ";
-		$json .= "\"Biomarker\": ".(($this->getBiomarker() != null)? $this->getBiomarker()->toJSON() : "{}").",";
-		$json .= "\"_objectType\": \"BiomarkerAlias\"}";
-		return ($json);
-	}
-	public function associate($objectID,$variableName) {
-		switch ($variableName) {
-			case "Biomarker":
-				BiomarkerAliasXref::createByIDs($this->ID,"Biomarker",$objectID,"Biomarker");
-				break;
-			default: 
-				return false;
-		}
-		return true;
+		return json_encode($this);
 	}
 	public function dissociate($objectID,$variableName) {
 		switch ($variableName) {
