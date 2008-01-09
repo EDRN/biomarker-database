@@ -6,7 +6,7 @@ MessageFormat.extend(MessageFormat,{
       try {
         obj = jss.evalJSON(true);
         str = '<div class=\"overview\" style="margin-top:9px;" id="overview'+obj.objId+'">'
-            + '<h3><a href="biomarkerorgan.php?view=basics&objId='+obj.objId+'">'+obj.Organ.Name+'</a>&nbsp;&nbsp;<span class="titleAction pseudolink grey" onclick="BiomarkerOrganData.Delete('+obj.objId+',new AjaxNotify.Create(\'overview'+obj.objId+'\',\'Info\'));">(delete)</span></h3>'
+            + '<h3><a href="biomarkerorgan.php?view=studies&objId='+obj.objId+'">'+obj.Organ.Name+'</a>&nbsp;&nbsp;<span class="titleAction pseudolink grey" onclick="BiomarkerOrganData.Delete('+obj.objId+',new AjaxNotify.Create(\'overview'+obj.objId+'\',\'Info\'));">(delete)</span></h3>'
             + '<table>'
             + '<tr><td>Sensitivity (Min/Max): </td><td>'+((obj.SensitivityMin == '')? '0' : obj.SensitivityMin)+' / '+((obj.SensitivityMax == '')? '0' : obj.SensitivityMax)+'</td></tr>'
             + '<tr><td>Specificity (Min/Max): </td><td>'+((obj.SpecificityMin == '')? '0' : obj.SpecificityMin)+' / '+((obj.SpecificityMax == '')? '0' : obj.SpecificityMax)+'</td></tr>'
