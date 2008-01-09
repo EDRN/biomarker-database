@@ -3,6 +3,7 @@
 	$titleEditor = AjaxEditors::create('model/AjaxHandler.php',$object->getTitle(),"title","title",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_TITLE);
 	$urnEditor   = AjaxEditors::create('model/AjaxHandler.php',$object->getBiomarkerID(),"ident","ident",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_BIOMARKERID);
 	$phaseEditor = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getPhase(),"phase","phase",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_PHASE,array(array("value"=>"1","label"=>"One (I)"),array("value"=>"2","label"=>"Two (II)"),array("value"=>"3","label"=>"Three (III)"),array("value"=>"4","label"=>"Four (IV)"),array("value"=>"5","label"=>"Five (V)")),'','click to select');
+	$qaStateEditor  = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getQAState(),"qastate","qastate",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_QASTATE,array(array("value"=>"1","label"=>"New"),array("value"=>"2","label"=>"Under Review"),array("value"=>"3","label"=>"Approved"),array("value"=>"4","label"=>"Rejected")),'','click to select');
 	$securityEditor = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getSecurity(),"security","security",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_SECURITY,array(array("value"=>"1","label"=>"Public"),array("value"=>"2","label"=>"Private")),'',"click to select");
 	$typeEditor  = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getType(),"type","type",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_TYPE,array(array("value"=>"1","label"=>"Epigenetic"),array("value"=>"2","label"=>"Gene"),array("value"=>"3","label"=>"Protein")),'',"click to select");
 	$descriptionEditor = AjaxEditors::createMultiline('model/AjaxHandler.php',$object->getDescription(),"description","description",$object->_getType(),$object->getObjId(),BiomarkerVars::BIO_DESCRIPTION,7,47,'','click to edit');
@@ -26,6 +27,7 @@ ENDDELETEDISPLAY;
 			<tr><td class="label">Identifier:</td><td>{$urnEditor}</td></tr>
 			<tr class="even"><td class="label">Phase:</td><td>{$phaseEditor}</td></tr>
 			<tr><td class="label">Security:</td><td>{$securityEditor}</td></tr>
+			<tr><td class="label">QA State:</td><td>{$qaStateEditor}</td></tr>
 			<tr class="even"><td class="label">Type:</td><td>{$typeEditor}</td></tr>
 			<tr><td class="label">Description:</td><td>{$descriptionEditor}</td></tr>
 		</table>

@@ -48,7 +48,17 @@ if (isset($_POST['action'])){
 					case "QAState":
 						$ovalue = $obj->getQAState();
 						$obj->setQAState($val);
-						echo stripslashes(htmlspecialchars_decode($val));
+						switch($val){
+							case 1:
+								echo "New"; break;
+							case 2:
+								echo "Under Review"; break;
+							case 3:
+								echo "Approved"; break;
+							case 4:
+								echo "Rejected"; break;
+							default: echo stripslashes($val); break;
+						}
 						break;
 					case "Phase":
 						$ovalue = $obj->getPhase();

@@ -5,7 +5,7 @@ CREATE TABLE `Biomarker` (
 	`PanelID`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`Title`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`Description`  text   NOT NULL      COMMENT '...' ,
-	`QAState`  varchar(50)   NOT NULL      COMMENT 'CHANGEME: to type enum' ,
+	`QAState` ENUM('New','Under Review','Approved','Rejected')   NOT NULL      COMMENT '...' ,
 	`Phase` ENUM('One (I)','Two (II)','Three (III)','Four (IV)','Five (V)')   NOT NULL      COMMENT '...' ,
 	`Security` ENUM('Public','Private')   NOT NULL      COMMENT '...' ,
 	`Type` ENUM('Epigenetic','Gene','Protein')   NOT NULL      COMMENT '...' ,

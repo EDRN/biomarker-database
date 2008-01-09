@@ -14,7 +14,7 @@
 		<attr name="PanelID" type="string:80" null="no" visibility="public" comment="..."/>
 		<attr name="Title" type="string:80" null="no" visibility="public" unique="yes" comment="..."/>
 		<attr name="Description" type="string:500" null="no" visibility="public" comment="..."/>
-		<attr name="QAState" type="string:50" null="no" visibility="public" comment="CHANGEME: to type enum"/>
+		<attr name="QAState" type="enum:New,Under Review,Approved,Rejected" null="no" visibility="public" comment="..."/>
 		<attr name="Phase" type="enum:One (I),Two (II),Three (III),Four (IV),Five (V)" null="no" visibility="public" comment="..."/>
 		<attr name="Security" type="enum:Public,Private" null="no" visibility="public" comment="..."/>
 		<attr name="Type" type="enum:Epigenetic,Gene,Protein" null="no" visibility="public" comment="..."/>
