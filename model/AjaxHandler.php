@@ -158,11 +158,11 @@ if (isset($_POST['action'])){
 						$obj->setBiomarkerPopulationCharacteristics($val);
 						switch($val){
 							case 1:
-								echo "Case Control"; break;
+								echo "Case/Control"; break;
 							case 2:
-								echo "Second Choice"; break;
+								echo "Longitudinal"; break;
 							case 3:
-								echo "Third Choice"; break;
+								echo "Randomized"; break;
 							default: echo stripslashes($val); break;
 						}
 						break;

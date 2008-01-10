@@ -25,7 +25,7 @@ CREATE TABLE `Study` (
 	`DMCC_ID`  varchar(80)   NOT NULL      COMMENT 'from fhcrc website' ,
 	`Title`  varchar(80)   NOT NULL     ,
 	`Abstract`  text   NOT NULL     ,
-	`BiomarkerPopulationCharacteristics` ENUM('Case Control','Second Choice','Third Choice')   NOT NULL     ,
+	`BiomarkerPopulationCharacteristics` ENUM('Case/Control','Longitudinal','Randomized')   NOT NULL     ,
 	`Design`  varchar(50)   NOT NULL      COMMENT 'fhcrc StudyDesign field' ,
 	`BiomarkerStudyType` ENUM('Registered','Unregistered')   NOT NULL  DEFAULT 'Unregistered'     COMMENT 'whether or not the study is an EDRN study' ,
 	PRIMARY KEY (`objId`),
