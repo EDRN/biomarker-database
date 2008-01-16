@@ -21,6 +21,12 @@
 	require_once("../../assets/skins/edrn/prologue.php");
 ?>
 <div class="main">
+<!-- Breadcrumbs Area -->
+	<div class="mainContent" style="padding-bottom:0px;margin-bottom:0px;border-bottom:solid 3px #a0a0a0;padding:3px;color:#666;">
+<?php 
+	echo "<a href=\"../../index.php\">Home</a> / Studies ";
+?>
+	</div><!-- End Breadcrumbs -->
 <?php if (!empty($_GET['notice'])){?>
 	<div id="notice" class="info"><?php if(isset($_GET['notice'])){echo $_GET['notice'];}?>&nbsp;&nbsp;(<span class="pseudolink" onclick="Element.hide('notice');">OK</span>)</div>
 <?php } ?>

@@ -39,8 +39,25 @@
 	require_once("assets/skins/edrn/prologue.php");
 ?>
 <div class="main">
+		<?php 
+			if (!$validObject){
+				cwsp_messages::err("Biomarker not found!");	
+				exit();
+			} 
+		?>
+	<!-- Breadcrumbs Area -->
+	<div class="mainContent" style="padding-bottom:0px;margin-bottom:0px;border-bottom:solid 3px #a0a0a0;padding:3px;color:#666;">
+<?php 
+	echo "<a href=\"index.php\">Home</a> / <a href=\"browse/biomarkers/\">Biomarkers</a> /";
+	if ($_GET['view'] == 'basics') { echo "  {$object->getTitle()} "; }
+	else if ($_GET['view'] == 'organs') { echo " <a href=\"biomarker.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / organs"; }
+	else if ($_GET['view'] == 'studies') {echo " <a href=\"biomarker.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / studies"; }
+	else if ($_GET['view'] == 'publications') { echo " <a href=\"biomarker.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / publications"; }
+	else if ($_GET['view'] == 'resources') { echo " <a href=\"biomarker.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / resources"; }
+?>
+	</div><!-- End Breadcrumbs -->
 	<div class="mainContent">
-		<h2 class="title">Biomarker
+		<h2 class="title">
 		<span class="titleDetails"><?php if($validObject){echo $object->getTitle();}?></span>
 		</h2>
 		<div class="smallLinks">
@@ -50,14 +67,10 @@
 			<a href="biomarker.php?view=publications&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'publications')? 'class="activeLink"' : '';?>>Publications</a>&nbsp; |
 			<a href="biomarker.php?view=resources&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'resources')? 'class="activeLink"' : '';?>>Resources</a>
 		</div>
-		<?php 
-			if (!$validObject){
-				echo "<br/>";
-				cwsp_messages::err("Biomarker not found!");	
-			} else {
-				include_once("sections/biomarker/{$_GET['view']}.php");
-			}
+		<?php
+			include_once("sections/biomarker/{$_GET['view']}.php");
 		?>
+		
 	</div>
 	<div class="actions">
 		<ul>

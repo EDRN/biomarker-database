@@ -6,7 +6,7 @@
 		foreach ($object->getBiomarkerOrganDatas() as $od){
 			$boDisplay .=  <<<ENDORGANDISPLAY
 				<div class="overview">
-					<h3><a href="biomarkerorgan.php?view=studies&objId={$od->getBiomarkerOrganData()->getObjId()}">{$od->getBiomarkerOrganData()->getBiomarker()->getTitle()}/{$od->getBiomarkerOrganData()->getOrgan()->getName()}</a></h3>
+					<h3><a href="biomarkerorgan.php?view=studies&objId={$od->getBiomarkerOrganData()->getObjId()}">{$od->getBiomarkerOrganData()->getBiomarker()->getTitle()} :: {$od->getBiomarkerOrganData()->getOrgan()->getName()}</a></h3>
 					<div style="padding-left:9px;">
 						<table>
 							<tr><td>Biomarker:</td><td><a href="biomarker.php?objId={$od->getBiomarkerOrganData()->getBiomarker()->getObjId()}&view=basics">{$od->getBiomarkerOrganData()->getBiomarker()->getTitle()}</a></td></tr>
@@ -21,7 +21,7 @@ ENDORGANDISPLAY;
 
 	echo <<<ENDDISPLAY
 		<div id="notice"></div>
-		<h4>Associated Biomarker/Organs:</h4>
+		<h4>Associated Biomarker-Organ Pairs:</h4>
 		<div class="overviewContainer">
 			{$boDisplay}	
 		</div>

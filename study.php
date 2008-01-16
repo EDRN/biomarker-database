@@ -36,23 +36,34 @@
 	require_once("assets/skins/edrn/prologue.php");
 ?>
 <div class="main">
+<?php
+		if (!$validObject){
+				cwsp_messages::err("Study not found!");	
+				exit;
+		}
+?>
+	<!-- Breadcrumbs Area -->
+	<div class="mainContent" style="padding-bottom:0px;margin-bottom:0px;border-bottom:solid 3px #a0a0a0;padding:3px;color:#666;">
+<?php 
+	echo "<a href=\"index.php\">Home</a> / <a href=\"browse/studies/\">Studies</a> /";
+	if ($_GET['view'] == 'basics') { echo "  {$object->getTitle()} "; }
+	else if ($_GET['view'] == 'biomarkerorgans') { echo " <a href=\"study.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / biomarker-organs"; }
+	else if ($_GET['view'] == 'publications') { echo " <a href=\"study.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / publications"; }
+	else if ($_GET['view'] == 'resources') { echo " <a href=\"study.php?view=basics&objId={$_GET['objId']}\">{$object->getTitle()}</a> / resources"; }
+?>
+	</div><!-- End Breadcrumbs -->
 	<div class="mainContent">
-		<h2 class="title">Study
+		<h2 class="title">
 		<span class="titleDetails"><?php if($validObject){ echo $object->getTitle();}?></span>
 		</h2>
 		<div class="smallLinks">
 			<a href="study.php?view=basics&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'basics')? 'class="activeLink"' : '';?>>Basics</a>&nbsp; |
-			<a href="study.php?view=biomarkerorgans&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'biomarkerorgans')? 'class="activeLink"' : '';?>>Biomarkers/Organs</a>&nbsp; |
+			<a href="study.php?view=biomarkerorgans&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'biomarkerorgans')? 'class="activeLink"' : '';?>>Biomarker-Organs</a>&nbsp; |
 			<a href="study.php?view=publications&objId=<?php  echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'publications')? 'class="activeLink"' : '';?>>Publications</a>&nbsp; |
 			<a href="study.php?view=resources&objId=<?php echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'resources')? 'class="activeLink"' : '';?>>Resources</a>
 		</div>
 		<?php 
-			if (!$validObject){
-				echo "<br/>";
-				cwsp_messages::err("Study not found!");	
-			} else {
-				include_once("sections/study/{$_GET['view']}.php");
-			}
+			include_once("sections/study/{$_GET['view']}.php");
 		?>
 	</div>
 	<div class="actions">

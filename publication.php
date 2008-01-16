@@ -6,6 +6,13 @@
 	//print_r($marker);
 	
 	if (isset($_POST['special'])){
+		if ($_POST['special'] == 'createnew'){
+			$obj = new objPublication($xp);
+			$obj->create(0); // no pubmed id exists for manually created pubs
+			$obj->setTitle($_POST['title']);
+			cwsp_page::httpRedirect("browse/publications/?notice=Publication+Created.");
+		}
+		
 		if ($_POST['special'] == 'delete'){
 			$obj = new objPublication($xp,$_POST['objId']);
 			$obj->delete();
@@ -29,9 +36,22 @@
 	require_once("assets/skins/edrn/prologue.php");
 ?>
 <div class="main">
+<?php 
+	if (!$validObject) {
+		cwsp_messages::err("Publication not found!");
+		exit;
+	}
+?>
+<!-- Breadcrumbs Area -->
+	<div class="mainContent" style="padding-bottom:0px;margin-bottom:0px;border-bottom:solid 3px #a0a0a0;padding:3px;color:#666;">
+<?php 
+	echo "<a href=\"index.php\">Home</a> / <a href=\"browse/publications\">Publications</a> / ";
+	if ($_GET['view'] == 'basics') { echo "  {$object->getPubMedId()} "; }
+?>
+	</div><!-- End Breadcrumbs -->
 	<div class="mainContent">
-		<h2 class="title">Publication
-		<span class="titleDetails"><?php if($validObject){echo "PubMed ID: {$object->getPubMedID()}";}?></span>
+		<h2 class="title">
+		<span class="titleDetails"><?php if($validObject){echo "{$object->getTitle()}";}?></span>
 		</h2>
 		<div class="smallLinks">
 			<a href="biomarker.php?view=basics&objId=<?echo $_GET['objId']?>" <?php echo ($_GET['view'] == 'basics')? 'class="activeLink"' : '';?>>Basics</a>
@@ -44,12 +64,7 @@
 			-->
 		</div>
 		<?php 
-			if (!$object->initialize($_GET['objId'])){
-				echo "<br/>";
-				cwsp_messages::err("Publication not found!");	
-			} else {
-				include_once("sections/publication/{$_GET['view']}.php");
-			}
+			include_once("sections/publication/{$_GET['view']}.php");
 		?>
 	</div>
 	<div class="actions">
