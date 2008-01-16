@@ -2,7 +2,7 @@
 	require_once("../../model/ModelProperties.inc.php");
 	
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
-	$count = min(isset($_GET['count']) ? $_GET['count'] : 10, 250);
+	$count = min(isset($_GET['count']) ? $_GET['count'] : 100, 250);
 	$q = "SELECT `objId`,`DMCC_ID`,`Title`,`BiomarkerStudyType`,`Abstract` "
 		."FROM `Study` "
 		."LIMIT $start,$count ";
