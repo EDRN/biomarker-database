@@ -34,7 +34,9 @@
 		<attr name="Title" type="string:80" null="no" unique="yes" visibility="public"/>
 		<attr name="Abstract" type="string:5000" null="no" visibility="public"/>
 		<attr name="BiomarkerPopulationCharacteristics" type="enum:Case/Control,Longitudinal,Randomized" null="no" visibility="public"/>
-		<attr name="Design" type="string:50" null="no" visibility="public" comment="fhcrc StudyDesign field"/>
+		<attr name="BPCDescription" type="string:1000" null="no" visibility="public"/>
+		<attr name="Design" type="enum:Retrospective,Prospective Analysis,Cross Sectional" null="no" visibility="public" comment="fhcrc StudyDesign field"/>
+		<attr name="DesignDescription" type="string:1000" null="no" visibility="public"/>
 		<attr name="BiomarkerStudyType" type="enum:Registered,Unregistered" default="Unregistered" null="no" visibility="public" comment="whether or not the study is an EDRN study"/>
 	</object>
 	

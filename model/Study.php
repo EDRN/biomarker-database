@@ -192,7 +192,9 @@ class StudyVars {
 	const STU_TITLE = "Title";
 	const STU_ABSTRACT = "Abstract";
 	const STU_BIOMARKERPOPULATIONCHARACTERISTICS = "BiomarkerPopulationCharacteristics";
+	const STU_BPCDESCRIPTION = "BPCDescription";
 	const STU_DESIGN = "Design";
+	const STU_DESIGNDESCRIPTION = "DesignDescription";
 	const STU_BIOMARKERSTUDYTYPE = "BiomarkerStudyType";
 	const STU_BIOMARKERS = "Biomarkers";
 	const STU_BIOMARKERORGANS = "BiomarkerOrgans";
@@ -212,7 +214,9 @@ class objStudy {
 	public $Title = '';
 	public $Abstract = '';
 	public $BiomarkerPopulationCharacteristics = '';
+	public $BPCDescription = '';
 	public $Design = '';
+	public $DesignDescription = '';
 	public $BiomarkerStudyType = '';
 	public $Biomarkers = array();
 	public $BiomarkerOrgans = array();
@@ -241,7 +245,9 @@ class objStudy {
 			$this->Title = $result['Title'];
 			$this->Abstract = $result['Abstract'];
 			$this->BiomarkerPopulationCharacteristics = $result['BiomarkerPopulationCharacteristics'];
+			$this->BPCDescription = $result['BPCDescription'];
 			$this->Design = $result['Design'];
+			$this->DesignDescription = $result['DesignDescription'];
 			$this->BiomarkerStudyType = $result['BiomarkerStudyType'];
 		}
 		if ($inflate){
@@ -267,7 +273,9 @@ class objStudy {
 					$this->Title = $result['Title'];
 					$this->Abstract = $result['Abstract'];
 					$this->BiomarkerPopulationCharacteristics = $result['BiomarkerPopulationCharacteristics'];
+					$this->BPCDescription = $result['BPCDescription'];
 					$this->Design = $result['Design'];
+					$this->DesignDescription = $result['DesignDescription'];
 					$this->BiomarkerStudyType = $result['BiomarkerStudyType'];
 				}
 				if ($inflate){
@@ -289,7 +297,9 @@ class objStudy {
 		$this->Title = '';
 		$this->Abstract = '';
 		$this->BiomarkerPopulationCharacteristics = '';
+		$this->BPCDescription = '';
 		$this->Design = '';
+		$this->DesignDescription = '';
 		$this->BiomarkerStudyType = '';
 		$this->Biomarkers = array();
 		$this->BiomarkerOrgans = array();
@@ -320,8 +330,14 @@ class objStudy {
 	public function getBiomarkerPopulationCharacteristics() {
 		 return $this->BiomarkerPopulationCharacteristics;
 	}
+	public function getBPCDescription() {
+		 return $this->BPCDescription;
+	}
 	public function getDesign() {
 		 return $this->Design;
+	}
+	public function getDesignDescription() {
+		 return $this->DesignDescription;
 	}
 	public function getBiomarkerStudyType() {
 		 return $this->BiomarkerStudyType;
@@ -385,8 +401,20 @@ class objStudy {
 			$this->save();
 		}
 	}
+	public function setBPCDescription($value,$bSave = true) {
+		$this->BPCDescription = $value;
+		if ($bSave){
+			$this->save();
+		}
+	}
 	public function setDesign($value,$bSave = true) {
 		$this->Design = $value;
+		if ($bSave){
+			$this->save();
+		}
+	}
+	public function setDesignDescription($value,$bSave = true) {
+		$this->DesignDescription = $value;
 		if ($bSave){
 			$this->save();
 		}
@@ -477,7 +505,7 @@ class objStudy {
 		if ($this->objId == 0){
 			// Insert a new object into the db
 			$q = "INSERT INTO `Study` ";
-			$q .= 'VALUES("'.$this->objId.'","'.$this->EDRNID.'","'.$this->FHCRC_ID.'","'.$this->DMCC_ID.'","'.$this->Title.'","'.$this->Abstract.'","'.$this->BiomarkerPopulationCharacteristics.'","'.$this->Design.'","'.$this->BiomarkerStudyType.'") ';
+			$q .= 'VALUES("'.$this->objId.'","'.$this->EDRNID.'","'.$this->FHCRC_ID.'","'.$this->DMCC_ID.'","'.$this->Title.'","'.$this->Abstract.'","'.$this->BiomarkerPopulationCharacteristics.'","'.$this->BPCDescription.'","'.$this->Design.'","'.$this->DesignDescription.'","'.$this->BiomarkerStudyType.'") ';
 			$r = $this->XPress->Database->safeQuery($q);
 			$this->objId = $this->XPress->Database->safeGetOne("SELECT LAST_INSERT_ID() FROM `Study`");
 		} else {
@@ -490,7 +518,9 @@ class objStudy {
 			$q .= "`Title`=\"$this->Title\","; 
 			$q .= "`Abstract`=\"$this->Abstract\","; 
 			$q .= "`BiomarkerPopulationCharacteristics`=\"$this->BiomarkerPopulationCharacteristics\","; 
+			$q .= "`BPCDescription`=\"$this->BPCDescription\","; 
 			$q .= "`Design`=\"$this->Design\","; 
+			$q .= "`DesignDescription`=\"$this->DesignDescription\","; 
 			$q .= "`BiomarkerStudyType`=\"$this->BiomarkerStudyType\" ";
 			$q .= "WHERE `objId` = $this->objId ";
 			$r = $this->XPress->Database->safeQuery($q);
@@ -633,7 +663,9 @@ class objStudy {
 		$vo->Title = $this->Title;
 		$vo->Abstract = $this->Abstract;
 		$vo->BiomarkerPopulationCharacteristics = $this->BiomarkerPopulationCharacteristics;
+		$vo->BPCDescription = $this->BPCDescription;
 		$vo->Design = $this->Design;
+		$vo->DesignDescription = $this->DesignDescription;
 		$vo->BiomarkerStudyType = $this->BiomarkerStudyType;
 		return $vo;
 	}
@@ -659,8 +691,14 @@ class objStudy {
 		if(!empty($voStudy->BiomarkerPopulationCharacteristics)){
 			$this->BiomarkerPopulationCharacteristics = $voStudy->BiomarkerPopulationCharacteristics;
 		}
+		if(!empty($voStudy->BPCDescription)){
+			$this->BPCDescription = $voStudy->BPCDescription;
+		}
 		if(!empty($voStudy->Design)){
 			$this->Design = $voStudy->Design;
+		}
+		if(!empty($voStudy->DesignDescription)){
+			$this->DesignDescription = $voStudy->DesignDescription;
 		}
 		if(!empty($voStudy->BiomarkerStudyType)){
 			$this->BiomarkerStudyType = $voStudy->BiomarkerStudyType;
@@ -668,7 +706,7 @@ class objStudy {
 	}
 	public function toRDF($namespace,$urlBase) {
 		$rdf = '';
-		$rdf .= "<{$namespace}:Study rdf:about=\"{$urlBase}/editors/showStudy.php?s={$this->ID}\">\r\n<{$namespace}:objId>$this->objId</{$namespace}:objId>\r\n<{$namespace}:EDRNID>$this->EDRNID</{$namespace}:EDRNID>\r\n<{$namespace}:FHCRC_ID>$this->FHCRC_ID</{$namespace}:FHCRC_ID>\r\n<{$namespace}:DMCC_ID>$this->DMCC_ID</{$namespace}:DMCC_ID>\r\n<{$namespace}:Title>$this->Title</{$namespace}:Title>\r\n<{$namespace}:Abstract>$this->Abstract</{$namespace}:Abstract>\r\n<{$namespace}:BiomarkerPopulationCharacteristics>$this->BiomarkerPopulationCharacteristics</{$namespace}:BiomarkerPopulationCharacteristics>\r\n<{$namespace}:Design>$this->Design</{$namespace}:Design>\r\n<{$namespace}:BiomarkerStudyType>$this->BiomarkerStudyType</{$namespace}:BiomarkerStudyType>\r\n";
+		$rdf .= "<{$namespace}:Study rdf:about=\"{$urlBase}/editors/showStudy.php?s={$this->ID}\">\r\n<{$namespace}:objId>$this->objId</{$namespace}:objId>\r\n<{$namespace}:EDRNID>$this->EDRNID</{$namespace}:EDRNID>\r\n<{$namespace}:FHCRC_ID>$this->FHCRC_ID</{$namespace}:FHCRC_ID>\r\n<{$namespace}:DMCC_ID>$this->DMCC_ID</{$namespace}:DMCC_ID>\r\n<{$namespace}:Title>$this->Title</{$namespace}:Title>\r\n<{$namespace}:Abstract>$this->Abstract</{$namespace}:Abstract>\r\n<{$namespace}:BiomarkerPopulationCharacteristics>$this->BiomarkerPopulationCharacteristics</{$namespace}:BiomarkerPopulationCharacteristics>\r\n<{$namespace}:BPCDescription>$this->BPCDescription</{$namespace}:BPCDescription>\r\n<{$namespace}:Design>$this->Design</{$namespace}:Design>\r\n<{$namespace}:DesignDescription>$this->DesignDescription</{$namespace}:DesignDescription>\r\n<{$namespace}:BiomarkerStudyType>$this->BiomarkerStudyType</{$namespace}:BiomarkerStudyType>\r\n";
 		foreach ($this->Biomarkers as $r) {
 			$rdf .= $r->toRDFStub($namespace,$urlBase);
 		}
@@ -703,7 +741,9 @@ class voStudy {
 	public $Title;
 	public $Abstract;
 	public $BiomarkerPopulationCharacteristics;
+	public $BPCDescription;
 	public $Design;
+	public $DesignDescription;
 	public $BiomarkerStudyType;
 
 	public function toAssocArray(){
@@ -715,7 +755,9 @@ class voStudy {
 			"Title" => $this->Title,
 			"Abstract" => $this->Abstract,
 			"BiomarkerPopulationCharacteristics" => $this->BiomarkerPopulationCharacteristics,
+			"BPCDescription" => $this->BPCDescription,
 			"Design" => $this->Design,
+			"DesignDescription" => $this->DesignDescription,
 			"BiomarkerStudyType" => $this->BiomarkerStudyType,
 		);
 	}
@@ -741,8 +783,14 @@ class voStudy {
 		if(!empty($arr['BiomarkerPopulationCharacteristics'])){
 			$this->BiomarkerPopulationCharacteristics = $arr['BiomarkerPopulationCharacteristics'];
 		}
+		if(!empty($arr['BPCDescription'])){
+			$this->BPCDescription = $arr['BPCDescription'];
+		}
 		if(!empty($arr['Design'])){
 			$this->Design = $arr['Design'];
+		}
+		if(!empty($arr['DesignDescription'])){
+			$this->DesignDescription = $arr['DesignDescription'];
 		}
 		if(!empty($arr['BiomarkerStudyType'])){
 			$this->BiomarkerStudyType = $arr['BiomarkerStudyType'];
@@ -844,7 +892,9 @@ class daoStudy {
 		$q .= "Title=\"$vo->Title\"" . ", ";
 		$q .= "Abstract=\"$vo->Abstract\"" . ", ";
 		$q .= "BiomarkerPopulationCharacteristics=\"$vo->BiomarkerPopulationCharacteristics\"" . ", ";
+		$q .= "BPCDescription=\"$vo->BPCDescription\"" . ", ";
 		$q .= "Design=\"$vo->Design\"" . ", ";
+		$q .= "DesignDescription=\"$vo->DesignDescription\"" . ", ";
 		$q .= "BiomarkerStudyType=\"$vo->BiomarkerStudyType\" ";
 		$q .= "WHERE `ID` = $vo->ID ";
 		$r = $this->conn->safeQuery($q);
@@ -853,7 +903,7 @@ class daoStudy {
 	public function insert(&$vo){
 		//insert this vo into the database as a new row
 		$q = "INSERT INTO `Study` "; 
-		$q .= 'VALUES("'.$vo->objId.'","'.$vo->EDRNID.'","'.$vo->FHCRC_ID.'","'.$vo->DMCC_ID.'","'.$vo->Title.'","'.$vo->Abstract.'","'.$vo->BiomarkerPopulationCharacteristics.'","'.$vo->Design.'","'.$vo->BiomarkerStudyType.'" ) ';
+		$q .= 'VALUES("'.$vo->objId.'","'.$vo->EDRNID.'","'.$vo->FHCRC_ID.'","'.$vo->DMCC_ID.'","'.$vo->Title.'","'.$vo->Abstract.'","'.$vo->BiomarkerPopulationCharacteristics.'","'.$vo->BPCDescription.'","'.$vo->Design.'","'.$vo->DesignDescription.'","'.$vo->BiomarkerStudyType.'" ) ';
 		$r = $this->conn->safeQuery($q);
 		$vo->ID = $this->conn->safeGetOne("SELECT LAST_INSERT_ID() FROM `Study`");
 	}
@@ -866,7 +916,9 @@ class daoStudy {
 		$vo->Title = $result['Title'];
 		$vo->Abstract = $result['Abstract'];
 		$vo->BiomarkerPopulationCharacteristics = $result['BiomarkerPopulationCharacteristics'];
+		$vo->BPCDescription = $result['BPCDescription'];
 		$vo->Design = $result['Design'];
+		$vo->DesignDescription = $result['DesignDescription'];
 		$vo->BiomarkerStudyType = $result['BiomarkerStudyType'];
 	}
 

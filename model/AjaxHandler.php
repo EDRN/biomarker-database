@@ -171,9 +171,27 @@ if (isset($_POST['action'])){
 							default: echo stripslashes($val); break;
 						}
 						break;
+					case "BPCDescription":
+						$ovalue = $obj->getBPCDescription();
+						$obj->setBPCDescription($val);
+						echo stripslashes(htmlspecialchars_decode($val));
+						break;
 					case "Design":
 						$ovalue = $obj->getDesign();
 						$obj->setDesign($val);
+						switch($val){
+							case 1:
+								echo "Retrospective"; break;
+							case 2:
+								echo "Prospective Analysis"; break;
+							case 3:
+								echo "Cross Sectional"; break;
+							default: echo stripslashes($val); break;
+						}
+						break;
+					case "DesignDescription":
+						$ovalue = $obj->getDesignDescription();
+						$obj->setDesignDescription($val);
 						echo stripslashes(htmlspecialchars_decode($val));
 						break;
 					case "BiomarkerStudyType":

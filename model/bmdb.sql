@@ -27,7 +27,9 @@ CREATE TABLE `Study` (
 	`Title`  varchar(80)   NOT NULL     ,
 	`Abstract`  text   NOT NULL     ,
 	`BiomarkerPopulationCharacteristics` ENUM('Case/Control','Longitudinal','Randomized')   NOT NULL     ,
-	`Design`  varchar(50)   NOT NULL      COMMENT 'fhcrc StudyDesign field' ,
+	`BPCDescription`  text   NOT NULL     ,
+	`Design` ENUM('Retrospective','Prospective Analysis','Cross Sectional')   NOT NULL      COMMENT 'fhcrc StudyDesign field' ,
+	`DesignDescription`  text   NOT NULL     ,
 	`BiomarkerStudyType` ENUM('Registered','Unregistered')   NOT NULL  DEFAULT 'Unregistered'     COMMENT 'whether or not the study is an EDRN study' ,
 	PRIMARY KEY (`objId`),
 	UNIQUE KEY `Title` (`Title`)
