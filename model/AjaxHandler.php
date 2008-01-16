@@ -1,9 +1,9 @@
 <?php
-@require_once("ModelProperties.inc.php");
+require_once("ModelProperties.inc.php");
 
 
 if (isset($_POST['action'])){
-	include_once("AjaxHandlerExtensions.php");
+	@include_once("AjaxHandlerExtensions.php");
 	// UPDATES TO EXISTING FIELDS // 
 	if ($_POST['action'] == "update"){
 		$type = $_POST['objType'];
@@ -38,6 +38,11 @@ if (isset($_POST['action'])){
 					case "Title":
 						$ovalue = $obj->getTitle();
 						$obj->setTitle($val);
+						echo stripslashes(htmlspecialchars_decode($val));
+						break;
+					case "ShortName":
+						$ovalue = $obj->getShortName();
+						$obj->setShortName($val);
 						echo stripslashes(htmlspecialchars_decode($val));
 						break;
 					case "Description":

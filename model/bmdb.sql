@@ -4,6 +4,7 @@ CREATE TABLE `Biomarker` (
 	`BiomarkerID`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`PanelID`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`Title`  varchar(80)   NOT NULL      COMMENT '...' ,
+	`ShortName`  varchar(30)   NOT NULL      COMMENT '...' ,
 	`Description`  text   NOT NULL      COMMENT '...' ,
 	`QAState` ENUM('New','Under Review','Approved','Rejected')   NOT NULL      COMMENT '...' ,
 	`Phase` ENUM('One (I)','Two (II)','Three (III)','Four (IV)','Five (V)')   NOT NULL      COMMENT '...' ,

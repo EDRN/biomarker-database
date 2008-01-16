@@ -190,6 +190,7 @@ class BiomarkerVars {
 	const BIO_BIOMARKERID = "BiomarkerID";
 	const BIO_PANELID = "PanelID";
 	const BIO_TITLE = "Title";
+	const BIO_SHORTNAME = "ShortName";
 	const BIO_DESCRIPTION = "Description";
 	const BIO_QASTATE = "QAState";
 	const BIO_PHASE = "Phase";
@@ -211,6 +212,7 @@ class objBiomarker {
 	public $BiomarkerID = '';
 	public $PanelID = '';
 	public $Title = '';
+	public $ShortName = '';
 	public $Description = '';
 	public $QAState = '';
 	public $Phase = '';
@@ -241,6 +243,7 @@ class objBiomarker {
 			$this->BiomarkerID = $result['BiomarkerID'];
 			$this->PanelID = $result['PanelID'];
 			$this->Title = $result['Title'];
+			$this->ShortName = $result['ShortName'];
 			$this->Description = $result['Description'];
 			$this->QAState = $result['QAState'];
 			$this->Phase = $result['Phase'];
@@ -253,6 +256,38 @@ class objBiomarker {
 			return true;
 		}
 	}
+	public function initializeByUniqueKey($key,$value,$inflate = true,$parentObjects = array()) {
+		switch ($key) {
+			case "Title":
+				$this->Title = $value;
+				$q = "SELECT * FROM `Biomarker` WHERE `Title`=\"{$value}\" LIMIT 1";
+				$r = $this->XPress->Database->safeQuery($q);
+				if ($r->numRows() != 1){
+					return false;
+				} else {
+					$result = $r->fetchRow(DB_FETCHMODE_ASSOC);
+					$this->objId = $result['objId'];
+					$this->EKE_ID = $result['EKE_ID'];
+					$this->BiomarkerID = $result['BiomarkerID'];
+					$this->PanelID = $result['PanelID'];
+					$this->Title = $result['Title'];
+					$this->ShortName = $result['ShortName'];
+					$this->Description = $result['Description'];
+					$this->QAState = $result['QAState'];
+					$this->Phase = $result['Phase'];
+					$this->Security = $result['Security'];
+					$this->Type = $result['Type'];
+				}
+				if ($inflate){
+					return $this->inflate($parentObjects);
+				} else {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+	}
 	public function deflate(){
 		// reset all member variables to initial settings
 		$this->objId = '';
@@ -260,6 +295,7 @@ class objBiomarker {
 		$this->BiomarkerID = '';
 		$this->PanelID = '';
 		$this->Title = '';
+		$this->ShortName = '';
 		$this->Description = '';
 		$this->QAState = '';
 		$this->Phase = '';
@@ -287,6 +323,9 @@ class objBiomarker {
 	}
 	public function getTitle() {
 		 return $this->Title;
+	}
+	public function getShortName() {
+		 return $this->ShortName;
 	}
 	public function getDescription() {
 		 return $this->Description;
@@ -346,6 +385,12 @@ class objBiomarker {
 	}
 	public function setTitle($value,$bSave = true) {
 		$this->Title = $value;
+		if ($bSave){
+			$this->save();
+		}
+	}
+	public function setShortName($value,$bSave = true) {
+		$this->ShortName = $value;
 		if ($bSave){
 			$this->save();
 		}
@@ -460,7 +505,7 @@ class objBiomarker {
 		if ($this->objId == 0){
 			// Insert a new object into the db
 			$q = "INSERT INTO `Biomarker` ";
-			$q .= 'VALUES("'.$this->objId.'","'.$this->EKE_ID.'","'.$this->BiomarkerID.'","'.$this->PanelID.'","'.$this->Title.'","'.$this->Description.'","'.$this->QAState.'","'.$this->Phase.'","'.$this->Security.'","'.$this->Type.'") ';
+			$q .= 'VALUES("'.$this->objId.'","'.$this->EKE_ID.'","'.$this->BiomarkerID.'","'.$this->PanelID.'","'.$this->Title.'","'.$this->ShortName.'","'.$this->Description.'","'.$this->QAState.'","'.$this->Phase.'","'.$this->Security.'","'.$this->Type.'") ';
 			$r = $this->XPress->Database->safeQuery($q);
 			$this->objId = $this->XPress->Database->safeGetOne("SELECT LAST_INSERT_ID() FROM `Biomarker`");
 		} else {
@@ -471,6 +516,7 @@ class objBiomarker {
 			$q .= "`BiomarkerID`=\"$this->BiomarkerID\","; 
 			$q .= "`PanelID`=\"$this->PanelID\","; 
 			$q .= "`Title`=\"$this->Title\","; 
+			$q .= "`ShortName`=\"$this->ShortName\","; 
 			$q .= "`Description`=\"$this->Description\","; 
 			$q .= "`QAState`=\"$this->QAState\","; 
 			$q .= "`Phase`=\"$this->Phase\","; 
@@ -615,6 +661,7 @@ class objBiomarker {
 		$vo->BiomarkerID = $this->BiomarkerID;
 		$vo->PanelID = $this->PanelID;
 		$vo->Title = $this->Title;
+		$vo->ShortName = $this->ShortName;
 		$vo->Description = $this->Description;
 		$vo->QAState = $this->QAState;
 		$vo->Phase = $this->Phase;
@@ -638,6 +685,9 @@ class objBiomarker {
 		if(!empty($voBiomarker->Title)){
 			$this->Title = $voBiomarker->Title;
 		}
+		if(!empty($voBiomarker->ShortName)){
+			$this->ShortName = $voBiomarker->ShortName;
+		}
 		if(!empty($voBiomarker->Description)){
 			$this->Description = $voBiomarker->Description;
 		}
@@ -656,7 +706,7 @@ class objBiomarker {
 	}
 	public function toRDF($namespace,$urlBase) {
 		$rdf = '';
-		$rdf .= "<{$namespace}:Biomarker rdf:about=\"{$urlBase}/editors/showBiomarker.php?m={$this->ID}\">\r\n<{$namespace}:objId>$this->objId</{$namespace}:objId>\r\n<{$namespace}:EKE_ID>$this->EKE_ID</{$namespace}:EKE_ID>\r\n<{$namespace}:BiomarkerID>$this->BiomarkerID</{$namespace}:BiomarkerID>\r\n<{$namespace}:PanelID>$this->PanelID</{$namespace}:PanelID>\r\n<{$namespace}:Title>$this->Title</{$namespace}:Title>\r\n<{$namespace}:Description>$this->Description</{$namespace}:Description>\r\n<{$namespace}:QAState>$this->QAState</{$namespace}:QAState>\r\n<{$namespace}:Phase>$this->Phase</{$namespace}:Phase>\r\n<{$namespace}:Security>$this->Security</{$namespace}:Security>\r\n<{$namespace}:Type>$this->Type</{$namespace}:Type>\r\n";
+		$rdf .= "<{$namespace}:Biomarker rdf:about=\"{$urlBase}/editors/showBiomarker.php?m={$this->ID}\">\r\n<{$namespace}:objId>$this->objId</{$namespace}:objId>\r\n<{$namespace}:EKE_ID>$this->EKE_ID</{$namespace}:EKE_ID>\r\n<{$namespace}:BiomarkerID>$this->BiomarkerID</{$namespace}:BiomarkerID>\r\n<{$namespace}:PanelID>$this->PanelID</{$namespace}:PanelID>\r\n<{$namespace}:Title>$this->Title</{$namespace}:Title>\r\n<{$namespace}:ShortName>$this->ShortName</{$namespace}:ShortName>\r\n<{$namespace}:Description>$this->Description</{$namespace}:Description>\r\n<{$namespace}:QAState>$this->QAState</{$namespace}:QAState>\r\n<{$namespace}:Phase>$this->Phase</{$namespace}:Phase>\r\n<{$namespace}:Security>$this->Security</{$namespace}:Security>\r\n<{$namespace}:Type>$this->Type</{$namespace}:Type>\r\n";
 		foreach ($this->Aliases as $r) {
 			$rdf .= $r->toRDFStub($namespace,$urlBase);
 		}
@@ -689,6 +739,7 @@ class voBiomarker {
 	public $BiomarkerID;
 	public $PanelID;
 	public $Title;
+	public $ShortName;
 	public $Description;
 	public $QAState;
 	public $Phase;
@@ -702,6 +753,7 @@ class voBiomarker {
 			"BiomarkerID" => $this->BiomarkerID,
 			"PanelID" => $this->PanelID,
 			"Title" => $this->Title,
+			"ShortName" => $this->ShortName,
 			"Description" => $this->Description,
 			"QAState" => $this->QAState,
 			"Phase" => $this->Phase,
@@ -724,6 +776,9 @@ class voBiomarker {
 		}
 		if(!empty($arr['Title'])){
 			$this->Title = $arr['Title'];
+		}
+		if(!empty($arr['ShortName'])){
+			$this->ShortName = $arr['ShortName'];
 		}
 		if(!empty($arr['Description'])){
 			$this->Description = $arr['Description'];
@@ -835,6 +890,7 @@ class daoBiomarker {
 		$q .= "BiomarkerID=\"$vo->BiomarkerID\"" . ", ";
 		$q .= "PanelID=\"$vo->PanelID\"" . ", ";
 		$q .= "Title=\"$vo->Title\"" . ", ";
+		$q .= "ShortName=\"$vo->ShortName\"" . ", ";
 		$q .= "Description=\"$vo->Description\"" . ", ";
 		$q .= "QAState=\"$vo->QAState\"" . ", ";
 		$q .= "Phase=\"$vo->Phase\"" . ", ";
@@ -847,7 +903,7 @@ class daoBiomarker {
 	public function insert(&$vo){
 		//insert this vo into the database as a new row
 		$q = "INSERT INTO `Biomarker` "; 
-		$q .= 'VALUES("'.$vo->objId.'","'.$vo->EKE_ID.'","'.$vo->BiomarkerID.'","'.$vo->PanelID.'","'.$vo->Title.'","'.$vo->Description.'","'.$vo->QAState.'","'.$vo->Phase.'","'.$vo->Security.'","'.$vo->Type.'" ) ';
+		$q .= 'VALUES("'.$vo->objId.'","'.$vo->EKE_ID.'","'.$vo->BiomarkerID.'","'.$vo->PanelID.'","'.$vo->Title.'","'.$vo->ShortName.'","'.$vo->Description.'","'.$vo->QAState.'","'.$vo->Phase.'","'.$vo->Security.'","'.$vo->Type.'" ) ';
 		$r = $this->conn->safeQuery($q);
 		$vo->ID = $this->conn->safeGetOne("SELECT LAST_INSERT_ID() FROM `Biomarker`");
 	}
@@ -858,6 +914,7 @@ class daoBiomarker {
 		$vo->BiomarkerID = $result['BiomarkerID'];
 		$vo->PanelID = $result['PanelID'];
 		$vo->Title = $result['Title'];
+		$vo->ShortName = $result['ShortName'];
 		$vo->Description = $result['Description'];
 		$vo->QAState = $result['QAState'];
 		$vo->Phase = $result['Phase'];
