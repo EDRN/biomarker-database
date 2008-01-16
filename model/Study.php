@@ -250,6 +250,36 @@ class objStudy {
 			return true;
 		}
 	}
+	public function initializeByUniqueKey($key,$value,$inflate = true,$parentObjects = array()) {
+		switch ($key) {
+			case "Title":
+				$this->Title = $value;
+				$q = "SELECT * FROM `Study` WHERE `Title`=\"{$value}\" LIMIT 1";
+				$r = $this->XPress->Database->safeQuery($q);
+				if ($r->numRows() != 1){
+					return false;
+				} else {
+					$result = $r->fetchRow(DB_FETCHMODE_ASSOC);
+					$this->objId = $result['objId'];
+					$this->EDRNID = $result['EDRNID'];
+					$this->FHCRC_ID = $result['FHCRC_ID'];
+					$this->DMCC_ID = $result['DMCC_ID'];
+					$this->Title = $result['Title'];
+					$this->Abstract = $result['Abstract'];
+					$this->BiomarkerPopulationCharacteristics = $result['BiomarkerPopulationCharacteristics'];
+					$this->Design = $result['Design'];
+					$this->BiomarkerStudyType = $result['BiomarkerStudyType'];
+				}
+				if ($inflate){
+					return $this->inflate($parentObjects);
+				} else {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+	}
 	public function deflate(){
 		// reset all member variables to initial settings
 		$this->objId = '';

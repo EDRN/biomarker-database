@@ -157,6 +157,29 @@ class objOrgan {
 			return true;
 		}
 	}
+	public function initializeByUniqueKey($key,$value,$inflate = true,$parentObjects = array()) {
+		switch ($key) {
+			case "Name":
+				$this->Name = $value;
+				$q = "SELECT * FROM `Organ` WHERE `Name`=\"{$value}\" LIMIT 1";
+				$r = $this->XPress->Database->safeQuery($q);
+				if ($r->numRows() != 1){
+					return false;
+				} else {
+					$result = $r->fetchRow(DB_FETCHMODE_ASSOC);
+					$this->objId = $result['objId'];
+					$this->Name = $result['Name'];
+				}
+				if ($inflate){
+					return $this->inflate($parentObjects);
+				} else {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+	}
 	public function deflate(){
 		// reset all member variables to initial settings
 		$this->objId = '';

@@ -217,6 +217,35 @@ class objPublication {
 			return true;
 		}
 	}
+	public function initializeByUniqueKey($key,$value,$inflate = true,$parentObjects = array()) {
+		switch ($key) {
+			case "PubMedID":
+				$this->PubMedID = $value;
+				$q = "SELECT * FROM `Publication` WHERE `PubMedID`=\"{$value}\" LIMIT 1";
+				$r = $this->XPress->Database->safeQuery($q);
+				if ($r->numRows() != 1){
+					return false;
+				} else {
+					$result = $r->fetchRow(DB_FETCHMODE_ASSOC);
+					$this->objId = $result['objId'];
+					$this->PubMedID = $result['PubMedID'];
+					$this->Title = $result['Title'];
+					$this->Author = $result['Author'];
+					$this->Journal = $result['Journal'];
+					$this->Volume = $result['Volume'];
+					$this->Issue = $result['Issue'];
+					$this->Year = $result['Year'];
+				}
+				if ($inflate){
+					return $this->inflate($parentObjects);
+				} else {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+	}
 	public function deflate(){
 		// reset all member variables to initial settings
 		$this->objId = '';
