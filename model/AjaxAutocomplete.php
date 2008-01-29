@@ -27,7 +27,7 @@ require_once("ModelProperties.inc.php");
 	// Build a Query
 	$q = "SELECT * "
 		."FROM  {$_POST['objectType']} "
-		."WHERE {$_POST['field']} LIKE \"$needle%\" ";
+		."WHERE {$_POST['field']} LIKE \"%$needle%\" ";
 	
 	// Execute the Query
 	$r = $XPress->Database->safeQuery($q);

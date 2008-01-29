@@ -353,16 +353,28 @@ END;
 			<h3>Add organ data to {$biomarker->getTitle()}</h3>
 			Organ:&nbsp;
 				<select id="organChoice">
-					<option id="1" value="1">Breast</option>
-					<option id="2" value="2">Bladder</option>
-					<option id="3" value="3">Colon</option>
-					<option id="4" value="4">Esophageal</option>
-					<option id="5" value="5">Head and Neck</option>
-					<option id="6" value="6">Liver</option>
-					<option id="7" value="7">Lung</option>
-					<option id="8" value="8">Kidney</option>
-					<option id="9" value="9">Pancreas</option>
-					<option id="10" value="10">Prostate</option>
+					<option id="1" value="1">Bladder</option>
+                    <option id="2" value="2">Bone</option>
+                    <option id="3" value="3">Brain</option>
+                    <option id="4" value="4">Breast</option>
+                    <option id="5" value="5">Cervix</option>
+                    <option id="6" value="6">Colon</option>
+                    <option id="7" value="7">Esophagus</option>
+                    <option id="8" value="8">Head and Neck</option>
+                    <option id="9" value="9">Kidney</option>
+                    <option id="10" value="10">Liver</option>
+                    <option id="11" value="11">Lung</option>
+                    <option id="12" value="12">Ovary</option>
+                    <option id="13" value="13">Pancreas</option>
+                    <option id="14" value="14">Prostate</option>
+                    <option id="15" value="15">Rectum</option>
+                    <option id="16" value="16">Stomach</option>
+                    <option id="17" value="17">Thyroid</option>
+					<option id="18" value="18">Uterus</option>
+                    <option id="19" value="19">Skin</option>
+                    <option id="20" value="20">Testis</option>
+                    <option id="21" value="21">Lymph Node</option>
+                    <option id="22" value="22">Vagina</option>
 				</select>&nbsp;
 				<input type="button" value="Associate" onclick="BiomarkerOrganData.Create($('organChoice').getValue(),{$biomarker->getObjId()},new AjaxNotify.Create('overviewContainer','BiomarkerOrganSummary'));Element.hide('associationContainer');"/>
 				<input type="button" value="Cancel" onclick="Effect.SwitchOff('associationContainer');"/>
