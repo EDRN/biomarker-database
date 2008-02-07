@@ -1,10 +1,11 @@
 <?php
 	// Configurable Model Properties:
 	class Modeler {
-		const DSN = "mysql://user:pass@server/database";
-		const ROOT_DIR = "/path/to/project/root";
-		const CWSP_PATH = "/path/to/cwsp/library";
-		const PEAR_PATH = "/path/to/pear/library";
+		const DSN = "mysql://root:root@localhost/edrn_bmdb6";
+		const ROOT_DIR = "/Applications/MAMP/htdocs/edrn_bmdb6/webapp";
+		const CWSP_PATH = "/Applications/MAMP/htdocs/cwsp";
+		const PEAR_PATH = "/Applications/MAMP/htdocs/PEAR/pear/php";
+		const SITE_ROOT = "http://localhost/edrn_bmdb6/webapp";
 	}
 
 	// PHP Include Path modifications:
@@ -36,4 +37,7 @@
 	require_once(Modeler::ROOT_DIR."/model/Resource.php");
 	require_once(Modeler::ROOT_DIR."/model/Site.php");
 	require_once(Modeler::ROOT_DIR."/model/Person.php");
+	
+	// Load Extended Properties
+	require_once("ModelPropertiesExtensions.inc.php");
 ?>
