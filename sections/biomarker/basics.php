@@ -27,11 +27,11 @@ ENDDELETEDISPLAY;
 			<tr class="even"><td class="label">Title:</td><td>{$titleEditor}</td></tr>
 			<tr><td class="label">Short Name:</td><td>{$shortNameEd}</td></tr>
 			<tr class="even"><td class="label">Identifier:</td><td>{$urnEditor}</td></tr>
-			<tr><td class="label">Phase:</td><td>{$phaseEditor}</td></tr>
-			<tr class="even"><td class="label">Security:</td><td>{$securityEditor}</td></tr>
-			<tr><td class="label">QA State:</td><td>{$qaStateEditor}</td></tr>
-			<tr class="even"><td class="label">Type:</td><td>{$typeEditor}</td></tr>
-			<tr><td class="label">Description:</td><td>{$descriptionEditor}</td></tr>
+			<!--<tr><td class="label">Phase:</td><td>{$phaseEditor}</td></tr>-->
+			<tr class=""><td class="label">Security:</td><td>{$securityEditor}</td></tr>
+			<tr class="even"><td class="label">QA State:</td><td>{$qaStateEditor}</td></tr>
+			<tr class=""><td class="label">Type:</td><td>{$typeEditor}</td></tr>
+			<tr class="even"><td class="label">Description:</td><td>{$descriptionEditor}</td></tr>
 		</table>
 ENDDISPLAY;
 	

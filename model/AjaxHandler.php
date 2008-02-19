@@ -70,15 +70,15 @@ if (isset($_POST['action'])){
 						$obj->setPhase($val);
 						switch($val){
 							case 1:
-								echo "One (I)"; break;
+								echo "One (1)"; break;
 							case 2:
-								echo "Two (II)"; break;
+								echo "Two (2)"; break;
 							case 3:
-								echo "Three (III)"; break;
+								echo "Three (3)"; break;
 							case 4:
-								echo "Four (IV)"; break;
+								echo "Four (4)"; break;
 							case 5:
-								echo "Five (V)"; break;
+								echo "Five (5)"; break;
 							default: echo stripslashes($val); break;
 						}
 						break;
@@ -332,6 +332,38 @@ if (isset($_POST['action'])){
 						$ovalue = $obj->getNPVComment();
 						$obj->setNPVComment($val);
 						echo stripslashes(htmlspecialchars_decode($val));
+						break;
+					case "QAState":
+						$ovalue = $obj->getQAState();
+						$obj->setQAState($val);
+						switch($val){
+							case 1:
+								echo "New"; break;
+							case 2:
+								echo "Under Review"; break;
+							case 3:
+								echo "Approved"; break;
+							case 4:
+								echo "Rejected"; break;
+							default: echo stripslashes($val); break;
+						}
+						break;
+					case "Phase":
+						$ovalue = $obj->getPhase();
+						$obj->setPhase($val);
+						switch($val){
+							case 1:
+								echo "One (1)"; break;
+							case 2:
+								echo "Two (2)"; break;
+							case 3:
+								echo "Three (3)"; break;
+							case 4:
+								echo "Four (4)"; break;
+							case 5:
+								echo "Five (5)"; break;
+							default: echo stripslashes($val); break;
+						}
 						break;
 				}
 				break;

@@ -69,6 +69,8 @@
 		<attr name="NPVMin" type="float" null="no" visibility="public"/>
 		<attr name="NPVMax" type="float" null="no" visibility="public"/>
 		<attr name="NPVComment" type="string:500" null="no" visibility="public"/>
+		<attr name="QAState" type="enum:New,Under Review,Approved,Rejected" null="no" visibility="public" comment="..."/>
+		<attr name="Phase" type="enum:One (1),Two (2),Three (3),Four (4),Five (5)" null="no" visibility="public" comment="..."/>
 	</object>	
 	
 	<object type="biomarker_organ_study_data">
