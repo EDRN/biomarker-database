@@ -1,7 +1,7 @@
 <?php
 	// Configurable Model Properties:
 	class Modeler {
-		const DSN = "mysql://user:pass@server/database";
+		const DSN = "@BMDB_DSN@";
 		const ROOT_DIR = "@BMDB_INSTALL_HOME@";
 		const CWSP_PATH = "@PEAR_HOME@/CWSP";
 		const PEAR_PATH = "@PEAR_HOME@";

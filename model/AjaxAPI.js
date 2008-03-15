@@ -1,6 +1,6 @@
 // Javascript
 
-	var siteBaseUrl = 'http://url/of/project/root';
+	var siteBaseUrl = '@BMDB_BASE_URL@';
 
 	var XPressJS = {
 		Version: '1.0',
