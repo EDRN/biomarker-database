@@ -248,11 +248,17 @@ END;
 				return;	// study summary not defined for objects other than those above
 			}
 			
+			$study_abstract = (($studyObject->getStudy()->getAbstract() == "")
+				? '<em>no abstract available</em>'
+				: $studyObject->getStudy()->getAbstract());
+			
 			$component = <<<END
 				<div class="overview" id="overview{$studyObject->getObjId()}">
 					<h3>
 						<a href="study.php?view=basics&objId={$studyObject->getStudy()->getObjId()}">{$studyObject->getStudy()->getTitle()}</a>&nbsp;<span class="titleAction pseudolink grey" onclick="{$jsObjType}.Delete({$studyObject->getObjId()},new AjaxNotify.Create('overview{$studyObject->getObjId()}','Deleted'));">(unlink)</span>
 					</h3>
+					<h4>Abstract:</h4>
+					<div style="padding-left:10px;padding-right:10px;padding-bottom:15px;font-size:95%;line-height:1.3em;text-align:justify;">{$study_abstract}</div>
 					<table class="ajaxEdits greenborder" >
 						<tr><td class="label">Sensitivity (%):</td><td>{$sensEditor}</td></tr>
 						<tr class="even"><td class="label">Specificity (%):</td><td>{$specEditor}</td></tr>
@@ -333,7 +339,7 @@ END;
 			return <<<END
 			<div class="overview" id="overview{$od->getObjId()}">
 				<h3>
-					<a href="biomarkerorgan.php?view=studies&objId={$od->getObjId()}">{$od->getOrgan()->getName()}</a>&nbsp;
+					<a href="biomarkerorgan.php?view=basics&objId={$od->getObjId()}">{$od->getOrgan()->getName()}</a>&nbsp;
 					<span class="titleAction pseudolink grey" onclick="BiomarkerOrganData.Delete({$od->getObjId()},new AjaxNotify.Create('overview{$od->getObjId()}','Deleted'));">
 						(delete)
 					</span>

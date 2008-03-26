@@ -7,9 +7,9 @@ CREATE TABLE `Biomarker` (
 	`ShortName`  varchar(30)   NOT NULL      COMMENT '...' ,
 	`Description`  text   NOT NULL      COMMENT '...' ,
 	`QAState` ENUM('New','Under Review','Approved','Rejected')   NOT NULL      COMMENT '...' ,
-	`Phase` ENUM('One (I)','Two (II)','Three (III)','Four (IV)','Five (V)')   NOT NULL      COMMENT '...' ,
+	`Phase` ENUM('One (1)','Two (2)','Three (3)','Four (4)','Five (5)')   NOT NULL      COMMENT '...' ,
 	`Security` ENUM('Public','Private')   NOT NULL      COMMENT '...' ,
-	`Type` ENUM('Epigenetic','Gene','Protein')   NOT NULL      COMMENT '...' ,
+	`Type` ENUM('Epigenomics','Genomics','Proteomics','Glycomics','Nanotechnology','Metabalomics','Hypermethylation')   NOT NULL      COMMENT '...' ,
 	PRIMARY KEY (`objId`),
 	UNIQUE KEY `Title` (`Title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
@@ -66,6 +66,9 @@ CREATE TABLE `BiomarkerOrganData` (
 	`NPVMin` float   NOT NULL     ,
 	`NPVMax` float   NOT NULL     ,
 	`NPVComment`  text   NOT NULL     ,
+	`QAState` ENUM('New','Under Review','Approved','Rejected')   NOT NULL      COMMENT '...' ,
+	`Phase` ENUM('One (1)','Two (2)','Three (3)','Four (4)','Five (5)')   NOT NULL      COMMENT '...' ,
+	`Description`  text   NOT NULL     ,
 	PRIMARY KEY (`objId`)) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
 
 CREATE TABLE `BiomarkerOrganStudyData` (

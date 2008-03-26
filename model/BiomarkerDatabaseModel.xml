@@ -18,7 +18,7 @@
 		<attr name="QAState" type="enum:New,Under Review,Approved,Rejected" null="no" visibility="public" comment="..."/>
 		<attr name="Phase" type="enum:One (1),Two (2),Three (3),Four (4),Five (5)" null="no" visibility="public" comment="..."/>
 		<attr name="Security" type="enum:Public,Private" null="no" visibility="public" comment="..."/>
-		<attr name="Type" type="enum:Epigenetic,Gene,Protein" null="no" visibility="public" comment="..."/>
+		<attr name="Type" type="enum:Epigenomics,Genomics,Proteomics,Glycomics,Nanotechnology,Metabalomics,Hypermethylation" null="no" visibility="public" comment="..."/>
 	</object>
 	
 	<object type="biomarker_alias">
@@ -71,6 +71,7 @@
 		<attr name="NPVComment" type="string:500" null="no" visibility="public"/>
 		<attr name="QAState" type="enum:New,Under Review,Approved,Rejected" null="no" visibility="public" comment="..."/>
 		<attr name="Phase" type="enum:One (1),Two (2),Three (3),Four (4),Five (5)" null="no" visibility="public" comment="..."/>
+		<attr name="Description" type="string:2000" null="no" visibility="public"/>
 	</object>	
 	
 	<object type="biomarker_organ_study_data">

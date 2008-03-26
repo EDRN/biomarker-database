@@ -3,7 +3,7 @@
 	
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
 	$count = min(isset($_GET['count']) ? $_GET['count'] : 10, 250);
-	$q = "SELECT `objId`,`Title`,`BiomarkerID`,`Phase` "
+	$q = "SELECT `objId`,`Title`,`BiomarkerID`,`Type` "
 		."FROM `Biomarker` "
 		."LIMIT $start,$count ";
 	$markers = $XPress->Database->safeGetAll($q);
@@ -36,9 +36,10 @@
 	  <tr><th>Title (Long Name)</th><th>Identifier</th><th>Phase</th></tr>
 <?php
 	foreach ($markers as $marker){
+		$marker_type = (($marker['Type'] == '') ? "<em>not specified</em>" : $marker['Type']);
 		echo "<tr><td><a href=\"../../biomarker.php?view=basics&objId={$marker['objId']}\">{$marker['Title']}</td>"
 			."<td>{$marker['BiomarkerID']}</td>"
-			."<td>{$marker['Phase']}</td></tr>";
+			."<td>{$marker_type}</td></tr>";
 	}
 ?> 
 	</table>

@@ -13,10 +13,15 @@
 	$npvComment  = AjaxEditors::createMultiline('model/AjaxHandler.php',$object->getNPVComment(),"npvcomment","npvcomment",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_NPVCOMMENT,3,47);
 	$ppvComment  = AjaxEditors::createMultiline('model/AjaxHandler.php',$object->getPPVComment(),"ppvcomment","ppvcomment",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_PPVCOMMENT,3,47);	
 	//$phase = AjaxEditors::create('model/AjaxHandler.php',$object->getPhase(),"phase","phase",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_PHASE,3,47);
-	$phase = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getPhase(),"phase","phase",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_PHASE,array(array("value"=>"1","label"=>"One (1)"),array("value"=>"2","label"=>"Two (2)"),array("value"=>"3","label"=>"Three (3)"),array("value"=>"4","label"=>"Four (4)"),array("value"=>"5","label"=>"Five (5)")),'','click to select');
-	$qaState = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getQAState(),"qastate","qastate",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_QASTATE,array(array("value"=>"1","label"=>"New"),array("value"=>"2","label"=>"Under Review"),array("value"=>"3","label"=>"Approved"),array("value"=>"4","label"=>"Rejected")),'','click to select');
+	$phase = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getPhase(),"phase","phase",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_PHASE,array("1"=>"One (1)","2"=>"Two (2)","3"=>"Three (3)","4"=>"Four (4)","5"=>"Five (5)"),'','click to select');
+	$qaState = AjaxEditors::createSelect('model/AjaxHandler.php',$object->getQAState(),"qastate","qastate",$object->_getType(),$object->getObjId(),BiomarkerOrganDataVars::BIO_QASTATE,array("1"=>"New","2"=>"Under Review","3"=>"Approved","4"=>"Rejected"),'','click to select');
+	$Description  = AjaxEditors::createMultiline('model/AjaxHandler.php',$object->getDescription(),"description","description",$object->_getType(),$object->getDescription(),BiomarkerOrganDataVars::BIO_DESCRIPTION,3,47);	
 	
 	echo <<<ENDDISPLAY
+		<h4>Description</h4>
+		<table class="ajaxEdits">
+			<tr class="even"><td class="label">Description:</td><td>{$Description}</td></tr>
+		</table>
 		<h4>Phase &amp; QA State</h4>
 		<table class="ajaxEdits">
 			<tr class="even"><td class="label">Biomarker Phase:</td><td>{$phase}</td></tr>

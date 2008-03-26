@@ -98,11 +98,19 @@ if (isset($_POST['action'])){
 						$obj->setType($val);
 						switch($val){
 							case 1:
-								echo "Epigenetic"; break;
+								echo "Epigenomics"; break;
 							case 2:
-								echo "Gene"; break;
+								echo "Genomics"; break;
 							case 3:
-								echo "Protein"; break;
+								echo "Proteomics"; break;
+							case 4:
+								echo "Glycomics"; break;
+							case 5:
+								echo "Nanotechnology"; break;
+							case 6:
+								echo "Metabalomics"; break;
+							case 7:
+								echo "Hypermethylation"; break;
 							default: echo stripslashes($val); break;
 						}
 						break;
@@ -364,6 +372,11 @@ if (isset($_POST['action'])){
 								echo "Five (5)"; break;
 							default: echo stripslashes($val); break;
 						}
+						break;
+					case "Description":
+						$ovalue = $obj->getDescription();
+						$obj->setDescription($val);
+						echo stripslashes(htmlspecialchars_decode($val));
 						break;
 				}
 				break;

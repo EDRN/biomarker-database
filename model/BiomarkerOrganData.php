@@ -15,6 +15,7 @@ class BiomarkerOrganDataVars {
 	const BIO_NPVCOMMENT = "NPVComment";
 	const BIO_QASTATE = "QAState";
 	const BIO_PHASE = "Phase";
+	const BIO_DESCRIPTION = "Description";
 	const BIO_ORGAN = "Organ";
 	const BIO_BIOMARKER = "Biomarker";
 	const BIO_RESOURCES = "Resources";
@@ -43,6 +44,7 @@ class objBiomarkerOrganData {
 	public $NPVComment = '';
 	public $QAState = '';
 	public $Phase = '';
+	public $Description = '';
 	public $Organ = '';
 	public $Biomarker = '';
 	public $Resources = array();
@@ -79,6 +81,7 @@ class objBiomarkerOrganData {
 			$this->NPVComment = $result['NPVComment'];
 			$this->QAState = $result['QAState'];
 			$this->Phase = $result['Phase'];
+			$this->Description = $result['Description'];
 		}
 		if ($inflate){
 			return $this->inflate($parentObjects);
@@ -103,6 +106,7 @@ class objBiomarkerOrganData {
 		$this->NPVComment = '';
 		$this->QAState = '';
 		$this->Phase = '';
+		$this->Description = '';
 		$this->Organ = '';
 		$this->Biomarker = '';
 		$this->Resources = array();
@@ -155,6 +159,9 @@ class objBiomarkerOrganData {
 	}
 	public function getPhase() {
 		 return $this->Phase;
+	}
+	public function getDescription() {
+		 return $this->Description;
 	}
 	public function getOrgan() {
 		 return $this->Organ;
@@ -263,6 +270,12 @@ class objBiomarkerOrganData {
 			$this->save();
 		}
 	}
+	public function setDescription($value,$bSave = true) {
+		$this->Description = $value;
+		if ($bSave){
+			$this->save();
+		}
+	}
 	public function create($OrganId,$BiomarkerId){
 		$this->save();
 		$this->link("Organ",$OrganId,"OrganDatas");
@@ -344,7 +357,7 @@ class objBiomarkerOrganData {
 		if ($this->objId == 0){
 			// Insert a new object into the db
 			$q = "INSERT INTO `BiomarkerOrganData` ";
-			$q .= 'VALUES("'.$this->objId.'","'.$this->SensitivityMin.'","'.$this->SensitivityMax.'","'.$this->SensitivityComment.'","'.$this->SpecificityMin.'","'.$this->SpecificityMax.'","'.$this->SpecificityComment.'","'.$this->PPVMin.'","'.$this->PPVMax.'","'.$this->PPVComment.'","'.$this->NPVMin.'","'.$this->NPVMax.'","'.$this->NPVComment.'","'.$this->QAState.'","'.$this->Phase.'") ';
+			$q .= 'VALUES("'.$this->objId.'","'.$this->SensitivityMin.'","'.$this->SensitivityMax.'","'.$this->SensitivityComment.'","'.$this->SpecificityMin.'","'.$this->SpecificityMax.'","'.$this->SpecificityComment.'","'.$this->PPVMin.'","'.$this->PPVMax.'","'.$this->PPVComment.'","'.$this->NPVMin.'","'.$this->NPVMax.'","'.$this->NPVComment.'","'.$this->QAState.'","'.$this->Phase.'","'.$this->Description.'") ';
 			$r = $this->XPress->Database->safeQuery($q);
 			$this->objId = $this->XPress->Database->safeGetOne("SELECT LAST_INSERT_ID() FROM `BiomarkerOrganData`");
 		} else {
@@ -364,7 +377,8 @@ class objBiomarkerOrganData {
 			$q .= "`NPVMax`=\"$this->NPVMax\","; 
 			$q .= "`NPVComment`=\"$this->NPVComment\","; 
 			$q .= "`QAState`=\"$this->QAState\","; 
-			$q .= "`Phase`=\"$this->Phase\" ";
+			$q .= "`Phase`=\"$this->Phase\","; 
+			$q .= "`Description`=\"$this->Description\" ";
 			$q .= "WHERE `objId` = $this->objId ";
 			$r = $this->XPress->Database->safeQuery($q);
 		}
@@ -502,6 +516,7 @@ class objBiomarkerOrganData {
 		$vo->NPVComment = $this->NPVComment;
 		$vo->QAState = $this->QAState;
 		$vo->Phase = $this->Phase;
+		$vo->Description = $this->Description;
 		return $vo;
 	}
 	public function applyVO($voBiomarkerOrganData) {
@@ -550,10 +565,13 @@ class objBiomarkerOrganData {
 		if(!empty($voBiomarkerOrganData->Phase)){
 			$this->Phase = $voBiomarkerOrganData->Phase;
 		}
+		if(!empty($voBiomarkerOrganData->Description)){
+			$this->Description = $voBiomarkerOrganData->Description;
+		}
 	}
 	public function toRDF($namespace,$urlBase) {
 		$rdf = '';
-		$rdf .= "<{$namespace}:BiomarkerOrganData rdf:about=\"{$urlBase}/editors/showBiomarkerOrgan.php?b={$this->BiomarkerID}&amp;o={$this->OrganSite}\">\r\n<{$namespace}:objId>$this->objId</{$namespace}:objId>\r\n<{$namespace}:SensitivityMin>$this->SensitivityMin</{$namespace}:SensitivityMin>\r\n<{$namespace}:SensitivityMax>$this->SensitivityMax</{$namespace}:SensitivityMax>\r\n<{$namespace}:SensitivityComment>$this->SensitivityComment</{$namespace}:SensitivityComment>\r\n<{$namespace}:SpecificityMin>$this->SpecificityMin</{$namespace}:SpecificityMin>\r\n<{$namespace}:SpecificityMax>$this->SpecificityMax</{$namespace}:SpecificityMax>\r\n<{$namespace}:SpecificityComment>$this->SpecificityComment</{$namespace}:SpecificityComment>\r\n<{$namespace}:PPVMin>$this->PPVMin</{$namespace}:PPVMin>\r\n<{$namespace}:PPVMax>$this->PPVMax</{$namespace}:PPVMax>\r\n<{$namespace}:PPVComment>$this->PPVComment</{$namespace}:PPVComment>\r\n<{$namespace}:NPVMin>$this->NPVMin</{$namespace}:NPVMin>\r\n<{$namespace}:NPVMax>$this->NPVMax</{$namespace}:NPVMax>\r\n<{$namespace}:NPVComment>$this->NPVComment</{$namespace}:NPVComment>\r\n<{$namespace}:QAState>$this->QAState</{$namespace}:QAState>\r\n<{$namespace}:Phase>$this->Phase</{$namespace}:Phase>\r\n";
+		$rdf .= "<{$namespace}:BiomarkerOrganData rdf:about=\"{$urlBase}/editors/showBiomarkerOrgan.php?b={$this->BiomarkerID}&amp;o={$this->OrganSite}\">\r\n<{$namespace}:objId>$this->objId</{$namespace}:objId>\r\n<{$namespace}:SensitivityMin>$this->SensitivityMin</{$namespace}:SensitivityMin>\r\n<{$namespace}:SensitivityMax>$this->SensitivityMax</{$namespace}:SensitivityMax>\r\n<{$namespace}:SensitivityComment>$this->SensitivityComment</{$namespace}:SensitivityComment>\r\n<{$namespace}:SpecificityMin>$this->SpecificityMin</{$namespace}:SpecificityMin>\r\n<{$namespace}:SpecificityMax>$this->SpecificityMax</{$namespace}:SpecificityMax>\r\n<{$namespace}:SpecificityComment>$this->SpecificityComment</{$namespace}:SpecificityComment>\r\n<{$namespace}:PPVMin>$this->PPVMin</{$namespace}:PPVMin>\r\n<{$namespace}:PPVMax>$this->PPVMax</{$namespace}:PPVMax>\r\n<{$namespace}:PPVComment>$this->PPVComment</{$namespace}:PPVComment>\r\n<{$namespace}:NPVMin>$this->NPVMin</{$namespace}:NPVMin>\r\n<{$namespace}:NPVMax>$this->NPVMax</{$namespace}:NPVMax>\r\n<{$namespace}:NPVComment>$this->NPVComment</{$namespace}:NPVComment>\r\n<{$namespace}:QAState>$this->QAState</{$namespace}:QAState>\r\n<{$namespace}:Phase>$this->Phase</{$namespace}:Phase>\r\n<{$namespace}:Description>$this->Description</{$namespace}:Description>\r\n";
 		if ($this->Organ != ''){$rdf .= $this->Organ->toRDFStub($namespace,$urlBase);}
 		if ($this->Biomarker != ''){$rdf .= $this->Biomarker->toRDFStub($namespace,$urlBase);}
 		foreach ($this->Resources as $r) {
