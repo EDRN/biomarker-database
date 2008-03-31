@@ -1,0 +1,59 @@
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4>Associated Studies:</h4>
+	<ul style="list-style:square;color:#900003;">
+	  <li><span id="summary[studyData.objId]">
+	  	<a href="../biomarkerorgan/?id=20">[studyData.Study.Title;block=li]</a><br/>
+	  	<span class="hint">
+	  	  [<span class="pseudolink" onclick="showDetails([studyData.objId]);">View Associated Data</span>] 
+	  	  [<a href="../study/?id=[studyData.Study.objId]">View Study</a>]
+	  	</span>
+	  </span><span id="details[studyData.objId]" style="display:none;">
+	  <fieldset><legend>[studyData.Study.Title] &nbsp;
+		<span class="hint">[ <span class="pseudolink" onclick="hideDetails([studyData.objId]);">(Hide Details)</span> ]</span></legend>
+	  	<h4>Abstract: &nbsp;&nbsp;<span class="hint">(from <a href="../study/?id=[studyData.Study.objId]">here</a>)</span></h4>
+		<div style="padding-left: 10px; padding-right: 10px; padding-bottom: 15px; font-size: 90%; line-height: 1.3em; text-align: justify;">
+		[studyData.Study.StudyAbstract]
+		</div>
+		<h4>Pertinent Data</h4>
+		<table class="editable_info">
+		  <tr><td class="label">Sensitivity:</td><td style="width:200px;"><span id="sensitivity[studyData.objId]">[studyData.Sensitivity]</span></td></tr>
+		  <tr><td class="label">Specificity:</td><td><span id="specificity[studyData.objId]">[studyData.Specificity]</span></td></tr>
+		  <tr><td class="label">Negative Predictive Value:</td><td><span id="npv[studyData.objId]">[studyData.NPV]</span></td></tr>
+		  <tr><td class="label">Positive Predictive Value:</td><td><span id="ppv[studyData.objId]">[studyData.PPV]</span></td></tr>
+		</table>
+	  </fieldset>
+	  </span>
+	  </li>
+	</ul>
+</div>
+<div id="options_section" style="width:350px;">
+	<div id="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
+	<h5>Associate a Study:</h5>
+	<div id="options_content" style="display:none;">
+		<input type="text" style="width:100%;"/><br/>
+		<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
+		<input type="button" value="Associate" style="float:right;padding:2px;"/>
+	</div>
+</div>
+</div><!-- end outer_wrapper -->
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+</script>
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+	new Ajax.InPlaceEditor('sensitivity[studyDataJs.objId;block=script]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=Sensitivity&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('specificity[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=Specificity&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('npv[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=NPV&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('ppv[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=PPV&value='+encodeURIComponent(value);}, cols:3, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+</script>
+<script type="text/javascript">
+function showDetails(id) {
+	$('summary'+id).style.display = 'none';
+	$('details'+id).style.display = 'block';
+}
+function hideDetails(id) {
+	$('details'+id).style.display = 'none';
+	$('summary'+id).style.display = 'block';
+}
+</script>

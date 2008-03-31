@@ -47,6 +47,17 @@
 			foreach ($organDatas as $o) {$o->getOrgan();} // populate organ data
 			$p->view()->MergeBlock("organData",$organDatas);
 		}
+		if ($view == "studies") {
+			try {
+			$studyDatas = $b->getStudies();
+			foreach ($studyDatas as $s) {$s->getStudy();} // populate study data
+			$p->view()->MergeBlock("studyData",$studyDatas);
+			$p->view()->MergeBlock("studyDataJs",$studyDatas);
+			} catch (XPressException $e) {
+				echo $e->getFormattedMessage();
+				die();
+			}
+		}
 
 		
 		$p->view()->Show();
