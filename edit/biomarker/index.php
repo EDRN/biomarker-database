@@ -9,21 +9,8 @@
 	// Determine whether the page contents are editable
 	$editable = 1;
 
-	
-	if (isset($_POST['special'])){
-		if ($_POST['special'] == 'createnew'){
-			$obj = new objBiomarker($xp);
-			$obj->create($_POST['title']);
-			$titleNoSpace = preg_replace("/ /","",ucwords($_POST['title']));
-			$obj->setBiomarkerID("urn:edrn:biomarker:{$titleNoSpace}");
-			cwsp_page::httpRedirect("./biomarker.php?objId={$obj->getObjId()}&view=basics");
-		}
-		if ($_POST['special'] == 'delete'){
-			$obj = new objBiomarker($xp,$_POST['objId']);
-			$obj->delete();
-			cwsp_page::httpRedirect("browse/biomarkers/?notice=Biomarker+deleted.");
-		}
-	}
+	// Process any POST or GET actions
+	include_once("actions.inc.php");
 	
 	// Retrieve the desired object from the database
 	if (false == ($b = BiomarkerFactory::Retrieve($_GET['id']))) {
@@ -35,6 +22,7 @@
 	$p->includeCSS('../../static/css/frozen.css');
 	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/lib/prototype.js');
 	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/src/scriptaculous.js');
+	$p->includeJS('../../static/js/textInputs.js');
 	$p->open();
 	// Load and display the menu
 	$p->view()->LoadTemplate('view/menu.html');
@@ -48,15 +36,10 @@
 			$p->view()->MergeBlock("organData",$organDatas);
 		}
 		if ($view == "studies") {
-			try {
 			$studyDatas = $b->getStudies();
 			foreach ($studyDatas as $s) {$s->getStudy();} // populate study data
 			$p->view()->MergeBlock("studyData",$studyDatas);
 			$p->view()->MergeBlock("studyDataJs",$studyDatas);
-			} catch (XPressException $e) {
-				echo $e->getFormattedMessage();
-				die();
-			}
 		}
 
 		
