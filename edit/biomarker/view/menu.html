@@ -1,0 +1,27 @@
+<div class="menu">
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+		<a href="../../">Home</a> / 
+		<a href="../../browse/biomarkers/">Biomarkers</a> /
+		<span>[onload;block=span; when [var.view]='basics'][var.b.Title]</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / organs [onload;block=span;when [var.view]='organs']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / studies [onload;block=span;when [var.view]='studies']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / publications [onload;block=span;when [var.view]='publications']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / resources [onload;block=span;when [var.view]='resources']</span>
+	</div><!-- End Breadcrumbs -->
+	<div class="mainContent">
+		<h2 class="title">
+		<span class="titleDetails">[var.b.Title]</span>
+		</h2>
+		<div id="smallLinks">
+			<ul>
+			  <li class="[var.view;if [val]='basics'; then 'activeLink'; else '']"><a href="./?view=basics&id=[var.b.objId]">Basics</a></li>
+			  <li class="[var.view;if [val]='organs'; then 'activeLink'; else '']"><a href="./?view=organs&id=[var.b.objId]">Organs</a></li>
+			  <li class="[var.view;if [val]='studies'; then 'activeLink'; else '']"><a href="./?view=studies&id=[var.b.objId]">Studies</a></li>
+			  <li class="[var.view;if [val]='publications'; then 'activeLink'; else '']"><a href="./?view=publications&id=[var.b.objId]">Publications</a></li>
+			  <li class="[var.view;if [val]='resources'; then 'activeLink'; else '']"><a href="./?view=resources&id=[var.b.objId]">Resources</a></li>
+			</ul>
+			<div class="clr"><!--  --></div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4>Basic Information:</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr class="even"><td class="label">Title:</td><td><span id="title">[var.b.Title;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Short Name:</td><td><span id="shortName">[var.b.ShortName;ifempty='click to edit';noerr]</span></td></tr>
+			<tr class="even"><td class="label">Identifier:</td><td><span id="URN">[var.b.BiomarkerID;ifempty='click to edit';noerr]</span></td></tr>
+			<tr class=""><td class="label">Security:</td><td>[var.b.Security;ifempty='click to select';noerr]</td></tr>
+			<tr class="even"><td class="label">QA State:</td><td>[var.b.QAState;ifempty='click to select';noerr]</td></tr>
+			<tr class=""><td class="label">Type:</td><td>[var.b.Type;ifempty='click to select';noerr]</td></tr>
+			<tr class="even"><td class="label">Description:</td><td><span id="description">[var.b.Description;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+</div>
+</div><!-- end outer_wrapper -->
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+	new Ajax.InPlaceEditor('title','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Biomarker&objID=[var.b.objId]&attr=Title&value='+encodeURIComponent(value);}, cols:42,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('shortName','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Biomarker&objID=[var.b.objId]&attr=ShortName&value='+encodeURIComponent(value);}, cols:42,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('URN','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Biomarker&objID=[var.b.objId]&attr=BiomarkerID&value='+encodeURIComponent(value);}, cols:42,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('description','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Biomarker&objID=[var.b.objId]&attr=Description&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+</script>
