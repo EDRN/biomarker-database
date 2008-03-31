@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xversion="0.2.0">
+	<!--  <object type="objectType"> -->
+	<!--    <attr name="attrName" type="attrType" null="no/yes" unique="no/yes" visibility="public/private" comment="..."> -->
+	<!--  </object> -->
+	<object type="biomarker">
+		<attr name="EKE_ID" type="string:80" null="no" visibility="public" comment="..."/>
+		<attr name="BiomarkerID" type="string:80" null="no" visibility="public" comment="..."/>
+		<attr name="PanelID" type="string:80" null="no" visibility="public" comment="..."/>
+		<attr name="Title" type="string:80" null="no" visibility="public" unique="yes" comment="..."/>
+		<attr name="ShortName" type="string:30" null="no" visibility="public" comment="..."/>
+		<attr name="Description" type="string:500" null="no" visibility="public" comment="..."/>
+		<attr name="QAState" type="enum:New,Under Review,Approved,Rejected" null="no" visibility="public" comment="..."/>
+		<attr name="Phase" type="enum:One (1),Two (2),Three (3),Four (4),Five (5)" null="no" visibility="public" comment="..."/>
+		<attr name="Security" type="enum:Public,Private" null="no" visibility="public" comment="..."/>
+		<attr name="Type" type="enum:Epigenomics,Genomics,Proteomics,Glycomics,Nanotechnology,Metabalomics,Hypermethylation" null="no" visibility="public" comment="..."/>
+	</object>
+	
+	<object type="biomarker_alias">
+	<attr name="Alias" type="string:80" null="no" visibility="public"/>
+	</object>
+	
+	<object type="study">
+		<attr name="EDRNID" type="uint" null="no" visibility="public"/>
+		<attr name="FHCRC_ID" type="uint" null="no" visibility="public" comment="from the fhcrc website url"/>
+		<attr name="DMCC_ID" type="string:80" null="no" visibility="public" comment="from fhcrc website"/>
+		<attr name="Title" type="string:80" null="no" unique="yes" visibility="public"/>
+		<attr name="Abstract" type="string:5000" null="no" visibility="public"/>
+		<attr name="BiomarkerPopulationCharacteristics" type="enum:Case/Control,Longitudinal,Randomized" null="no" visibility="public"/>
+		<attr name="BPCDescription" type="string:1000" null="no" visibility="public"/>
+		<attr name="Design" type="enum:Retrospective,Prospective Analysis,Cross Sectional" null="no" visibility="public" comment="fhcrc StudyDesign field"/>
+		<attr name="DesignDescription" type="string:1000" null="no" visibility="public"/>
+		<attr name="BiomarkerStudyType" type="enum:Registered,Unregistered" default="Unregistered" null="no" visibility="public" comment="whether or not the study is an EDRN study"/>
+	</object>
+	
+	<object type="biomarker_study_data">
+		<attr name="Sensitivity" type="float" null="no" visibility="public"/>
+		<attr name="Specificity" type="float" null="no" visibility="public"/>
+		<attr name="PPV" type="float" null="no" visibility="public"/>
+		<attr name="NPV" type="float" null="no" visibility="public"/>
+		<attr name="Assay" type="uint" null="no" visibility="public"/>
+		<attr name="Technology" type="uint" null="no" visibility="public"/>
+	</object>
+	
+	<object type="organ">
+		<attr name="Name" type="string:40" null="no" visibility="public" unique="yes" comment="The text of this alias"/>
+	</object>
+	
+	<object type="biomarker_organ_data">
+		<attr name="SensitivityMin" type="float" null="no" visibility="public"/>
+		<attr name="SensitivityMax" type="float" null="no" visibility="public"/>
+		<attr name="SensitivityComment" type="string:500" null="no" visibility="public"/>
+		<attr name="SpecificityMin" type="float" null="no" visibility="public"/>
+		<attr name="SpecificityMax" type="float" null="no" visibility="public"/>
+		<attr name="SpecificityComment" type="string:500" null="no" visibility="public"/>
+		<attr name="PPVMin" type="float" null="no" visibility="public"/>
+		<attr name="PPVMax" type="float" null="no" visibility="public"/>
+		<attr name="PPVComment" type="string:500" null="no" visibility="public"/>
+		<attr name="NPVMin" type="float" null="no" visibility="public"/>
+		<attr name="NPVMax" type="float" null="no" visibility="public"/>
+		<attr name="NPVComment" type="string:500" null="no" visibility="public"/>
+		<attr name="QAState" type="enum:New,Under Review,Approved,Rejected" null="no" visibility="public" comment="..."/>
+		<attr name="Phase" type="enum:One (1),Two (2),Three (3),Four (4),Five (5)" null="no" visibility="public" comment="..."/>
+		<attr name="Description" type="string:2000" null="no" visibility="public"/>
+	</object>	
+	
+	<object type="biomarker_organ_study_data">
+		<attr name="Sensitivity" type="float" null="no" visibility="public"/>
+		<attr name="Specificity" type="float" null="no" visibility="public"/>
+		<attr name="PPV" type="float" null="no" visibility="public"/>
+		<attr name="NPV" type="float" null="no" visibility="public"/>
+		<attr name="Assay" type="uint" null="no" visibility="public"/>
+		<attr name="Technology" type="uint" null="no" visibility="public"/>
+	</object>
+	
+	<object type="publication">
+		<attr name="PubMedID" type="string:40" null="no" unique="yes" visibility="public"/>
+		<attr name="Title" type="string:120" null="no" visibility="public"/>
+		<attr name="Author" type="string:120" null="no" visibility="public"/>
+		<attr name="Journal" type="string:120" null="no" visibility="public"/>
+		<attr name="Volume" type="string:40" null="no" visibility="public"/>
+		<attr name="Issue" type="string:40" null="no" visibility="public"/>
+		<attr name="Year" type="uint" null="no" visibility="public"/>
+	</object>
+	
+	<object type="resource">
+		<attr name="Name" type="string:60" null="no" visibility="public" comment="..."/>
+		<attr name="URL" type="string:128" null="no" visibility="public"/>
+	</object>
+	
+	<object type="site">
+		<attr name="Name" type="string:120" null="no" visibility="public"/>
+	</object>
+	
+	<object type="person">
+		<attr name="FirstName" type="string:20" null="no" visibility="public"/>
+		<attr name="LastName" type="string:20" null="no" visibility="public"/>
+		<attr name="Title" type="string:80" null="no" visibility="public"/>
+		<attr name="Specialty" type="string:80" null="no" visibility="public"/>
+		<attr name="Phone" type="string:20" null="no" visibility="public"/>
+		<attr name="Fax" type="string:20" null="no" visibility="public"/>
+		<attr name="Email" type="string:80" null="no" visibility="public"/>
+	</object>
+
+	<!--  <relation object="objectType"> -->	
+	<!--    <has quantity="one/many" type="parent/peer/child" class="objectType" visibility="public/private" name="variableName"/> -->
+	<!--  </relation> -->
+	<relation object="person">
+		<has quantity="many" type="peer" class="site" onDeletePeer="persist" name="site" visibility="public"/>
+	</relation>
+	
+	<relation object="site">
+		<has quantity="many" type="peer" class="person" onDeletePeer="persist" name="staff" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker">
+		<has quantity="many" type="child"  class="biomarker_alias"      name="aliases"      visibility="public"/>
+		<has quantity="many" type="child"  class="biomarker_study_data" name="studies"    visibility="public"/> 
+		<has quantity="many" type="child"  class="biomarker_organ_data" name="organDatas" visibility="public"/>
+		<has quantity="many" type="peer"   class="publication"     onDeletePeer="persist"  name="publications" visibility="public"/>
+		<has quantity="many" type="peer"   class="resource"        onDeletePeer="persist"  name="resources"    visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_alias">
+		<has quantity="one" type="parent" class="biomarker" name="biomarker" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_study_data">
+		<has quantity="one"  type="parent" class="study" name="study" visibility="public"/>
+		<has quantity="one"  type="parent" class="biomarker" name="biomarker" visibility="public"/>
+		<has quantity="many" type="peer" class="publication" onDeletePeer="persist" name="publications" visibility="public"/>
+		<has quantity="many" type="peer" class="resource" onDeletePeer="persist" name="resources" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_organ_data">
+		<has quantity="one"  type="parent" class="organ"     name="organ" visibility="public" />
+		<has quantity="one"  type="parent" class="biomarker" name="biomarker" visibility="public"/>
+		<has quantity="many" type="peer"   class="resource"    onDeletePeer="persist" name="resources"    visibility="public"/>
+		<has quantity="many" type="peer"   class="publication" onDeletePeer="persist" name="publications" visibility="public"/>
+		<has quantity="many" type="peer"   class="biomarker_organ_study_data" onDeletePeer="persist" name="studyDatas" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_organ_study_data">
+		<has quantity="one" type="parent" class="study" name="study" visibility="public"/>
+		<has quantity="one" type="parent" class="biomarker_organ_data" name="biomarkerOrganData" visibility="public"/>
+		<has quantity="many" type="peer" class="publication" name="publications" visibility="public"/>
+		<has quantity="many" type="peer" class="resource" name="resources" visibility="public"/>
+	</relation>
+
+	<relation object="organ">
+		<has quantity="many" type="child" class="biomarker_organ_data" name="organDatas" visibility="public"/>
+	</relation>
+	
+	<relation object="study">
+		<has quantity="many" type="child" class="biomarker_study_data" name="biomarkers" visibility="public"/>
+		<has quantity="many" type="child" class="biomarker_organ_data" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="child" class="biomarker_organ_study_data" name="biomarker_organ_datas" visibility="public"/>
+		<has quantity="many" type="peer"  class="publication" onDeletePeer="persist" name="publications" visibility="public"/>
+		<has quantity="many" type="peer"  class="resource" onDeletePeer="persist" name="resources" visibility="public"/>
+	</relation>
+
+	<relation object="publication">
+		<has quantity="many" type="peer" class="biomarker" onDeletePeer="persist" name="biomarkers" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_data" onDeletePeer="persist" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_study_data" onDeletePeer="persist" name="biomarker_organ_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_study_data" onDeletePeer="persist" name="biomarker_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="study" onDeletePeer="persist" name="studies" visibility="public"/>
+	</relation>
+	
+	<relation object="resource">
+		<has quantity="many" type="peer" class="biomarker" onDeletePeer="persist" name="biomarkers" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_data" onDeletePeer="persist" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_study_data" onDeletePeer="persist" name="biomarker_organ_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_study_data" onDeletePeer="persist" name="biomarker_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="study" onDeletePeer="persist" name="studies" visibility="public"/>
+	</relation><relation object="person">
+		<has quantity="many" type="peer" class="site" onDeletePeer="persist" name="site" visibility="public"/>
+	</relation>
+	
+	<relation object="site">
+		<has quantity="many" type="peer" class="person" onDeletePeer="persist" name="staff" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker">
+		<has quantity="many" type="child"  class="biomarker_alias"      name="aliases"      visibility="public"/>
+		<has quantity="many" type="child"  class="biomarker_study_data" name="studies"    visibility="public"/> 
+		<has quantity="many" type="child"  class="biomarker_organ_data" name="organDatas" visibility="public"/>
+		<has quantity="many" type="peer"   class="publication"     onDeletePeer="persist"  name="publications" visibility="public"/>
+		<has quantity="many" type="peer"   class="resource"        onDeletePeer="persist"  name="resources"    visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_alias">
+		<has quantity="one" type="parent" class="biomarker" name="biomarker" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_study_data">
+		<has quantity="one"  type="parent" class="study" name="study" visibility="public"/>
+		<has quantity="one"  type="parent" class="biomarker" name="biomarker" visibility="public"/>
+		<has quantity="many" type="peer" class="publication" onDeletePeer="persist" name="publications" visibility="public"/>
+		<has quantity="many" type="peer" class="resource" onDeletePeer="persist" name="resources" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_organ_data">
+		<has quantity="one"  type="parent" class="organ"     name="organ" visibility="public" />
+		<has quantity="one"  type="parent" class="biomarker" name="biomarker" visibility="public"/>
+		<has quantity="many" type="peer"   class="resource"    onDeletePeer="persist" name="resources"    visibility="public"/>
+		<has quantity="many" type="peer"   class="publication" onDeletePeer="persist" name="publications" visibility="public"/>
+		<has quantity="many" type="peer"   class="biomarker_organ_study_data" onDeletePeer="persist" name="studyDatas" visibility="public"/>
+	</relation>
+	
+	<relation object="biomarker_organ_study_data">
+		<has quantity="one" type="parent" class="study" name="study" visibility="public"/>
+		<has quantity="one" type="parent" class="biomarker_organ_data" name="biomarkerOrganData" visibility="public"/>
+		<has quantity="many" type="peer" class="publication" name="publications" visibility="public"/>
+		<has quantity="many" type="peer" class="resource" name="resources" visibility="public"/>
+	</relation>
+
+	<relation object="organ">
+		<has quantity="many" type="child" class="biomarker_organ_data" name="organDatas" visibility="public"/>
+	</relation>
+	
+	<relation object="study">
+		<has quantity="many" type="child" class="biomarker_study_data" name="biomarkers" visibility="public"/>
+		<has quantity="many" type="child" class="biomarker_organ_data" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="child" class="biomarker_organ_study_data" name="biomarker_organ_datas" visibility="public"/>
+		<has quantity="many" type="peer"  class="publication" onDeletePeer="persist" name="publications" visibility="public"/>
+		<has quantity="many" type="peer"  class="resource" onDeletePeer="persist" name="resources" visibility="public"/>
+	</relation>
+
+	<relation object="publication">
+		<has quantity="many" type="peer" class="biomarker" onDeletePeer="persist" name="biomarkers" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_data" onDeletePeer="persist" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_study_data" onDeletePeer="persist" name="biomarker_organ_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_study_data" onDeletePeer="persist" name="biomarker_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="study" onDeletePeer="persist" name="studies" visibility="public"/>
+	</relation>
+	
+	<relation object="resource">
+		<has quantity="many" type="peer" class="biomarker" onDeletePeer="persist" name="biomarkers" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_data" onDeletePeer="persist" name="biomarker_organs" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_organ_study_data" onDeletePeer="persist" name="biomarker_organ_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="biomarker_study_data" onDeletePeer="persist" name="biomarker_studies" visibility="public"/>
+		<has quantity="many" type="peer" class="study" onDeletePeer="persist" name="studies" visibility="public"/>
+	</relation>
+</model>
