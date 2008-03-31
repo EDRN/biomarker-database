@@ -1,0 +1,47 @@
+<!-- TBS template for Publication object browser -->
+<div id="xpress_header"></div><div id="xp_browser_wrapper"><h1 class="xp_browser_nav"><a href="./">Model Browser</a> :: Publication</h1>
+<div class="xp_browser_new">
+<h3>Create a new Publication Object:</h3>
+<form method="POST">
+<table>
+<tr><td>PubMedID:</td><td><input type="text" name="PubMedID"/></td></tr>
+<tr><td>Title:</td><td><input type="text" name="Title"/></td></tr>
+<tr><td>Author:</td><td><input type="text" name="Author"/></td></tr>
+<tr><td>Journal:</td><td><input type="text" name="Journal"/></td></tr>
+<tr><td>Volume:</td><td><input type="text" name="Volume"/></td></tr>
+<tr><td>Issue:</td><td><input type="text" name="Issue"/></td></tr>
+<tr><td>Year:</td><td><input type="text" name="Year"/></td></tr>
+<tr><td colspan="2" style="text-align:right;"> <input type="submit" name="createObject" value="Create Object"/></td></tr>
+</table>
+</form>
+</div>
+<div id="xp_browser_existing">
+<h3>Existing Publication Objects:</h3>
+<table>
+  <tr>
+  <th>&nbsp;</th>
+<th>&nbsp;
+<th>objId</th>
+<th>PubMedID</th>
+<th>Title</th>
+<th>Author</th>
+<th>Journal</th>
+<th>Volume</th>
+<th>Issue</th>
+<th>Year</th>
+  </tr>
+  <tr>
+    <td><a style="text-decoration:none;" href="?id=[obj.objId;block=tr]"><input type="button" value="Edit"/></a>
+     <td><form method="POST"><input type="hidden" name="id" value="[obj.objId]"/><input type="submit" name="deleteObject" value="Delete" onclick="return confirm('Really delete this object?');"/></form></td>    <td style="text-align:center;">[obj.objId]</td>
+    <td style="text-align:center;">[obj.PubMedID]</td>
+    <td style="text-align:center;">[obj.Title]</td>
+    <td style="text-align:center;">[obj.Author]</td>
+    <td style="text-align:center;">[obj.Journal]</td>
+    <td style="text-align:center;">[obj.Volume]</td>
+    <td style="text-align:center;">[obj.Issue]</td>
+    <td style="text-align:center;">[obj.Year]</td>
+  </tr>
+</table>
+</div>
+</div>
+

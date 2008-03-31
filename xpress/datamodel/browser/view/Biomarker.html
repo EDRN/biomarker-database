@@ -1,0 +1,56 @@
+<!-- TBS template for Biomarker object browser -->
+<div id="xpress_header"></div><div id="xp_browser_wrapper"><h1 class="xp_browser_nav"><a href="./">Model Browser</a> :: Biomarker</h1>
+<div class="xp_browser_new">
+<h3>Create a new Biomarker Object:</h3>
+<form method="POST">
+<table>
+<tr><td>EKE_ID:</td><td><input type="text" name="EKE_ID"/></td></tr>
+<tr><td>BiomarkerID:</td><td><input type="text" name="BiomarkerID"/></td></tr>
+<tr><td>PanelID:</td><td><input type="text" name="PanelID"/></td></tr>
+<tr><td>Title:</td><td><input type="text" name="Title"/></td></tr>
+<tr><td>ShortName:</td><td><input type="text" name="ShortName"/></td></tr>
+<tr><td>Description:</td><td><input type="text" name="Description"/></td></tr>
+<tr><td>QAState:</td><td><input type="text" name="QAState"/></td></tr>
+<tr><td>Phase:</td><td><input type="text" name="Phase"/></td></tr>
+<tr><td>Security:</td><td><input type="text" name="Security"/></td></tr>
+<tr><td>Type:</td><td><input type="text" name="Type"/></td></tr>
+<tr><td colspan="2" style="text-align:right;"> <input type="submit" name="createObject" value="Create Object"/></td></tr>
+</table>
+</form>
+</div>
+<div id="xp_browser_existing">
+<h3>Existing Biomarker Objects:</h3>
+<table>
+  <tr>
+  <th>&nbsp;</th>
+<th>&nbsp;
+<th>objId</th>
+<th>EKE_ID</th>
+<th>BiomarkerID</th>
+<th>PanelID</th>
+<th>Title</th>
+<th>ShortName</th>
+<th>Description</th>
+<th>QAState</th>
+<th>Phase</th>
+<th>Security</th>
+<th>Type</th>
+  </tr>
+  <tr>
+    <td><a style="text-decoration:none;" href="?id=[obj.objId;block=tr]"><input type="button" value="Edit"/></a>
+     <td><form method="POST"><input type="hidden" name="id" value="[obj.objId]"/><input type="submit" name="deleteObject" value="Delete" onclick="return confirm('Really delete this object?');"/></form></td>    <td style="text-align:center;">[obj.objId]</td>
+    <td style="text-align:center;">[obj.EKE_ID]</td>
+    <td style="text-align:center;">[obj.BiomarkerID]</td>
+    <td style="text-align:center;">[obj.PanelID]</td>
+    <td style="text-align:center;">[obj.Title]</td>
+    <td style="text-align:center;">[obj.ShortName]</td>
+    <td style="text-align:center;">[obj.Description]</td>
+    <td style="text-align:center;">[obj.QAState]</td>
+    <td style="text-align:center;">[obj.Phase]</td>
+    <td style="text-align:center;">[obj.Security]</td>
+    <td style="text-align:center;">[obj.Type]</td>
+  </tr>
+</table>
+</div>
+</div>
+

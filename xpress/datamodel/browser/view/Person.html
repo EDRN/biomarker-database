@@ -1,0 +1,47 @@
+<!-- TBS template for Person object browser -->
+<div id="xpress_header"></div><div id="xp_browser_wrapper"><h1 class="xp_browser_nav"><a href="./">Model Browser</a> :: Person</h1>
+<div class="xp_browser_new">
+<h3>Create a new Person Object:</h3>
+<form method="POST">
+<table>
+<tr><td>FirstName:</td><td><input type="text" name="FirstName"/></td></tr>
+<tr><td>LastName:</td><td><input type="text" name="LastName"/></td></tr>
+<tr><td>Title:</td><td><input type="text" name="Title"/></td></tr>
+<tr><td>Specialty:</td><td><input type="text" name="Specialty"/></td></tr>
+<tr><td>Phone:</td><td><input type="text" name="Phone"/></td></tr>
+<tr><td>Fax:</td><td><input type="text" name="Fax"/></td></tr>
+<tr><td>Email:</td><td><input type="text" name="Email"/></td></tr>
+<tr><td colspan="2" style="text-align:right;"> <input type="submit" name="createObject" value="Create Object"/></td></tr>
+</table>
+</form>
+</div>
+<div id="xp_browser_existing">
+<h3>Existing Person Objects:</h3>
+<table>
+  <tr>
+  <th>&nbsp;</th>
+<th>&nbsp;
+<th>objId</th>
+<th>FirstName</th>
+<th>LastName</th>
+<th>Title</th>
+<th>Specialty</th>
+<th>Phone</th>
+<th>Fax</th>
+<th>Email</th>
+  </tr>
+  <tr>
+    <td><a style="text-decoration:none;" href="?id=[obj.objId;block=tr]"><input type="button" value="Edit"/></a>
+     <td><form method="POST"><input type="hidden" name="id" value="[obj.objId]"/><input type="submit" name="deleteObject" value="Delete" onclick="return confirm('Really delete this object?');"/></form></td>    <td style="text-align:center;">[obj.objId]</td>
+    <td style="text-align:center;">[obj.FirstName]</td>
+    <td style="text-align:center;">[obj.LastName]</td>
+    <td style="text-align:center;">[obj.Title]</td>
+    <td style="text-align:center;">[obj.Specialty]</td>
+    <td style="text-align:center;">[obj.Phone]</td>
+    <td style="text-align:center;">[obj.Fax]</td>
+    <td style="text-align:center;">[obj.Email]</td>
+  </tr>
+</table>
+</div>
+</div>
+

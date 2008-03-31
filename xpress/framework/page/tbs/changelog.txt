@@ -1,0 +1,35 @@
+TBS 3.3.0-beta-12
+
+New features:
+* Parameter ope=nif  (name may change): ope=nif:xxx <=> if [val]='xxx';then '';.
+  This is a shortcut.
+* Parameter ope=minv (name can change): turn the value to '' not but for parameter 'magnet'.
+  This enables you to have a magnet fields which will be always invisible. 
+
+Enhancements:
+* Paremeters 'headergrp','parentgrp','footergrp' work for any kind of data source (array, object, ...)
+  and also with sub items. Can can also use the virtual columns # and $.
+  Example : [blk;block=tr;headergrp=#] or [blk;block=tr;headergrp=ident.name]
+
+
+TBS 3.3.0-beta-06
+
+New features:
+* LoadTemplate('',$charset) set the charset without changing the current template.
+  This enables you for example to load a template from a string and then set the relevant chartset.
+* New plug-in event: OnMergeGroup. It occurs when a header, a footer or a splitter is merged.
+
+Enhancements:
+* Fields in the conditional clause of a section are also cached.
+* Templates and subtemplates are also searched in include_path.
+* Custom functions for LoadTemplate support a new argument to process newline characters. 
+* MergeField('onload') also merges variable fields such as [onload.x].
+* MergeBlock('blk','cond') also merges var fields such as [blk.x] and [blk;file=...] just like [onload] and [onshow] do.
+
+Fixed bugs:
+* Wrong merging when a block is using parameter "p1" and having a field outside the block.
+  See http://www.tinybutstrong.com/forum.php?msg_id=7804
+* Now [var..now] uses time() instead of mktime().
+  See http://www.tinybutstrong.com/forum.php?msg_id=8310
+* Now there is a TBS error message when [onload;block=...] doesn't found the block which is defined.
+

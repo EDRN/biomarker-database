@@ -1,0 +1,56 @@
+<!-- TBS template for Study object browser -->
+<div id="xpress_header"></div><div id="xp_browser_wrapper"><h1 class="xp_browser_nav"><a href="./">Model Browser</a> :: Study</h1>
+<div class="xp_browser_new">
+<h3>Create a new Study Object:</h3>
+<form method="POST">
+<table>
+<tr><td>EDRNID:</td><td><input type="text" name="EDRNID"/></td></tr>
+<tr><td>FHCRC_ID:</td><td><input type="text" name="FHCRC_ID"/></td></tr>
+<tr><td>DMCC_ID:</td><td><input type="text" name="DMCC_ID"/></td></tr>
+<tr><td>Title:</td><td><input type="text" name="Title"/></td></tr>
+<tr><td>Abstract:</td><td><input type="text" name="Abstract"/></td></tr>
+<tr><td>BiomarkerPopulationCharacteristics:</td><td><input type="text" name="BiomarkerPopulationCharacteristics"/></td></tr>
+<tr><td>BPCDescription:</td><td><input type="text" name="BPCDescription"/></td></tr>
+<tr><td>Design:</td><td><input type="text" name="Design"/></td></tr>
+<tr><td>DesignDescription:</td><td><input type="text" name="DesignDescription"/></td></tr>
+<tr><td>BiomarkerStudyType:</td><td><input type="text" name="BiomarkerStudyType"/></td></tr>
+<tr><td colspan="2" style="text-align:right;"> <input type="submit" name="createObject" value="Create Object"/></td></tr>
+</table>
+</form>
+</div>
+<div id="xp_browser_existing">
+<h3>Existing Study Objects:</h3>
+<table>
+  <tr>
+  <th>&nbsp;</th>
+<th>&nbsp;
+<th>objId</th>
+<th>EDRNID</th>
+<th>FHCRC_ID</th>
+<th>DMCC_ID</th>
+<th>Title</th>
+<th>Abstract</th>
+<th>BiomarkerPopulationCharacteristics</th>
+<th>BPCDescription</th>
+<th>Design</th>
+<th>DesignDescription</th>
+<th>BiomarkerStudyType</th>
+  </tr>
+  <tr>
+    <td><a style="text-decoration:none;" href="?id=[obj.objId;block=tr]"><input type="button" value="Edit"/></a>
+     <td><form method="POST"><input type="hidden" name="id" value="[obj.objId]"/><input type="submit" name="deleteObject" value="Delete" onclick="return confirm('Really delete this object?');"/></form></td>    <td style="text-align:center;">[obj.objId]</td>
+    <td style="text-align:center;">[obj.EDRNID]</td>
+    <td style="text-align:center;">[obj.FHCRC_ID]</td>
+    <td style="text-align:center;">[obj.DMCC_ID]</td>
+    <td style="text-align:center;">[obj.Title]</td>
+    <td style="text-align:center;">[obj.Abstract]</td>
+    <td style="text-align:center;">[obj.BiomarkerPopulationCharacteristics]</td>
+    <td style="text-align:center;">[obj.BPCDescription]</td>
+    <td style="text-align:center;">[obj.Design]</td>
+    <td style="text-align:center;">[obj.DesignDescription]</td>
+    <td style="text-align:center;">[obj.BiomarkerStudyType]</td>
+  </tr>
+</table>
+</div>
+</div>
+

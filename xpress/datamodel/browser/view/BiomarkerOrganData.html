@@ -1,0 +1,75 @@
+<!-- TBS template for BiomarkerOrganData object browser -->
+<div id="xpress_header"></div><div id="xp_browser_wrapper"><h1 class="xp_browser_nav"><a href="./">Model Browser</a> :: BiomarkerOrganData</h1>
+<div class="xp_browser_new">
+<h3>Create a new BiomarkerOrganData Object:</h3>
+<form method="POST">
+<table>
+<tr><td>SensitivityMin:</td><td><input type="text" name="SensitivityMin"/></td></tr>
+<tr><td>SensitivityMax:</td><td><input type="text" name="SensitivityMax"/></td></tr>
+<tr><td>SensitivityComment:</td><td><input type="text" name="SensitivityComment"/></td></tr>
+<tr><td>SpecificityMin:</td><td><input type="text" name="SpecificityMin"/></td></tr>
+<tr><td>SpecificityMax:</td><td><input type="text" name="SpecificityMax"/></td></tr>
+<tr><td>SpecificityComment:</td><td><input type="text" name="SpecificityComment"/></td></tr>
+<tr><td>PPVMin:</td><td><input type="text" name="PPVMin"/></td></tr>
+<tr><td>PPVMax:</td><td><input type="text" name="PPVMax"/></td></tr>
+<tr><td>PPVComment:</td><td><input type="text" name="PPVComment"/></td></tr>
+<tr><td>NPVMin:</td><td><input type="text" name="NPVMin"/></td></tr>
+<tr><td>NPVMax:</td><td><input type="text" name="NPVMax"/></td></tr>
+<tr><td>NPVComment:</td><td><input type="text" name="NPVComment"/></td></tr>
+<tr><td>QAState:</td><td><input type="text" name="QAState"/></td></tr>
+<tr><td>Phase:</td><td><input type="text" name="Phase"/></td></tr>
+<tr><td>Description:</td><td><input type="text" name="Description"/></td></tr>
+<tr><td>Organ Id:</td><td><input type="text" name="OrganId"/></td></tr>
+<tr><td>Biomarker Id:</td><td><input type="text" name="BiomarkerId"/></td></tr>
+<tr><td>Organ Id:</td><td><input type="text" name="OrganId"/></td></tr>
+<tr><td>Biomarker Id:</td><td><input type="text" name="BiomarkerId"/></td></tr>
+<tr><td colspan="2" style="text-align:right;"> <input type="submit" name="createObject" value="Create Object"/></td></tr>
+</table>
+</form>
+</div>
+<div id="xp_browser_existing">
+<h3>Existing BiomarkerOrganData Objects:</h3>
+<table>
+  <tr>
+  <th>&nbsp;</th>
+<th>&nbsp;
+<th>objId</th>
+<th>SensitivityMin</th>
+<th>SensitivityMax</th>
+<th>SensitivityComment</th>
+<th>SpecificityMin</th>
+<th>SpecificityMax</th>
+<th>SpecificityComment</th>
+<th>PPVMin</th>
+<th>PPVMax</th>
+<th>PPVComment</th>
+<th>NPVMin</th>
+<th>NPVMax</th>
+<th>NPVComment</th>
+<th>QAState</th>
+<th>Phase</th>
+<th>Description</th>
+  </tr>
+  <tr>
+    <td><a style="text-decoration:none;" href="?id=[obj.objId;block=tr]"><input type="button" value="Edit"/></a>
+     <td><form method="POST"><input type="hidden" name="id" value="[obj.objId]"/><input type="submit" name="deleteObject" value="Delete" onclick="return confirm('Really delete this object?');"/></form></td>    <td style="text-align:center;">[obj.objId]</td>
+    <td style="text-align:center;">[obj.SensitivityMin]</td>
+    <td style="text-align:center;">[obj.SensitivityMax]</td>
+    <td style="text-align:center;">[obj.SensitivityComment]</td>
+    <td style="text-align:center;">[obj.SpecificityMin]</td>
+    <td style="text-align:center;">[obj.SpecificityMax]</td>
+    <td style="text-align:center;">[obj.SpecificityComment]</td>
+    <td style="text-align:center;">[obj.PPVMin]</td>
+    <td style="text-align:center;">[obj.PPVMax]</td>
+    <td style="text-align:center;">[obj.PPVComment]</td>
+    <td style="text-align:center;">[obj.NPVMin]</td>
+    <td style="text-align:center;">[obj.NPVMax]</td>
+    <td style="text-align:center;">[obj.NPVComment]</td>
+    <td style="text-align:center;">[obj.QAState]</td>
+    <td style="text-align:center;">[obj.Phase]</td>
+    <td style="text-align:center;">[obj.Description]</td>
+  </tr>
+</table>
+</div>
+</div>
+
