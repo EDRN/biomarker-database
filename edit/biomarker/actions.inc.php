@@ -27,7 +27,6 @@
 		
 	}
 
-
 	// Biomarker::Associate Study
 	if (isset($_POST['associate_study'])) {
 		$bId = $_POST['biomarker_id'];
@@ -39,6 +38,7 @@
 			echo $e->getFormattedMessage();
 		}
 	}
+	
 	// Biomarker::Dissociate Study
 	if (isset($_GET['remove_study'])) {
 		$bId  = $_GET['id'];
@@ -47,6 +47,32 @@
 			$bs = BiomarkerStudyDataFactory::Retrieve($bsId);
 			$bs->delete();
 			XPressPage::httpRedirect("./?view=studies&id={$bId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
+	
+	// Biomarker::Associate Publication
+	if (isset($_POST['associate_publication'])) {
+		$bId = $_POST['biomarker_id'];
+		$pId = $_POST['publication_id'];
+		try {
+			$b = BiomarkerFactory::Retrieve($bId);
+			$b->link(BiomarkerVars::PUBLICATIONS,$pId,PublicationVars::BIOMARKERS);
+			XPressPage::httpRedirect("./?view=publications&id={$bId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
+
+	// Biomarker::Dissociate Publication
+	if (isset($_GET['remove_publication'])) {
+		$bId  = $_GET['id'];
+		$pId  = $_GET['remove_publication'];
+		try {
+			$b = BiomarkerFactory::Retrieve($bId);
+			$b->unlink(BiomarkerVars::PUBLICATIONS,$pId);
+			XPressPage::httpRedirect("./?view=publications&id={$bId}");
 		} catch (XPressException $e) {
 			echo $e->getFormattedMessage();
 		}

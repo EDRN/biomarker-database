@@ -1,0 +1,76 @@
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4 style="margin-bottom:19px;">Associated Publications:</h4>
+	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-type:none;list-style-position:inside;">
+	  <li style="margin-bottom:15px;"><a href="../publication/?id=[pub.objId]">[pub.Title;block=li]</a><br/>
+	  <span class="hint" style="color:#888;">Author: [pub.Author]. Published in [pub.Year] in: [pub.Journal] (volume [pub.Volume], issue [pub.Issue])</span> &nbsp;
+	  <span class="hint">[<a href="./?id=[var.b.objId]&view=publications&remove_publication=[pub.objId]" onclick="return confirm('Publication \'[pub.Title]\' will no longer be associated with \'[var.b.Title]\'. Proceed?');">Remove Association</a>]</span><br/>
+	  
+	  </li>
+	</ul>
+</div>
+<div id="options_section" style="width:350px;">
+	<div id="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
+	<h5>Associate a Publication:</h5>
+	<div id="options_content" style="display:none;">
+		<ul class="menu">
+		  <li id="li_local" class="activelink" style="border-left:solid 1px #aaa;"><span class="pseudolink" style="color:#000;" onclick="tshow('local');">Local</span></li>
+		  <li id="li_pubmed"><span class="pseudolink" style="color:#000;" onclick="tshow('pubmed');">PubMed</span></li>
+		  <li id="li_other"><span class="pseudolink" style="color:#000;" onclick="tshow('other');">Other</span></li>
+		</ul>
+		<div class="clr"><!--  --></div>
+		<!-- LOCAL PUBLICATION ASSOCIATION -->
+		<div id="div_assocLocal" style="padding:8px;border-top:solid 1px #555;display:block;">
+			<h4 style="margin-top:0px;">Local Lookup</h4>
+			<form action="[var..script_name]" method="POST">
+				<input type="hidden" name="biomarker_id" value="[var.b.objId]"/>
+				<script type="text/javascript">ajaxti('assoc_pub','','100%','../../xpress/js/AjaxAutocomplete.php','Publication','Title','','publication_id','Title');</script>
+				<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
+				<input type="submit" name="associate_publication" value="Associate" style="float:right;padding:2px;"/>
+			</form>
+		</div>
+		<!-- PUBMED IMPORT & ASSOCIATION -->
+		<div id="div_assocPubMed" style="padding:8px;border-top:solid 1px #555;display:none;">
+			<h4 style="margin-top:0px;">PubMed Import</h4>
+		</div>
+		<!-- OTHER IMPORT AND ASSOCIATION -->
+		<div id="div_assocOther" style="padding:8px;border-top:solid 1px #555;display:none;">
+		
+		</div>
+	</div>
+</div>
+</div><!-- end outer_wrapper -->
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+</script>
+<script type="text/javascript">
+	function tshow(elmtName) {
+		switch (elmtName) {
+			case 'local':
+				$('div_assocPubMed').hide();
+				$('div_assocOther').hide();
+				$('li_pubmed').removeClassName('activelink');
+				$('li_other').removeClassName('activelink');
+				$('li_local').addClassName('activelink');
+				$('div_assocLocal').show();
+				break;
+			case 'pubmed':
+				$('div_assocLocal').hide();
+				$('div_assocOther').hide();
+				$('li_local').removeClassName('activelink');
+				$('li_other').removeClassName('activelink');
+				$('li_pubmed').addClassName('activelink');
+				$('div_assocPubMed').show();
+				break;
+			case 'other':
+				$('div_assocLocal').hide();
+				$('div_assocPubMed').hide();
+				$('li_local').removeClassName('activelink');
+				$('li_pubmed').removeClassName('activelink');
+				$('li_other').addClassName('activelink');
+				$('div_assocOther').show();
+				break;
+			default:break;				
+		}
+	}
+</script>

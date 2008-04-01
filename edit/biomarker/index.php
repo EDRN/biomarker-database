@@ -42,6 +42,10 @@
 			$p->view()->MergeBlock("studyData",$studyDatas);
 			$p->view()->MergeBlock("studyDataJs",$studyDatas);
 		}
+		if ($view == "publications") {
+			$studyPubs = $b->getPublications();
+			$p->view()->MergeBlock("pub",$studyPubs);
+		}
 
 		
 		$p->view()->Show();
