@@ -1,5 +1,6 @@
 <?php
 	require_once("../../xpress/app.php");
+	require_once("../../xpress/extensions/ajax_selectbox.php");
 	
 	// Determine the desired view
 	$view = (isset($_GET['view']))
@@ -30,6 +31,15 @@
 	// Try to load and display the view
 	if ($p->view()->LoadTemplate("view/{$view}.html") ) {
 		// View-specific Processing
+		if ($view == "basics") {
+			$jsStatus = generateAjaxSelectBoxJS('status',
+				$s->BiomarkerStudyTypeEnumValues,$s->_getType(),$s->getObjId(),StudyVars::BIOMARKERSTUDYTYPE,"../../xpress/js/AjaxHandler.php");
+			$jsBPCCat = generateAjaxSelectBoxJS('bpc',
+				$s->BiomarkerPopulationCharacteristicsEnumValues,$s->_getType(),$s->getObjId(),StudyVars::BIOMARKERPOPULATIONCHARACTERISTICS,"../../xpress/js/AjaxHandler.php");
+			$jsDesign = generateAjaxSelectBoxJS('design',
+				$s->DesignEnumValues,$s->_getType(),$s->getObjId(),StudyVars::DESIGN,"../../xpress/js/AjaxHandler.php");
+
+		}
 		if ($view == "biomarkerorgans") {
 			$biomarkerorgans = $s->getBiomarkerOrgans();
 			foreach ($biomarkerorgans as $bo) {$bo->getOrgan();$bo->getBiomarker();}
