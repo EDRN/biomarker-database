@@ -1,0 +1,58 @@
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4>Description</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Description:</td><td><span id="description">[var.bo.Description;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Phase &amp; QA State</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Biomarker Phase:</td><td><span id="phase">[var.bo.Phase;ifempty='click to select';noerr]</span></td></tr>
+			<tr><td class="label">QA State:</td><td><span id="qastate">[var.bo.QAState;ifempty='click to select';noerr]</span></td></tr>
+		</table>
+	<h4>Sensitivity</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Sensitivity Min (%):</td><td><span id="sensmin">[var.bo.SensitivityMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Sensitivity Max (%):</td><td><span id="sensmax">[var.bo.SensitivityMax;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Sensitivity Comment:</td><td><span id="senscom">[var.bo.SensitivityComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Specificity</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Specificity Min (%):</td><td><span id="specmin">[var.bo.SpecificityMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Specificity Max (%):</td><td><span id="specmax">[var.bo.SpecificityMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Specificity Comment:</td><td><span id="speccom">[var.bo.SpecificityComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Negative Predictive Value</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">NPV Min (%):</td><td><span id="npvmin">[var.bo.NPVMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">NPV Max (%):</td><td><span id="npvmax">[var.bo.NPVMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">NPV Comment:</td><td><span id="npvcom">[var.bo.NPVComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Positive Predictive Value</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">PPV Min (%):</td><td><span id="ppvmin">[var.bo.PPVMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">PPV Max (%):</td><td><span id="ppvmax">[var.bo.PPVMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">PPV Comment:</td><td><span id="ppvcom">[var.bo.PPVComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+</div>
+</div><!-- end outer_wrapper -->
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+	new Ajax.InPlaceEditor('description','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=Description&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	
+	new Ajax.InPlaceEditor('sensmin','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=SensitivityMin&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('sensmax','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=SensitivityMax&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('senscom','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=SensitivityComment&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	
+	new Ajax.InPlaceEditor('specmin','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=SpecificityMin&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('specmax','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=SpecificityMax&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('speccom','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=SpecificityComment&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	
+	new Ajax.InPlaceEditor('npvmin','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=NPVMin&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('npvmax','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=NPVMax&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('npvcom','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=NPVComment&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	
+	new Ajax.InPlaceEditor('ppvmin','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=PPVMin&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('ppvmax','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=PPVMax&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('ppvcom','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerOrganData&objID=[var.bo.objId]&attr=PPVComment&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+
+</script>
