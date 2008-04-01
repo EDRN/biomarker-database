@@ -4,18 +4,27 @@
 	<div id="breadcrumbs">
 		<a href="../../">Home</a> / Biomarkers 
 	</div><!-- End Breadcrumbs -->
+	<!--
 	<div class="mainContent">
 		<h2 class="title">
-		<span class="titleDetails">Browse Biomarkers</span>
+		<span class="titleDetails">Biomarker Browser</span>
 		</h2>
-	</div>
+	</div>-->
 </div>
+<br/><br/>
+<span class="hint">
+	<a href="./?start=0&count=[onload_i;block=a;when [var.start]+-[var.count]][var.count]">First Page</a>&nbsp; 
+	<a href="./?start=[onload;block=a;when [var.start]+-0][var.pageback]&count=[var.count]">Previous Page</a> 
+	<strong>Displaying Biomarkers [var.startp1] through [var.stop] of [var.total] total:</strong> 
+	<a href="./?start=[onload;block=a;when [var.stop]-+[var.total]][var.pagenext]&count=[var.count]">Next Page</a>&nbsp;
+	<a href="./?start=[onload;block=a;when [var.pagelast]!=0;noerr][var.pagelast]&count=[var.count]">Last Page</a>
+</span><br/>
 
-<table cellspacing="0" cellpadding="0" style="width:100%;margin-top:0px;">
+<table cellspacing="0" cellpadding="0" style="width:100%;margin-top:0px;border-top:solid 3px #ccc;margin-top:4px;">
   <tr>
-    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;">Long Name</th>
-    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;">ID</th>
-    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;"">Type</th>
+    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;">Long Name <span class="hint">[sort: <a href=#">up</a> | <a href="#">down</a>]</span></th>
+    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;">ID <span class="hint">[sort: <a href=#">up</a> | <a href="#">down</a>]</span></th>
+    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;"">Type <span class="hint">[sort: <a href=#">up</a> | <a href="#">down</a>]</span></th>
   </tr>
   <tr>
     <td style="padding:5px;"><a href="../../edit/biomarker/?id=[marker.objId]">[marker.Title;block=tr;]</a></td>
