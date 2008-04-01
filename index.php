@@ -1,15 +1,15 @@
 <?php
-	require_once("model/ModelProperties.inc.php");
+	require_once("xpress/app.php");
 	
 	// Page Header Setup
-	$p = new cwsp_page("EDRN - Biomarker Database v0.4 Beta","text/html; charset=UTF-8");
-	$p->includeJS('js/scriptaculous-js-1.7.0/lib/prototype.js');
-	$p->includeJS('js/scriptaculous-js-1.7.0/src/scriptaculous.js');
-	$p->includeJS('js/textInputs.js');
-	$p->includeJS('model/AjaxHandler.js');
-	$p->includeCSS('css/whiteflour.css');
-	$p->includeCSS('css/cwspTI.css');
-	$p->drawHeader();
+	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p->includeCSS('static/css/frozen.css');
+	$p->open();
+	$p->view()->LoadTemplate("view/homepage.html");
+	$p->view()->Show();
+	$p->close();
+	
+	exit();
 
 
 	require_once("assets/skins/edrn/prologue.php");
