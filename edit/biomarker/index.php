@@ -34,6 +34,7 @@
 			$organDatas = $b->getOrganDatas();
 			foreach ($organDatas as $o) {$o->getOrgan();} // populate organ data
 			$p->view()->MergeBlock("organData",$organDatas);
+			$p->view()->MergeBlock("organs","mysql","SELECT objId,Name FROM Organ WHERE 1"); 
 		}
 		if ($view == "studies") {
 			$studyDatas = $b->getStudies();

@@ -2,15 +2,22 @@
 <div id="main_section">
 	<h4>Associated Organs:</h4>
 	<ul style="list-style:square;color:#900003;">
-	  <li><a href="../biomarkerorgan/?id=20">[organData.Organ.Name]</a></li>
+	  <li><a href="../biomarkerorgan/?id=20">[organData.Organ.Name;block=li]</a>
+	  &nbsp;<span class="hint">(<a href="./?id=[var.b.objId]&view=organs&remove_organ=[organData.objId]" onclick="return confirm('All Data relating [var.b.Title] to \'[organData.Organ.Name]\' will be deleted. Proceed?');">Remove Association</a>)</span></li>
 	</ul>
 </div>
 <div id="options_section">
+	<div id="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
 	<h5>Associate an Organ:</h5>
-	<select>
-	  <option value="lung">Lung</option>
-	</select>
-	<input type="button" value="Associate"/>
+	<div id="options_content" style="display:none;">
+		<form action="[var..script_name]" method="POST">
+		<input type="hidden" name="biomarker_id" value="[var.b.objId]"/>
+		<select name="organ_id" style="float:left;">
+		  <option value="[organs.objId]">[organs.Name;block=option]</option>
+		</select>
+		<input type="submit" name="associate_organ" style="float:right;" value="Associate"/>
+		</form>
+	</div>
 </div>
 </div><!-- end outer_wrapper -->
 <script type="text/javascript">
