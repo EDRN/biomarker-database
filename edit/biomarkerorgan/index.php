@@ -35,9 +35,9 @@
 		// View-specific Processing
 		if ($view == "basics") {
 			$jsPhase = generateAjaxSelectBoxJS('phase',
-				$bo->PhaseEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerVars::PHASE,"../../xpress/js/AjaxHandler.php");
+				$bo->PhaseEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerOrganDataVars::PHASE,"../../xpress/js/AjaxHandler.php");
 			$jsQAState = generateAjaxSelectBoxJS('qastate',
-				$bo->QAStateEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerVars::QASTATE,"../../xpress/js/AjaxHandler.php");
+				$bo->QAStateEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerOrganDataVars::QASTATE,"../../xpress/js/AjaxHandler.php");
 		}
 		if ($view == "studies") {
 			$studyDatas = $bo->getStudies();
