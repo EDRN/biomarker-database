@@ -1,23 +1,23 @@
 <?php
-	require_once("../../model/ModelProperties.inc.php");
+	require_once("../../xpress/app.php");
 	
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
 	$count = min(isset($_GET['count']) ? $_GET['count'] : 10, 250);
 	$q = "SELECT `objId`,`Title`,`BiomarkerID`,`Type` "
 		."FROM `Biomarker` "
 		."LIMIT $start,$count ";
-	$markers = $XPress->Database->safeGetAll($q);
+	$markers = $xpress->db()->getAll($q);
 	
 	// Page Header Setup
-	$p = new cwsp_page("EDRN - Biomarker Database v0.4 Beta","text/html; charset=UTF-8");
-	$p->includeJS('../../js/scriptaculous-js-1.7.0/lib/prototype.js');
-	$p->includeJS('../../js/scriptaculous-js-1.7.0/src/scriptaculous.js');
-	$p->includeJS('../../js/textInputs.js');
-	$p->includeJS('../../model/AjaxHandler.js');
-	$p->includeCSS('../../css/whiteflour.css');
-	$p->includeCSS('../../css/cwspTI.css');
-	$p->drawHeader();
+	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p->includeCSS('../../static/css/frozen.css');
+	$p->open();
+	$p->view()->LoadTemplate('view/browse.html');
+	$p->view()->MergeBlock("marker",$markers);
+	$p->view()->Show();
+	$p->close();
 	
+	exit();
 	require_once("../../assets/skins/edrn/prologue.php");
 ?>
 <div class="main">

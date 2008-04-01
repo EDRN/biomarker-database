@@ -1,0 +1,30 @@
+[onload;file=../../view/edrn_prologue.html;]
+<div class="menu">
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+		<a href="../../">Home</a> / Biomarkers 
+	</div><!-- End Breadcrumbs -->
+	<div class="mainContent">
+		<h2 class="title">
+		<span class="titleDetails">Browse Biomarkers</span>
+		</h2>
+	</div>
+</div>
+
+<table cellspacing="0" cellpadding="0" style="width:100%;margin-top:0px;">
+  <tr>
+    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;">Long Name</th>
+    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;">ID</th>
+    <th style="text-align:left;padding-left:5px;border-bottom:solid 1px #900003;color:#555;background-color:#eee;padding-top:3px;padding-bottom:3px;"">Type</th>
+  </tr>
+  <tr>
+    <td style="padding:5px;"><a href="../../edit/biomarker/?id=[marker.objId]">[marker.Title;block=tr;]</a></td>
+    <td>[marker.BiomarkerID]</td>
+    <td>[marker.Type]</td>
+  </tr>
+  <tr style="background-color:#f4f4f4;">
+    <td style="padding:5px;"><a href="../../edit/biomarker/?id=[marker.objId]">[marker.Title;block=tr]</a></td>
+    <td>[marker.BiomarkerID]</td>
+    <td>[marker.Type]</td>
+  </tr>
+</table>
