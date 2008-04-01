@@ -1,5 +1,6 @@
 <?php
 	require_once("../../xpress/app.php");
+	require_once("../../xpress/extensions/ajax_selectbox.php");
 	
 	// Determine the desired view
 	$view = (isset($_GET['view']))
@@ -30,6 +31,14 @@
 	// Try to load and display the view
 	if ($p->view()->LoadTemplate("view/{$view}.html") ) {
 		// View-specific Processing
+		if ($view == "basics") {
+			$jsSecurity = generateAjaxSelectBoxJS('security',
+				$b->SecurityEnumValues,$b->_getType(),$b->getObjId(),BiomarkerVars::SECURITY,"../../xpress/js/AjaxHandler.php");
+			$jsQAState  = generateAjaxSelectBoxJS('qastate',
+				$b->QAStateEnumValues,$b->_getType(),$b->getObjId(),BiomarkerVars::QASTATE,"../../xpress/js/AjaxHandler.php");
+			$jsType     = generateAjaxSelectBoxJS('type',
+				$b->TypeEnumValues,$b->_getType(),$b->getObjId(),BiomarkerVars::TYPE,"../../xpress/js/AjaxHandler.php");
+		}
 		if ($view == "organs") {
 			$organDatas = $b->getOrganDatas();
 			foreach ($organDatas as $o) {$o->getOrgan();} // populate organ data
