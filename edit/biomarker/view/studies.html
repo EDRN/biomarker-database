@@ -1,8 +1,8 @@
 <div id="outer_wrapper">
 <div id="main_section">
-	<h4>Associated Studies:</h4>
-	<ul style="list-style:square;color:#900003;">
-	  <li style="margin-bottom:5px;"><span id="summary[studyData.objId]">
+	<h4 style="margin-bottom:19px;">Associated Studies:</h4>
+	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-position:inside;list-style:none;">
+	  <li style="margin-bottom:25px;"><span id="summary[studyData.objId]">
 	  	<a href="../biomarkerorgan/?id=20">[studyData.Study.Title;block=li]</a><br/>
 	  	<span class="hint">
 	  	  [<span class="pseudolink" onclick="showDetails([studyData.objId]);">View Associated Data</span>] 
@@ -14,7 +14,7 @@
 		<span class="hint">[ <span class="pseudolink" onclick="hideDetails([studyData.objId]);">(Hide Details)</span> ]</span></legend>
 	  	<h4>Abstract: &nbsp;&nbsp;<span class="hint">(from <a href="../study/?id=[studyData.Study.objId]">here</a>)</span></h4>
 		<div style="padding-left: 10px; padding-right: 10px; padding-bottom: 15px; font-size: 90%; line-height: 1.3em; text-align: justify;">
-		[studyData.Study.StudyAbstract]
+		[studyData.Study.StudyAbstract;ifempty='<em>No Abstract Available</em>']
 		</div>
 		<h4>Pertinent Data</h4>
 		<table class="editable_info">

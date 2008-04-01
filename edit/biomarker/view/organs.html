@@ -1,8 +1,8 @@
 <div id="outer_wrapper">
 <div id="main_section">
 	<h4>Associated Organs:</h4>
-	<ul style="list-style:square;color:#900003;">
-	  <li><a href="../biomarkerorgan/?id=20">[organData.Organ.Name;block=li]</a>
+	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-type:none;list-style-position:inside;">
+	  <li style="margin-bottom:15px;"><a href="../biomarkerorgan/?id=[organData.objId]">[organData.Organ.Name;block=li]</a>
 	  &nbsp;<span class="hint">(<a href="./?id=[var.b.objId]&view=organs&remove_organ=[organData.objId]" onclick="return confirm('All Data relating [var.b.Title] to \'[organData.Organ.Name]\' will be deleted. Proceed?');">Remove Association</a>)</span></li>
 	</ul>
 </div>
