@@ -23,8 +23,7 @@
 			 XPressPage::redirect("./?view=organs&id={$bId}");
 		} catch (XPressException $e) {
 			echo $e->getFormattedMessage();
-		}
-		
+		}	
 	}
 
 	// Biomarker::Associate Study
@@ -73,6 +72,34 @@
 			$b = BiomarkerFactory::Retrieve($bId);
 			$b->unlink(BiomarkerVars::PUBLICATIONS,$pId);
 			XPressPage::httpRedirect("./?view=publications&id={$bId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
+	
+	// Biomarker::Associate Resource 
+	if (isset($_POST['associate_resource'])) {
+		$bId = $_POST['biomarker_id'];
+		try {
+			$b = BiomarkerFactory::Retrieve($bId);
+			$r = ResourceFactory::Create();
+			$r->setURL($_POST['url']);
+			$r->setName($_POST['description']);
+			$b->link(BiomarkerVars::RESOURCES,$r->getObjId(),ResourceVars::BIOMARKERS);
+			XPressPage::httpRedirect("./?view=resources&id={$bId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
+	
+	// Biomarker::Remove Resource 
+	if (isset($_GET['remove_resource'])) {
+		$bId = $_GET['id'];
+		$rId = $_GET['remove_resource'];
+		try {
+			$r = ResourceFactory::Retrieve($rId);
+			$r->delete();
+			XPressPage::httpRedirect("./?view=resources&id={$bId}");
 		} catch (XPressException $e) {
 			echo $e->getFormattedMessage();
 		}
