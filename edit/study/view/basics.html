@@ -1,0 +1,30 @@
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4>Basic Information:</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr class="even"><td class="label" style="width:100px;">Title:</td><td><span id="title">[var.s.Title;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Status:</td><td><span id="status">[var.s.Status;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Biomarker Population Characteristics:</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr class="even"><td class="label" style="width:100px;">Category:</td><td><span id="bpc">[var.s.BiomarkerPopulationCharacteristics;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Description:</td><td><span id="bpcdesc">[var.s.BPCDescription;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Study Design:</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr class="even"><td class="label" style="width:100px;">Study Design:</td><td><span id="design">[var.s.Design;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Description:</td><td><span id="designdesc">[var.s.DesignDescription;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Abstract:</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:100px;">Abstract:</td><td><span id="abstract">[var.s.StudyAbstract;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+</div>
+</div><!-- end outer_wrapper -->
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+	new Ajax.InPlaceEditor('title','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Study&objID=[var.s.objId]&attr=Title&value='+encodeURIComponent(value);}, cols:42,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('bpcdesc','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Study&objID=[var.s.objId]&attr=BPCDescription&value='+encodeURIComponent(value);}, cols:42,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('designdesc','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Study&objID=[var.s.objId]&attr=DesignDescription&value='+encodeURIComponent(value);}, cols:42,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+	new Ajax.InPlaceEditor('abstract','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=Study&objID=[var.s.objId]&attr=StudyAbstract&value='+encodeURIComponent(value);}, cols:42, rows:8, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
+</script>

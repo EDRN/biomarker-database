@@ -1,0 +1,51 @@
+<?php
+	require_once("../../xpress/app.php");
+	
+	// Determine the desired view
+	$view = (isset($_GET['view']))
+		? $_GET['view']
+		: 'basics';	// Default view is the 'basics' view
+
+	// Determine whether the page contents are editable
+	$editable = 1;
+
+	// Process any POST or GET actions
+	include_once("actions.inc.php");
+	
+	// Retrieve the desired object from the database
+	if (false == ($s = StudyFactory::Retrieve($_GET['id']))) {
+		XPressPage::httpRedirect("../notfound.php");
+	} 
+	
+	// Display the page
+	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p->includeCSS('../../static/css/frozen.css');
+	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/lib/prototype.js');
+	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/src/scriptaculous.js');
+	$p->includeJS('../../static/js/textInputs.js');
+	$p->open();
+	// Load and display the menu
+	$p->view()->LoadTemplate('view/menu.html');
+	$p->view()->Show();
+	// Try to load and display the view
+	if ($p->view()->LoadTemplate("view/{$view}.html") ) {
+		// View-specific Processing
+		if ($view == "biomarkerorgans") {
+			$biomarkerorgans = $s->getBiomarkerOrgans();
+			foreach ($biomarkerorgans as $bo) {$bo->getOrgan();$bo->getBiomarker();}
+			$p->view()->MergeBlock("bo",$biomarkerorgans); 
+		}
+		if ($view == "publications") {
+			$pubs = $s->getPublications();
+			$p->view()->MergeBlock("pub",$pubs);
+		}
+		if ($view == "resources") {
+			$resources = $s->getResources();
+			$p->view()->MergeBlock("res",$resources);
+		}
+
+		
+		$p->view()->Show();
+	}
+	$p->close();
+?>

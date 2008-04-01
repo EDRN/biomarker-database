@@ -1,0 +1,26 @@
+[onload;file=../../view/edrn_prologue.html;]
+<div class="menu">
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+		<a href="../../">Home</a> / 
+		<a href="../../browse/biomarkers/">Studies</a> /
+		<span>[onload;block=span; when [var.view]='basics'][var.s.Title]</span>
+		<span><a href="./?id=[var.s.objId]">[var.s.Title]</a> / biomarker-organs [onload;block=span;when [var.view]='organs']</span>
+		<span><a href="./?id=[var.s.objId]">[var.s.Title]</a> / publications [onload;block=span;when [var.view]='publications']</span>
+		<span><a href="./?id=[var.s.objId]">[var.s.Title]</a> / resources [onload;block=span;when [var.view]='resources']</span>
+	</div><!-- End Breadcrumbs -->
+	<div class="mainContent">
+		<h2 class="title">
+		<span class="titleDetails">[var.s.Title]</span>
+		</h2>
+		<div id="smallLinks">
+			<ul>
+			  <li class="[var.view;if [val]='basics'; then 'activeLink'; else '']"><a href="./?view=basics&id=[var.s.objId]">Basics</a></li>
+			  <li class="[var.view;if [val]='organs'; then 'activeLink'; else '']"><a href="./?view=organs&id=[var.s.objId]">Biomarker-Organs</a></li>
+			  <li class="[var.view;if [val]='publications'; then 'activeLink'; else '']"><a href="./?view=publications&id=[var.s.objId]">Publications</a></li>
+			  <li class="[var.view;if [val]='resources'; then 'activeLink'; else '']"><a href="./?view=resources&id=[var.s.objId]">Resources</a></li>
+			</ul>
+			<div class="clr"><!--  --></div>
+		</div>
+	</div>
+</div>
