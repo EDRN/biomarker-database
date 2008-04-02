@@ -40,10 +40,14 @@
 				$bo->QAStateEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerOrganDataVars::QASTATE,"../../xpress/js/AjaxHandler.php");
 		}
 		if ($view == "studies") {
-			$studyDatas = $bo->getStudies();
-			foreach ($studyDatas as $s) {$s->getStudy();} // populate study data
+			$studyDatas = $bo->getStudyDatas();
+			foreach ($studyDatas as $s) {
+				$s->getStudy(); // Load study data
+				$s->getPublications(); // Load referenced publications 
+			} 
 			$p->view()->MergeBlock("studyData",$studyDatas);
 			$p->view()->MergeBlock("studyDataJs",$studyDatas);
+			$p->view()->MergeBlock("studyPublications",'array','studyDatas[%p1%][Publications]');
 		}
 		if ($view == "publications") {
 			$pubs = $bo->getPublications();
