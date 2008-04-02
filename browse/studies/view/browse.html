@@ -1,0 +1,43 @@
+[onload;file=../../view/edrn_prologue.html;]
+<div class="menu">
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+		<a href="../../">Home</a> / Studies 
+	</div><!-- End Breadcrumbs -->
+	<!--
+	<div class="mainContent">
+		<h2 class="title">
+		<span class="titleDetails">Study Browser</span>
+		</h2>
+	</div>-->
+</div>
+<br/><br/>
+<span class="hint">
+	<a href="./?start=0&count=[onload_i;block=a;when [var.start]+-[var.count]][var.count]">First Page</a>&nbsp; 
+	<a href="./?start=[onload;block=a;when [var.start]+-0][var.pageback]&count=[var.count]">Previous Page</a> 
+	<strong>Displaying Studies [var.startp1] through [var.stop] of [var.total] total:</strong> 
+	<a href="./?start=[onload;block=a;when [var.stop]-+[var.total]][var.pagenext]&count=[var.count]">Next Page</a>&nbsp;
+	<a href="./?start=[onload;block=a;when [var.pagelast]!=0;noerr][var.pagelast]&count=[var.count]">Last Page</a>
+</span><br/>
+
+<table id="elements" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Title <span class="hint">
+    	[sort: <a href="./?start=[var.start]&count=[var.count]&order_by=title&order=up">up</a> | 
+    		   <a href="./?start=[var.start]&count=[var.count]&order_by=title&order=down">down</a>]</span></th>
+    <th style="width:190px;">DMCC ID <span class="hint">
+    	[sort: <a href="./?start=[var.start]&count=[var.count]&order_by=dmccid&order=up">up</a> | 
+			   <a href="./?start=[var.start]&count=[var.count]&order_by=dmccid&order=down">down</a>]</span></th>
+    <th>Abstract Clip</th>
+  </tr>
+  <tr>
+    <td><a href="../../edit/study/?id=[study.objId]">[study.Title;block=tr;]</a></td>
+    <td>[study.DMCC_ID]</td>
+    <td style="font-size:80%;">[study.StudyAbstract;ope=max:400;ifempty='<em>No Abstract Available</em>']</td>
+  </tr>
+  <tr style="background-color:#f4f4f4;">
+    <td><a href="../../edit/study/?id=[study.objId]">[study.Title;block=tr;]</a></td>
+    <td>[study.DMCC_ID]</td>
+    <td style="font-size:80%;">[study.StudyAbstract;ope=max:400;ifempty='<em>No Abstract Available</em>']</td>
+  </tr>
+</table>

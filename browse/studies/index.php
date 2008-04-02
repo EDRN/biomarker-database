@@ -1,61 +1,58 @@
 <?php
-	require_once("../../model/ModelProperties.inc.php");
+	require_once("../../xpress/app.php");
 	
+	// Set up pagination
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
-	$count = min(isset($_GET['count']) ? $_GET['count'] : 100, 250);
-	$q = "SELECT `objId`,`DMCC_ID`,`Title`,`BiomarkerStudyType`,`Abstract` "
+	$startp1 = $start + 1;
+	$count = min(isset($_GET['count']) ? $_GET['count'] : 10, 250);
+	$q1 = "SELECT COUNT(*) FROM `Study`";
+	$total = $xpress->db()->getOne($q1);
+	$stop  = min($total,$start + $count);
+	
+	// Process sort key
+	$order_by = isset($_GET['order_by'])
+		? strtolower($_GET['order_by']) 
+		: '';
+	if ($order_by == "id") {$order_by = "objId";}
+	else if ($order_by == "urn") {$order_by = "BiomarkerID";}
+	else if ($order_by == "type"){$order_by = "Type";}
+	else {$order_by = "Title";} // Default sort key
+
+	// Process sort order key
+	$ascdesc = isset($_GET['order'])
+		? strtolower($_GET['order']) 
+		: '';
+	if ($ascdesc == "down") {$ascdesc = "DESC";}
+	else {$ascdesc = "ASC";} // Default sort order
+	
+	// Issue query
+	$q = "SELECT `objId`,`Title`,`DMCC_ID`,`StudyAbstract` "
 		."FROM `Study` "
+		."ORDER BY `{$order_by}` {$ascdesc} "
 		."LIMIT $start,$count ";
-	$studies = $XPress->Database->safeGetAll($q);
+	$studies = $xpress->db()->getAll($q);
 	
-	// Page Header Setup
-	$p = new cwsp_page("EDRN - Biomarker Database v0.4 Beta","text/html; charset=UTF-8");
-	$p->includeJS('../../js/scriptaculous-js-1.7.0/lib/prototype.js');
-	$p->includeJS('../../js/scriptaculous-js-1.7.0/src/scriptaculous.js');
-	$p->includeJS('../../js/textInputs.js');
-	$p->includeJS('../../model/AjaxHandler.js');
-	$p->includeCSS('../../css/whiteflour.css');
-	$p->includeCSS('../../css/cwspTI.css');
-	$p->drawHeader();
-	
-	require_once("../../assets/skins/edrn/prologue.php");
-?>
-<div class="main">
-<!-- Breadcrumbs Area -->
-	<div class="mainContent" style="padding-bottom:0px;margin-bottom:0px;border-bottom:solid 3px #a0a0a0;padding:3px;color:#666;">
-<?php 
-	echo "<a href=\"../../index.php\">Home</a> / Studies ";
-?>
-	</div><!-- End Breadcrumbs -->
-<?php if (!empty($_GET['notice'])){?>
-	<div id="notice" class="info"><?php if(isset($_GET['notice'])){echo $_GET['notice'];}?>&nbsp;&nbsp;(<span class="pseudolink" onclick="Element.hide('notice');">OK</span>)</div>
-<?php } ?>
-	<div class="mainContent">
-	<h2 class="title">Browse Studies</h2>
-	<table class="browser" style="width:800px;">
-	  <tr><th>Title</th><th>DMCC ID</th><th>Abstract Clip</th></tr>
-<?php
-	foreach ($studies as $study){
-		echo "<tr><td style=\"width:280px;\"><a href=\"../../study.php?view=basics&objId={$study['objId']}\">{$study['Title']}</td>"
-			."<td style=\"text-align:center;\">{$study['DMCC_ID']}</td>";
-			if ($study['Abstract'] != ''){
-				echo "<td>".substr($study['Abstract'],0,300).((strlen($study['Abstract']) > 300)? "..." : "")."</td></tr>";
-			} else {
-				echo "<td><span class=\"hint\"><em>no abstract available</em></span></td></tr>";
-			}
-			
+	// Determine pagination variables
+	$pagelast = 0;
+	if ($start > 0) {
+		$pageback = max(0,$start - $count);
 	}
-?> 
-	</table>
+	if ($start < $total) {
+		$pagenext = $stop;
+	}
+	if (($total - $count) > $start) {
+		$pagelast = $total-$count;
+	}
 	
-		<div class="actions">
-		<ul>
-			  <li><a href="../../index.php">Return Home</a></li>
-		</ul>
-	</div>
-	</div>
-</div>
-<?php
-	require_once("../../assets/skins/edrn/epilogue.php");
-	$p->drawFooter();
+	// Display the page
+	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p->includeCSS('../../static/css/frozen.css');
+	$p->includeCSS('../../static/css/frozenbrowser.css');
+	$p->open();
+	$p->view()->LoadTemplate('view/browse.html');
+	$p->view()->MergeBlock("study",$studies);
+	$p->view()->Show();
+	$p->close();
+	
+	exit();
 ?>
