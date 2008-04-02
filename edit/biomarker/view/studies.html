@@ -23,13 +23,17 @@
 		  <tr><td class="label">Negative Predictive Value:</td><td><span id="npv[studyData.objId]">[studyData.NPV]</span></td></tr>
 		  <tr><td class="label">Positive Predictive Value:</td><td><span id="ppv[studyData.objId]">[studyData.PPV]</span></td></tr>
 		</table>
+		<h4>Associated Publications</h4>
+		<ul>
+			<li>[studyPublications.Title;block=li;p1=[studyData.$]]</li>
+		</ul>
 	  </fieldset>
 	  </span>
 	  </li>
 	</ul>
 </div>
 <div id="options_section" style="width:350px;">
-	<div id="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
+	<div class="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
 	<h5>Associate a Study:</h5>
 	<div id="options_content" style="display:none;">
 		<form action="[var..script_name]" method="POST">
