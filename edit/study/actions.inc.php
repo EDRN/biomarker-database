@@ -24,4 +24,32 @@
 			echo $e->getFormattedMessage();
 		}
 	}
+	
+	// Study::Associate Resource 
+	if (isset($_POST['associate_resource'])) {
+		$sId = $_POST['study_id'];
+		try {
+			$s = StudyFactory::Retrieve($sId);
+			$r = ResourceFactory::Create();
+			$r->setURL($_POST['url']);
+			$r->setName($_POST['description']);
+			$s->link(StudyVars::RESOURCES,$r->getObjId(),ResourceVars::STUDIES);
+			XPressPage::httpRedirect("./?view=resources&id={$sId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
+	
+	// Study::Remove Resource 
+	if (isset($_GET['remove_resource'])) {
+		$sId = $_GET['id'];
+		$rId = $_GET['remove_resource'];
+		try {
+			$r = ResourceFactory::Retrieve($rId);
+			$r->delete();
+			XPressPage::httpRedirect("./?view=resources&id={$sId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
 ?>
