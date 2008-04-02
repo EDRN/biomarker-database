@@ -41,9 +41,12 @@
 
 		}
 		if ($view == "biomarkerorgans") {
-			$biomarkerorgans = $s->getBiomarkerOrgans();
-			foreach ($biomarkerorgans as $bo) {$bo->getOrgan();$bo->getBiomarker();}
-			$p->view()->MergeBlock("bo",$biomarkerorgans); 
+			$bosd = $s->getBiomarkerOrganDatas();
+			foreach ($bosd as $abosd) {
+				$abosd->getBiomarkerOrganData()->getBiomarker();
+				$abosd->getBiomarkerOrganData()->getOrgan();
+			}
+			$p->view()->MergeBlock("bosd",$bosd); 
 		}
 		if ($view == "publications") {
 			$pubs = $s->getPublications();
