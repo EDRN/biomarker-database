@@ -24,6 +24,8 @@
 			<h4>Local Lookup</h4>
 			<form action="[var..script_name]" method="POST">
 				<input type="hidden" name="biomarker_id" value="[var.b.objId]"/>
+				<input type="hidden" id="publication_id" name="publication_id" value=""/>
+				<input type="text" id="publication-search" value="" style="width:100%;"/>
 				<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
 				<input type="submit" name="associate_publication" value="Associate" style="float:right;padding:2px;"/>
 			</form>

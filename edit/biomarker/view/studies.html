@@ -5,13 +5,13 @@
 	  <li style="margin-bottom:25px;"><span id="summary[studyData.objId]">
 	  	<a href="../biomarkerorgan/?id=20">[studyData.Study.Title;block=li]</a><br/>
 	  	<span class="hint">
-	  	  [<span class="pseudolink" onclick="showDetails([studyData.objId]);">View Associated Data</span>] 
+	  	  [<span class="pseudolink detailswitch id:[studyData.objId]">View Associated Data</span>] 
 	  	  [<a href="../study/?id=[studyData.Study.objId]">Go To Study</a>]
-	  	  [<a href="./?id=[var.b.objId]&remove_study=[studyData.objId]" onclick="return confirm('All [var.b.Title] data (Sensitivity, Specificity, etc) for \'[studyData.Study.Title]\' will be deleted. Proceed?');">Remove Association</a>]
+	  	  [<a class="remove" href="./?id=[var.b.objId]&remove_study=[studyData.objId]">Remove Association</a>]
 	  	</span>
 	  </span><span id="details[studyData.objId]" style="display:none;">
 	  <fieldset><legend>[studyData.Study.Title] &nbsp;
-		<span class="hint">[ <span class="pseudolink" onclick="hideDetails([studyData.objId]);">(Hide Details)</span> ]</span></legend>
+		<span class="hint">[ <span class="pseudolink detailswitch id:[studyData.objId]">(Hide Details)</span> ]</span></legend>
 	  	<h4>Abstract: &nbsp;&nbsp;<span class="hint">(from <a href="../study/?id=[studyData.Study.objId]">here</a>)</span></h4>
 		<div style="padding-left: 10px; padding-right: 10px; padding-bottom: 15px; font-size: 90%; line-height: 1.3em; text-align: justify;">
 		[studyData.Study.StudyAbstract;ifempty='<em>No Abstract Available</em>']
@@ -33,35 +33,16 @@
 	</ul>
 </div>
 <div id="options_section" style="width:350px;">
-	<div class="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
+	<div class="hidelink">[ <span id="optxp" class="pseudolink optionswitch">show more/less</span> ]</div>
 	<h5>Associate a Study:</h5>
 	<div id="options_content" style="display:none;">
 		<form action="[var..script_name]" method="POST">
 		<input type="hidden" name="biomarker_id" value="[var.b.objId]"/>
-		<script type="text/javascript">ajaxti('assoc_study','','100%','../../xpress/js/AjaxAutocomplete.php','Study','Title','','study_id','Title');</script>
+		<input type="hidden" id="study_id" name="study_id" value=""/>
+		<input type="text" id="study-search" value="" style="width:100%;"/>
 		<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
 		<input type="submit" name="associate_study" value="Associate" style="float:right;padding:2px;"/>
 		</form>
 	</div>
 </div>
 </div><!-- end outer_wrapper -->
-<script type="text/javascript">
-	[onload;block=script;noerr;when [var.editable] != 0]
-</script>
-<script type="text/javascript">
-	[onload;block=script;noerr;when [var.editable] != 0]
-	new Ajax.InPlaceEditor('sensitivity[studyDataJs.objId;block=script]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=Sensitivity&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-	new Ajax.InPlaceEditor('specificity[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=Specificity&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-	new Ajax.InPlaceEditor('npv[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=NPV&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-	new Ajax.InPlaceEditor('ppv[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=PPV&value='+encodeURIComponent(value);}, cols:3, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-</script>
-<script type="text/javascript">
-function showDetails(id) {
-	$('summary'+id).style.display = 'none';
-	$('details'+id).style.display = 'block';
-}
-function hideDetails(id) {
-	$('details'+id).style.display = 'none';
-	$('summary'+id).style.display = 'block';
-}
-</script>

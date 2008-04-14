@@ -21,22 +21,24 @@
 	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
 	$p->includeCSS('../../static/css/frozen.css');
 	$p->includeCSS("../../static/css/eip.css");
+	$p->includeCSS("../../static/css/autocomplete.css");
 	$p->includeJS("../../static/js/mootools/mootools-release-1.11.js");
 	$p->includeJS("../../static/js/eip.js");
+	$p->includeJS("../../static/js/autocomplete/Observer.js");
+	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");
+
 	
-	$p->includeJS("view/{$view}.js");
-	$p->open();
 	$p->view()->LoadTemplate("view/{$view}.html");
-
-
 	// View-specific Processing
 	switch ($view) {
 		case "basics":
+			$p->includeJS("view/basics.js");
 			$securityOpts = str_replace(" ","_",implode("|",$b->SecurityEnumValues));
 			$qastateOpts  = str_replace(" ","_",implode("|",$b->QAStateEnumValues));
 			$typeOpts     = str_replace(" ","_",implode("|",$b->TypeEnumValues));
 			break;
 		case "organs":
+			$p->includeJS("view/organs.js");
 			$organDatas = $b->getOrganDatas();
 			foreach ($organDatas as $o) {
 				$o->getOrgan();			// Load organ data
@@ -45,6 +47,7 @@
 			$p->view()->MergeBlock("organs","mysql","SELECT objId,Name FROM Organ"); 
 			break;
 		case "studies":
+			$p->includeJS("view/studies.js");
 			$studyDatas = $b->getStudies();
 			foreach ($studyDatas as $s) {
 				$s->getStudy();			// Load study data
@@ -54,14 +57,16 @@
 			$p->view()->MergeBlock("studyPublications",'array','studyDatas[%p1%][Publications]');
 			break;
 		case "publications":
+			$p->includeJS("view/publications.js");
 			$p->view()->MergeBlock("pub",$b->getPublications());
 			break;
 		case "resources":
+			$p->includeJS("view/resources.js");
 			$p->view()->MergeBlock("res",$b->getResources());
 			break;
 	}
 
-	
+	$p->open();
 	$p->view()->Show();
 	$p->close();
 ?>
