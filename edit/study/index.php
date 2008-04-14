@@ -21,24 +21,21 @@
 	// Display the page
 	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
 	$p->includeCSS('../../static/css/frozen.css');
-	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/lib/prototype.js');
-	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/src/scriptaculous.js');
-	$p->includeJS('../../static/js/textInputs.js');
-	$p->open();
-	// Load and display the menu
-	$p->view()->LoadTemplate('view/menu.html');
-	$p->view()->Show();
+	$p->includeCSS('../../static/css/eip.css');
+	$p->includeCSS("../../static/css/autocomplete.css");
+	$p->includeJS('../../static/js/mootools/mootools-release-1.11.js');
+	$p->includeJS('../../static/js/eip.js');
+	$p->includeJS("../../static/js/autocomplete/Observer.js");
+	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");
+	
 	// Try to load and display the view
 	if ($p->view()->LoadTemplate("view/{$view}.html") ) {
 		// View-specific Processing
 		if ($view == "basics") {
-			$jsStatus = generateAjaxSelectBoxJS('status',
-				$s->BiomarkerStudyTypeEnumValues,$s->_getType(),$s->getObjId(),StudyVars::BIOMARKERSTUDYTYPE,"../../xpress/js/AjaxHandler.php");
-			$jsBPCCat = generateAjaxSelectBoxJS('bpc',
-				$s->BiomarkerPopulationCharacteristicsEnumValues,$s->_getType(),$s->getObjId(),StudyVars::BIOMARKERPOPULATIONCHARACTERISTICS,"../../xpress/js/AjaxHandler.php");
-			$jsDesign = generateAjaxSelectBoxJS('design',
-				$s->DesignEnumValues,$s->_getType(),$s->getObjId(),StudyVars::DESIGN,"../../xpress/js/AjaxHandler.php");
-
+			$p->includeJS("view/basics.js");
+			$statusOpts    = str_replace(" ","_",implode("|",$s->BiomarkerStudyTypeEnumValues));
+			$bpcOpts  = str_replace(" ","_",implode("|",$s->BiomarkerPopulationCharacteristicsEnumValues));
+			$designOpts  = str_replace(" ","_",implode("|",$s->DesignEnumValues));
 		}
 		if ($view == "biomarkerorgans") {
 			$bosd = $s->getBiomarkerOrganDatas();
@@ -49,16 +46,18 @@
 			$p->view()->MergeBlock("bosd",$bosd); 
 		}
 		if ($view == "publications") {
+			$p->includeJS("view/publications.js");
 			$pubs = $s->getPublications();
 			$p->view()->MergeBlock("pub",$pubs);
 		}
 		if ($view == "resources") {
+			$p->includeJS("view/resources.js");
 			$resources = $s->getResources();
 			$p->view()->MergeBlock("res",$resources);
 		}
 
-		
+		$p->open();
 		$p->view()->Show();
+		$p->close();
 	}
-	$p->close();
 ?>
