@@ -11,7 +11,7 @@
 	$editable = 1;
 
 	// Process any POST or GET actions
-	include_once("actions.inc.php");
+	require_once("actions.inc.php");
 	
 	// Retrieve the desired object from the database
 	if (false == ($bo = BiomarkerOrganDataFactory::Retrieve($_GET['id']))) {
@@ -23,43 +23,46 @@
 	// Display the page
 	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
 	$p->includeCSS('../../static/css/frozen.css');
-	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/lib/prototype.js');
-	$p->includeJS('../../static/js/scriptaculous-js-1.7.0/src/scriptaculous.js');
-	$p->includeJS('../../static/js/textInputs.js');
-	$p->open();
-	// Load and display the menu
-	$p->view()->LoadTemplate('view/menu.html');
-	$p->view()->Show();
+	$p->includeCSS('../../static/css/eip.css');
+	$p->includeCSS("../../static/css/autocomplete.css");
+	$p->includeJS('../../static/js/mootools/mootools-release-1.11.js');
+	$p->includeJS('../../static/js/eip.js');
+	$p->includeJS("../../static/js/autocomplete/Observer.js");
+	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");
 	// Try to load and display the view
 	if ($p->view()->LoadTemplate("view/{$view}.html") ) {
 		// View-specific Processing
 		if ($view == "basics") {
-			$jsPhase = generateAjaxSelectBoxJS('phase',
-				$bo->PhaseEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerOrganDataVars::PHASE,"../../xpress/js/AjaxHandler.php");
-			$jsQAState = generateAjaxSelectBoxJS('qastate',
-				$bo->QAStateEnumValues,$bo->_getType(),$bo->getObjId(),BiomarkerOrganDataVars::QASTATE,"../../xpress/js/AjaxHandler.php");
+			$p->includeJS('view/basics.js');
+			$phaseOpts    = str_replace(" ","_",implode("|",$bo->PhaseEnumValues));
+			$qastateOpts  = str_replace(" ","_",implode("|",$bo->QAStateEnumValues));
 		}
 		if ($view == "studies") {
+			$p->includeJS("view/studies.js");
 			$studyDatas = $bo->getStudyDatas();
 			foreach ($studyDatas as $s) {
 				$s->getStudy(); // Load study data
-				$s->getPublications(); // Load referenced publications 
+				$s->getPublications();	// Load referenced publications 
+				$s->getResources();		// Load referenced resources
 			} 
 			$p->view()->MergeBlock("studyData",$studyDatas);
 			$p->view()->MergeBlock("studyDataJs",$studyDatas);
 			$p->view()->MergeBlock("studyPublications",'array','studyDatas[%p1%][Publications]');
+			$p->view()->MergeBlock("studyResources",'array','studyDatas[%p1%][Resources]');
 		}
 		if ($view == "publications") {
+			$p->includeJS("view/publications.js");
 			$pubs = $bo->getPublications();
 			$p->view()->MergeBlock("pub",$pubs);
 		}
 		if ($view == "resources") {
+			$p->includeJS("view/resources.js");
 			$resources = $bo->getResources();
 			$p->view()->MergeBlock("res",$resources);
 		}
 
-		
+		$p->open();
 		$p->view()->Show();
+		$p->close();
 	}
-	$p->close();
 ?>

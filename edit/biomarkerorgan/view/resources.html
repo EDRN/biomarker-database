@@ -1,14 +1,15 @@
+[onload;file='view/menu.html']
 <div id="outer_wrapper">
 <div id="main_section">
 	<h4 style="margin-bottom:19px;">External Resources:</h4>
 	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-type:none;list-style-position:inside;">
 	  <li style="margin-bottom:15px;"><a href="[res.URL]">[res.Name;block=li]</a><br/>
 	  <span class="hint" style="color:#888;">[res.URL]</span>
-	  <span class="hint">[<a href="./?id=[var.bo.objId]&view=resources&remove_resource=[res.objId]" onclick="return confirm('Resource \'[res.URL]\' will be deleted. Proceed?');">Remove Resource</a>]</span></li>
+	  <span class="hint">[<a class="remove" href="./?id=[var.bo.objId]&view=resources&remove_resource=[res.objId]">Remove Resource</a>]</span></li>
 	</ul>
 </div>
 <div id="options_section" style="width:350px;">
-	<div class="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
+	<div class="hidelink">[ <span id="optxp" class="pseudolink optionswitch">show more/less</span> ]</div>
 	<h5>Associate a Resource:</h5>
 	<div id="options_content" style="display:none;">
 		<form action="[var..script_name]" method="POST">

@@ -1,3 +1,4 @@
+[onload;file='view/menu.html']
 <div id="outer_wrapper">
 <div id="main_section">
 	<h4 style="margin-bottom:19px;">Associated Studies:</h4>
@@ -5,23 +6,23 @@
 	  <li style="margin-bottom:25px;"><span id="summary[studyData.objId]">
 	  	<a href="../biomarkerorgan/?id=20">[studyData.Study.Title;block=li]</a><br/>
 	  	<span class="hint">
-	  	  [<span class="pseudolink" onclick="showDetails([studyData.objId]);">View Associated Data</span>] 
+	  	  [<span class="pseudolink detailswitch id:[studyData.objId]">View Associated Data</span>] 
 	  	  [<a href="../study/?id=[studyData.Study.objId]">Go To Study</a>]
-	  	  [<a href="./?id=[var.b.objId]&remove_study=[studyData.objId]" onclick="return confirm('All [var.b.Title] data (Sensitivity, Specificity, etc) for \'[studyData.Study.Title]\' will be deleted. Proceed?');">Remove Association</a>]
+	  	  [<a class="remove" href="./?id=[var.bo.objId]&remove_study=[studyData.objId]">Remove Association</a>]
 	  	</span>
 	  </span><span id="details[studyData.objId]" style="display:none;">
 	  <fieldset><legend>[studyData.Study.Title] &nbsp;
-		<span class="hint">[ <span class="pseudolink" onclick="hideDetails([studyData.objId]);">(Hide Details)</span> ]</span></legend>
+		<span class="hint">[ <span class="pseudolink detailswitch id:[studyData.objId]">(Hide Details)</span> ]</span></legend>
 	  	<h4>Abstract: &nbsp;&nbsp;<span class="hint">(from <a href="../study/?id=[studyData.Study.objId]">here</a>)</span></h4>
 		<div style="padding-left: 10px; padding-right: 10px; padding-bottom: 15px; font-size: 90%; line-height: 1.3em; text-align: justify;">
 		[studyData.Study.StudyAbstract;ifempty='<em>No Abstract Available</em>']
 		</div>
 		<h4>Pertinent Data</h4>
 		<table class="editable_info" style="margin-left:5px;">
-		  <tr><td class="label">Sensitivity:</td><td style="width:200px;"><span id="sensitivity[studyData.objId]">[studyData.Sensitivity]</span></td></tr>
-		  <tr><td class="label">Specificity:</td><td><span id="specificity[studyData.objId]">[studyData.Specificity]</span></td></tr>
-		  <tr><td class="label">Negative Predictive Value:</td><td><span id="npv[studyData.objId]">[studyData.NPV]</span></td></tr>
-		  <tr><td class="label">Positive Predictive Value:</td><td><span id="ppv[studyData.objId]">[studyData.PPV]</span></td></tr>
+		  <tr><td class="label">Sensitivity:</td><td style="width:200px;"><span id="sensitivity[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:Sensitivity">[studyData.Sensitivity]</span></td></tr>
+		  <tr><td class="label">Specificity:</td><td><span id="specificity[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:Specificity">[studyData.Specificity]</span></td></tr>
+		  <tr><td class="label">Negative Predictive Value:</td><td><span id="npv[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:NPV">[studyData.NPV]</span></td></tr>
+		  <tr><td class="label">Positive Predictive Value:</td><td><span id="ppv[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:PPV">[studyData.PPV]</span></td></tr>
 		</table>
 		<h4 style="margin-bottom:14px;">Associated Publications</h4>
 		<div style="position:relative;">
@@ -33,152 +34,77 @@
 		</ul>
 		<!-- IMPORT PUBLICATION BOX -->
 		<div class="optbox" style="top:-30px;right4px;width:340px;">
-			<div class="hidelink">[ <span id="optxp[studyData.objId]" class="pseudolink" onclick="$('options_content[studyData.objId]').toggle();">show more/less</span> ]</div>
+			<div class="hidelink">[ <span id="optxp[studyData.objId]" class="pseudolink optionswitch id:[studyData.objId]">show more/less</span> ]</div>
 			<h5>Associate a Publication:</h5>
 			<div id="options_content[studyData.objId]" style="display:none;">
-			<ul class="menu">
-			  <li id="li_local[studyData.objId]" class="activelink" style="border-left:solid 1px #aaa;"><span class="pseudolink" style="color:#000;" onclick="tshow([studyData.objId],'local');">Local</span></li>
-			  <li id="li_pubmed[studyData.objId]"><span class="pseudolink" style="color:#000;" onclick="tshow([studyData.objId],'pubmed');">PubMed</span></li>
-			  <li id="li_other[studyData.objId]"><span class="pseudolink" style="color:#000;" onclick="tshow([studyData.objId],'other');">Other</span></li>
+			<ul class="minimenu">
+			  <li id="li_local[studyData.objId]" class="activelink" style="border-left:solid 1px #aaa;"><span class="pseudolink" style="color:#000;">Local</span></li>
+			  <li id="li_pubmed[studyData.objId]"><span class="pseudolink" style="color:#000;">PubMed</span></li>
+			  <li id="li_other[studyData.objId]"><span class="pseudolink" style="color:#000;">Other</span></li>
 			</ul>
 			<div class="clr"><!--  --></div>
 			<!-- LOCAL PUBLICATION ASSOCIATION -->
-			<div id="div_assocLocal[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:block;">
+			<div id="div_local[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:block;">
 				<h4 style="margin-top:0px;">Local Lookup</h4>
 				<form action="[var..script_name]" method="POST">
-					<input type="hidden" name="biomarkerorgan_id" value="[var.bo.objId]"/>
-					<script type="text/javascript">ajaxti('assoc_pub[studyData.objId]','','100%','../../xpress/js/AjaxAutocomplete.php','Publication','Title','','publication_id','Title');</script>
+					<input type="hidden" id="publication[studyData.objId]_id" name="publication[studyData.objId]_id" value=""/>
+					<input type="text" class="pubsearch id:[studyData.objId]" id="publication[studyData.objId]search" value="" style="width:100%;"/>
 					<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
-					<input type="button" value="Associate" style="float:right;padding:2px;" onclick="if($('assoc_pub[studyData.objId]AutocompleteID').value){assocPub([studyData.objId],$('assoc_pub[studyData.objId]AutocompleteID').value,'pubs[studyData.objId]');}"/>
+					<input type="button" class="assoclocal id:[studyData.objId]" value="Associate" style="float:right;padding:2px;"/>
 				</form>
 			</div>
 			<!-- PUBMED IMPORT & ASSOCIATION -->
-			<div id="div_assocPubMed[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
+			<div id="div_pubmed[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
 				<h4 style="margin-top:0px;">PubMed Import</h4>
 			</div>
 			<!-- OTHER IMPORT AND ASSOCIATION -->
-			<div id="div_assocOther[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
+			<div id="div_other[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
 		
 			</div>
 		</div><!-- END IMPORT PUBLICATION BOX -->
 		</div>
+		
+		<h4 style="margin-bottom:14px;">External Resources</h4>
+		<div style="position:relative;">
+		<ul id="res[studyData.objId]" style="list-style:none;color:#900003;margin:0px;padding:0px;list-style-position:inside;margin-left:5px;">
+	  		<li id="s[studyData.objId]r[studyResources.objId]" style="margin-bottom:15px;"><a href="[studyResources.URL]">[studyResources.Name;block=li;p1=[studyData.$]]</a><br/>
+	  			<span class="hint" style="color:#888;">[studyResources.URL]</span>
+	  			<span class="hint">[<span class="pseudolink" onclick="if(confirm('Resource \'[studyResources.URL]\' will be deleted. Proceed?')){dissocRes([studyData.objId],[studyResources.objId],'s[studyData.objId]r[studyResources.objId]');}">Remove Resource</a>]</span></li>
+		</ul>
+		<div class="optbox" style="top:-30px;right4px;width:340px;">
+			<div class="hidelink">[ <span id="optxp" class="pseudolink resoptionswitch id:[studyData.objId]">show more/less</span> ]</div>
+			<h5>Associate a Resource:</h5>
+			<div id="res_options_content[studyData.objId]" style="display:none;">
+				<form id="resourceassoc[studyData.objId]" action="[var..script_name]" method="POST">
+				<input type="hidden" name="action" value="study_associate_resource"/>
+				<input type="hidden" name="bosdId" value="[studyData.objId]"/>
+				Descriptive Phrase:
+				<textarea name="rdesc" rows="2" cols="30" style="width:100%;border:inset 1px #ccc;margin-bottom:6px;"></textarea>
+				URL:
+				<input type="text" name="rurl" style="width:100%;margin-bottom:6px;color:#000;" value="http://"/>
+				<input type="button" style="float:right;" value="Associate" onclick="$('resourceassoc[studyData.objId]').send({update:res[studyData.objId]});"/>
+				</form>
+			</div>
+		</div>
+		
 		</div>
 	  </fieldset>
+	  <p>&nbsp;</p>
 	  </span>
 	  </li>
 	</ul>
 </div>
 <div id="options_section" style="width:350px;">
-	<div class="hidelink">[ <span id="optxp" class="pseudolink" onclick="$('options_content').toggle();">show more/less</span> ]</div>
+	<div class="hidelink">[ <span id="optxp" class="pseudolink optionswitch">show more/less</span> ]</div>
 	<h5>Associate a Study:</h5>
 	<div id="options_content" style="display:none;">
 		<form action="[var..script_name]" method="POST">
-		<input type="hidden" name="biomarker_id" value="[var.b.objId]"/>
-		<script type="text/javascript">ajaxti('assoc_study','','100%','../../xpress/js/AjaxAutocomplete.php','Study','Title','','study_id','Title');</script>
+		<input type="hidden" name="biomarkerorgan_id" value="[var.bo.objId]"/>
+		<input type="hidden" id="study_id" name="study_id" value=""/>
+		<input type="text" id="study-search" value="" style="width:100%;"/>
 		<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
 		<input type="submit" name="associate_study" value="Associate" style="float:right;padding:2px;"/>
 		</form>
 	</div>
 </div>
 </div><!-- end outer_wrapper -->
-<script type="text/javascript">
-	[onload;block=script;noerr;when [var.editable] != 0]
-</script>
-<script type="text/javascript">
-	[onload;block=script;noerr;when [var.editable] != 0]
-	new Ajax.InPlaceEditor('sensitivity[studyDataJs.objId;block=script]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=Sensitivity&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-	new Ajax.InPlaceEditor('specificity[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=Specificity&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-	new Ajax.InPlaceEditor('npv[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=NPV&value='+encodeURIComponent(value);}, cols:3,highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-	new Ajax.InPlaceEditor('ppv[studyDataJs.objId]','../../xpress/js/AjaxHandler.php',{callback: function(form, value) { return 'action=update&objType=BiomarkerStudyData&objID=[studyDataJs.objId]&attr=PPV&value='+encodeURIComponent(value);}, cols:3, highlightcolor:"#cccccc",highlightendcolor:"#dddddd"});
-</script>
-<script type="text/javascript">
-function showDetails(id) {
-	$('summary'+id).style.display = 'none';
-	$('details'+id).style.display = 'block';
-}
-function hideDetails(id) {
-	$('details'+id).style.display = 'none';
-	$('summary'+id).style.display = 'block';
-}
-</script>
-<script type="text/javascript">
-	function tshow(id,elmtName) {
-		switch (elmtName) {
-			case 'local':
-				$('div_assocPubMed'+id).hide();
-				$('div_assocOther'+id).hide();
-				$('li_pubmed'+id).removeClassName('activelink');
-				$('li_other'+id).removeClassName('activelink');
-				$('li_local'+id).addClassName('activelink');
-				$('div_assocLocal'+id).show();
-				break;
-			case 'pubmed':
-				$('div_assocLocal'+id).hide();
-				$('div_assocOther'+id).hide();
-				$('li_local'+id).removeClassName('activelink');
-				$('li_other'+id).removeClassName('activelink');
-				$('li_pubmed'+id).addClassName('activelink');
-				$('div_assocPubMed'+id).show();
-				break;
-			case 'other':
-				$('div_assocLocal'+id).hide();
-				$('div_assocPubMed'+id).hide();
-				$('li_local'+id).removeClassName('activelink');
-				$('li_pubmed'+id).removeClassName('activelink');
-				$('li_other'+id).addClassName('activelink');
-				$('div_assocOther'+id).show();
-				break;
-			default:break;				
-		}
-	}
-</script>
-<script type="text/javascript">
-	function assocPub(bosdId,pubId,containerId) {
-		new Ajax.Request(
-			'../../xpress/js/AjaxHandler.php',{
-			method:'post',
-			parameters:'action=associate&obj1Type=BiomarkerOrganStudyData&obj1Id='+bosdId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+pubId+'&obj2Attr=BiomarkerOrganStudies',
-			onSuccess: function (transport){
-				ajax_getLinkedPub(bosdId,pubId,containerId);
-			}
-		});
-	}
-	function dissocPub(bosdId,pubId,containerId) {
-		new Ajax.Request(
-			'../../xpress/js/AjaxHandler.php',{
-			method:'post',
-			parameters:'action=dissociate&obj1Type=BiomarkerOrganStudyData&obj1Id='+bosdId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+pubId+'&obj2Attr=BiomarkerOrganStudies',
-			onSuccess: function (transport){
-				Effect.Fade(containerId);
-			}
-		});
-	}
-	function ajax_getLinkedPub(bosdId,pubId,containerId) {
-		new Ajax.Request(
-			'../../xpress/extensions/ajax_get.php',{
-				method:'get',
-				parameters:'otype=Publication&oid='+pubId,
-				onSuccess: function (transport) {
-					post_assocPub(bosdId,containerId,transport.responseText);
-				}
-		});
-	}
-	function post_assocPub(bosdId,containerId,response) {
-		var jss = String(response);
-		var pub = jss.evalJSON(true);
-		var li = new Element('li',{ 'id':'s'+bosdId+'p'+pub.objId,'style':'margin-bottom:15px;'});
-		var a  = new Element('a',{'href':'../publication?id='+pub.objId}).update(pub.Title);
-		var br = new Element("br");
-		var h1 = new Element("span",{'class':'hint','style':'color:#888;'}).update('Author: '+pub.Author+' Published in '+pub.Year+' in: '+pub.Journal+' (volume '+pub.Volume+', issue '+pub.Issue+') &nbsp;');
-		var h2 = new Element("span",{'class':'hint'}).update('[');
-		var a2 = new Element("span",{'class':'pseudolink','onclick':'if(confirm(\'Publication \\\''+pub.Title+'\\\' will no longer be associated here. Proceed?\')){dissocPub('+bosdId+','+pub.objId+',\'s'+bosdId+'p'+pub.objId+'\');}'}).update('Remove Association');
-		
-		li.insert(a);
-		li.insert(br);
-		li.insert(h1);
-		h2.insert(a2);
-		h2.insert(']');
-		li.insert(h2);
-		$(containerId).insert(li);
-	}
-</script>

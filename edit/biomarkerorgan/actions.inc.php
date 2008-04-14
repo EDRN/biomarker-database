@@ -25,6 +25,31 @@
 		}
 	}
 	
+	// BiomarkerOrgan::Associate Study
+	if (isset($_POST['associate_study'])) {
+		$bId = $_POST['biomarkerorgan_id'];
+		$sId = $_POST['study_id'];
+		try {
+			$bs = BiomarkerOrganStudyDataFactory::Create($sId,$bId);
+			XPressPage::httpRedirect("./?view=studies&id={$bId}");
+		} catch (XPressException $e){
+			echo $e->getFormattedMessage();
+		}
+	}
+	
+	// BiomarkerOrgan::Dissociate Study
+	if (isset($_GET['remove_study'])) {
+		$bId  = $_GET['id'];
+		$bsId = $_GET['remove_study'];
+		try {
+			$bs = BiomarkerOrganStudyDataFactory::Retrieve($bsId);
+			$bs->delete();
+			XPressPage::httpRedirect("./?view=studies&id={$bId}");
+		} catch (XPressException $e) {
+			echo $e->getFormattedMessage();
+		}
+	}
+	
 	// BiomarkerOrgan::Associate Resource 
 	if (isset($_POST['associate_resource'])) {
 		$boId = $_POST['biomarkerorgan_id'];
@@ -52,5 +77,98 @@
 			echo $e->getFormattedMessage();
 		}
 	}
-
+	
+	// Special actions for the studies page
+	if (isset($_POST['action'])) {
+	
+		// Associate a publication with a biomarker-organ-study-data object
+		if($_POST['action'] == 'study_associate_publication') {
+			$bosdId= $_POST['bosdId'];
+			$pubId = $_POST['pubId'];
+			if (false == ($bosd = BiomarkerOrganStudyDataFactory::Retrieve($bosdId))) {
+				// bosd did not exist;
+				echo "error";
+				exit();
+			}
+			if (false == ($pub = PublicationFactory::Retrieve($pubId))) {
+				// publication did not exist
+				echo "error";
+				exit();
+			}
+			$bosd->link(BiomarkerOrganStudyDataVars::PUBLICATIONS,
+				$pubId,PublicationVars::BIOMARKERORGANSTUDIES);
+				
+			// echo an HTML representation of the entry
+			echo <<<END
+<li id="s{$bosdId}p{$pubId}" style="margin-bottom:15px;"><a href="../publication/?id={$pubId}">{$pub->getTitle()}</a><br/>
+<span class="hint" style="color:#888;">Author: {$pub->getAuthor()}. Published in {$pub->getYear()} in: {$pub->getJournal()} (volume {$pub->getVolume()}, issue {$pub->getIssue()}</span> &nbsp;
+<span class="hint">[<span class="pseudolink" onclick="if(confirm('Publication \'{$pub->getTitle()}\' will no longer be associated here. Proceed?')){dissocPub({$bosdId},{$pubId},'s{$bosdId}p{$pubId}');}">Remove Association</span>]</span><br/>
+</li>
+END;
+			exit();
+		}
+		if ($_POST['action'] == 'study_dissociate_publication') {
+			$bosdId= $_POST['bosdId'];
+			$pubId = $_POST['pubId'];
+			if (false == ($bosd = BiomarkerOrganStudyDataFactory::Retrieve($bosdId))) {
+				// bosd did not exist;
+				echo "error";
+				exit();
+			}
+			if (false == ($pub = PublicationFactory::Retrieve($pubId))) {
+				// publication did not exist
+				echo "error";
+				exit();
+			}
+			$bosd->unlink(BiomarkerOrganStudyDataVars::PUBLICATIONS,
+				$pubId);
+			$pub->unlink(PublicationVars::BIOMARKERORGANSTUDIES,$bosdId);
+			
+			echo "ok";
+			exit();
+		}
+		
+		if ($_POST['action'] == 'study_associate_resource') {
+			$bosdId = $_POST['bosdId'];
+			$url    = $_POST['rurl'];
+			$desc   = $_POST['rdesc'];
+			$r = ResourceFactory::Create();
+			$r->setURL($url);
+			$r->setName($desc);
+			// Link to biomarker-organ-study-data
+			if (false == ($bosd = BiomarkerOrganStudyDataFactory::Retrieve($bosdId))) {
+				// bosd did not exist
+				echo "error";
+				exit();
+			}
+			$bosd->link(BiomarkerOrganStudyDataVars::RESOURCES,
+				$r->getObjId(),ResourceVars::BIOMARKERORGANSTUDIES);
+			
+			echo <<<END
+<li id="s{$bosdId}r{$r->getObjId()}" style="margin-bottom:15px;"><a href="{$url}">{$desc}</a><br/>
+<span class="hint" style="color:#888;">{$url}</span>
+<span class="hint">[<span class="pseudolink" onclick="if(confirm('Resource \'{$url}\' will be deleted. Proceed?')){dissocRes({$bosdId},{$r->getObjId()},'s{$bosdId}r{$r->getObjId()}');}">Remove Resource</a>]</span></li>
+END;
+			exit();
+		}
+		
+		if ($_POST['action'] == 'study_dissociate_resource') {
+			$bosdId = $_POST['bosdId'];
+			$resId  = $_POST['resId'];
+			// Unlink if both pieces exist
+			if (false == ($bosd = BiomarkerOrganStudyDataFactory::Retrieve($bosdId))) {
+				// bosd did not exist
+				echo "error";
+				exit();
+			}
+			if (false == ($res = ResourceFactory::Retrieve($resId))) {
+				// resource did not exist
+				echo "error";
+				exit();
+			}
+			$res->delete();
+			echo "ok";
+			exit();
+		}
+	}
 ?>
