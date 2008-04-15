@@ -10,11 +10,22 @@
 		</h2>
 	</div>
 </div>
-<br/><br/>
+<div class="searcher">
+	<h2>Search For a Biomarker by Name:</h2>
+	<div style="width:530px;">
+	<form action="../../edit/biomarker/index.php" method="GET">
+		<input type="hidden" id="biomarker_id" name="id" value=""/>
+		<input type="text" id="biomarker-search" value="" style="border:solid 1px #ccc; padding:5px;font-size:110%;float:left;width:450px;margin-left:15px;"/>
+		<input type="submit" value="Go!" style="float:right;padding:4px;"/>
+		<div class="clr"><!--  --></div>
+	</form>
+	</div>
+</div>
+<h2>Browse Biomarker Directory:</h2>
 <span class="hint">
 	<a href="./?start=0&count=[onload_i;block=a;when [var.start]+-[var.count]][var.count]">First Page</a>&nbsp; 
 	<a href="./?start=[onload;block=a;when [var.start]+-0][var.pageback]&count=[var.count]">Previous Page</a> 
-	<strong>Displaying Biomarkers [var.startp1] through [var.stop] of [var.total] total:</strong> 
+	<strong>Currently Displaying Biomarkers [var.startp1] through [var.stop] of [var.total] total:</strong> 
 	<a href="./?start=[onload;block=a;when [var.stop]-+[var.total]][var.pagenext]&count=[var.count]">Next Page</a>&nbsp;
 	<a href="./?start=[onload;block=a;when [var.pagelast]!=0;noerr][var.pagelast]&count=[var.count]">Last Page</a>
 </span><br/>
