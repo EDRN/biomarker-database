@@ -4,7 +4,7 @@
 	// Set up pagination
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
 	$startp1 = $start + 1;
-	$count = min(isset($_GET['count']) ? $_GET['count'] : 10, 250);
+	$count = min(isset($_GET['count']) ? $_GET['count'] : 25, 250);
 	$q1 = "SELECT COUNT(*) FROM `Biomarker`";
 	$total = $xpress->db()->getOne($q1);
 	$stop  = min($total,$start + $count);
