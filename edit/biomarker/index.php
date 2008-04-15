@@ -52,9 +52,11 @@
 			foreach ($studyDatas as $s) {
 				$s->getStudy();			// Load study data
 				$s->getPublications();	// Load referenced publications
+				$s->getResources();		// Load referenced resources
 			}
 			$p->view()->MergeBlock("studyData",'array','studyDatas');
 			$p->view()->MergeBlock("studyPublications",'array','studyDatas[%p1%][Publications]');
+			$p->view()->MergeBlock("studyResources",'array','studyDatas[%p1%][Resources]');
 			break;
 		case "publications":
 			$p->includeJS("view/publications.js");
