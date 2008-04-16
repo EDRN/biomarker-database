@@ -1,62 +1,62 @@
 <?php
-	require_once("../../model/ModelProperties.inc.php");
+	require_once("../../xpress/app.php");
 	
+	// Set up pagination
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
+	$startp1 = $start + 1;
 	$count = min(isset($_GET['count']) ? $_GET['count'] : 25, 250);
-	$q = "SELECT `objId`,`PubMedID`,`Title`,`Author`,`Journal` "
+	$q1 = "SELECT COUNT(*) FROM `Publication`";
+	$total = $xpress->db()->getOne($q1);
+	$stop  = min($total,$start + $count);
+	
+	// Process sort key
+	$order_by = isset($_GET['order_by'])
+		? strtolower($_GET['order_by']) 
+		: '';
+	if ($order_by == "id") {$order_by = "objId";}
+	else if ($order_by == "author") {$order_by = "Author";}
+	else {$order_by = "Title";} // Default sort key
+
+	// Process sort order key
+	$ascdesc = isset($_GET['order'])
+		? strtolower($_GET['order']) 
+		: '';
+	if ($ascdesc == "down") {$ascdesc = "DESC";}
+	else {$ascdesc = "ASC";} // Default sort order
+	
+	// Issue query
+	$q = "SELECT `objId`,`Title`,`Author`,`Journal` "
 		."FROM `Publication` "
+		."ORDER BY `{$order_by}` {$ascdesc} "
 		."LIMIT $start,$count ";
-	$publications = $XPress->Database->safeGetAll($q);
+	$publications = $xpress->db()->getAll($q);
 	
-	// Page Header Setup
-	$p = new cwsp_page("EDRN - Biomarker Database v0.4 Beta","text/html; charset=UTF-8");
-	$p->includeJS('../../js/scriptaculous-js-1.7.0/lib/prototype.js');
-	$p->includeJS('../../js/scriptaculous-js-1.7.0/src/scriptaculous.js');
-	$p->includeJS('../../js/textInputs.js');
-	$p->includeJS('../../model/AjaxHandler.js');
-	$p->includeCSS('../../css/whiteflour.css');
-	$p->includeCSS('../../css/cwspTI.css');
-	$p->drawHeader();
-	
-	require_once("../../assets/skins/edrn/prologue.php");
-?>
-<div class="main">
-<!-- Breadcrumbs Area -->
-	<div class="mainContent" style="padding-bottom:0px;margin-bottom:0px;border-bottom:solid 3px #a0a0a0;padding:3px;color:#666;">
-<?php 
-	echo "<a href=\"../../index.php\">Home</a> / Publications ";
-?>
-	</div><!-- End Breadcrumbs -->
-	<div class="mainContent">
-<?php if (!empty($_GET['notice'])){?>
-	<div id="notice" class="info"><?php if(isset($_GET['notice'])){echo $_GET['notice'];}?>&nbsp;&nbsp;(<span class="pseudolink" onclick="Element.hide('notice');">OK</span>)</div>
-<?php } ?>
-	<h2 class="title">Browse Publications</h2>
-	<table class="browser">
-	  <tr><th>PubMedID</th><th>Title</th><th>Journal</th><th>Author</th></tr>
-<?php
-	foreach ($publications as $publication){
-		echo "<tr><td><a href=\"../../publication.php?view=basics&objId={$publication['objId']}\">{$publication['PubMedID']}</td>"
-			."<td>{$publication['Title']}</td>"
-			."<td>{$publication['Journal']}</td>"
-			."<td>{$publication['Author']}</td></tr>";
+	// Determine pagination variables
+	$pagelast = 0;
+	if ($start > 0) {
+		$pageback = max(0,$start - $count);
 	}
-?> 
-	</table>
+	if ($start < $total) {
+		$pagenext = $stop;
+	}
+	if (($total - $count) > $start) {
+		$pagelast = $total-$count;
+	}
 	
-		<div class="actions">
-			<ul>
-				  <li><a href="../../index.php">Return Home</a></li>
-			</ul>
-		</div>
-		<div class="specialactions">
-			<ul>
-				<li><a href="../../util/importpubmed.php">Import a publication</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-<?php
-	require_once("../../assets/skins/edrn/epilogue.php");
-	$p->drawFooter();
+	// Display the page
+	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p->includeJS("../../static/js/mootools/mootools-release-1.11.js");	
+	$p->includeJS("../../static/js/autocomplete/Observer.js");
+	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");
+	$p->includeJS("view/browse.js");
+	$p->includeCSS('../../static/css/frozen.css');
+	$p->includeCSS('../../static/css/frozenbrowser.css');
+	$p->includeCSS("../../static/css/autocomplete.css");
+	$p->open();
+	$p->view()->LoadTemplate('view/browse.html');
+	$p->view()->MergeBlock("pub",$publications);
+	$p->view()->Show();
+	$p->close();
+	
+	exit();
 ?>

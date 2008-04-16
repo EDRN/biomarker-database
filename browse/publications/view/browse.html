@@ -1,0 +1,53 @@
+[onload;file=../../view/edrn_prologue.html;]
+<div class="menu">
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+	EDRN Biomarker Database
+	</div><!-- End Breadcrumbs -->
+	<div class="mainContent">
+		<h2 class="title">
+		<a href="../../">Home</a> / Publications 
+		</h2>
+	</div>
+</div>
+<div class="searcher">
+	<h2>Search For a Publication by Name:</h2>
+	<div style="width:530px;">
+	<form action="../../edit/study/index.php" method="GET">
+		<input type="hidden" id="publication_id" name="id" value=""/>
+		<input type="text" id="publication-search" value="" style="border:solid 1px #ccc; padding:5px;font-size:110%;float:left;width:450px;margin-left:15px;"/>
+		<input type="submit" value="Go!" style="float:right;padding:4px;"/>
+		<div class="clr"><!--  --></div>
+	</form>
+	</div>
+</div>
+<h2>Browse Publication Directory:</h2>
+<span class="hint">
+	<a href="./?start=0&count=[onload_i;block=a;when [var.start]+-[var.count]][var.count]">First Page</a>&nbsp; 
+	<a href="./?start=[onload;block=a;when [var.start]+-0][var.pageback]&count=[var.count]">Previous Page</a> 
+	<strong>Displaying Publications [var.startp1] through [var.stop] of [var.total] total:</strong> 
+	<a href="./?start=[onload;block=a;when [var.stop]-+[var.total]][var.pagenext]&count=[var.count]">Next Page</a>&nbsp;
+	<a href="./?start=[onload;block=a;when [var.pagelast]!=0;noerr][var.pagelast]&count=[var.count]">Last Page</a>
+</span><br/>
+
+<table id="elements" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Title <span class="hint">
+    	[sort: <a href="./?start=[var.start]&count=[var.count]&order_by=title&order=up">up</a> | 
+    		   <a href="./?start=[var.start]&count=[var.count]&order_by=title&order=down">down</a>]</span></th>
+    <th style="width:190px;">Author <span class="hint">
+    	[sort: <a href="./?start=[var.start]&count=[var.count]&order_by=author&order=up">up</a> | 
+			   <a href="./?start=[var.start]&count=[var.count]&order_by=author&order=down">down</a>]</span></th>
+    <th>Journal</th>
+  </tr>
+  <tr>
+    <td><a href="../../goto/publication/?id=[pub.objId]">[pub.Title;block=tr;]</a></td>
+    <td>[pub.Author]</td>
+    <td style="font-size:80%;">[pub.Journal]</td>
+  </tr>
+  <tr style="background-color:#f4f4f4;">
+    <td><a href="../../goto/publication/?id=[pub.objId]">[pub.Title;block=tr;]</a></td>
+    <td>[pub.Author]</td>
+    <td style="font-size:80%;">[pub.Journal]</td>
+  </tr>
+</table>
