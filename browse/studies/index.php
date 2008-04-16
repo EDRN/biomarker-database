@@ -46,8 +46,13 @@
 	
 	// Display the page
 	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p->includeJS("../../static/js/mootools/mootools-release-1.11.js");	
+	$p->includeJS("../../static/js/autocomplete/Observer.js");
+	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");
+	$p->includeJS("view/browse.js");
 	$p->includeCSS('../../static/css/frozen.css');
 	$p->includeCSS('../../static/css/frozenbrowser.css');
+	$p->includeCSS("../../static/css/autocomplete.css");
 	$p->open();
 	$p->view()->LoadTemplate('view/browse.html');
 	$p->view()->MergeBlock("study",$studies);

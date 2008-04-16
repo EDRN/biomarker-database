@@ -10,7 +10,18 @@
 		</h2>
 	</div>
 </div>
-<br/><br/>
+<div class="searcher">
+	<h2>Search For a Study by Name:</h2>
+	<div style="width:530px;">
+	<form action="../../edit/study/index.php" method="GET">
+		<input type="hidden" id="study_id" name="id" value=""/>
+		<input type="text" id="study-search" value="" style="border:solid 1px #ccc; padding:5px;font-size:110%;float:left;width:450px;margin-left:15px;"/>
+		<input type="submit" value="Go!" style="float:right;padding:4px;"/>
+		<div class="clr"><!--  --></div>
+	</form>
+	</div>
+</div>
+<h2>Browse Study Directory:</h2>
 <span class="hint">
 	<a href="./?start=0&count=[onload_i;block=a;when [var.start]+-[var.count]][var.count]">First Page</a>&nbsp; 
 	<a href="./?start=[onload;block=a;when [var.start]+-0][var.pageback]&count=[var.count]">Previous Page</a> 
