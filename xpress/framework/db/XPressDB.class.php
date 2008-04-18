@@ -1,19 +1,13 @@
 <?php
-/*
- * Copyright 2007-2008 Crawwler Software Development
- * http://www.crawwler.com
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
  * 
- * Project: crawwler-xpress (XPress)
- * File: XPressDB.class.php
- * Author: andrew (andrew@crawwler.com)
- * Date: 23.Mar.2008
- * 
- * Lineage: cwsp_db.class.php (Crawwler Web Services Project)
- * Date: 30.May.2007
- * 
- * 
- * Provides basic database connectivity
- * 
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ *  
  */
 
 require_once ("DB.php"); // PEAR DB class

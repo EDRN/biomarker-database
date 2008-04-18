@@ -160,9 +160,9 @@ if (isset($_POST['action'])){
 						$obj->setTitle($val);
 						echo stripslashes(htmlspecialchars_decode($val));
 						break;
-					case "Abstract":
-						$ovalue = $obj->getAbstract();
-						$obj->setAbstract($val);
+					case "StudyAbstract":
+						$ovalue = $obj->getStudyAbstract();
+						$obj->setStudyAbstract($val);
 						echo stripslashes(htmlspecialchars_decode($val));
 						break;
 					case "BiomarkerPopulationCharacteristics":
@@ -1078,7 +1078,7 @@ if (isset($_POST['action'])){
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerAlias"){
-			$obj = BiomarkerAliasFactory::create($_POST['BiomarkerId'],$_POST['BiomarkerId']);
+			$obj = BiomarkerAliasFactory::create($_POST['BiomarkerId']);
 			echo $obj->toJSON();
 			return;
 		}
@@ -1088,7 +1088,7 @@ if (isset($_POST['action'])){
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerStudyData"){
-			$obj = BiomarkerStudyDataFactory::create($_POST['StudyId'],$_POST['BiomarkerId'],$_POST['StudyId'],$_POST['BiomarkerId']);
+			$obj = BiomarkerStudyDataFactory::create($_POST['StudyId'],$_POST['BiomarkerId']);
 			echo $obj->toJSON();
 			return;
 		}
@@ -1098,12 +1098,12 @@ if (isset($_POST['action'])){
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerOrganData"){
-			$obj = BiomarkerOrganDataFactory::create($_POST['OrganId'],$_POST['BiomarkerId'],$_POST['OrganId'],$_POST['BiomarkerId']);
+			$obj = BiomarkerOrganDataFactory::create($_POST['OrganId'],$_POST['BiomarkerId']);
 			echo $obj->toJSON();
 			return;
 		}
 		if ($_POST['objType'] == "BiomarkerOrganStudyData"){
-			$obj = BiomarkerOrganStudyDataFactory::create($_POST['StudyId'],$_POST['BiomarkerOrganDataId'],$_POST['StudyId'],$_POST['BiomarkerOrganDataId']);
+			$obj = BiomarkerOrganStudyDataFactory::create($_POST['StudyId'],$_POST['BiomarkerOrganDataId']);
 			echo $obj->toJSON();
 			return;
 		}

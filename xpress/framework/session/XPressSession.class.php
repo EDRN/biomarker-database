@@ -1,19 +1,13 @@
 <?php
-/*
- * Copyright 2007-2008 Crawwler Software Development
- * http://www.crawwler.com
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
  * 
- * Project: crawwler-xpress (XPress)
- * File: XPressSession.class.php
- * Author: andrew (andrew@crawwler.com)
- * Date: 23.Mar.2008
- * 
- * Lineage: cwsp_session.class.php
- * Date: 30.May.2007
- * 
- * 
- * Provides basic session management functionality
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
  *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ * 
  */
 
 class XPressSession{

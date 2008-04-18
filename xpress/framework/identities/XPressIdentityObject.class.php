@@ -1,13 +1,13 @@
 <?php
-/*
- * Copyright 2006-2008 Crawwler Software Development.
- * http://www.crawwler.com
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
  * 
- * Project: CWSP - XPress
- * File: XPressIdentityObject.class.php
- * Created on February 27, 2008
- * Author: andrew
- *
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ * 
  */
 
 class XPressIdentityObject {

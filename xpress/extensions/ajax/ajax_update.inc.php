@@ -82,6 +82,7 @@ case 'BiomarkerOrganStudyData':
 				break;
 case 'Publication':
 				$o = PublicationFactory::Retrieve($_POST['id']);
+				if (isset($_POST['IsPubMed'])) {$o->setIsPubMed($_POST['IsPubMed']);echo ($o->getIsPubMed() == '')? 'click to edit' : $o->getIsPubMed();exit();}
 				if (isset($_POST['PubMedID'])) {$o->setPubMedID($_POST['PubMedID']);echo ($o->getPubMedID() == '')? 'click to edit' : $o->getPubMedID();exit();}
 				if (isset($_POST['Title'])) {$o->setTitle($_POST['Title']);echo ($o->getTitle() == '')? 'click to edit' : $o->getTitle();exit();}
 				if (isset($_POST['Author'])) {$o->setAuthor($_POST['Author']);echo ($o->getAuthor() == '')? 'click to edit' : $o->getAuthor();exit();}

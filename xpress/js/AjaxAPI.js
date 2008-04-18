@@ -162,106 +162,6 @@
 					}});
 		},
 
-		linkAlias: function (BiomarkerId,BiomarkerAliasId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Aliases&obj2Type=BiomarkerAlias&obj2Id='+BiomarkerAliasId+'&obj2Attr=Biomarker',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkStudy: function (BiomarkerId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Studies&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Biomarker',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkOrganData: function (BiomarkerId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=OrganDatas&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Biomarker',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkPublication: function (BiomarkerId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=Biomarkers',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkResource: function (BiomarkerId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=Biomarkers',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkAlias: function (BiomarkerId,BiomarkerAliasId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Aliases&obj2Type=BiomarkerAlias&obj2Id='+BiomarkerAliasId+'&obj2Attr=Biomarker',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStudy: function (BiomarkerId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Studies&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Biomarker',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkOrganData: function (BiomarkerId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=OrganDatas&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Biomarker',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkPublication: function (BiomarkerId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=Biomarkers',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkResource: function (BiomarkerId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Biomarker&obj1Id='+BiomarkerId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=Biomarkers',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
 		unlinkAlias: function (BiomarkerId,BiomarkerAliasId,objAjaxNotify){
 			new Ajax.Request(
 				this.CreateHandler,{
@@ -320,11 +220,11 @@
 		UnlinkHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
 		DeleteHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
   
-		Create: function(BiomarkerId,BiomarkerId,objAjaxNotify){
+		Create: function(BiomarkerId,objAjaxNotify){
 		  new Ajax.Request(
 		    this.CreateHandler,{
 		    method:'post',
-		    parameters:'action=create&objType=BiomarkerAlias&BiomarkerId='+BiomarkerId+'&BiomarkerId='+BiomarkerId+'',
+		    parameters:'action=create&objType=BiomarkerAlias&BiomarkerId='+BiomarkerId+'',
 		    onSuccess: function (transport){
 		      ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 		    }});
@@ -347,26 +247,6 @@
 				this.CreateHandler,{
 					method:'post',
 					parameters:'action=associate&obj1Type=BiomarkerAlias&obj1Id='+BiomarkerAliasId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Aliases',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarker: function (BiomarkerAliasId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerAlias&obj1Id='+BiomarkerAliasId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Aliases',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarker: function (BiomarkerAliasId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerAlias&obj1Id='+BiomarkerAliasId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Aliases',
 					onSuccess: function (transport){
 						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 					}});
@@ -462,106 +342,6 @@
 					}});
 		},
 
-		linkBiomarker: function (StudyId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=Biomarkers&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Study',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrgan: function (StudyId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=BiomarkerOrgans&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrganData: function (StudyId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=BiomarkerOrganDatas&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=Study',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkPublication: function (StudyId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=Studies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkResource: function (StudyId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=Studies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarker: function (StudyId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=Biomarkers&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Study',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrgan: function (StudyId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=BiomarkerOrgans&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrganData: function (StudyId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=BiomarkerOrganDatas&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=Study',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkPublication: function (StudyId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=Studies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkResource: function (StudyId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Study&obj1Id='+StudyId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=Studies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
 		unlinkBiomarker: function (StudyId,BiomarkerStudyDataId,objAjaxNotify){
 			new Ajax.Request(
 				this.CreateHandler,{
@@ -620,11 +400,11 @@
 		UnlinkHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
 		DeleteHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
   
-		Create: function(StudyId,BiomarkerId,StudyId,BiomarkerId,objAjaxNotify){
+		Create: function(StudyId,BiomarkerId,objAjaxNotify){
 		  new Ajax.Request(
 		    this.CreateHandler,{
 		    method:'post',
-		    parameters:'action=create&objType=BiomarkerStudyData&StudyId='+StudyId+'&BiomarkerId='+BiomarkerId+'&StudyId='+StudyId+'&BiomarkerId='+BiomarkerId+'',
+		    parameters:'action=create&objType=BiomarkerStudyData&StudyId='+StudyId+'&BiomarkerId='+BiomarkerId+'',
 		    onSuccess: function (transport){
 		      ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 		    }});
@@ -677,86 +457,6 @@
 				this.CreateHandler,{
 					method:'post',
 					parameters:'action=associate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkStudy: function (BiomarkerStudyDataId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Study&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Biomarkers',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarker: function (BiomarkerStudyDataId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Studies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkPublication: function (BiomarkerStudyDataId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=BiomarkerStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkResource: function (BiomarkerStudyDataId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStudy: function (BiomarkerStudyDataId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Study&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Biomarkers',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarker: function (BiomarkerStudyDataId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Studies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkPublication: function (BiomarkerStudyDataId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=BiomarkerStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkResource: function (BiomarkerStudyDataId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerStudyData&obj1Id='+BiomarkerStudyDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerStudies',
 					onSuccess: function (transport){
 						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 					}});
@@ -842,26 +542,6 @@
 					}});
 		},
 
-		linkOrganData: function (OrganId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Organ&obj1Id='+OrganId+'&obj1Attr=OrganDatas&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Organ',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkOrganData: function (OrganId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Organ&obj1Id='+OrganId+'&obj1Attr=OrganDatas&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Organ',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
 		unlinkOrganData: function (OrganId,BiomarkerOrganDataId,objAjaxNotify){
 			new Ajax.Request(
 				this.CreateHandler,{
@@ -880,11 +560,11 @@
 		UnlinkHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
 		DeleteHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
   
-		Create: function(OrganId,BiomarkerId,OrganId,BiomarkerId,objAjaxNotify){
+		Create: function(OrganId,BiomarkerId,objAjaxNotify){
 		  new Ajax.Request(
 		    this.CreateHandler,{
 		    method:'post',
-		    parameters:'action=create&objType=BiomarkerOrganData&OrganId='+OrganId+'&BiomarkerId='+BiomarkerId+'&OrganId='+OrganId+'&BiomarkerId='+BiomarkerId+'',
+		    parameters:'action=create&objType=BiomarkerOrganData&OrganId='+OrganId+'&BiomarkerId='+BiomarkerId+'',
 		    onSuccess: function (transport){
 		      ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 		    }});
@@ -952,106 +632,6 @@
 					}});
 		},
 
-		linkOrgan: function (BiomarkerOrganDataId,OrganId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Organ&obj2Type=Organ&obj2Id='+OrganId+'&obj2Attr=OrganDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarker: function (BiomarkerOrganDataId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=OrganDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkResource: function (BiomarkerOrganDataId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerOrgans',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkPublication: function (BiomarkerOrganDataId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=BiomarkerOrgans',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkStudyData: function (BiomarkerOrganDataId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=StudyDatas&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=BiomarkerOrganData',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkOrgan: function (BiomarkerOrganDataId,OrganId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Organ&obj2Type=Organ&obj2Id='+OrganId+'&obj2Attr=OrganDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarker: function (BiomarkerOrganDataId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Biomarker&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=OrganDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkResource: function (BiomarkerOrganDataId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerOrgans',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkPublication: function (BiomarkerOrganDataId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=BiomarkerOrgans',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStudyData: function (BiomarkerOrganDataId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganData&obj1Id='+BiomarkerOrganDataId+'&obj1Attr=StudyDatas&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=BiomarkerOrganData',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
 		unlinkOrgan: function (BiomarkerOrganDataId,OrganId,objAjaxNotify){
 			new Ajax.Request(
 				this.CreateHandler,{
@@ -1110,11 +690,11 @@
 		UnlinkHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
 		DeleteHandler: siteBaseUrl + 'xpress/js/AjaxHandler.php',
   
-		Create: function(StudyId,BiomarkerOrganDataId,StudyId,BiomarkerOrganDataId,objAjaxNotify){
+		Create: function(StudyId,BiomarkerOrganDataId,objAjaxNotify){
 		  new Ajax.Request(
 		    this.CreateHandler,{
 		    method:'post',
-		    parameters:'action=create&objType=BiomarkerOrganStudyData&StudyId='+StudyId+'&BiomarkerOrganDataId='+BiomarkerOrganDataId+'&StudyId='+StudyId+'&BiomarkerOrganDataId='+BiomarkerOrganDataId+'',
+		    parameters:'action=create&objType=BiomarkerOrganStudyData&StudyId='+StudyId+'&BiomarkerOrganDataId='+BiomarkerOrganDataId+'',
 		    onSuccess: function (transport){
 		      ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 		    }});
@@ -1167,86 +747,6 @@
 				this.CreateHandler,{
 					method:'post',
 					parameters:'action=associate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerOrganStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkStudy: function (BiomarkerOrganStudyDataId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Study&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=BiomarkerOrganDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrganData: function (BiomarkerOrganStudyDataId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=BiomarkerOrganData&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=StudyDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkPublication: function (BiomarkerOrganStudyDataId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=BiomarkerOrganStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkResource: function (BiomarkerOrganStudyDataId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerOrganStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStudy: function (BiomarkerOrganStudyDataId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Study&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=BiomarkerOrganDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrganData: function (BiomarkerOrganStudyDataId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=BiomarkerOrganData&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=StudyDatas',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkPublication: function (BiomarkerOrganStudyDataId,PublicationId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Publications&obj2Type=Publication&obj2Id='+PublicationId+'&obj2Attr=BiomarkerOrganStudies',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkResource: function (BiomarkerOrganStudyDataId,ResourceId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=BiomarkerOrganStudyData&obj1Id='+BiomarkerOrganStudyDataId+'&obj1Attr=Resources&obj2Type=Resource&obj2Id='+ResourceId+'&obj2Attr=BiomarkerOrganStudies',
 					onSuccess: function (transport){
 						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 					}});
@@ -1367,106 +867,6 @@
 				this.CreateHandler,{
 					method:'post',
 					parameters:'action=associate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=Studies&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarker: function (PublicationId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=Biomarkers&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrgan: function (PublicationId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=BiomarkerOrgans&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrganStudy: function (PublicationId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=BiomarkerOrganStudies&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerStudy: function (PublicationId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=BiomarkerStudies&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkStudy: function (PublicationId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=Studies&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarker: function (PublicationId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=Biomarkers&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrgan: function (PublicationId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=BiomarkerOrgans&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrganStudy: function (PublicationId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=BiomarkerOrganStudies&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerStudy: function (PublicationId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=BiomarkerStudies&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Publications',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStudy: function (PublicationId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Publication&obj1Id='+PublicationId+'&obj1Attr=Studies&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Publications',
 					onSuccess: function (transport){
 						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 					}});
@@ -1602,106 +1002,6 @@
 					}});
 		},
 
-		linkBiomarker: function (ResourceId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=Biomarkers&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrgan: function (ResourceId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=BiomarkerOrgans&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerOrganStudy: function (ResourceId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=BiomarkerOrganStudies&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkBiomarkerStudy: function (ResourceId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=BiomarkerStudies&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkStudy: function (ResourceId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=Studies&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarker: function (ResourceId,BiomarkerId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=Biomarkers&obj2Type=Biomarker&obj2Id='+BiomarkerId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrgan: function (ResourceId,BiomarkerOrganDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=BiomarkerOrgans&obj2Type=BiomarkerOrganData&obj2Id='+BiomarkerOrganDataId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerOrganStudy: function (ResourceId,BiomarkerOrganStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=BiomarkerOrganStudies&obj2Type=BiomarkerOrganStudyData&obj2Id='+BiomarkerOrganStudyDataId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkBiomarkerStudy: function (ResourceId,BiomarkerStudyDataId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=BiomarkerStudies&obj2Type=BiomarkerStudyData&obj2Id='+BiomarkerStudyDataId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStudy: function (ResourceId,StudyId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Resource&obj1Id='+ResourceId+'&obj1Attr=Studies&obj2Type=Study&obj2Id='+StudyId+'&obj2Attr=Resources',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
 		unlinkBiomarker: function (ResourceId,BiomarkerId,objAjaxNotify){
 			new Ajax.Request(
 				this.CreateHandler,{
@@ -1792,26 +1092,6 @@
 					}});
 		},
 
-		linkStaff: function (SiteId,PersonId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Site&obj1Id='+SiteId+'&obj1Attr=Staff&obj2Type=Person&obj2Id='+PersonId+'&obj2Attr=Site',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkStaff: function (SiteId,PersonId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Site&obj1Id='+SiteId+'&obj1Attr=Staff&obj2Type=Person&obj2Id='+PersonId+'&obj2Attr=Site',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
 		unlinkStaff: function (SiteId,PersonId,objAjaxNotify){
 			new Ajax.Request(
 				this.CreateHandler,{
@@ -1857,26 +1137,6 @@
 				this.CreateHandler,{
 					method:'post',
 					parameters:'action=associate&obj1Type=Person&obj1Id='+PersonId+'&obj1Attr=Site&obj2Type=Site&obj2Id='+SiteId+'&obj2Attr=Staff',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		linkSite: function (PersonId,SiteId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=associate&obj1Type=Person&obj1Id='+PersonId+'&obj1Attr=Site&obj2Type=Site&obj2Id='+SiteId+'&obj2Attr=Staff',
-					onSuccess: function (transport){
-						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
-					}});
-		},
-
-		unlinkSite: function (PersonId,SiteId,objAjaxNotify){
-			new Ajax.Request(
-				this.CreateHandler,{
-					method:'post',
-					parameters:'action=dissociate&obj1Type=Person&obj1Id='+PersonId+'&obj1Attr=Site&obj2Type=Site&obj2Id='+SiteId+'&obj2Attr=Staff',
 					onSuccess: function (transport){
 						ajaxNotify(objAjaxNotify.divId,transport.responseText,objAjaxNotify.messageFormatTag);
 					}});

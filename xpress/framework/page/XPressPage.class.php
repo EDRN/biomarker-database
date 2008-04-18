@@ -1,13 +1,13 @@
 <?php
-/*
- * Copyright 2006-2008 Crawwler Software Development.
- * http://www.crawwler.com
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
  * 
- * Project: CWSP - XPress
- * File: XPressPage.class.php
- * Created on March 07, 2008
- * Author: andrew
- *
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ * 
  */
 
 class XPressPage {
@@ -60,8 +60,6 @@ class XPressPage {
 			"Crawwler CWSP Version {$this->version}");
 		$this->rawInserts 	= '';
 		$this->view 		= new clsTinyButStrong();
-		
-		$this->includeCSS(App::HTTP_SITE_ROOT."/xpress/static/css/xpress.css");
 	}
 	
 	public function setTitle($title) {

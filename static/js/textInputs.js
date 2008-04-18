@@ -1,7 +1,10 @@
+//Copyright (c) 2008, California Institute of Technology.
+//ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+//
 // Formatted Text input field
   function ti(id,name,label,cssWidth){
     document.write('<input type="text" class="cwspTI" '+
-      'style="width:'+cssWidth+'px;" '+
+      'style="width:'+cssWidth+';" '+
       'id="' + id + '" ' + 
       'name="' + name + '" ' +
       'value="' + label + '" ' +

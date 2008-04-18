@@ -1,3 +1,6 @@
+//Copyright (c) 2008, California Institute of Technology.
+//ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+//
   window.addEvent('domready', function() {
   
     // Activate edit in place for sensitivity,specificity, etc

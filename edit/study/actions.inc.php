@@ -1,4 +1,14 @@
 <?php
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
+ * 
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ * 
+ */
 	// Study::Associate Publication
 	if (isset($_POST['associate_publication'])) {
 		$sId = $_POST['study_id'];

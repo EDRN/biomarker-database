@@ -1,17 +1,15 @@
 <?php
-/*
- * Copyright 2007-2008 Crawwler Software Development.
- * http://www.crawwler.com
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
  * 
- * Project: CWSP - XPress
- * File: XPressIdentityFramework.class.php
- * Created on March 23, 2008
- * Author: andrew
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
  * 
- * Lineage: cwsp_auth (Crawwler Web Services Project)
- * Date: 30.May.2007
- *
  */
+
 require_once ("Auth.php");		 // PEAR Auth class
 class XPressAuthWrapper {
 

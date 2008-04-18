@@ -1,15 +1,12 @@
 <?php
-/*
- * Copyright 2007-2008 Crawwler Software Development
- * http://www.crawwler.com
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
  * 
- * Project: crawwler-xpress (XPress)
- * File: XPressException.class.php
- * Author: andrew (andrew@crawwler.com)
- * Date: 23.Mar.2008
- * 
- * 
- * Provides basic exception handling
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
  * 
  */
 
@@ -26,8 +23,8 @@ class XPressException extends Exception {
 		$this->details = $details;
 	}
 	
-	public function __toString() {
-		return "XPress Exception ({$this->type}".(($this->subtype == '') ? '' : "::{$this->subtype}")."): $message ";
+	public function toString() {
+		return "XPress Exception ({$this->type}".(($this->subtype == '') ? '' : "::{$this->subtype}")."): $this->message ";
 	}
 	
 	public function getFormattedMessage() {

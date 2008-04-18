@@ -1,10 +1,19 @@
 <?php
-
+/**
+ * 	EDRN Biomarker Database
+ *  Curation Webapp
+ * 
+ *  Author: Andrew F. Hart (andrew.f.hart@jpl.nasa.gov)
+ *  
+ *  Copyright (c) 2008, California Institute of Technology. 
+ *  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ * 
+ */
 	// Configurable Model Properties:
 	class App {
-		const ROOT_DIR = "/path/to/project/root/directory";
-		const DSN = "driver://user:pass@server/databasename";
-		const PEAR_PATH = "/path/to/PEAR/library";
+		const ROOT_DIR = "/Applications/MAMP/htdocs/edrn_bmdb-0.3.0/webapp";
+		const DSN = "mysql://root:root@localhost/bmdb7";
+		const PEAR_PATH = "/Applications/MAMP/htdocs/PEAR/pear/php";
 		const USE_DATABASE = true;
 		const USE_IDENTITIES = true;
 		const SHOW_PAGE_STATS = true;
