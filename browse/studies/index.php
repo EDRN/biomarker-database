@@ -55,7 +55,7 @@
 	}
 	
 	// Display the page
-	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p = new XPressPage(App::NAME." ".App::VERSION,"text/html","UTF-8");
 	$p->includeJS("../../static/js/mootools/mootools-release-1.11.js");	
 	$p->includeJS("../../static/js/autocomplete/Observer.js");
 	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");

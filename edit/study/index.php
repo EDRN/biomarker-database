@@ -29,7 +29,7 @@
 	} 
 	
 	// Display the page
-	$p = new XPressPage("EDRN - Biomarker Database 0.3.0 Beta","text/html","UTF-8");
+	$p = new XPressPage(App::NAME." ".App::VERSION,"text/html","UTF-8");
 	$p->includeCSS('../../static/css/frozen.css');
 	$p->includeCSS('../../static/css/eip.css');
 	$p->includeCSS("../../static/css/autocomplete.css");

@@ -23,7 +23,7 @@
 	}
 	
 	
-	$p = new XPressPage("EDRN Biomarker Database - Create Biomarker","text/html","UTF-8");
+	$p = new XPressPage(App::NAME." ".App::VERSION,"text/html","UTF-8");
 	$p->includeCSS("../../static/css/frozen.css");
 	
 	$p->open();

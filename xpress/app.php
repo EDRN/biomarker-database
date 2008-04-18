@@ -11,6 +11,8 @@
  */
 	// Configurable Model Properties:
 	class App {
+		const NAME = "EDRN Biomarker Database";
+		const VERSION = "0.3.0 Beta";
 		const ROOT_DIR = "/Applications/MAMP/htdocs/edrn_bmdb-0.3.0/webapp";
 		const DSN = "mysql://root:root@localhost/bmdb7";
 		const PEAR_PATH = "/Applications/MAMP/htdocs/PEAR/pear/php";
