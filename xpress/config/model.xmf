@@ -36,6 +36,7 @@
 		<attr name="EDRNID" type="uint" null="no" visibility="public"/>
 		<attr name="FHCRC_ID" type="uint" null="no" visibility="public" comment="from the fhcrc website url"/>
 		<attr name="DMCC_ID" type="string:80" null="no" visibility="public" comment="from fhcrc website"/>
+		<attr name="isEDRN" type="uint" null="no" visibility="public" comment="whether or not this is an EDRN study"/>
 		<attr name="Title" type="string:80" null="no" unique="yes" visibility="public"/>
 		<attr name="StudyAbstract" type="string:5000" null="no" visibility="public"/>
 		<attr name="BiomarkerPopulationCharacteristics" type="enum:Case/Control,Longitudinal,Randomized" null="no" visibility="public"/>

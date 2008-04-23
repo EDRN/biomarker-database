@@ -680,6 +680,7 @@ class StudyVars {
 	const EDRNID = "EDRNID";
 	const FHCRCID = "FHCRCID";
 	const DMCCID = "DMCCID";
+	const ISEDRN = "IsEDRN";
 	const TITLE = "Title";
 	const STUDYABSTRACT = "StudyAbstract";
 	const BIOMARKERPOPULATIONCHARACTERISTICS = "BiomarkerPopulationCharacteristics";
@@ -713,6 +714,7 @@ class StudyFactory {
 				$o->setEDRNID($data['EDRNID'],false);
 				$o->setFHCRCID($data['FHCRCID'],false);
 				$o->setDMCCID($data['DMCCID'],false);
+				$o->setIsEDRN($data['IsEDRN'],false);
 				$o->setTitle($data['Title'],false);
 				$o->setStudyAbstract($data['StudyAbstract'],false);
 				$o->setBiomarkerPopulationCharacteristics($data['BiomarkerPopulationCharacteristics'],false);
@@ -732,6 +734,7 @@ class StudyFactory {
 				$o->setEDRNID($data['EDRNID'],false);
 				$o->setFHCRCID($data['FHCRCID'],false);
 				$o->setDMCCID($data['DMCCID'],false);
+				$o->setIsEDRN($data['IsEDRN'],false);
 				$o->setTitle($data['Title'],false);
 				$o->setStudyAbstract($data['StudyAbstract'],false);
 				$o->setBiomarkerPopulationCharacteristics($data['BiomarkerPopulationCharacteristics'],false);
@@ -757,6 +760,7 @@ class Study extends XPressObject {
 	public $EDRNID = '';
 	public $FHCRCID = '';
 	public $DMCCID = '';
+	public $IsEDRN = '';
 	public $Title = '';
 	public $StudyAbstract = '';
 	public $BiomarkerPopulationCharacteristics = '';
@@ -788,6 +792,9 @@ class Study extends XPressObject {
 	}
 	public function getDMCCID() {
 		 return $this->DMCCID;
+	}
+	public function getIsEDRN() {
+		 return $this->IsEDRN;
 	}
 	public function getTitle() {
 		 return $this->Title;
@@ -868,6 +875,12 @@ class Study extends XPressObject {
 		$this->DMCCID = $value;
 		if ($bSave){
 			$this->save(StudyVars::DMCCID);
+		}
+	}
+	public function setIsEDRN($value,$bSave = true) {
+		$this->IsEDRN = $value;
+		if ($bSave){
+			$this->save(StudyVars::ISEDRN);
 		}
 	}
 	public function setTitle($value,$bSave = true) {
@@ -972,6 +985,7 @@ class Study extends XPressObject {
 		$this->EDRNID = '';
 		$this->FHCRCID = '';
 		$this->DMCCID = '';
+		$this->IsEDRN = '';
 		$this->Title = '';
 		$this->StudyAbstract = '';
 		$this->BiomarkerPopulationCharacteristics = '';
@@ -989,7 +1003,7 @@ class Study extends XPressObject {
 		if ($this->objId == 0){
 			// Insert a new object into the db
 			$q = "INSERT INTO `Study` ";
-			$q .= 'VALUES("","'.$this->EDRNID.'","'.$this->FHCRCID.'","'.$this->DMCCID.'","'.$this->Title.'","'.$this->StudyAbstract.'","'.$this->BiomarkerPopulationCharacteristics.'","'.$this->BPCDescription.'","'.$this->Design.'","'.$this->DesignDescription.'","'.$this->BiomarkerStudyType.'") ';
+			$q .= 'VALUES("","'.$this->EDRNID.'","'.$this->FHCRCID.'","'.$this->DMCCID.'","'.$this->IsEDRN.'","'.$this->Title.'","'.$this->StudyAbstract.'","'.$this->BiomarkerPopulationCharacteristics.'","'.$this->BPCDescription.'","'.$this->Design.'","'.$this->DesignDescription.'","'.$this->BiomarkerStudyType.'") ';
 			$r = XPress::getInstance()->getDatabase()->query($q);
 			$this->objId = XPress::getInstance()->getDatabase()->getOne("SELECT LAST_INSERT_ID() FROM `Study`");
 		} else {
@@ -1003,6 +1017,7 @@ class Study extends XPressObject {
 				$q .= "`EDRNID`=\"{$this->EDRNID}\","; 
 				$q .= "`FHCRCID`=\"{$this->FHCRCID}\","; 
 				$q .= "`DMCCID`=\"{$this->DMCCID}\","; 
+				$q .= "`IsEDRN`=\"{$this->IsEDRN}\","; 
 				$q .= "`Title`=\"{$this->Title}\","; 
 				$q .= "`StudyAbstract`=\"{$this->StudyAbstract}\","; 
 				$q .= "`BiomarkerPopulationCharacteristics`=\"{$this->BiomarkerPopulationCharacteristics}\","; 

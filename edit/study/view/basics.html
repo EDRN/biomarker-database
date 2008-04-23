@@ -1,6 +1,10 @@
 [onload;file='view/menu.html']
 <div id="outer_wrapper">
 <div id="main_section">
+<div style="padding:5px;background-color:#ff8;margin-right:15px;border:solid 1px #fc0;margin-bottom:10px;"/>
+[onload;block=div;when [var.s.IsEDRN]=0;noerr]
+This is a non-EDRN study. You may freely edit all data fields.
+</div>
 	<h4>Basic Information:</h4>
 		<table class="editable_info" cellspacing="0" cellpadding="0">
 			<tr class="even"><td class="label" style="width:100px;">Title:</td><td><span id="title" class="editable object:Study id:[var.s.objId] attr:Title">[var.s.Title;ifempty='click to edit';noerr]</span></td></tr>
