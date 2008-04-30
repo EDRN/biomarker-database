@@ -1,6 +1,15 @@
 [onload;file='view/menu.html']
 <div id="outer_wrapper">
 <div id="main_section">
+	<div class="ispanel">
+		[onload;block=div;when [var.b.IsPanel]!=0]
+		This is a Panel. Click on any of the links below to view details about the individual
+		Biomarkers belonging to this panel:
+		
+		<ul style="margin-left:15px;list-style:square;color:#444;">
+		  <li style="margin:5px;"><a href="./?id=[panelMember.objId]">[panelMember.Title;block=li;]</a></li>
+		</ul>
+	</div>
 	<h4>Basic Information:</h4>
 		<table class="editable_info" cellspacing="0" cellpadding="0">
 			<tr>

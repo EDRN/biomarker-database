@@ -5,6 +5,7 @@ class BiomarkerVars {
 	const OBJID = "objId";
 	const EKEID = "EKEID";
 	const BIOMARKERID = "BiomarkerID";
+	const ISPANEL = "IsPanel";
 	const PANELID = "PanelID";
 	const TITLE = "Title";
 	const SHORTNAME = "ShortName";
@@ -18,6 +19,7 @@ class BiomarkerVars {
 	const ORGANDATAS = "OrganDatas";
 	const PUBLICATIONS = "Publications";
 	const RESOURCES = "Resources";
+	const PANELMEMBERS = "PanelMembers";
 }
 
 class BiomarkerFactory {
@@ -38,6 +40,7 @@ class BiomarkerFactory {
 				if (! is_array($data)) {return false;}
 				$o->setEKEID($data['EKEID'],false);
 				$o->setBiomarkerID($data['BiomarkerID'],false);
+				$o->setIsPanel($data['IsPanel'],false);
 				$o->setPanelID($data['PanelID'],false);
 				$o->setTitle($data['Title'],false);
 				$o->setShortName($data['ShortName'],false);
@@ -57,6 +60,7 @@ class BiomarkerFactory {
 				$o->setobjId($data['objId'],false);
 				$o->setEKEID($data['EKEID'],false);
 				$o->setBiomarkerID($data['BiomarkerID'],false);
+				$o->setIsPanel($data['IsPanel'],false);
 				$o->setPanelID($data['PanelID'],false);
 				$o->setTitle($data['Title'],false);
 				$o->setShortName($data['ShortName'],false);
@@ -83,6 +87,7 @@ class Biomarker extends XPressObject {
 	public $TypeEnumValues = array("Epigenomics","Genomics","Proteomics","Glycomics","Nanotechnology","Metabalomics","Hypermethylation");
 	public $EKEID = '';
 	public $BiomarkerID = '';
+	public $IsPanel = '';
 	public $PanelID = '';
 	public $Title = '';
 	public $ShortName = '';
@@ -96,6 +101,7 @@ class Biomarker extends XPressObject {
 	public $OrganDatas = array();
 	public $Publications = array();
 	public $Resources = array();
+	public $PanelMembers = array();
 
 
 	public function __construct($objId = 0) {
@@ -112,6 +118,9 @@ class Biomarker extends XPressObject {
 	}
 	public function getBiomarkerID() {
 		 return $this->BiomarkerID;
+	}
+	public function getIsPanel() {
+		 return $this->IsPanel;
 	}
 	public function getPanelID() {
 		 return $this->PanelID;
@@ -177,6 +186,14 @@ class Biomarker extends XPressObject {
 			return $this->Resources;
 		}
 	}
+	public function getPanelMembers() {
+		if ($this->PanelMembers != array()) {
+			return $this->PanelMembers;
+		} else {
+			$this->inflate(BiomarkerVars::PANELMEMBERS);
+			return $this->PanelMembers;
+		}
+	}
 
 	// Mutator Functions 
 	public function setEKEID($value,$bSave = true) {
@@ -189,6 +206,12 @@ class Biomarker extends XPressObject {
 		$this->BiomarkerID = $value;
 		if ($bSave){
 			$this->save(BiomarkerVars::BIOMARKERID);
+		}
+	}
+	public function setIsPanel($value,$bSave = true) {
+		$this->IsPanel = $value;
+		if ($bSave){
+			$this->save(BiomarkerVars::ISPANEL);
 		}
 	}
 	public function setPanelID($value,$bSave = true) {
@@ -288,6 +311,15 @@ class Biomarker extends XPressObject {
 					$this->Resources[] = ResourceFactory::retrieve($id[objId]);
 				}
 				break;
+			case "PanelMembers":
+				// Inflate "PanelMembers":
+				$q = "SELECT BiomarkerID2 AS objId FROM xr_Biomarker_Biomarker WHERE BiomarkerID1 = {$this->objId} AND Var = \"PanelMembers\" ";
+				$ids = XPress::getInstance()->getDatabase()->getAll($q);
+				$this->PanelMembers = array(); // reset before repopulation to avoid dups
+				foreach ($ids as $id) {
+					$this->PanelMembers[] = BiomarkerFactory::retrieve($id[objId]);
+				}
+				break;
 			default:
 				return false;
 		}
@@ -298,6 +330,7 @@ class Biomarker extends XPressObject {
 		$this->objId = '';
 		$this->EKEID = '';
 		$this->BiomarkerID = '';
+		$this->IsPanel = '';
 		$this->PanelID = '';
 		$this->Title = '';
 		$this->ShortName = '';
@@ -311,12 +344,13 @@ class Biomarker extends XPressObject {
 		$this->OrganDatas = array();
 		$this->Publications = array();
 		$this->Resources = array();
+		$this->PanelMembers = array();
 	}
 	public function save($attr = null) {
 		if ($this->objId == 0){
 			// Insert a new object into the db
 			$q = "INSERT INTO `Biomarker` ";
-			$q .= 'VALUES("","'.$this->EKEID.'","'.$this->BiomarkerID.'","'.$this->PanelID.'","'.$this->Title.'","'.$this->ShortName.'","'.$this->Description.'","'.$this->QAState.'","'.$this->Phase.'","'.$this->Security.'","'.$this->Type.'") ';
+			$q .= 'VALUES("","'.$this->EKEID.'","'.$this->BiomarkerID.'","'.$this->IsPanel.'","'.$this->PanelID.'","'.$this->Title.'","'.$this->ShortName.'","'.$this->Description.'","'.$this->QAState.'","'.$this->Phase.'","'.$this->Security.'","'.$this->Type.'") ';
 			$r = XPress::getInstance()->getDatabase()->query($q);
 			$this->objId = XPress::getInstance()->getDatabase()->getOne("SELECT LAST_INSERT_ID() FROM `Biomarker`");
 		} else {
@@ -329,6 +363,7 @@ class Biomarker extends XPressObject {
 				$q .= "`objId`=\"{$this->objId}\","; 
 				$q .= "`EKEID`=\"{$this->EKEID}\","; 
 				$q .= "`BiomarkerID`=\"{$this->BiomarkerID}\","; 
+				$q .= "`IsPanel`=\"{$this->IsPanel}\","; 
 				$q .= "`PanelID`=\"{$this->PanelID}\","; 
 				$q .= "`Title`=\"{$this->Title}\","; 
 				$q .= "`ShortName`=\"{$this->ShortName}\","; 
@@ -360,6 +395,7 @@ class Biomarker extends XPressObject {
 		$this->unlink(BiomarkerVars::ORGANDATAS);
 		$this->unlink(BiomarkerVars::PUBLICATIONS);
 		$this->unlink(BiomarkerVars::RESOURCES);
+		$this->unlink(BiomarkerVars::PANELMEMBERS);
 
 		//Signal objects that link to this object to unlink
 		// (this covers the case in which a relationship is only 1-directional, where
@@ -369,6 +405,7 @@ class Biomarker extends XPressObject {
 		$r = XPress::getInstance()->getDatabase()->query("DELETE FROM xr_Biomarker_BiomarkerOrganData WHERE `BiomarkerID`={$this->objId}");
 		$r = XPress::getInstance()->getDatabase()->query("DELETE FROM xr_Biomarker_Publication WHERE `BiomarkerID`={$this->objId}");
 		$r = XPress::getInstance()->getDatabase()->query("DELETE FROM xr_Biomarker_Resource WHERE `BiomarkerID`={$this->objId}");
+		$r = XPress::getInstance()->getDatabase()->query("DELETE FROM xr_Biomarker_Biomarker WHERE (`BiomarkerID1`={$this->objId} OR `BiomarkerID2`={$this->objId})");
 
 		//Delete object from the database
 		$r = XPress::getInstance()->getDatabase()->query("DELETE FROM Biomarker WHERE `objId` = $this->objId ");
@@ -409,6 +446,12 @@ class Biomarker extends XPressObject {
 				$q0 = "INSERT INTO xr_Biomarker_Resource (BiomarkerID,ResourceID,BiomarkerVar".(($remoteVar == '')? '' : ',ResourceVar').") VALUES($this->objId,$remoteID,\"Resources\"".(($remoteVar == '')? '' : ",\"{$remoteVar}\"").");";
 				$q1 = "UPDATE xr_Biomarker_Resource SET BiomarkerVar=\"{$variable}\" ".(($remoteVar == '')? '' : ', ResourceVar="{$remoteVar}" ')." WHERE BiomarkerID=$this->objId AND ResourceID=$remoteID LIMIT 1 ";
 				break;
+			case "PanelMembers":
+				$test = "SELECT COUNT(*) FROM Biomarker WHERE objId=\"{$remoteID}\" ";
+ 				$q  = "SELECT COUNT(*) FROM xr_Biomarker_Biomarker WHERE BiomarkerID1=$this->objId AND BiomarkerID2=$remoteID ";
+				$q0 = "INSERT INTO xr_Biomarker_Biomarker (BiomarkerID1,BiomarkerID2,Var) VALUES($this->objId,$remoteID,\"PanelMembers\");";
+				$q1 = "UPDATE xrBiomarker_Biomarker SET Var=\"{$variable}\" WHERE BiomarkerID1=$this->objId AND BiomarkerID2=$remoteID LIMIT 1 ";
+				break;
 			default:
 				break;
 		}
@@ -439,6 +482,9 @@ class Biomarker extends XPressObject {
 				break;
 			case "Resources":
 				$q = "DELETE FROM xr_Biomarker_Resource WHERE BiomarkerID = $this->objId ".((empty($remoteIDs)) ? '' : (" AND ResourceID ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))) ." AND BiomarkerVar = \"Resources\" ";
+				break;
+			case "PanelMembers":
+				$q = "DELETE FROM xr_Biomarker_Biomarker WHERE BiomarkerID1 = $this->objId ".((empty($remoteIDs)) ? '' : (" AND BiomarkerID2 ". ((is_array($remoteIDs))? " IN (".implode(',',$remoteIDs).") . " : " = $remoteIDs "))). " AND Var = \"PanelMembers\" LIMIT 1";
 				break;
 			default:
 				break;

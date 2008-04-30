@@ -2,6 +2,7 @@ CREATE TABLE `Biomarker` (
 	`objId`  int(10) unsigned   NOT NULL     auto_increment   COMMENT ' XPress unique identifier for this object ' ,
 	`EKEID`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`BiomarkerID`  varchar(80)   NOT NULL      COMMENT '...' ,
+	`IsPanel`  int(10) unsigned   NOT NULL      COMMENT '1=biomarker panel,0=plain biomarker' ,
 	`PanelID`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`Title`  varchar(80)   NOT NULL      COMMENT '...' ,
 	`ShortName`  varchar(30)   NOT NULL      COMMENT '...' ,
@@ -24,6 +25,7 @@ CREATE TABLE `Study` (
 	`EDRNID`  int(10) unsigned   NOT NULL     ,
 	`FHCRCID`  int(10) unsigned   NOT NULL      COMMENT 'from the fhcrc website url' ,
 	`DMCCID`  varchar(80)   NOT NULL      COMMENT 'from fhcrc website' ,
+	`IsEDRN`  int(10) unsigned   NOT NULL      COMMENT 'whether or not this is an EDRN study' ,
 	`Title`  varchar(80)   NOT NULL     ,
 	`StudyAbstract`  text   NOT NULL     ,
 	`BiomarkerPopulationCharacteristics` ENUM('Case/Control','Longitudinal','Randomized')   NOT NULL     ,
@@ -163,6 +165,13 @@ CREATE TABLE xr_Biomarker_Resource (
 	`BiomarkerVar` enum('null','Resources') DEFAULT 'null' COMMENT 'the Biomarker variable for this relationship',
 	`ResourceVar` enum('null','Biomarkers') DEFAULT 'null' COMMENT 'the Resource variable for this relationship',
 	PRIMARY KEY (`BiomarkerID`,`ResourceID`,`BiomarkerVar`,`ResourceVar`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
+
+CREATE TABLE xr_Biomarker_Biomarker (
+	`BiomarkerID1` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the firstBiomarker',
+	`BiomarkerID2` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the unique ID of the second Biomarker',
+	`Var` enum('null','PanelMembers') DEFAULT 'null' COMMENT 'the Biomarker variable for this relationship',
+	PRIMARY KEY (`BiomarkerID1`,`BiomarkerID2`,`Var`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
 
 CREATE TABLE xr_BiomarkerStudyData_Study (

@@ -18,6 +18,7 @@
 	<object type="biomarker">
 		<attr name="EKE_ID" type="string:80" null="no" visibility="public" comment="..."/>
 		<attr name="BiomarkerID" type="string:80" null="no" visibility="public" comment="..."/>
+		<attr name="isPanel" type="uint" null="no" visibility="public" comment="1=biomarker panel,0=plain biomarker"/>
 		<attr name="PanelID" type="string:80" null="no" visibility="public" comment="..."/>
 		<attr name="Title" type="string:80" null="no" visibility="public" unique="yes" comment="..."/>
 		<attr name="ShortName" type="string:30" null="no" visibility="public" comment="..."/>
@@ -133,6 +134,7 @@
 		<has quantity="many" type="child"  class="biomarker_organ_data" name="organDatas" visibility="public"/>
 		<has quantity="many" type="peer"   class="publication"     onDeletePeer="persist"  name="publications" visibility="public"/>
 		<has quantity="many" type="peer"   class="resource"        onDeletePeer="persist"  name="resources"    visibility="public"/>
+		<has quantity="many" type="peer"   class="biomarker"       onDeletePeer="persist"  name="panelMembers" visibility="public"/>
 	</relation>
 	
 	<relation object="biomarker_alias">

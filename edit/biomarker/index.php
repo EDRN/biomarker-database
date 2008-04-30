@@ -46,6 +46,7 @@
 			$securityOpts = str_replace(" ","_",implode("|",$b->SecurityEnumValues));
 			$qastateOpts  = str_replace(" ","_",implode("|",$b->QAStateEnumValues));
 			$typeOpts     = str_replace(" ","_",implode("|",$b->TypeEnumValues));
+			$p->view()->MergeBlock("panelMember",$b->getPanelMembers());
 			break;
 		case "organs":
 			$p->includeJS("view/organs.js");
