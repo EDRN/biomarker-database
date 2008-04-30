@@ -27,7 +27,7 @@
 		<h4 style="margin-bottom:14px;">Associated Publications</h4>
 		<div style="position:relative;">
 		<ul id="pubs[studyData.objId]" style="list-style-type:none;margin:0px;padding:0px;list-style-position:inside;margin-left:5px;">
-			<li id="s[studyData.objId]p[studyPublications.objId]" style="margin-bottom:15px;"><a href="../publication/?id=[studyPublications.objId]">[studyPublications.Title;block=li;p1=[studyData.$]]</a><br/>
+			<li id="s[studyData.objId]p[studyPublications.objId]" style="margin-bottom:15px;"><a href="../../goto/publication/?id=[studyPublications.objId]">[studyPublications.Title;block=li;p1=[studyData.$]]</a><br/>
 	 		 	<span class="hint" style="color:#888;">Author: [studyPublications.Author]. Published in [studyPublications.Year] in: [studyPublications.Journal] (volume [studyPublications.Volume;ifempty='n/a'], issue [studyPublications.Issue;ifempty='n/a'])</span> &nbsp;
 	 		 	<span class="hint">[<span class="pseudolink" onclick="if(confirm('Publication \'[studyPublications.Title]\' will no longer be associated here. Proceed?')){dissocPub([studyData.objId],[studyPublications.objId],'s[studyData.objId]p[studyPublications.objId]');}">Remove Association</span>]</span><br/>
 			</li>

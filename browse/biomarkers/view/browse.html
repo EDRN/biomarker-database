@@ -1,34 +1,28 @@
 [onload;file=../../view/edrn_prologue.html;]
 <div class="menu">
+	<div class="mainContent">
+		<h2 class="title">EDRN Biomarker Database</h2>
+	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
-	EDRN Biomarker Database
+	<a href="../../">Home</a> / Biomarkers
 	</div><!-- End Breadcrumbs -->
-	<div class="mainContent">
-		<h2 class="title">
-		<a href="../../">Home</a> / Biomarkers
-		</h2>
-	</div>
 </div>
 <div class="searcher">
-	<h2>Search For a Biomarker by Name:</h2>
-	<div style="width:530px;">
+	<div>
 	<form action="../../edit/biomarker/index.php" method="GET">
 		<input type="hidden" id="biomarker_id" name="id" value=""/>
-		<input type="text" id="biomarker-search" value="" style="border:solid 1px #ccc; padding:5px;font-size:110%;float:left;width:450px;margin-left:15px;"/>
-		<input type="submit" value="Go!" style="float:right;padding:4px;"/>
+		<input type="text" id="biomarker-search" value=""/>
+		<input type="submit" value="Search"/>
 		<div class="clr"><!--  --></div>
 	</form>
 	</div>
 </div>
-<h2>Browse Biomarker Directory:</h2>
-<span class="hint">
-	<a href="./?start=0&count=[onload_i;block=a;when [var.start]+-[var.count]][var.count]">First Page</a>&nbsp; 
-	<a href="./?start=[onload;block=a;when [var.start]+-0][var.pageback]&count=[var.count]">Previous Page</a> 
-	<strong>Currently Displaying Biomarkers [var.startp1] through [var.stop] of [var.total] total:</strong> 
-	<a href="./?start=[onload;block=a;when [var.stop]-+[var.total]][var.pagenext]&count=[var.count]">Next Page</a>&nbsp;
-	<a href="./?start=[onload;block=a;when [var.pagelast]!=0;noerr][var.pagelast]&count=[var.count]">Last Page</a>
-</span><br/>
+<h2>Biomarker Directory:</h2>
+<div class="navigation">
+	<a class="page [var.start;if [val]=[pages.start];then 'current';else '']" href="./?start=[pages.start;block=a]&count=[var.count]">[pages.label]</a>
+</div>
+<br/>
 
 <table id="elements" cellspacing="0" cellpadding="0">
   <tr>

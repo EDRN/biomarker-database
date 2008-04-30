@@ -14,7 +14,7 @@
 	// Set up pagination
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
 	$startp1 = $start + 1;
-	$count = min(isset($_GET['count']) ? $_GET['count'] : 25, 250);
+	$count = min(isset($_GET['count']) ? $_GET['count'] : 15, 250);
 	$q1 = "SELECT COUNT(*) FROM `Study`";
 	$total = $xpress->db()->getOne($q1);
 	$stop  = min($total,$start + $count);
@@ -54,6 +54,12 @@
 		$pagelast = $total-$count;
 	}
 	
+	$pages = array();
+	
+	for ($i =0; $i<(ceil($total / $count)); $i++){
+		$pages[] = array("start"=>($i * $count),"label"=>($i+1));
+	}
+	
 	// Display the page
 	$p = new XPressPage(App::NAME." ".App::VERSION,"text/html","UTF-8");
 	$p->includeJS("../../static/js/mootools/mootools-release-1.11.js");	
@@ -66,6 +72,7 @@
 	$p->open();
 	$p->view()->LoadTemplate('view/browse.html');
 	$p->view()->MergeBlock("study",$studies);
+	$p->view()->MergeBlock("pages",$pages);
 	$p->view()->Show();
 	$p->close();
 	

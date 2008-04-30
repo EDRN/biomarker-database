@@ -138,7 +138,7 @@
 				
 			// echo an HTML representation of the entry
 			echo <<<END
-<li id="s{$bsdId}p{$pubId}" style="margin-bottom:15px;"><a href="../publication/?id={$pubId}">{$pub->getTitle()}</a><br/>
+<li id="s{$bsdId}p{$pubId}" style="margin-bottom:15px;"><a href="../../goto/publication/?id={$pubId}">{$pub->getTitle()}</a><br/>
 <span class="hint" style="color:#888;">Author: {$pub->getAuthor()}. Published in {$pub->getYear()} in: {$pub->getJournal()} (volume {$pub->getVolume()}, issue {$pub->getIssue()}</span> &nbsp;
 <span class="hint">[<span class="pseudolink" onclick="if(confirm('Publication \'{$pub->getTitle()}\' will no longer be associated here. Proceed?')){dissocPub({$bsdId},{$pubId},'s{$bsdId}p{$pubId}');}">Remove Association</span>]</span><br/>
 </li>

@@ -1,11 +1,10 @@
 [onload;file=../../view/edrn_prologue.html;]
 <div class="menu">
+	<div class="mainContent">
+		<h2 class="title">EDRN Biomarker Database</h2>
+	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
-	EDRN Biomarker Database
-	</div><!-- End Breadcrumbs -->
-	<div class="mainContent">
-		<h2 class="title">
 		<a href="../../">Home</a> / 
 		<a href="../../browse/biomarkers/">Biomarkers</a> /
 		<a href="../biomarker/?id=[var.b.objId]">[var.b.Title]</a> /
@@ -14,15 +13,14 @@
 		<span><a href="./?id=[var.bo.objId]">[var.o.Name]</a> / studies [onload;block=span;when [var.view]='studies']</span>
 		<span><a href="./?id=[var.bo.objId]">[var.o.Name]</a> / publications [onload;block=span;when [var.view]='publications']</span>
 		<span><a href="./?id=[var.bo.objId]">[var.o.Name]</a> / resources [onload;block=span;when [var.view]='resources']</span>
-		</h2>
-		<div id="smallLinks">
-			<ul>
-			  <li class="[var.view;if [val]='basics'; then 'activeLink'; else '']"><a href="./?view=basics&id=[var.bo.objId]">Basics</a></li>
-			  <li class="[var.view;if [val]='studies'; then 'activeLink'; else '']"><a href="./?view=studies&id=[var.bo.objId]">Studies</a></li>
-			  <li class="[var.view;if [val]='publications'; then 'activeLink'; else '']"><a href="./?view=publications&id=[var.bo.objId]">Publications</a></li>
-			  <li class="[var.view;if [val]='resources'; then 'activeLink'; else '']"><a href="./?view=resources&id=[var.bo.objId]">Resources</a></li>
-			</ul>
-			<div class="clr"><!--  --></div>
-		</div>
+	</div><!-- End Breadcrumbs -->
+	<div id="smallLinks">
+		<ul>
+		  <li class="[var.view;if [val]='basics'; then 'activeLink'; else '']"><a href="./?view=basics&id=[var.bo.objId]">Basics</a></li>
+		  <li class="[var.view;if [val]='studies'; then 'activeLink'; else '']"><a href="./?view=studies&id=[var.bo.objId]">Studies</a></li>
+		  <li class="[var.view;if [val]='publications'; then 'activeLink'; else '']"><a href="./?view=publications&id=[var.bo.objId]">Publications</a></li>
+		  <li class="[var.view;if [val]='resources'; then 'activeLink'; else '']"><a href="./?view=resources&id=[var.bo.objId]">Resources</a></li>
+		</ul>
+		<div class="clr"><!--  --></div>
 	</div>
 </div>

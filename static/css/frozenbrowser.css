@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+
 table#elements {
 	width:100%;
 	margin-top:0px;
@@ -8,6 +9,7 @@ table#elements {
 }
 
 table#elements th {
+	font-size:80%;
 	text-align:left;
 	padding-left:5px;
 	border-bottom:solid 1px #900003;
@@ -16,6 +18,20 @@ table#elements th {
 	padding-top:3px;
 	padding-bottom:3px;
 }
+div#breadcrumbs {
+	border-top-width:2px;
+}
+div#breadcrumbs a {
+	color:#fff;
+	font-weight:bold;	
+}
+h2.title {
+	background-color:#555;
+	border-bottom:solid 1px #300;
+	border-top:solid 2px #900;
+	font-size:15px;	
+	color:#fff;
+}
 
 table#elements tr {
 
@@ -23,7 +39,50 @@ table#elements tr {
 
 table#elements td {
 	padding:5px;
+	font-size:12px;
 }
 .hint {
 	color:#000;
+}
+h2 {
+	margin-left:5px;
+	padding-bottom:5px;
+	font-size:24px;
+	font-weight:bold;
+	margin-top:15px;	
+	color:#333;
+	font-weight:normal;
+}
+.hint {
+	color:#333;	
+}
+div.searcher {
+	position:absolute;
+	text-align:right;
+	width:410px;
+	right:5px;
+	top:143px;
+	font-size:12px;
+}
+div.searcher input[type=text] {
+	border:solid 1px #ccc; 
+	padding:4px;
+	font-size:110%;
+	float:left;
+	width:330px;
+	margin-left:15px;	
+}
+div.searcher input[type=submit] {
+	padding:3px;
+	border:outset 1px #ccc;;
+}
+a.page {
+	padding:5px;
+	border:solid 1px #ccc;
+	margin:4px;
+	font-size:11px;
+}
+a.page.current {
+	background-color:#ddd;
+	border:solid 1px #ddd;
 }

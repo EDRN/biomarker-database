@@ -42,6 +42,12 @@
 		."LIMIT $start,$count ";
 	$markers = $xpress->db()->getAll($q);
 	
+	$pages = array();
+	
+	for ($i =0; $i<(ceil($total / $count)); $i++){
+		$pages[] = array("start"=>($i * $count),"label"=>($i+1));
+	}
+	
 	// Determine pagination variables
 	$pagelast = 0;
 	if ($start > 0) {
@@ -66,6 +72,7 @@
 	$p->open();
 	$p->view()->LoadTemplate('view/browse.html');
 	$p->view()->MergeBlock("marker",$markers);
+	$p->view()->MergeBlock("pages",$pages);
 	$p->view()->Show();
 	$p->close();
 	

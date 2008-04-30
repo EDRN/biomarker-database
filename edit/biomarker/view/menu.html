@@ -1,19 +1,19 @@
 [onload;file=../../view/edrn_prologue.html;]
 <div class="menu">
+	<div class="mainContent">
+	<h2 class="title">EDRN Biomarker Database</h2>
+	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
-		<span class="titleDetails">EDRN Biomarker Database</span>
-	</div><!-- End Breadcrumbs -->
-	<div class="mainContent">
-		<h2 class="title">
 		<a href="../../">Home</a> / 
 		<a href="../../browse/biomarkers/">Biomarkers</a> /
-		<span>[onload;block=span; when [var.view]='basics'][var.b.Title]</span>
-		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / organs [onload;block=span;when [var.view]='organs']</span>
-		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / studies [onload;block=span;when [var.view]='studies']</span>
-		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / publications [onload;block=span;when [var.view]='publications']</span>
-		<span><a href="./?id=[var.b.objId]">[var.b.Title]</a> / resources [onload;block=span;when [var.view]='resources']</span>
-		</h2>
+		<span>[onload;block=span; when [var.view]='basics'][var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a>  / organs [onload;block=span;when [var.view]='organs']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a> / studies [onload;block=span;when [var.view]='studies']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a> / publications [onload;block=span;when [var.view]='publications']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a> / resources [onload;block=span;when [var.view]='resources']</span>
+		</div>
+		
 		<div id="smallLinks">
 			<ul>
 			  <li class="[var.view;if [val]='basics'; then 'activeLink'; else '']"><a href="./?view=basics&id=[var.b.objId]">Basics</a></li>
@@ -25,4 +25,5 @@
 			<div class="clr"><!--  --></div>
 		</div>
 	</div>
+	<!-- End Breadcrumbs -->
 </div>
