@@ -3,7 +3,7 @@
 <div id="main_section">
 	<h4>Associated Publications:</h4>
 	<ul>
-	  <li><a href="../publication/?id=[pub.objId]">[pub.Title;block=li]</a><br/>
+	  <li><a href="../../goto/publication/?id=[pub.objId]">[pub.Title;block=li]</a><br/>
 	  <span class="hint">Author: [pub.Author]. Published in [pub.Year] in: [pub.Journal] (volume [pub.Volume], issue [pub.Issue])</span> &nbsp;
 	  <span class="hint">[<a class="removepub" href="./?id=[var.b.objId]&view=publications&remove_publication=[pub.objId]">Remove Association</a>]</span>
 	  </li>
@@ -33,6 +33,14 @@
 		<!-- PUBMED IMPORT & ASSOCIATION -->
 		<div id="div_pubmed" class="minimenucontent" style="display:none;">
 			<h4>PubMed Import</h4>
+			<form id="pubmedimport" action="../../util/importpubmed.php" method="POST">
+				<input type="text" name="pmid"/>
+				<input type="hidden" name="step" value="showinfo"/>
+				<input type="button" value="Search PubMed" class="pubmed_search"/>
+			</form>
+			<div id="pubmedresult" style="font-size:80%;">
+			
+			</div>
 		</div>
 		<!-- OTHER IMPORT AND ASSOCIATION -->
 		<div id="div_other" class="minimenucontent" style="display:none;">

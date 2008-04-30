@@ -76,5 +76,18 @@
         this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
       }    
     });
-
+    
+    // Activate PubMed search boxes
+    $$('.pubmed_search').each(function(button){
+      button.addEvent('click',function(){
+        var form = this.getParent();
+        form.send({
+          'method':'get',
+          'update':'pubmedresult'});
+      });
+    });
   });
+  
+  function pubmedResults(response){
+    alert(response);
+  }

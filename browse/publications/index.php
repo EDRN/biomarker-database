@@ -53,6 +53,12 @@
 		$pagelast = $total-$count;
 	}
 	
+	$pages = array();
+	
+	for ($i =0; $i<(ceil($total / $count)); $i++){
+		$pages[] = array("start"=>($i * $count),"label"=>($i+1));
+	}
+	
 	// Display the page
 	$p = new XPressPage(App::NAME." ".App::VERSION,"text/html","UTF-8");
 	$p->includeJS("../../static/js/mootools/mootools-release-1.11.js");	
@@ -65,6 +71,7 @@
 	$p->open();
 	$p->view()->LoadTemplate('view/browse.html');
 	$p->view()->MergeBlock("pub",$publications);
+	$p->view()->MergeBlock("pages",$pages);
 	$p->view()->Show();
 	$p->close();
 	
