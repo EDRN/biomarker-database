@@ -14,6 +14,7 @@
 				$o = BiomarkerFactory::Retrieve($_POST['id']);
 				if (isset($_POST['EKEID'])) {$o->setEKEID($_POST['EKEID']);echo ($o->getEKEID() == '')? 'click to edit' : $o->getEKEID();exit();}
 				if (isset($_POST['BiomarkerID'])) {$o->setBiomarkerID($_POST['BiomarkerID']);echo ($o->getBiomarkerID() == '')? 'click to edit' : $o->getBiomarkerID();exit();}
+				if (isset($_POST['IsPanel'])) {$o->setIsPanel($_POST['IsPanel']);echo ($o->getIsPanel() == '')? 'click to edit' : $o->getIsPanel();exit();}
 				if (isset($_POST['PanelID'])) {$o->setPanelID($_POST['PanelID']);echo ($o->getPanelID() == '')? 'click to edit' : $o->getPanelID();exit();}
 				if (isset($_POST['Title'])) {$o->setTitle($_POST['Title']);echo ($o->getTitle() == '')? 'click to edit' : $o->getTitle();exit();}
 				if (isset($_POST['ShortName'])) {$o->setShortName($_POST['ShortName']);echo ($o->getShortName() == '')? 'click to edit' : $o->getShortName();exit();}
@@ -32,6 +33,7 @@ case 'Study':
 				if (isset($_POST['EDRNID'])) {$o->setEDRNID($_POST['EDRNID']);echo ($o->getEDRNID() == '')? 'click to edit' : $o->getEDRNID();exit();}
 				if (isset($_POST['FHCRCID'])) {$o->setFHCRCID($_POST['FHCRCID']);echo ($o->getFHCRCID() == '')? 'click to edit' : $o->getFHCRCID();exit();}
 				if (isset($_POST['DMCCID'])) {$o->setDMCCID($_POST['DMCCID']);echo ($o->getDMCCID() == '')? 'click to edit' : $o->getDMCCID();exit();}
+				if (isset($_POST['IsEDRN'])) {$o->setIsEDRN($_POST['IsEDRN']);echo ($o->getIsEDRN() == '')? 'click to edit' : $o->getIsEDRN();exit();}
 				if (isset($_POST['Title'])) {$o->setTitle($_POST['Title']);echo ($o->getTitle() == '')? 'click to edit' : $o->getTitle();exit();}
 				if (isset($_POST['StudyAbstract'])) {$o->setStudyAbstract($_POST['StudyAbstract']);echo ($o->getStudyAbstract() == '')? 'click to edit' : $o->getStudyAbstract();exit();}
 				if (isset($_POST['BiomarkerPopulationCharacteristics'])) {$o->setBiomarkerPopulationCharacteristics($_POST['BiomarkerPopulationCharacteristics']);echo ($o->getBiomarkerPopulationCharacteristics() == '')? 'click to edit' : $o->getBiomarkerPopulationCharacteristics();exit();}

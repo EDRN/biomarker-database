@@ -16,6 +16,7 @@
 		const ROOT_DIR = "/Applications/MAMP/htdocs/edrn_bmdb-0.3.0/webapp";
 		const DSN = "mysql://root:root@localhost/bmdb7";
 		const PEAR_PATH = "/Applications/MAMP/htdocs/PEAR/pear/php";
+		const HTTP_ROOT = "http://localhost/edrn_bmdb-0.3.0/webapp";
 		const USE_DATABASE = true;
 		const USE_IDENTITIES = true;
 		const SHOW_PAGE_STATS = true;
@@ -38,6 +39,9 @@
 	abstract class XPressObject {
 		private $objId = 0;
 	}
+	
+	$http_root_path = App::HTTP_ROOT;
+	
 	// PHP Include Path modifications:
 	set_include_path(App::PEAR_PATH.PATH_SEPARATOR.get_include_path()); // pear
 
