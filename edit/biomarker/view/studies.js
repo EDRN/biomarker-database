@@ -159,7 +159,7 @@
       }    
     });
 
-    // Activate all Associate Publication local-lookup boxes
+    // Activate all Publication search (Local Lookup) text boxes
     $$('.pubsearch').each(function(input){
       // Get the id
       var classes = input.getProperty('class').split(" ");
@@ -186,7 +186,7 @@
         });
     });
     
-    // Activate all Associate Publication local-lookup buttons
+    // Activate all Publication search (Local Lookup)  buttons
     $$('.assoclocal').each(function(input){
       // Get the id
       var classes = input.getProperty('class').split(" ");
@@ -200,11 +200,32 @@
         assocPub(id,$('publication'+id+'_id').value,'pubs'+id);
       });
     });
-    
-
   });
   
+  function activateImportButton() {
+    // Activate all PubMed "Import Publication" buttons
+    $$('.importPubMed').each(function(input){
+      
+      // Get the updateid
+      var classes = input.getProperty('class').split(" ");
+      for (i=classes.length-1;i>=0;i--) {
+        if (classes[i].contains('updateid:')) {
+          var updateid = classes[i].split(":")[1];
+        }
+      }
+
+      var whichone = (updateid)? updateid : '';
+      
+      input.addEvent('click',function() {
+        var tform = this.getParent();
+        var udiv = $('pubmedresult'+whichone); 
+        tform.send({
+          update: 'pubmedresult'+whichone,
+        });
+      });
+    });
   
+  }
   
   function assocPub(bsdId,pubId,containerId) {
     new Ajax(

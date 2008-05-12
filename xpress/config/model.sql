@@ -10,7 +10,7 @@ CREATE TABLE `Biomarker` (
 	`QAState` ENUM('New','Under Review','Approved','Rejected')   NOT NULL      COMMENT '...' ,
 	`Phase` ENUM('One (1)','Two (2)','Three (3)','Four (4)','Five (5)')   NOT NULL      COMMENT '...' ,
 	`Security` ENUM('Public','Private')   NOT NULL      COMMENT '...' ,
-	`Type` ENUM('Epigenomics','Genomics','Proteomics','Glycomics','Nanotechnology','Metabalomics','Hypermethylation')   NOT NULL      COMMENT '...' ,
+	`Type` ENUM('Gene','Protein','Genetic','Genomic','Epigenetic','Proteomic','Glycomic','Metabolomic')   NOT NULL      COMMENT '...' ,
 	PRIMARY KEY (`objId`),
 	UNIQUE KEY `Title` (`Title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 

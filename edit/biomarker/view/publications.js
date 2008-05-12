@@ -82,12 +82,33 @@
       button.addEvent('click',function(){
         var form = this.getParent();
         form.send({
-          'method':'get',
-          'update':'pubmedresult'});
+          'update':'pubmedresult',
+          'onComplete':activateImportButton
+        });
       });
     });
   });
   
-  function pubmedResults(response){
-    alert(response);
+  function activateImportButton() {
+    // Activate all PubMed "Import Publication" buttons
+    $$('.importPubMed').each(function(input){
+      
+      // Get the updateid
+      var classes = input.getProperty('class').split(" ");
+      for (i=classes.length-1;i>=0;i--) {
+        if (classes[i].contains('updateid:')) {
+          var updateid = classes[i].split(":")[1];
+        }
+      }
+
+      var whichone = (updateid)? updateid : '';
+      
+      input.addEvent('click',function() {
+        var tform = this.getParent();
+        var udiv = $('pubmedresult'+whichone); 
+        tform.send({
+          update: 'pubmedresult'+whichone,
+        });
+      });
+    });
   }

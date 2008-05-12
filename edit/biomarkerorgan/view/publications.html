@@ -32,8 +32,18 @@
 			</form>
 		</div>
 		<!-- PUBMED IMPORT & ASSOCIATION -->
-		<div id="div_pubmed" style="padding:8px;border-top:solid 1px #555;display:none;">
-			<h4 style="margin-top:0px;">PubMed Import</h4>
+		<div id="div_pubmed" class="minimenucontent" style="display:none;">
+			<h4>PubMed Import</h4>
+			<span class="hint">Enter a PubMed ID below to search:</span>
+			<form id="pubmedimport" action="../../util/importpubmed.php" method="POST">
+				<input type="text" name="pmid"/>
+				<input type="hidden" name="step" value="showinfo"/>
+				<input type="hidden" name="update" value="pubmedresult"/>
+				<input type="button" value="Search PubMed" class="pubmed_search"/>
+			</form>
+			<div id="pubmedresult" style="font-size:80%;">
+			
+			</div>
 		</div>
 		<!-- OTHER IMPORT AND ASSOCIATION -->
 		<div id="div_other" style="padding:8px;border-top:solid 1px #555;display:none;">

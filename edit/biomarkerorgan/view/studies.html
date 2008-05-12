@@ -33,7 +33,7 @@
 			</li>
 		</ul>
 		<!-- IMPORT PUBLICATION BOX -->
-		<div id="optbox[studyData.objId]" class="optbox" style="position:absolute;top:-30px;right4px;width:340px;">
+		<div id="optbox[studyData.objId]" class="optbox" style="position:absolute;top:-30px;right:4px;width:340px;">
 			<div class="hidelink">[ <span id="optxp[studyData.objId]" class="pseudolink optionswitch id:[studyData.objId]">show more/less</span> ]</div>
 			<h5>Associate a Publication:</h5>
 			<div id="options_content[studyData.objId]" style="background-color:#fff;position:relative;display:none;">
@@ -54,8 +54,18 @@
 				</form>
 			</div>
 			<!-- PUBMED IMPORT & ASSOCIATION -->
-			<div id="div_pubmed[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
-				<h4 style="margin-top:0px;">PubMed Import</h4>
+			<div id="div_pubmed[studyData.objId]" class="minimenucontent" style="display:none;">
+				<h4>PubMed Import</h4>
+				<span class="hint">Enter a PubMed ID below to search:</span>
+				<form id="pubmedimport[studyData.objId]" action="../../util/importpubmed.php" method="POST">
+					<input type="text" name="pmid"/>
+					<input type="hidden" name="step" value="showinfo"/>
+					<input type="hidden" name="update" value="pubmedresult[studyData.objId]"/>
+					<input type="hidden" name="updateID" value="[studyData.objId]"/>
+					<input type="button" value="Search PubMed" class="pubmed_search" onclick="form.send({update:'pubmedresult[studyData.objId]',evalScripts:true,onComplete:function(){activateImportButton();}});"/>
+				</form>
+				<div id="pubmedresult[studyData.objId]" style="font-size:80%;">
+				</div>
 			</div>
 			<!-- OTHER IMPORT AND ASSOCIATION -->
 			<div id="div_other[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
@@ -69,9 +79,9 @@
 		<ul id="res[studyData.objId]" style="list-style:none;color:#900003;margin:0px;padding:0px;list-style-position:inside;margin-left:5px;">
 	  		<li id="s[studyData.objId]r[studyResources.objId]" style="margin-bottom:15px;"><a href="[studyResources.URL]">[studyResources.Name;block=li;p1=[studyData.$]]</a><br/>
 	  			<span class="hint" style="color:#888;">[studyResources.URL]</span>
-	  			<span class="hint">[<span class="pseudolink" onclick="if(confirm('Resource \'[studyResources.URL]\' will be deleted. Proceed?')){dissocRes([studyData.objId],[studyResources.objId],'s[studyData.objId]r[studyResources.objId]');}">Remove Resource</a>]</span></li>
+	  			<span class="hint">[<span class="pseudolink" onclick="if(confirm('Resource \'[studyResources.URL]\' will be deleted. Proceed?')){dissocRes([studyData.objId],[studyResources.objId],'s[studyData.objId]r[studyResources.objId]');}">Remove Resource</span>]</span></li>
 		</ul>
-		<div id="resoptbox[studyData.objId]" class="optbox" style="position:absolute;top:-30px;right4px;width:340px;">
+		<div id="resoptbox[studyData.objId]" class="optbox" style="position:absolute;top:-30px;right:4px;width:340px;">
 			<div class="hidelink">[ <span id="optxp" class="pseudolink resoptionswitch id:[studyData.objId]">show more/less</span> ]</div>
 			<h5>Associate a Resource:</h5>
 			<div id="res_options_content[studyData.objId]" style="display:none;">

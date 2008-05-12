@@ -84,7 +84,7 @@ class Biomarker extends XPressObject {
 	public $QAStateEnumValues = array("New","Under Review","Approved","Rejected");
 	public $PhaseEnumValues = array("One (1)","Two (2)","Three (3)","Four (4)","Five (5)");
 	public $SecurityEnumValues = array("Public","Private");
-	public $TypeEnumValues = array("Epigenomics","Genomics","Proteomics","Glycomics","Nanotechnology","Metabalomics","Hypermethylation");
+	public $TypeEnumValues = array("Gene","Protein","Genetic","Genomic","Epigenetic","Proteomic","Glycomic","Metabolomic");
 	public $EKEID = '';
 	public $BiomarkerID = '';
 	public $IsPanel = '';

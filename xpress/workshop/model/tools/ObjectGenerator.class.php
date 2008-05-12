@@ -371,9 +371,9 @@ class ObjectGenerator {
 			}
 			if (($this->object->type == $obj1) AND ($obj1 == $obj2) ) {
 				// The relation is between objects of the same type, use "{type}ID{1,2} as the var name
-				$this->obj = "\t\t\$r = XPress::getInstance()->getDatabase()->query(\"DELETE FROM xr_{$xtablename} "
+				$this->obj .= "\t\t\$r = XPress::getInstance()->getDatabase()->query(\"DELETE FROM xr_{$xtablename} "
 							. "WHERE (`{$this->object->type}ID1`={\$this->objId} "
-							. "OR `{$this->object->type}ID2`={\$this->objId})\";\r\n";
+							. "OR `{$this->object->type}ID2`={\$this->objId})\");\r\n";
 			}
 		}
 		
