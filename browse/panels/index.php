@@ -15,7 +15,7 @@
 	$start = isset($_GET['start']) ? $_GET['start'] : 0;
 	$startp1 = $start + 1;
 	$count = min(isset($_GET['count']) ? $_GET['count'] : 25, 250);
-	$q1 = "SELECT COUNT(*) FROM `Biomarker` WHERE `IsPanel` = '0' ";
+	$q1 = "SELECT COUNT(*) FROM `Biomarker` WHERE `IsPanel` = '1' ";
 	$total = $xpress->db()->getOne($q1);
 	$stop  = min($total,$start + $count);
 	
@@ -37,7 +37,7 @@
 	
 	// Issue query
 	$q = "SELECT `objId`,`Title`,`BiomarkerID`,`Type` "
-		."FROM `Biomarker` WHERE `IsPanel` = '0' "
+		."FROM `Biomarker` WHERE `IsPanel` = '1' "
 		."ORDER BY `{$order_by}` {$ascdesc} "
 		."LIMIT $start,$count ";
 	$markers = $xpress->db()->getAll($q);
