@@ -16,6 +16,7 @@
 	$view = (isset($_GET['view']))
 		? $_GET['view']
 		: 'basics';	// Default view is the 'basics' view
+	$view_template = $view;
 
 	// Determine whether the page contents are editable
 	$editable = 1;
@@ -28,6 +29,11 @@
 		XPressPage::httpRedirect("../notfound.php");
 	} 
 	
+	// Determine whether or not study is an EDRN study
+	if ($s->getIsEDRN() == "1") {
+		$view_template .= "_readonly";
+	}
+	
 	// Display the page
 	$p = new XPressPage(App::NAME." ".App::VERSION,"text/html","UTF-8");
 	$p->includeCSS('../../static/css/frozen.css');
@@ -39,7 +45,7 @@
 	$p->includeJS("../../static/js/autocomplete/Autocompleter.js");
 	
 	// Try to load and display the view
-	if ($p->view()->LoadTemplate("view/{$view}.html") ) {
+	if ($p->view()->LoadTemplate("view/{$view_template}.html") ) {
 		// View-specific Processing
 		if ($view == "basics") {
 			$p->includeJS("view/basics.js");
