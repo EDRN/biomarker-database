@@ -19,7 +19,7 @@
 		const HTTP_ROOT = "http://localhost/edrn_bmdb-0.3.0/webapp";
 		const USE_DATABASE = true;
 		const USE_IDENTITIES = true;
-		const SHOW_PAGE_STATS = true;
+		const SHOW_PAGE_STATS = false;
 	}
 	
 	// Global Debug Mode switch
