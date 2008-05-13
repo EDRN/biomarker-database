@@ -12,11 +12,11 @@
 	// Configurable Model Properties:
 	class App {
 		const NAME = "EDRN Biomarker Database";
-		const VERSION = "0.3.0 Beta";
-		const ROOT_DIR = "/Applications/MAMP/htdocs/edrn_bmdb-0.3.0/webapp";
-		const DSN = "mysql://root:root@localhost/bmdb7";
-		const PEAR_PATH = "/Applications/MAMP/htdocs/PEAR/pear/php";
-		const HTTP_ROOT = "http://localhost/edrn_bmdb-0.3.0/webapp";
+		const VERSION = "0.3.1 Beta";
+		const ROOT_DIR = "/path/to/application/root";
+		const DSN = "mysql://user:pass@server/dbname";
+		const PEAR_PATH = "/path/to/pear/library";
+		const HTTP_ROOT = "http://url/to/site/root";
 		const USE_DATABASE = true;
 		const USE_IDENTITIES = true;
 		const SHOW_PAGE_STATS = false;
