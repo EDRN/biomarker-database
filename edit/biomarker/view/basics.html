@@ -33,6 +33,7 @@
 				<td><span id="qastate" class="editablelist object:Biomarker id:[var.b.objId] attr:QAState opts:[var.qastateOpts]">[var.b.QAState;ifempty='click to select';noerr]</span></td>
 			</tr>
 			<tr>
+				[onload;block=tr;when [var.b.IsPanel]!='1']
 				<td class="label">Type:</td>
 				<td><span id="type" class="editablelist object:Biomarker id:[var.b.objId] attr:Type opts:[var.typeOpts]">[var.b.Type;ifempty='click to select';noerr]</span></td>
 			</tr>
