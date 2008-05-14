@@ -26,11 +26,11 @@
 	
 	// Retrieve the desired object from the database
 	if (false == ($s = StudyFactory::Retrieve($_GET['id']))) {
-		XPressPage::httpRedirect("../notfound.php");
+		XPressPage::httpRedirect("../../error/?e=notfound&target=".urlencode($_SERVER['REQUEST_URI']));
 	} 
 	
 	// Determine whether or not study is an EDRN study
-	if ($s->getIsEDRN() == "1") {
+	if ($s->getIsEDRN() == "1" && $view_template == "basics") {
 		$view_template .= "_readonly";
 	}
 	

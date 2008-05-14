@@ -24,7 +24,7 @@
 	
 	// Retrieve the desired object from the database
 	if (false == ($b = BiomarkerFactory::Retrieve($_GET['id']))) {
-		XPressPage::httpRedirect("../notfound.php");
+		XPressPage::httpRedirect("../../error/?e=notfound&target=".urlencode($_SERVER['REQUEST_URI']));
 	} 
 	
 	// Display the page
