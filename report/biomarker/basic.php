@@ -50,8 +50,13 @@
 	$pdf->SetLeftMargin(18);
 	$pdf->SetFont('Arial','',14);
 	$pdf->Write(5,$o->getDescription());
-	$pdf->Ln(15);
 	
+	$pdf->SetLeftMargin(15);
+	$pdf->Ln(15);
+	$pdf->SetFont('Arial','IU','14');
+	$pdf->Write(5,'Attributes:');
+	$pdf->Ln(8);
+	$pdf->SetLeftMargin(18);
 	$widths = array(40,135);
 	$header = array("Attribute","Value");
 	$data   = array(
