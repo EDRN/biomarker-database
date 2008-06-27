@@ -8,13 +8,12 @@ echo <<<END
 
 END;
 	
-	$biomarkerId = 20;
-	$aboutURL = "http://bmdb.jpl.nasa.gov/edit/biomarker/?id={$biomarkerId}";
 	$q = "SELECT `objId` "
 		."FROM `Biomarker` ";
 	$ids = $xpress->db()->getAll($q);
 	foreach ($ids as $id) {
 		$b = BiomarkerFactory::Retrieve($id['objId']);
+		$aboutURL = "http://bmdb.jpl.nasa.gov/edit/biomarker/?id={$b->getObjId()}";
 		// Basics
 		echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
 		echo "    <bmdb:Title>".urlencode($b->getTitle())."</bmdb:Title>\r\n";

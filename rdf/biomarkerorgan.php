@@ -8,8 +8,6 @@ echo <<<END
 
 END;
 	
-	$biomarkerOrganId = 23;
-	$aboutURL = "http://bmdb.jpl.nasa.gov/edit/biomarkerorgan/?id={$biomarkerOrganId}";
 	
 	$q = "SELECT `objId` "
 		."FROM `BiomarkerOrganData` ";
@@ -17,6 +15,7 @@ END;
 	
 	foreach ($ids as $id) {
 		$bod = BiomarkerOrganDataFactory::Retrieve($id['objId']);
+		$aboutURL = "http://bmdb.jpl.nasa.gov/edit/biomarkerorgan/?id={$bod->getObjId()}";
 		
 		// Basics
 		echo "  <bmdb:BiomarkerOrganData rdf:about=\"{$aboutURL}\">\r\n";

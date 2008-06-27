@@ -8,14 +8,12 @@ echo <<<END
 
 END;
 	
-	$studyId = 2;
-	$aboutURL = "http://bmdb.jpl.nasa.gov/edit/study/?id={$studyId}";
-	
 	$q = "SELECT `objId` "
 		."FROM `Study` ";
 	$ids = $xpress->db()->getAll($q);
 	foreach ($ids as $id) {
 		$s = StudyFactory::Retrieve($id['objId']);
+		$aboutURL = "http://bmdb.jpl.nasa.gov/edit/study/?id={$s->getObjId()}";
 	
 		// Basics
 		echo "  <bmdb:Study rdf:about=\"{$aboutURL}\">\r\n";
