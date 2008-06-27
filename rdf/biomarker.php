@@ -1,6 +1,10 @@
 <?php
 	require_once("../xpress/app.php");
 	header("content-type:application/rdf+xml; charset=utf-8");
+	
+	function escapeAmpersand($str) {
+		return str_replace("&","&amp;",$str);
+	}
 
 echo <<<END
 <?xml version='1.0' encoding='UTF-8'?>
@@ -16,13 +20,13 @@ END;
 		$aboutURL = "http://bmdb.jpl.nasa.gov/edit/biomarker/?id={$b->getObjId()}";
 		// Basics
 		echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
-		echo "    <bmdb:Title>".urlencode($b->getTitle())."</bmdb:Title>\r\n";
-		echo "    <bmdb:ShortName>".urlencode($b->getShortName())."</bmdb:ShortName>\r\n";
+		echo "    <bmdb:Title>".escapeAmpersand($b->getTitle())."</bmdb:Title>\r\n";
+		echo "    <bmdb:ShortName>".escapeAmpersand($b->getShortName())."</bmdb:ShortName>\r\n";
 		echo "    <bmdb:BiomarkerID>urn:edrn:bmdb:biomarker:{$biomarkerId}</bmdb:BiomarkerID>\r\n";
 		echo "    <bmdb:URN>urn:edrn:bmdb:biomarker:{$biomarkerId}</bmdb:URN>\r\n";
 		echo "    <bmdb:IsPanel>{$b->getIsPanel()}</bmdb:IsPanel>\r\n";
 		echo "    <bmdb:PanelID>{$b->getPanelID()}</bmdb:PanelID>\r\n";
-		echo "    <bmdb:Description>".urlencode($b->getDescription())."</bmdb:Description>\r\n";
+		echo "    <bmdb:Description>".escapeAmpersand($b->getDescription())."</bmdb:Description>\r\n";
 		echo "    <bmdb:QAState>{$b->getQAState()}</bmdb:QAState>\r\n";
 		echo "    <bmdb:Phase>{$b->getPhase()}</bmdb:Phase>\r\n";
 		echo "    <bmdb:Security>{$b->getSecurity()}</bmdb:Security>\r\n";
