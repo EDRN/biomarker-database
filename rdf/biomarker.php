@@ -1,12 +1,10 @@
 <?php
 	require_once("../xpress/app.php");
+	header("content-type:application/rdf+xml; charset=utf-8");
 
 echo <<<END
 <?xml version='1.0' encoding='UTF-8'?>
- <!DOCTYPE rdf:RDF [
- <!ENTITY rdf  'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
- ]>
-<rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bmdb="http://edrn.nci.nih.gov/rdf/rdfs/bmdb-1.0.0#">
 
 END;
 	
@@ -19,13 +17,13 @@ END;
 		$b = BiomarkerFactory::Retrieve($id['objId']);
 		// Basics
 		echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
-		echo "    <bmdb:Title>{$b->getTitle()}</bmdb:Title>\r\n";
-		echo "    <bmdb:ShortName>{$b->getShortName()}</bmdb:ShortName>\r\n";
-		echo "    <bmdb:BiomarkerID>urn:edrn:bmdb:biomarker:{$biomarkerId}</bmdb:BiomarkerId>\r\n";
+		echo "    <bmdb:Title>".urlencode($b->getTitle())."</bmdb:Title>\r\n";
+		echo "    <bmdb:ShortName>".urlencode($b->getShortName())."</bmdb:ShortName>\r\n";
+		echo "    <bmdb:BiomarkerID>urn:edrn:bmdb:biomarker:{$biomarkerId}</bmdb:BiomarkerID>\r\n";
 		echo "    <bmdb:URN>urn:edrn:bmdb:biomarker:{$biomarkerId}</bmdb:URN>\r\n";
 		echo "    <bmdb:IsPanel>{$b->getIsPanel()}</bmdb:IsPanel>\r\n";
 		echo "    <bmdb:PanelID>{$b->getPanelID()}</bmdb:PanelID>\r\n";
-		echo "    <bmdb:Description>{$b->getDescription()}</bmdb:Description>\r\n";
+		echo "    <bmdb:Description>".urlencode($b->getDescription())."</bmdb:Description>\r\n";
 		echo "    <bmdb:QAState>{$b->getQAState()}</bmdb:QAState>\r\n";
 		echo "    <bmdb:Phase>{$b->getPhase()}</bmdb:Phase>\r\n";
 		echo "    <bmdb:Security>{$b->getSecurity()}</bmdb:Security>\r\n";

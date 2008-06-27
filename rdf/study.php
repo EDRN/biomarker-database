@@ -1,12 +1,10 @@
 <?php
 	require_once("../xpress/app.php");
+	header("content-type:application/rdf+xml; charset=utf-8");
 
 echo <<<END
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE rdf:RDF [
-  <!ENTITY rdf  'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
-]>
-<rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bmdb="http://edrn.nci.nih.gov/rdf/rdfs/bmdb-1.0.0#">
 
 END;
 	
@@ -21,15 +19,15 @@ END;
 	
 		// Basics
 		echo "  <bmdb:Study rdf:about=\"{$aboutURL}\">\r\n";
-		echo "    <bmdb:Title>{$s->getTitle()}</bmdb:Title>\r\n";
+		echo "    <bmdb:Title>".urlencode($s->getTitle())."</bmdb:Title>\r\n";
 		echo "    <bmdb:URN>urn:edrn:bmdb:study:{$s->getObjId()}</bmdb:URN>\r\n";
 		echo "    <bmdb:FHCRC_ID>{$s->getFHCRCID()}</bmdb:FHCRC_ID>\r\n";
 		echo "    <bmdb:DMCC_ID>{$s->getDMCCID()}</bmdb:DMCC_ID>\r\n";
-		echo "    <bmdb:StudyAbstract>{$s->getStudyAbstract()}</bmdb:StudyAbstract>\r\n";
+		echo "    <bmdb:StudyAbstract>".urlencode($s->getStudyAbstract())."</bmdb:StudyAbstract>\r\n";
 		echo "    <bmdb:BiomarkerPopulationCharacteristics>{$s->getBiomarkerPopulationCharacteristics()}</bmdb:BiomarkerPopulationCharacteristics>\r\n";
-		echo "    <bmdb:BPCDescription>{$s->getBPCDescription()}</bmdb:BPCDescription>\r\n";
+		echo "    <bmdb:BPCDescription>".urlencode($s->getBPCDescription())."</bmdb:BPCDescription>\r\n";
 		echo "    <bmdb:Design>{$s->getDesign()}</bmdb:Design>\r\n";
-		echo "    <bmdb:DesignDescription>{$s->getDesignDescription()}</bmdb:DesignDescription>\r\n";
+		echo "    <bmdb:DesignDescription>".urlencode($s->getDesignDescription())."</bmdb:DesignDescription>\r\n";
 		echo "    <bmdb:BiomarkerStudyType>{$s->getBiomarkerStudyType()}</bmdb:BiomarkerStudyType>\r\n";
 		
 		
