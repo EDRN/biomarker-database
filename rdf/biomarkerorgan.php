@@ -2,8 +2,16 @@
 	require_once("../xpress/app.php");
 	header("content-type:application/rdf+xml; charset=utf-8");
 	
-	function escapeAmpersand($str) {
-		return str_replace("&","&amp;",$str);
+	function escapeEntities($str) {
+		return str_replace("<","&lt;",
+			str_replace(">","&gt;",
+				str_replace("\"","&quot;",
+					str_replace("'","&apos;",
+						str_replace("&","&amp;",$str)
+					)
+				)
+			)
+		);
 	}
 echo <<<END
 <?xml version='1.0' encoding='UTF-8'?>
@@ -27,16 +35,16 @@ END;
 		echo "    <bmdb:Organ>{$bod->getOrgan()->getName()}</bmdb:Organ>\r\n";
 		echo "    <bmdb:SensitivityMin>{$bod->getSensitivityMin()}</bmdb:SensitivityMin>\r\n";
 		echo "    <bmdb:SensitivityMax>{$bod->getSensitivityMax()}</bmdb:SensitivityMax>\r\n";
-		echo "    <bmdb:SensitivityComment>".escapeAmpersand($bod->getSensitivityComment())."</bmdb:SensitivityComment>\r\n";
+		echo "    <bmdb:SensitivityComment>".escapeEntities($bod->getSensitivityComment())."</bmdb:SensitivityComment>\r\n";
 		echo "    <bmdb:SpecificityMin>{$bod->getSpecificityMin()}</bmdb:SpecificityMin>\r\n";
 		echo "    <bmdb:SpecificityMax>{$bod->getSpecificityMax()}</bmdb:SpecificityMax>\r\n";
-		echo "    <bmdb:SpecificityComment>".escapeAmpersand($bod->getSpecificityComment())."</bmdb:SpecificityComment>\r\n";
+		echo "    <bmdb:SpecificityComment>".escapeEntities($bod->getSpecificityComment())."</bmdb:SpecificityComment>\r\n";
 		echo "    <bmdb:NPVMin>{$bod->getNPVMin()}</bmdb:NPVMin>\r\n";
 		echo "    <bmdb:NPVMax>{$bod->getNPVMax()}</bmdb:NPVMax>\r\n";
-		echo "    <bmdb:NPVComment>".escapeAmpersand($bod->getNPVComment())."</bmdb:NPVComment>\r\n";
+		echo "    <bmdb:NPVComment>".escapeEntities($bod->getNPVComment())."</bmdb:NPVComment>\r\n";
 		echo "    <bmdb:PPVMin>{$bod->getPPVMin()}</bmdb:PPVMin>\r\n";
 		echo "    <bmdb:PPVMax>{$bod->getPPVMax()}</bmdb:PPVMax>\r\n";
-		echo "    <bmdb:PPVComment>".escapeAmpersand($bod->getPPVComment())."</bmdb:PPVComment>\r\n";
+		echo "    <bmdb:PPVComment>".escapeEntities($bod->getPPVComment())."</bmdb:PPVComment>\r\n";
 		echo "    <bmdb:Phase>{$bod->getPhase()}</bmdb:Phase>\r\n";
 		echo "    <bmdb:QAState>{$bod->getQAState()}</bmdb:QAState>\r\n";
 	
@@ -45,7 +53,7 @@ END;
 		if (count($bod->getStudyDatas()) > 0) {
 			echo "    <bmdb:BiomarkerOrganStudyDatas>\r\n";
 			foreach ($bod->getStudyDatas() as $studyData) {
-				echo "      <bmdb:BiomarkerOrganStudyData rdf:about=\"".escapeAmpersand("http://bmdb.jpl.nasa.gov/edit/biomarkerorgan/?view=studies&id=23#{$studyData->getObjId()}")."\">\r\n";
+				echo "      <bmdb:BiomarkerOrganStudyData rdf:about=\"".escapeEntities("http://bmdb.jpl.nasa.gov/edit/biomarkerorgan/?view=studies&id=23#{$studyData->getObjId()}")."\">\r\n";
 				echo "        <bmdb:Study rdf:about=\"http://bmdb.jpl.nasa.gov/edit/study/?id={$studyData->getStudy()->getObjId()}\"/>\r\n";
 				echo "        <bmdb:Sensitivity>{$studyData->getSensitivity()}</bmdb:Sensitivity>\r\n";
 				echo "        <bmdb:Specificity>{$studyData->getSpecificity()}</bmdb:Specificity>\r\n";

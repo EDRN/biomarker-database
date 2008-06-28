@@ -2,8 +2,16 @@
 	require_once("../xpress/app.php");
 	header("content-type:application/rdf+xml; charset=utf-8");
 	
-	function escapeAmpersand($str) {
-		return str_replace("&","&amp;",$str);
+	function escapeEntities($str) {
+		return str_replace("<","&lt;",
+			str_replace(">","&gt;",
+				str_replace("\"","&quot;",
+					str_replace("'","&apos;",
+						str_replace("&","&amp;",$str)
+					)
+				)
+			)
+		);
 	}
 
 echo <<<END
@@ -21,15 +29,15 @@ END;
 	
 		// Basics
 		echo "  <bmdb:Study rdf:about=\"{$aboutURL}\">\r\n";
-		echo "    <bmdb:Title>".escapeAmpersand($s->getTitle())."</bmdb:Title>\r\n";
+		echo "    <bmdb:Title>".escapeEntities($s->getTitle())."</bmdb:Title>\r\n";
 		echo "    <bmdb:URN>urn:edrn:bmdb:study:{$s->getObjId()}</bmdb:URN>\r\n";
 		echo "    <bmdb:FHCRC_ID>{$s->getFHCRCID()}</bmdb:FHCRC_ID>\r\n";
 		echo "    <bmdb:DMCC_ID>{$s->getDMCCID()}</bmdb:DMCC_ID>\r\n";
-		echo "    <bmdb:StudyAbstract>".escapeAmpersand($s->getStudyAbstract())."</bmdb:StudyAbstract>\r\n";
+		echo "    <bmdb:StudyAbstract>".escapeEntities($s->getStudyAbstract())."</bmdb:StudyAbstract>\r\n";
 		echo "    <bmdb:BiomarkerPopulationCharacteristics>{$s->getBiomarkerPopulationCharacteristics()}</bmdb:BiomarkerPopulationCharacteristics>\r\n";
-		echo "    <bmdb:BPCDescription>".escapeAmpersand($s->getBPCDescription())."</bmdb:BPCDescription>\r\n";
+		echo "    <bmdb:BPCDescription>".escapeEntities($s->getBPCDescription())."</bmdb:BPCDescription>\r\n";
 		echo "    <bmdb:Design>{$s->getDesign()}</bmdb:Design>\r\n";
-		echo "    <bmdb:DesignDescription>".escapeAmpersand($s->getDesignDescription())."</bmdb:DesignDescription>\r\n";
+		echo "    <bmdb:DesignDescription>".escapeEntities($s->getDesignDescription())."</bmdb:DesignDescription>\r\n";
 		echo "    <bmdb:BiomarkerStudyType>{$s->getBiomarkerStudyType()}</bmdb:BiomarkerStudyType>\r\n";
 		
 		
