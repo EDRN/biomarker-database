@@ -1,0 +1,26 @@
+[onload;file='view/menu.html']
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4>Associated Organs:</h4>
+	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-type:none;list-style-position:inside;">
+	  <li style="margin-bottom:15px;"><a href="../biomarkerorgan/?id=[organData.objId]">[organData.Organ.Name;block=li]</a>
+	  &nbsp;<span class="hint">(<a class="removeorgan" href="./?id=[var.b.objId]&view=organs&remove_organ=[organData.objId]">Remove Association</a>)</span></li>
+	</ul>
+</div>
+<div id="options_section">
+	<div class="hidelink">[ <span id="optxp" class="optionswitch pseudolink">show more/less</span> ]</div>
+	<h5>Associate an Organ:</h5>
+	<div id="options_content" style="display:none;">
+		<form action="[var..script_name]" method="POST">
+		<input type="hidden" name="biomarker_id" value="[var.b.objId]"/>
+		<select name="organ_id" style="float:left;">
+		  <option value="[organs.objId]">[organs.Name;block=option]</option>
+		</select>
+		<input type="submit" name="associate_organ" style="float:right;" value="Associate"/>
+		</form>
+	</div>
+</div>
+</div><!-- end outer_wrapper -->
+<script type="text/javascript">
+	[onload;block=script;noerr;when [var.editable] != 0]
+</script>

@@ -1,0 +1,46 @@
+[onload;file='view/menu.html']
+<div id="outer_wrapper">
+<div id="main_section">
+	<div class="ispanel">
+		[onload;block=div;when [var.b.IsPanel]!=0]
+		This is a Panel. Click on any of the links below to view details about the individual
+		Biomarkers belonging to this panel:
+		
+		<ul style="margin-left:15px;list-style:square;color:#444;">
+		  <li style="margin:5px;"><a href="./?id=[panelMember.objId]">[panelMember.Title;block=li;]</a></li>
+		</ul>
+	</div>
+	<h4>Basic Information:</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="label" style="width:100px;">Title:</td>
+				<td><span id="title" class="editable object:Biomarker id:[var.b.objId] attr:Title">[var.b.Title;ifempty='click to edit';noerr]</span></td>
+			</tr>
+			<tr>
+				<td class="label">Short Name:</td>
+				<td><span id="shortName" class="editable object:Biomarker id:[var.b.objId] attr:ShortName">[var.b.ShortName;ifempty='click to edit';noerr]</span></td>
+			</tr>
+			<tr>
+				<td class="label">Identifier:</td>
+				<td><span id="BiomarkerID" class="editable object:Biomarker id:[var.b.objId] attr:BiomarkerID">[var.b.BiomarkerID;ifempty='click to edit';noerr]</span></td>
+			</tr>
+			<tr>
+				<td class="label">Security:</td>
+				<td><span id="security" class="editablelist object:Biomarker id:[var.b.objId] attr:Security opts:[var.securityOpts]">[var.b.Security;ifempty='click to select';noerr]</span></td>
+			</tr>
+			<tr>
+				<td class="label">QA State:</td>
+				<td><span id="qastate" class="editablelist object:Biomarker id:[var.b.objId] attr:QAState opts:[var.qastateOpts]">[var.b.QAState;ifempty='click to select';noerr]</span></td>
+			</tr>
+			<tr>
+				[onload;block=tr;when [var.b.IsPanel]!='1']
+				<td class="label">Type:</td>
+				<td><span id="type" class="editablelist object:Biomarker id:[var.b.objId] attr:Type opts:[var.typeOpts]">[var.b.Type;ifempty='click to select';noerr]</span></td>
+			</tr>
+			<tr class="even">
+				<td class="label">Description:</td>
+				<td><span id="description" class="editable textarea object:Biomarker id:[var.b.objId] attr:Description">[var.b.Description;ifempty='click to edit';noerr]</span></td>
+			</tr>
+		</table>
+</div>
+</div><!-- end outer_wrapper -->

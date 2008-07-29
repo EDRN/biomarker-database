@@ -1,0 +1,25 @@
+[onload;file=../../view/edrn_prologue.html;]
+<div class="menu">
+	<div class="mainContent">
+		<h2 class="title">EDRN Biomarker Database</h2>
+	</div>
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+		<a href="../../">Home</a> / 
+		<a href="../../browse/publications/">Publications</a> / Publication 
+	</div><!-- End Breadcrumbs -->
+</div>
+
+
+<h2 style="margin-left:5px;">External Publication</h2>
+<div style="margin:15px;">
+<h4 style="margin-bottom:0px;">[var.pub.Title]</h4>
+<h5 style="margin-top:3px;">author: [var.pub.Author] | journal: [var.pub.Journal] | vol: [var.pub.Volume] | iss: [var.pub.Issue] | year: [var.pub.Year]</h5>
+<div>
+[onload;block=div;when [var.pub.IsPubMed]=1]
+This publication came from the PubMed repository.
+You can directly access the information in PubMed by clicking the link below: <br/><br/>
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/[var.pub.PubMedID]"/>http://www.ncbi.nlm.nih.gov/pubmed/[var.pub.PubMedID]</a>
+</div>
+</div>
+

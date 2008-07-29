@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+/* Div: Page Stats */
+div#xpress_pagestats {
+	font-size:80%;
+}
+
+/* Div: XPress Header */
+div#xpress_header {
+	background:url(../images/xpresslogo_nocr.png) scroll -145px -125px no-repeat;
+	height:120px;
+	border-bottom:solid 4px #94c46b;
+	background-color:#fff;
+	margin-bottom:5px;
+}
+
+div#xpress_wrapper {
+	margin-left:5px;
+	margin-right:5px;
+	font-family:Arial,Verdana,sans-serif;
+}

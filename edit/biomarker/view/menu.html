@@ -1,0 +1,27 @@
+[onload;file=../../view/edrn_prologue.html;]
+<div class="menu">
+	<div class="mainContent">
+	<h2 class="title">EDRN Biomarker Database</h2>
+	</div>
+	<!-- Breadcrumbs Area -->
+	<div id="breadcrumbs">
+		<a href="../../">Home</a> / 
+		<a href="../../browse/biomarkers/">Biomarkers</a> /
+		<span>[onload;block=span; when [var.view]='basics'][var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a>  / Organs [onload;block=span;when [var.view]='organs']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a> / Studies [onload;block=span;when [var.view]='studies']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a> / Publications [onload;block=span;when [var.view]='publications']</span>
+		<span><a href="./?id=[var.b.objId]">[var.b.Title] <span>[onload;block=span;when [var.b.IsPanel]!=0](panel)</span></a> / Resources [onload;block=span;when [var.view]='resources']</span>
+	</div><!-- End Breadcrumbs -->
+		
+		<div id="smallLinks">
+			<ul>
+			  <li class="[var.view;if [val]='basics'; then 'activeLink'; else '']"><a href="./?view=basics&id=[var.b.objId]">Basics</a></li>
+			  <li class="[var.view;if [val]='organs'; then 'activeLink'; else '']"><a href="./?view=organs&id=[var.b.objId]">Organs</a></li>
+			  <li class="[var.view;if [val]='studies'; then 'activeLink'; else '']"><a href="./?view=studies&id=[var.b.objId]">Studies</a></li>
+			  <li class="[var.view;if [val]='publications'; then 'activeLink'; else '']"><a href="./?view=publications&id=[var.b.objId]">Publications</a></li>
+			  <li class="[var.view;if [val]='resources'; then 'activeLink'; else '']"><a href="./?view=resources&id=[var.b.objId]">Resources</a></li>
+			</ul>
+			<div class="clr"><!--  --></div>
+		</div>
+</div>

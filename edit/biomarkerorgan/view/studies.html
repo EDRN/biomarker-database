@@ -1,0 +1,120 @@
+[onload;file='view/menu.html']
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4 style="margin-bottom:19px;">Associated Studies:</h4>
+	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-position:inside;list-style:none;">
+	  <li style="margin-bottom:25px;"><span id="summary[studyData.objId]">
+	  	<a href="../study/?id=[studyData.Study.objId]">[studyData.Study.Title;block=li]</a><br/>
+	  	<span class="hint">
+	  	  [<span class="pseudolink detailswitch id:[studyData.objId]">View Associated Data</span>] 
+	  	  [<a href="../study/?id=[studyData.Study.objId]">Go To Study</a>]
+	  	  [<a class="remove" href="./?id=[var.bo.objId]&remove_study=[studyData.objId]">Remove Association</a>]
+	  	</span>
+	  </span><span id="details[studyData.objId]" style="display:none;">
+	  <fieldset><legend>[studyData.Study.Title] &nbsp;
+		<span class="hint">[ <span class="pseudolink detailswitch id:[studyData.objId]">(Hide Details)</span> ]</span></legend>
+	  	<h4>Abstract: &nbsp;&nbsp;<span class="hint">(from <a href="../study/?id=[studyData.Study.objId]">here</a>)</span></h4>
+		<div style="padding-left: 10px; padding-right: 10px; padding-bottom: 15px; font-size: 90%; line-height: 1.3em; text-align: justify;">
+		[studyData.Study.StudyAbstract;ifempty='<em>No Abstract Available</em>']
+		</div>
+		<h4>Study Data</h4>
+		<table class="editable_info" style="margin-left:5px;">
+		  <tr><td class="label" style="width:300px;">Sensitivity:</td><td><span id="sensitivity[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:Sensitivity">[studyData.Sensitivity]</span></td></tr>
+		  <tr><td class="label">Specificity:</td><td><span id="specificity[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:Specificity">[studyData.Specificity]</span></td></tr>
+		  <tr><td class="label">Negative Predictive Value:</td><td><span id="npv[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:NPV">[studyData.NPV]</span></td></tr>
+		  <tr><td class="label">Positive Predictive Value:</td><td><span id="ppv[studyData.objId]" class="editable object:BiomarkerOrganStudyData id:[studyData.objId] attr:PPV">[studyData.PPV]</span></td></tr>
+		</table>
+		<h4 style="margin-bottom:14px;">Associated Publications</h4>
+		<div style="position:relative;">
+		<ul id="pubs[studyData.objId]" style="list-style-type:none;margin:0px;padding:0px;list-style-position:inside;margin-left:5px;">
+			<li id="s[studyData.objId]p[studyPublications.objId]" style="margin-bottom:15px;"><a href="../../goto/publication/?id=[studyPublications.objId]">[studyPublications.Title;block=li;p1=[studyData.$]]</a><br/>
+	 		 	<span class="hint" style="color:#888;">Author: [studyPublications.Author]. Published in [studyPublications.Year] in: [studyPublications.Journal] (volume [studyPublications.Volume;ifempty='n/a'], issue [studyPublications.Issue;ifempty='n/a'])</span> &nbsp;
+	 		 	<span class="hint">[<span class="pseudolink" onclick="if(confirm('Publication \'[studyPublications.Title]\' will no longer be associated here. Proceed?')){dissocPub([studyData.objId],[studyPublications.objId],'s[studyData.objId]p[studyPublications.objId]');}">Remove Association</span>]</span><br/>
+			</li>
+		</ul>
+		<!-- IMPORT PUBLICATION BOX -->
+		<div id="optbox[studyData.objId]" class="optbox" style="position:absolute;top:-30px;right:4px;width:340px;">
+			<div class="hidelink">[ <span id="optxp[studyData.objId]" class="pseudolink optionswitch id:[studyData.objId]">show more/less</span> ]</div>
+			<h5>Associate a Publication:</h5>
+			<div id="options_content[studyData.objId]" style="background-color:#fff;position:relative;display:none;">
+			<ul class="minimenu id:[studyData.objId]">
+			  <li id="li_local[studyData.objId]" class="activelink" style="border-left:solid 1px #aaa;"><span class="pseudolink" style="color:#000;">Local</span></li>
+			  <li id="li_pubmed[studyData.objId]"><span class="pseudolink" style="color:#000;">PubMed</span></li>
+			  <li id="li_other[studyData.objId]"><span class="pseudolink" style="color:#000;">Other</span></li>
+			</ul>
+			<div class="clr"><!--  --></div>
+			<!-- LOCAL PUBLICATION ASSOCIATION -->
+			<div id="div_local[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:block;">
+				<h4 style="margin-top:0px;">Local Lookup</h4>
+				<form action="[var..script_name]" method="POST">
+					<input type="hidden" id="publication[studyData.objId]_id" name="publication[studyData.objId]_id" value=""/>
+					<input type="text" class="pubsearch id:[studyData.objId]" id="publication[studyData.objId]search" value="" style="width:100%;"/>
+					<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
+					<input type="button" class="assoclocal id:[studyData.objId]" value="Associate" style="float:right;padding:2px;"/>
+				</form>
+			</div>
+			<!-- PUBMED IMPORT & ASSOCIATION -->
+			<div id="div_pubmed[studyData.objId]" class="minimenucontent" style="display:none;">
+				<h4>PubMed Import</h4>
+				<span class="hint">Enter a PubMed ID below to search:</span>
+				<form id="pubmedimport[studyData.objId]" action="../../util/importpubmed.php" method="POST">
+					<input type="text" name="pmid"/>
+					<input type="hidden" name="step" value="showinfo"/>
+					<input type="hidden" name="update" value="pubmedresult[studyData.objId]"/>
+					<input type="hidden" name="updateID" value="[studyData.objId]"/>
+					<input type="button" value="Search PubMed" class="pubmed_search" onclick="form.send({update:'pubmedresult[studyData.objId]',evalScripts:true,onComplete:function(){activateImportButton();}});"/>
+				</form>
+				<div id="pubmedresult[studyData.objId]" style="font-size:80%;">
+				</div>
+			</div>
+			<!-- OTHER IMPORT AND ASSOCIATION -->
+			<div id="div_other[studyData.objId]" style="padding:8px;border-top:solid 1px #555;display:none;">
+		
+			</div>
+		</div><!-- END IMPORT PUBLICATION BOX -->
+		</div>
+		
+		<h4 style="margin-bottom:14px;">External Resources</h4>
+		<div style="position:relative;">
+		<ul id="res[studyData.objId]" style="list-style:none;color:#900003;margin:0px;padding:0px;list-style-position:inside;margin-left:5px;">
+	  		<li id="s[studyData.objId]r[studyResources.objId]" style="margin-bottom:15px;"><a href="[studyResources.URL]">[studyResources.Name;block=li;p1=[studyData.$]]</a><br/>
+	  			<span class="hint" style="color:#888;">[studyResources.URL]</span>
+	  			<span class="hint">[<span class="pseudolink" onclick="if(confirm('Resource \'[studyResources.URL]\' will be deleted. Proceed?')){dissocRes([studyData.objId],[studyResources.objId],'s[studyData.objId]r[studyResources.objId]');}">Remove Resource</span>]</span></li>
+		</ul>
+		<div id="resoptbox[studyData.objId]" class="optbox" style="position:absolute;top:-30px;right:4px;width:340px;">
+			<div class="hidelink">[ <span id="optxp" class="pseudolink resoptionswitch id:[studyData.objId]">show more/less</span> ]</div>
+			<h5>Associate a Resource:</h5>
+			<div id="res_options_content[studyData.objId]" style="display:none;">
+				<form id="resourceassoc[studyData.objId]" action="[var..script_name]" method="POST">
+				<input type="hidden" name="action" value="study_associate_resource"/>
+				<input type="hidden" name="bosdId" value="[studyData.objId]"/>
+				Descriptive Phrase:
+				<textarea name="rdesc" rows="2" cols="30" style="width:100%;border:inset 1px #ccc;margin-bottom:6px;"></textarea>
+				URL:
+				<input type="text" name="rurl" style="width:100%;margin-bottom:6px;color:#000;" value="http://"/>
+				<input type="button" style="float:right;" value="Associate" onclick="$('resourceassoc[studyData.objId]').send({update:res[studyData.objId]});"/>
+				</form>
+			</div>
+		</div>
+		
+		</div>
+	  </fieldset>
+	  <p>&nbsp;</p>
+	  </span>
+	  </li>
+	</ul>
+</div>
+<div id="options_section" style="width:350px;">
+	<div class="hidelink">[ <span id="optxp" class="pseudolink optionswitch">show more/less</span> ]</div>
+	<h5>Associate a Study:</h5>
+	<div id="options_content" style="display:none;">
+		<form action="[var..script_name]" method="POST">
+		<input type="hidden" name="biomarkerorgan_id" value="[var.bo.objId]"/>
+		<input type="hidden" id="study_id" name="study_id" value=""/>
+		<input type="text" id="study-search" value="" style="width:100%;"/>
+		<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
+		<input type="submit" name="associate_study" value="Associate" style="float:right;padding:2px;"/>
+		</form>
+	</div>
+</div>
+</div><!-- end outer_wrapper -->

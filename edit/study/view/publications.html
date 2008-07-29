@@ -1,0 +1,54 @@
+[onload;file='view/menu.html']
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4 style="margin-bottom:19px;">Associated Publications:</h4>
+	<ul style="list-style:square;color:#900003;margin:0px;padding:0px;list-style-type:none;list-style-position:inside;">
+	  <li style="margin-bottom:15px;"><a href="../../goto/publication/?id=[pub.objId]">[pub.Title;block=li]</a><br/>
+	  <span class="hint" style="color:#888;">Author: [pub.Author]. Published in [pub.Year] in: [pub.Journal] (volume [pub.Volume], issue [pub.Issue])</span> &nbsp;
+	  <span class="hint">[<a class="remove" href="./?id=[var.s.objId]&view=publications&remove_publication=[pub.objId]">Remove Association</a>]</span><br/>
+	  
+	  </li>
+	</ul>
+</div>
+<div id="options_section" style="width:350px;">
+	<div class="hidelink">[ <span id="optxp" class="pseudolink optionswitch">show more/less</span> ]</div>
+	<h5>Associate a Publication:</h5>
+	<div id="options_content" style="display:none;">
+		<ul class="minimenu">
+		  <li id="li_local" class="activelink" style="border-left:solid 1px #aaa;"><span class="pseudolink" style="color:#000;">Local</span></li>
+		  <li id="li_pubmed"><span class="pseudolink" style="color:#000;">PubMed</span></li>
+		  <li id="li_other"><span class="pseudolink" style="color:#000;">Other</span></li>
+		</ul>
+		<div class="clr"><!--  --></div>
+		<!-- LOCAL PUBLICATION ASSOCIATION -->
+		<div id="div_local" style="padding:8px;border-top:solid 1px #555;display:block;">
+			<h4 style="margin-top:0px;">Local Lookup</h4>
+			<form action="[var..script_name]" method="POST">
+				<input type="hidden" name="study_id" value="[var.s.objId]"/>
+				<input type="hidden" id="publication_id" name="publication_id" value=""/>
+				<input type="text" id="publication-search" value="" style="width:100%;"/>
+				<span class="hint" style="float:left;">Begin typing. A list of options will appear.</span>
+				<input type="submit" name="associate_publication" value="Associate" style="float:right;padding:2px;"/>
+			</form>
+		</div>
+		<!-- PUBMED IMPORT & ASSOCIATION -->
+		<div id="div_pubmed" class="minimenucontent" style="display:none;">
+			<h4>PubMed Import</h4>
+			<span class="hint">Enter a PubMed ID below to search:</span>
+			<form id="pubmedimport" action="../../util/importpubmed.php" method="POST">
+				<input type="text" name="pmid"/>
+				<input type="hidden" name="step" value="showinfo"/>
+				<input type="hidden" name="update" value="pubmedresult"/>
+				<input type="button" value="Search PubMed" class="pubmed_search"/>
+			</form>
+			<div id="pubmedresult" style="font-size:80%;">
+			
+			</div>
+		</div>
+		<!-- OTHER IMPORT AND ASSOCIATION -->
+		<div id="div_other" style="padding:8px;border-top:solid 1px #555;display:none;">
+		
+		</div>
+	</div>
+</div>
+</div><!-- end outer_wrapper -->

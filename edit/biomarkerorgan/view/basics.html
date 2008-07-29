@@ -1,0 +1,38 @@
+[onload;file='view/menu.html']
+<div id="outer_wrapper">
+<div id="main_section">
+	<h4>Description</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Description:</td><td><span id="description" class="editable textarea object:BiomarkerOrganData id:[var.bo.objId] attr:Description">[var.bo.Description;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Phase &amp; QA State</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Biomarker Phase:</td><td><span id="phase" class="editablelist object:BiomarkerOrganData id:[var.bo.objId] attr:Phase opts:[var.phaseOpts]">[var.bo.Phase;ifempty='click to select';noerr]</span></td></tr>
+			<tr><td class="label">QA State:</td><td><span id="qastate" class="editablelist object:BiomarkerOrganData id:[var.bo.objId] attr:QAState opts:[var.qastateOpts]">[var.bo.QAState;ifempty='click to select';noerr]</span></td></tr>
+		</table>
+	<h4>Sensitivity</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Sensitivity Min (%):</td><td><span id="sensmin" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:SensitivityMin">[var.bo.SensitivityMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Sensitivity Max (%):</td><td><span id="sensmax" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:SensitivityMax">[var.bo.SensitivityMax;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Sensitivity Comment:</td><td><span id="senscom" class="editable textarea object:BiomarkerOrganData id:[var.bo.objId] attr:SensitivityComment">[var.bo.SensitivityComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Specificity</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">Specificity Min (%):</td><td><span id="specmin" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:SpecificityMin">[var.bo.SpecificityMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Specificity Max (%):</td><td><span id="specmax" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:SpecificityMax">[var.bo.SpecificityMax;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">Specificity Comment:</td><td><span id="speccom" class="editable textarea object:BiomarkerOrganData id:[var.bo.objId] attr:SpecificityComment">[var.bo.SpecificityComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Negative Predictive Value</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">NPV Min (%):</td><td><span id="npvmin" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:NPVMin">[var.bo.NPVMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">NPV Max (%):</td><td><span id="npvmax" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:NPVMax">[var.bo.NPVMax;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">NPV Comment:</td><td><span id="npvcom" class="editable textarea object:BiomarkerOrganData id:[var.bo.objId] attr:NPVComment">[var.bo.NPVComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+	<h4>Positive Predictive Value</h4>
+		<table class="editable_info" cellspacing="0" cellpadding="0">
+			<tr><td class="label" style="width:230px;">PPV Min (%):</td><td><span id="ppvmin" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:PPVMin">[var.bo.PPVMin;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">PPV Max (%):</td><td><span id="ppvmax" class="editable object:BiomarkerOrganData id:[var.bo.objId] attr:PPVMax">[var.bo.PPVMax;ifempty='click to edit';noerr]</span></td></tr>
+			<tr><td class="label">PPV Comment:</td><td><span id="ppvcom" class="editable textarea object:BiomarkerOrganData id:[var.bo.objId] attr:PPVComment">[var.bo.PPVComment;ifempty='click to edit';noerr]</span></td></tr>
+		</table>
+</div>
+</div><!-- end outer_wrapper -->
