@@ -31,7 +31,7 @@ END;
 		// Basics
 		echo "  <bmdb:BiomarkerOrganData rdf:about=\"{$aboutURL}\">\r\n";
 		echo "    <bmdb:URN>urn:edrn:bmdb:biomarkerorgan:{$bod->getObjId()}</bmdb:URN>\r\n";
-		echo "    <bmdb:Biomarker rdf:resource=\"http://bmdb.jpl.nasa.gov/edit/biomarker/?id={$bod->getBiomarker()->getObjId()}\"/>\r\n";
+		echo "    <bmdb:Biomarker rdf:about=\"http://bmdb.jpl.nasa.gov/edit/biomarker/?id={$bod->getBiomarker()->getObjId()}\"/>\r\n";
 		echo "    <bmdb:Organ>{$bod->getOrgan()->getName()}</bmdb:Organ>\r\n";
 		echo "    <bmdb:SensitivityMin>{$bod->getSensitivityMin()}</bmdb:SensitivityMin>\r\n";
 		echo "    <bmdb:SensitivityMax>{$bod->getSensitivityMax()}</bmdb:SensitivityMax>\r\n";
@@ -54,7 +54,7 @@ END;
 			echo "    <bmdb:BiomarkerOrganStudyDatas>\r\n";
 			foreach ($bod->getStudyDatas() as $studyData) {
 				echo "      <bmdb:BiomarkerOrganStudyData rdf:about=\"".escapeEntities("http://bmdb.jpl.nasa.gov/edit/biomarkerorgan/?view=studies&id=23#{$studyData->getObjId()}")."\">\r\n";
-				echo "        <bmdb:Study rdf:resource=\"http://bmdb.jpl.nasa.gov/edit/study/?id={$studyData->getStudy()->getObjId()}\"/>\r\n";
+				echo "        <bmdb:Study rdf:about=\"http://bmdb.jpl.nasa.gov/edit/study/?id={$studyData->getStudy()->getObjId()}\"/>\r\n";
 				echo "        <bmdb:Sensitivity>{$studyData->getSensitivity()}</bmdb:Sensitivity>\r\n";
 				echo "        <bmdb:Specificity>{$studyData->getSpecificity()}</bmdb:Specificity>\r\n";
 				echo "        <bmdb:NPV>{$studyData->getNPV()}</bmdb:NPV>\r\n";
@@ -64,7 +64,7 @@ END;
 				if (count($studyData->getPublications()) > 0) {
 					echo "        <bmdb:Publications>\r\n";
 					foreach ($studyData->getPublications() as $pub) {
-						echo "          <bmdb:Publication rdf:resource=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
+						echo "          <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
 					}
 					echo "        </bmdb:Publications>\r\n";
 				} else {
@@ -75,7 +75,7 @@ END;
 				if (count($studyData->getResources()) > 0) {
 					echo "        <bmdb:Resources>\r\n";
 					foreach ($studyData->getResources() as $res) {
-						echo "          <bmdb:Resource rdf:resource=\"{$res->getURL()}\"/>\r\n";
+						echo "          <bmdb:Resource rdf:about=\"{$res->getURL()}\"/>\r\n";
 					}
 					echo "        </bmdb:Resources>\r\n";
 				} else {
@@ -92,7 +92,7 @@ END;
 		if (count($bod->getPublications()) > 0) {
 			echo "    <bmdb:Publications>\r\n";
 			foreach ($bod->getPublications() as $pub) {
-				echo "      <bmdb:Publication rdf:resource=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
+				echo "      <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
 			}
 			echo "    </bmdb:Publications>\r\n";
 		} else {
@@ -103,7 +103,7 @@ END;
 		if (count($bod->getResources()) > 0) {
 			echo "    <bmdb:Resources>\r\n";
 			foreach ($bod->getResources() as $res) {
-				echo "      <bmdb:Resource rdf:resource=\"{$res->getURL()}\"/>\r\n";
+				echo "      <bmdb:Resource rdf:about=\"{$res->getURL()}\"/>\r\n";
 			}
 			echo "    </bmdb:Resources>\r\n";
 		} else {
