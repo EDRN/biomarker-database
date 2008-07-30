@@ -222,7 +222,7 @@
 					</div>
 				</h5>
 				<div id="addstudypub<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">
-					<form action="<?php echo PROJROOT;?>//biomarkers/addstudydatapub" method="POST">
+					<form action="/<?php echo PROJROOT;?>/biomarkers/addstudydatapub" method="POST">
 						<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 						<input type="hidden" name="organ_data_id" value="<?php echo $organData['id']?>"/>
 						<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
