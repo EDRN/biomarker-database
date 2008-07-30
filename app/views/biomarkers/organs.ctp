@@ -290,7 +290,7 @@
 		
 		
 		<?php endforeach;?>
-		<h3 style="position:relative;margin-bottom:0px;">Supporting Publication Data
+		<h3 style="position:relative;margin-bottom:0px;">Supporting Publication Data &nbsp;(Biomarker-Organ level)
 			<div class="editlink">
 				<span class="fakelink toggle:addstudypub">+ Add a Publication</a>
 			</div>
@@ -322,7 +322,7 @@
 		<?php endforeach;?>
 		</ul>
 		
-		<h3 style="position:relative;margin-bottom:0px;">Supporting Resource Data
+		<h3 style="position:relative;margin-bottom:0px;">Supporting Resource Data &nbsp;(Biomarker-Organ level)
 			<div class="editlink">
 				<span class="fakelink toggle:addstudyres">+ Add a Resource</span>
 			</div>
