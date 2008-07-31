@@ -20,8 +20,13 @@ class BiomarkersController extends AppController {
 	/******************************************************************
 	 * BROWSE (INDEX)
 	 ******************************************************************/
-	function index() {
-		$this->set('biomarkers', $this->Biomarker->findAll());
+	function index($sort='',$key='',$ad='') {
+		if ($sort == "sort") {
+			$order = (($ad == "ascending") ? "ASC":"DESC");
+			$this->set('biomarkers', $this->Biomarker->findAll(null,null,"{$key} {$order}"));
+		} else {
+			$this->set('biomarkers', $this->Biomarker->findAll());
+		}
 				
 		// Get a list of all the biomarkers for the ajax search
 		$biomarkers = $this->Biomarker->find("all",array('title','id'));
