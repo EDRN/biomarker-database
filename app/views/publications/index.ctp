@@ -82,31 +82,19 @@
 
 
 <script>
-// Activate Study "Search" Autocomplete
-  new Autocompleter.Local(
-      $('publication-search'),
-      <?php
-      	echo "[".$publicationstring."]";
-      ?>
-	  ,{
-      'postData':{'object':'study','attr':'title'},
-      'postVar': 'needle',
-      'target' : 'publication_id',
-      'minLength' : 2,
-      'parseChoices': function(el) {
-        var value = el.getFirst().innerHTML;
-        var id    = el.getFirst().id;
-        alert(value);
-        el.inputValue = value;
-        el.inputId    = id;
-        this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-      },
-      'filterTokens': function(token) {
-      	var regex = new RegExp('' + this.queryValue.escapeRegExp(), 'i');
-      	return this.tokens.filter(function(token) {
-          var d = token.split('|');
-          return regex.test(d[0]);
-        });
-      }  
-  });
+  // Activate Publication Search autocomplete box
+  new Autocompleter.Ajax.Xhtml(
+   $('publication-search'),
+     '/<?php echo PROJROOT;?>/biomarkers/ajax_autocompletePublications', {
+     'postData':{'object':'Publication','attr':'Title'},
+     'postVar': 'needle',
+     'target' : 'publication_id',
+     'parseChoices': function(el) {
+       var value = el.getFirst().innerHTML;
+       var id    = el.getFirst().id;
+       el.inputValue = value;
+       el.inputId    = id;
+       this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
+     }
+   });
 </script>
