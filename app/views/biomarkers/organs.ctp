@@ -275,7 +275,7 @@
 				<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 				<?php foreach ($study['StudyDataResource'] as $resource):?>
 					<li><div class="studyressnippet">
-							<a href="#"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
+							<a href="<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
 							<span style="color:#555;font-size:90%;">
 							<?php echo $resource['description']?>
 							</span>
@@ -344,7 +344,7 @@
 		<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 			<?php foreach ($organData['OrganDataResource'] as $resource):?>
 				<li><div class="studyressnippet">
-						<a href="#"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
+						<a href="<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
 						<span style="color:#555;font-size:90%;">
 						<?php echo $resource['description']?>
 						</span>
