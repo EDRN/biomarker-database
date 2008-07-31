@@ -60,7 +60,7 @@ class PublicationsController extends AppController {
 			$pubmed['Issue']	= $docs->Item[7];
 			$pubmed['Year']		= $docs->Item[0];
 			
-			$actionurl = "/publications/import_pubmed/{$pubmed['ID']}";
+			$actionurl = "/".PROJROOT."/publications/import_pubmed/{$pubmed['ID']}";
 			if (isset($data['update'])) {
 				$update_div = $data['update'];
 			} else {
