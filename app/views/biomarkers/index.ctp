@@ -53,8 +53,10 @@
 
 <table id="elements" cellspacing="0" cellpadding="0">
   <tr>
-    <th>Title</th>
-    <th>ID</th>
+    <th>Name (sort:
+    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/descending">down</a>)</th>
+    <th>QA State</th>
+    <th>Phase</th>
     <th>Created</th>
     <th>Type</th>
   </tr>
@@ -63,16 +65,18 @@
   <?php if ($count++ % 2 == 0) {?>
   <tr>
     <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
-    <td>urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></td>
+    <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
+    <td><?php printor($biomarker['Biomarker']['phase'],'Unknown');?></td>
     <td><?php echo $biomarker['Biomarker']['created']?></td>
-    <td><?php echo $biomarker['Biomarker']['type']?></td>
+    <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
     <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
-    <td>urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></td>
+    <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
+    <td><?php printor($biomarker['Biomarker']['phase'],'Unknown');?></td>
     <td><?php echo $biomarker['Biomarker']['created']?></td>
-    <td><?php echo $biomarker['Biomarker']['type']?></td>
+    <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
   </tr>
   <?php } ?>
   <?php endforeach;?>
