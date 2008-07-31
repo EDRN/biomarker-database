@@ -62,14 +62,14 @@
   <?php foreach ($publications as $publication): ?>
   <?php if ($count++ % 2 == 0) {?>
   <tr>
-    <td> <?php echo $html->link($publication['Publication']['title'],"/".PROJROOT."/publications/view/{$publication['Publication']['id']}");?> </a></td>
+    <td> <?php echo $html->link($publication['Publication']['title'],"/publications/view/{$publication['Publication']['id']}");?> </a></td>
     <td> <?php echo $publication['Publication']['journal']?></td>
     <td> <?php echo $publication['Publication']['author']?></td>
     <td> <?php echo $publication['Publication']['published']?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
-    <td> <?php echo $html->link($publication['Publication']['title'],"/".PROJROOT."/publications/view/{$publication['Publication']['id']}");?> </a></td>
+    <td> <?php echo $html->link($publication['Publication']['title'],"/publications/view/{$publication['Publication']['id']}");?> </a></td>
     <td> <?php echo $publication['Publication']['journal']?></td>
     <td> <?php echo $publication['Publication']['author']?></td>
     <td> <?php echo $publication['Publication']['published']?></td>

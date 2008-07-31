@@ -62,14 +62,14 @@
   <?php foreach ($biomarkers as $biomarker): ?>
   <?php if ($count++ % 2 == 0) {?>
   <tr>
-    <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/".PROJROOT."/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
+    <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
     <td>urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></td>
     <td><?php echo $biomarker['Biomarker']['created']?></td>
     <td><?php echo $biomarker['Biomarker']['type']?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
-    <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/".PROJROOT."/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
+    <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
     <td>urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></td>
     <td><?php echo $biomarker['Biomarker']['created']?></td>
     <td><?php echo $biomarker['Biomarker']['type']?></td>

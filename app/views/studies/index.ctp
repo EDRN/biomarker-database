@@ -64,14 +64,14 @@
   <?php foreach ($studies as $study): ?>
   <?php if ($count++ % 2 == 0) {?>
   <tr>
-    <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/".PROJROOT."/studies/view/{$study['Study']['id']}");?> </a></td>
+    <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}");?> </a></td>
     <td style="vertical-align:top;text-align:center;"><?php echo $study['Study']['FHCRC_ID']?></td>
     <td style="vertical-align:top;"><?php echo (($study['Study']['DMCC_ID'] == "Unregistered") ? "Unregistered" : "Registered");?></td>
     <td><?php echo printor(substr($study['Study']['studyAbstract'],0,300),'<em>No Abstract Provided</em>');?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
-    <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/".PROJROOT."/studies/view/{$study['Study']['id']}");?> </a></td>
+    <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}");?> </a></td>
     <td style="vertical-align:top;text-align:center;"><?php echo $study['Study']['FHCRC_ID']?></td>
     <td style="vertical-align:top;"><?php echo (($study['Study']['DMCC_ID'] == "Unregistered") ? "Unregistered" : "Registered");?></td>
     <td><?php echo printor(substr($study['Study']['studyAbstract'],0,300),'<em>No Abstract Provided</em>');?></td>
