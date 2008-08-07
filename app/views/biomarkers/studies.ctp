@@ -72,7 +72,7 @@
 			</h4>
 			<div class="studydetail" style="margin-bottom:15px;">
 				<div class="lefttext" style="margin-right:16px;">
-					<span id="description" class="textarea"><?php printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
+					<span id="description" class="textarea"><?php printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
 				</div>
 				<!-- RELEVANT STUDY DATA -->
 				<div class="rightcol" style="margin-left:0px;margin-top:0;">
@@ -96,7 +96,7 @@
 						</tr>
 					</table>
 					<br/>
-					<a style="text-decoration:underline;font-size:90%;" href="/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
+					<a style="text-decoration:underline;font-size:90%;" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
 				</div>
 				<div class="clr"><!-- clear --></div>
 				<br/>
@@ -157,7 +157,7 @@
 				<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 				<?php foreach ($study['StudyDataResource'] as $resource):?>
 					<li><div class="studyressnippet">
-							<a href="<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeBiomarkerStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
+							<a href="http://<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeBiomarkerStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
 							<span style="color:#555;font-size:90%;">
 							<?php echo $resource['description']?>
 							</span>
