@@ -40,6 +40,13 @@
   <tr><td>Author: &nbsp;</td><td><?php echo $publication['Publication']['author']?></td></tr>
   <tr><td>Journal: &nbsp;</td><td><?php echo $publication['Publication']['journal']?></td></tr>
   <tr><td>Published: &nbsp;</td><td><?php echo $publication['Publication']['published']?></td></tr>
-  <tr><td>PubMed ID:</td><td><?php printor($publication['Publication']['pubmed_id'],'N/A',true);?></td></tr>
+  <tr><td>PubMed Link:</td><td>
+  	<?php if ($publication['Publication']['pubmed_id']== 0) { 
+			echo 'N/A';
+		  } 
+		  else { 
+			echo "<a href=\"http://ncbi.nlm.nih.gov/pubmed/{$publication['Publication']['pubmed_id']}\">http://ncbi.nlm.nih.gov/pubmed/{$publication['Publication']['pubmed_id']}</a>";
+		  }
+	?></td></tr>
 </table>
 <p>&nbsp;</p>
