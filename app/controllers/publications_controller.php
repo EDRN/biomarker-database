@@ -23,7 +23,8 @@ class PublicationsController extends AppController {
 			'title'=>$data['Title'],
 			'journal'=>$data['Journal'],
 			'author' =>$data['Author'],
-			'published'=>$data['Year']
+			'published'=>$data['Year'],
+			'pubmed_id'=>$data['ID']
 		));
 		$this->Publication->save();
 		echo "<div class=\"success\">The Publication was successfully imported.</div>";
