@@ -6,6 +6,15 @@
 	<div id="breadcrumbs"/>
 
 		Home
+		<div class="userdetails">
+			<?php if (isset($_SESSION['username'])) {
+				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
+				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
+			} else {
+				echo "Not Logged In. &nbsp; ";
+				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
+			}?>
+		</div>
 	</div><!-- End Breadcrumbs -->
 </div>
 <div style="background-color:#fff;padding-left:66%;position:relative;min-height:300px;border-bottom:solid 2px #666;">

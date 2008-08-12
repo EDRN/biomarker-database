@@ -23,6 +23,15 @@
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
 	<a href="/<?php echo PROJROOT;?>/">Home</a> / Studies
+	<div class="userdetails">
+			<?php if (isset($_SESSION['username'])) {
+				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
+				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
+			} else {
+				echo "Not Logged In. &nbsp; ";
+				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
+			}?>
+	</div>
 	</div><!-- End Breadcrumbs -->
 
 </div>
