@@ -38,5 +38,22 @@
  * @subpackage	cake.cake.libs.controller
  */
 class AppController extends Controller {
+	
+	function checkSession($afterlogin='/') {
+
+		// If the session info hasn't been set...
+        if (!$this->Session->check('username'))
+        {
+            // Force the user to login
+			$this->Session->write('afterlogin',$afterlogin);
+            $this->redirect('/users/login/');
+            exit();
+        } else {
+            // Store the details for the templates to use
+            $this->set('LdapUser',$this->Session->read('LdapUser'));
+        }
+    }
+	
+	
 }
 ?>
