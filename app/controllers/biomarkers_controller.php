@@ -4,6 +4,7 @@ class BiomarkersController extends AppController {
 	var $helpers = array('Html','Ajax','Javascript');
 	var $uses = 
 		array(
+			'LdapUser',
 			'Biomarker',
 			'Organ',
 			'OrganData',
@@ -21,6 +22,10 @@ class BiomarkersController extends AppController {
 	 * BROWSE (INDEX)
 	 ******************************************************************/
 	function index($sort='',$key='',$ad='') {
+		$this->checkSession('/biomarkers');
+		
+		
+		
 		if ($sort == "sort") {
 			$order = (($ad == "ascending") ? "ASC":"DESC");
 			$this->set('biomarkers', $this->Biomarker->findAll(null,null,"{$key} {$order}"));
@@ -41,6 +46,8 @@ class BiomarkersController extends AppController {
 	 * BASICS
 	 ******************************************************************/
 	function view($id = null) {
+		$this->checkSession("/biomarkers/view/{$id}");
+		
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
 			'recursive'  => 1
@@ -54,6 +61,7 @@ class BiomarkersController extends AppController {
 	
 	function savefield() {
 		$data =& $this->params['form'];
+		$this->checkSession("/biomarkers/view/{$data['id']}");
 		if ($data['object'] == "biomarker") {
 			$this->Biomarker->id = $data['id'];
 			$this->Biomarker->saveField($data['attr'],$data[$data['attr']]);
@@ -83,7 +91,7 @@ class BiomarkersController extends AppController {
 	 * ORGANS
 	 ******************************************************************/
 	function organs($id = null,$organ_id=null) {
-		
+		$this->checkSession("/biomarkers/organs/{$id}/{$organ_id}");
 		// Load the Biomarker object
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
@@ -118,7 +126,7 @@ class BiomarkersController extends AppController {
 	
 	function addOrganData() {
 		$data = &$this->params['form'];
-		
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}");
 		$this->OrganData->create(
 			array('biomarker_id'=>$data['biomarker_id'],
 					'organ_id'  =>$data['organ']));
@@ -128,6 +136,7 @@ class BiomarkersController extends AppController {
 	}
 	
 	function removeOrganData($biomarker_id,$organ_data_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}");
 		$this->OrganData->id = $organ_data_id;
 		$this->OrganData->delete();
 		$this->redirect("/biomarkers/organs/{$biomarker_id}");
@@ -135,8 +144,7 @@ class BiomarkersController extends AppController {
 	
 	function addOrganStudyData() {
 		$data = &$this->params['form'];
-		//echo "will add study data for study {$data['study_id']} to organ_data {$data['organ_data_id']}";
-		
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 		$this->StudyData->create(
 			array('organ_data_id'=>$data['organ_data_id'],
 					'study_id'=>$data['study_id']));
@@ -145,6 +153,7 @@ class BiomarkersController extends AppController {
 		
 	}
 	function removeOrganStudyData($biomarker_id,$organ_data_id,$study_data_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 		$this->StudyData->id = $study_data_id;
 		$this->StudyData->delete();
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
@@ -152,28 +161,33 @@ class BiomarkersController extends AppController {
 	
 	function addStudyDataPub() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 		$this->StudyData->habtmAdd('Publication',$data['study_data_id'],$data['pub_id']);
 		$this->redirect("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 	}
 	
 	function removeStudyDataPub($biomarker_id,$organ_data_id,$study_data_id,$pub_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 		$this->StudyData->habtmDelete('Publication',$study_data_id,$pub_id);
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 	}
 	
 	function addOrganDataPub() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 		$this->OrganData->habtmAdd('Publication',$data['organ_data_id'],$data['pub_id']);
 		$this->redirect("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 	}
 	
 	function removeOrganDataPub($biomarker_id,$organ_data_id,$pub_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 		$this->OrganData->habtmDelete('Publication',$organ_data_id,$pub_id);
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 	}
 	
 	function addStudyDataResource() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 		$this->StudyDataResource->create(
 			array('study_data_id'=>$data['study_data_id'],
 					'URL'=>$data['url'],
@@ -185,6 +199,7 @@ class BiomarkersController extends AppController {
 		
 	}
 	function removeStudyDataResource($biomarker_id,$organ_data_id,$study_data_id,$res_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 		$this->StudyDataResource->id = $res_id;
 		$this->StudyDataResource->delete();
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
@@ -193,6 +208,7 @@ class BiomarkersController extends AppController {
 	
 	function addOrganDataResource() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 		$this->OrganDataResource->create(
 			array('organ_data_id'=>$data['organ_data_id'],
 					'URL'=>$data['url'],
@@ -203,6 +219,7 @@ class BiomarkersController extends AppController {
 		$this->redirect("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 	}
 	function removeOrganDataResource($biomarker_id,$organ_data_id,$res_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 		$this->OrganDataResource->id = $res_id;
 		$this->OrganDataResource->delete();
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
@@ -214,6 +231,7 @@ class BiomarkersController extends AppController {
 	 ******************************************************************/
 
 	function studies($id = null) {
+		$this->checkSession("/biomarkers/studies/{$id}");
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
 			'recursive'  => 2
@@ -231,7 +249,7 @@ class BiomarkersController extends AppController {
 	}
 	function addStudyData() {
 		$data = &$this->params['form'];
-		
+		$this->checkSession("/biomarkers/studies/{$data['biomarker_id']}");
 		$this->BiomarkerStudyData->create(
 			array('biomarker_id'=>$data['biomarker_id'],
 					'study_id'  =>$data['study_id']));
@@ -240,6 +258,7 @@ class BiomarkersController extends AppController {
 		$this->redirect("/biomarkers/studies/{$data['biomarker_id']}");
 	}
 	function removeStudyData($biomarker_id,$study_data_id) {
+		$this->checkSession("/biomarkers/studies/{$biomarker_id}");
 		$this->BiomarkerStudyData->id = $study_data_id;
 		$this->BiomarkerStudyData->delete();
 		$this->redirect("/biomarkers/studies/{$biomarker_id}");
@@ -247,15 +266,18 @@ class BiomarkersController extends AppController {
 	
 	function addBiomarkerStudyDataPub() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/studies/{$data['biomarker_id']}");
 		$this->BiomarkerStudyData->habtmAdd('Publication',$data['study_data_id'],$data['pub_id']);
 		$this->redirect("/biomarkers/studies/{$data['biomarker_id']}");
 	}
 	function removeBiomarkerStudyDataPub($biomarker_id,$study_data_id,$pub_id) {
+		$this->checkSession("/biomarkers/studies/{$biomarker_id}");
 		$this->BiomarkerStudyData->habtmDelete('Publication',$study_data_id,$pub_id);
 		$this->redirect("/biomarkers/studies/{$biomarker_id}");
 	}
 	function addBiomarkerStudyDataResource() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/studies/{$data['biomarker_id']}");
 		$this->BiomarkerStudyDataResource->create(
 			array('biomarker_study_data_id'=>$data['study_data_id'],
 					'URL'=>$data['url'],
@@ -266,6 +288,7 @@ class BiomarkersController extends AppController {
 		$this->redirect("/biomarkers/studies/{$data['biomarker_id']}");
 	}
 	function removeBiomarkerStudyDataResource($biomarker_id,$study_data_id,$res_id) {
+		$this->checkSession("/biomarkers/studies/{$biomarker_id}");
 		$this->BiomarkerStudyDataResource->id = $res_id;
 		$this->BiomarkerStudyDataResource->delete();
 		$this->redirect("/biomarkers/studies/{$biomarker_id}");
@@ -276,6 +299,7 @@ class BiomarkersController extends AppController {
 	 * PUBLICATIONS
 	 ******************************************************************/
 	function publications($id = null) {
+		$this->checkSession("/biomarkers/publications/{$id}");
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
 			'recursive'  => 1
@@ -286,11 +310,13 @@ class BiomarkersController extends AppController {
 	
 	function addPublication() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/publications/{$data['biomarker_id']}");
 		$this->Biomarker->habtmAdd('Publication',$data['biomarker_id'],$data['pub_id']);
 		$this->redirect("/biomarkers/publications/{$data['biomarker_id']}");
 	}
 	
 	function removePublication($biomarker_id,$publication_id) {
+		$this->checkSession("/biomarkers/publications/{$biomarker_id}");
 		$this->Biomarker->habtmDelete('Publication',$biomarker_id,$publication_id);
 		$this->redirect("/biomarkers/publications/{$biomarker_id}");
 	}
@@ -301,6 +327,7 @@ class BiomarkersController extends AppController {
 	 ******************************************************************/
 
 	function resources($id = null) {
+		$this->checkSession("/biomarkers/resources/{$id}");
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
 			'recursive'  => 1
@@ -311,6 +338,7 @@ class BiomarkersController extends AppController {
 	
 	function addResource() {
 		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/resources/{$data['biomarker_id']}");
 		$this->BiomarkerResource->create(
 			array('biomarker_id'=>$data['biomarker_id'],
 					'URL'=>$data['url'],
@@ -319,14 +347,13 @@ class BiomarkersController extends AppController {
 		);
 		$this->BiomarkerResource->save();
 		$this->redirect("/biomarkers/resources/{$data['biomarker_id']}");
-		
 	}
 	
 	function removeResource($biomarker_id,$res_id) {
+		$this->checkSession("/biomarkers/resources/{$biomarker_id}");
 		$this->BiomarkerResource->id = $res_id;
 		$this->BiomarkerResource->delete();
 		$this->redirect("/biomarkers/resources/{$biomarker_id}");
-		
 	}
 	
 	
@@ -334,9 +361,10 @@ class BiomarkersController extends AppController {
 	 * CREATE
 	 ******************************************************************/
 	function create() {
-		
+		$this->checkSession("/biomarkers/create");
 	}
 	function createBiomarker() {
+		$this->checkSession("/biomarkers/create");
 		if ($this->params['form']) {
 			$data = &$this->params['form'];
 			if ($data['name'] != '') {
@@ -355,6 +383,7 @@ class BiomarkersController extends AppController {
 	 * DELETE
 	 ******************************************************************/
 	function delete($id) {
+		$this->checkSession("/biomarkers");
 		$this->Biomarker->id = $id;
 		$this->Biomarker->delete();
 		$this->redirect("/biomarkers");

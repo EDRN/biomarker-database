@@ -4,17 +4,20 @@ class PublicationsController extends AppController {
 	var $helpers = array('Html','Ajax','Javascript');
 	
 	public function index() {
+		$this->checkSession("/publications");
 		$this->set('publications', $this->Publication->findAll());		
 	}
 	public function view($id=null) {
+		$this->checkSession("/publications/view/{$id}");
 		$this->Publication->id = $id;
 		$this->set('publication', $this->Publication->read());
 		
 	}
 	public function import() {
-		
+		$this->checkSession("/publications/import");
 	}
 	public function import_pubmed() {
+		$this->checkSession("/publications/import");
 		/**
 		 * PUBMED DATA IMPORT
 		 */

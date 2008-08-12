@@ -13,6 +13,7 @@ class StudiesController extends AppController {
 	 * BROWSE (INDEX)
 	 ******************************************************************/
 	function index($sort='',$key='',$ad='') {
+		$this->checkSession("/studies");
 		if ($sort == "sort") {
 			$order = (($ad == "ascending") ? "ASC":"DESC");
 			$this->set('studies', $this->Study->findAll(null,null,"{$key} {$order}"));
@@ -33,6 +34,7 @@ class StudiesController extends AppController {
 	 * BASICS
 	 ******************************************************************/
 	function view($id = null) {
+		$this->checkSession("/studies/view/{$id}");
 		$study = $this->Study->find('first',array(
 			'conditions' => array('Study.id' => $id),
 			'recursive'  => 1
@@ -43,6 +45,7 @@ class StudiesController extends AppController {
 	
 	function savefield() {
 		$data =& $this->params['form'];
+		$this->checkSession("/studies/view/{$data['id']}");
 		if ($data['object'] == "study") {
 			$this->Study->id = $data['id'];
 			$this->Study->saveField($data['attr'],$data[$data['attr']]);
@@ -59,6 +62,7 @@ class StudiesController extends AppController {
 	 * PUBLICATIONS
 	 ******************************************************************/
 	function publications($id = null) {
+		$this->checkSession("/studies/publications/{$id}");
 		$study = $this->Study->find('first',array(
 			'conditions' => array('Study.id' => $id),
 			'recursive'  => 1
@@ -69,11 +73,13 @@ class StudiesController extends AppController {
 	
 	function addPublication() {
 		$data = &$this->params['form'];
+		$this->checkSession("/studies/publications/{$data['study_id']}");
 		$this->Study->habtmAdd('Publication',$data['study_id'],$data['pub_id']);
 		$this->redirect("/studies/publications/{$data['study_id']}");
 	}
 	
 	function removePublication($study_id,$publication_id) {
+		$this->checkSession("/studies/publications/{$study_id}");
 		$this->Study->habtmDelete('Publication',$study_id,$publication_id);
 		$this->redirect("/studies/publications/{$study_id}");
 	}
@@ -84,6 +90,7 @@ class StudiesController extends AppController {
 	 ******************************************************************/
 
 	function resources($id = null) {
+		$this->checkSession("/studies/resources/{$id}");
 		$study = $this->Study->find('first',array(
 			'conditions' => array('Study.id' => $id),
 			'recursive'  => 1
@@ -94,6 +101,7 @@ class StudiesController extends AppController {
 	
 	function addResource() {
 		$data = &$this->params['form'];
+		$this->checkSession("/studies/resources/{$data['study_id']}");
 		$this->StudyResource->create(
 			array('study_id'=>$data['study_id'],
 					'URL'=>$data['url'],
@@ -105,6 +113,7 @@ class StudiesController extends AppController {
 	}
 	
 	function removeResource($study_id,$res_id) {
+		$this->checkSession("/studies/resources/{$study_id}");
 		$this->StudyResource->id = $res_id;
 		$this->StudyResource->delete();
 		$this->redirect("/studies/resources/{$study_id}");
@@ -131,9 +140,10 @@ class StudiesController extends AppController {
 	 * CREATE (NON_EDRN)
 	 ******************************************************************/
 	function create() {
-			
+		$this->checkSession("/studies/create");
 	}
 	function createStudy() {
+		$this->checkSession("/studies/create");
 		if ($this->params['form']) {
 			$data = &$this->params['form'];
 			if ($data['title'] != '') {

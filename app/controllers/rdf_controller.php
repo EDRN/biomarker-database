@@ -18,6 +18,7 @@ class RdfController extends AppController {
 	);
 	
 	function index() {
+		$this->checkSession("/rdf");
 		die("Please add one of <ul>"
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkers\">biomarkers</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkerorgans\">biomarkerorgans</a></li>"
@@ -26,6 +27,7 @@ class RdfController extends AppController {
 	}
 	
 	function biomarkers() {
+		$this->checkSession("/rdf/biomarkers");
 		header("content-type:application/rdf+xml; charset=utf-8");
 		
 		$this->printRdfStart();
@@ -96,6 +98,7 @@ class RdfController extends AppController {
 	}
 	
 	function biomarkerorgans() {
+		$this->checkSession("/rdf/biomarkerorgans");
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
 		$biomarkerorgandatas = $this->OrganData->findAll();
@@ -197,6 +200,7 @@ class RdfController extends AppController {
 	}
 
 	function studies() {
+		$this->checkSession("/rdf/studies");
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
 		$studies = $this->Study->findAll();
