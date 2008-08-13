@@ -37,7 +37,7 @@ class LdapUser extends AppModel
 	function auth($uid, $password) {
 		$result = $this->findAll('uid', $uid);
 		if($result['count'] == 1) {
-			if (ldap_bind($this->ds, $result[0]['dn'], $password)) {
+			if (@ldap_bind($this->ds, $result[0]['dn'], $password)) {
 				return true;
 			} else {
 				return false;
