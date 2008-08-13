@@ -474,3 +474,9 @@ div.userdetails {
 	top:2px;
 	right:5px;
 }
+div.error {
+	background-color:#fcc;
+	padding:5px;
+	margin-right:15px;
+	border:solid 1px #f44;
+}
