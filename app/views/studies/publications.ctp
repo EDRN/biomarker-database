@@ -67,18 +67,20 @@
 	<form action="/<?php echo PROJROOT;?>/studies/addPublication" method="POST">
 		<input type="hidden" name="study_id"  value="<?php echo $study['Study']['id']?>"/>
 		<input type="hidden" id="publication_id" name="pub_id" value=""/>
-		<input type="text" id="publicationsearch" value="" style="width:90%;"/>
-		<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of options will appear.</span>
-		<input type="button" class="cancelbutton toggle:addstudypub" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
-		<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
-		
+		<input type="text" id="publicationsearch" value="" style="width:90%;"/><br/>
+		<div>
+			<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of options will appear.</span>
+			<input type="button" class="cancelbutton toggle:addstudypub" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+			<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+			<div class="clr"><!-- clear --></div>
+		</div>
 	</form>
 	<div class="clr"><!-- clear --></div>
 </div>
 <ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 <?php foreach ($study['Publication'] as $publication):?>
 	<li><div class="studypubsnippet">
-			<a href="#"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/studies/removePublication/<?php echo $study['Study']['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
+			<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/studies/removePublication/<?php echo $study['Study']['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
 			<span style="color:#555;font-size:90%;">Author:
 			<?php echo $publication['author']?>. &nbsp; Published in
 			<?php echo $publication['journal']?>, &nbsp;

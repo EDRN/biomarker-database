@@ -69,9 +69,9 @@
 <div id="addstudyres" class="addstudyres" style="margin-left:20px;display:none;">
 	<form action="/<?php echo PROJROOT;?>/biomarkers/addResource" method="POST" style="margin-top:5px;">
 		<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
-		<div style="float:left;width:90px;color:#555;">URL: &nbsp;&nbsp;http://</div>
-		<input type="text" style="width:80%;" name="url"/><br/><br/>
-		<div style="float:left;width:90px;color:#555;">Description:</div>
+		<div style="float:left;width:110px;color:#555;">URL: &nbsp;&nbsp;http://</div>
+		<input type="text" style="width:70%;" name="url"/><br/><br/>
+		<div style="float:left;width:110px;color:#555;">Description:</div>
 		<input type="text" name="desc" style="float:left;width:50%;"/>
 		<input type="submit" name="associate_res" value="Associate" style="float:left;padding:2px;margin-right:0px;margin-left:6px;"/>
 		<input type="button" value="Cancel" class="cancelbutton toggle:addstudyres" style="float:left;padding:2px;margin:0px;margin-right:0px;margin-left:6px;"/>

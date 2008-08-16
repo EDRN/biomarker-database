@@ -18,7 +18,6 @@ class RdfController extends AppController {
 	);
 	
 	function index() {
-		$this->checkSession("/rdf");
 		die("Please add one of <ul>"
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkers\">biomarkers</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkerorgans\">biomarkerorgans</a></li>"
@@ -27,7 +26,6 @@ class RdfController extends AppController {
 	}
 	
 	function biomarkers() {
-		$this->checkSession("/rdf/biomarkers");
 		header("content-type:application/rdf+xml; charset=utf-8");
 		
 		$this->printRdfStart();
@@ -50,46 +48,30 @@ class RdfController extends AppController {
 			echo "    <bmdb:Type>{$b['Biomarker']['type']}</bmdb:Type>\r\n";
 			// Organs
 			if (count($b['OrganData']) > 0) {
-				echo "    <bmdb:BiomarkerOrganDatas>\r\n";
 				foreach ($b['OrganData'] as $bod) {
-					echo "      <bmdb:BiomarkerOrganData rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['id']}\"/>\r\n";
+					echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['id']}\"/>\r\n";
 				}
-				echo "    </bmdb:BiomarkerOrganDatas>\r\n";
-			} else {
-				echo "    <bmdb:BiomarkerOrganDatas/>\r\n";
 			}
 			// Studies
 			if (count($b['BiomarkerStudyData']) > 0) {
-				echo "    <bmdb:Studies>\r\n";
 				foreach ($b['BiomarkerStudyData'] as $study) {
-					echo "      <bmdb:Study rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/studies/{$b['Biomarker']['id']}#{$study['id']}\"/>\r\n";
+					echo "    <bmdb:referencedInStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/studies/{$b['Biomarker']['id']}#{$study['id']}\"/>\r\n";
 				}
-				echo "    </bmdb:Studies>\r\n";
-			} else {
-				echo "    <bmdb:Studies/>\r\n";
-			}
+			} 
 			
 			// Publications
 			if (count($b['Publication']) > 0) {
-				echo "    <bmdb:Publications>\r\n";
 				foreach ($b['Publication'] as $pub) {
-					echo "      <bmdb:Publication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+					echo "    <bmdb:referencedInPublication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
 				}
-				echo "    </bmdb:Publications>\r\n";
-			} else {
-				echo "    <bmdb:Publications/>\r\n";
-			}
+			} 
 		
 			// Resources
 			if (count($b['BiomarkerResource']) > 0) {
-				echo "    <bmdb:Resources>\r\n";
 				foreach ($b['BiomarkerResource'] as $res) {
-					echo "      <bmdb:Resource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
 				}
-				echo "    </bmdb:Resources>\r\n";
-			} else {
-				echo "    <bmdb:Resources/>\r\n";
-			}
+			} 
 			echo "  </bmdb:Biomarker>\r\n";
 		} /* end foreach */
 
@@ -98,7 +80,6 @@ class RdfController extends AppController {
 	}
 	
 	function biomarkerorgans() {
-		$this->checkSession("/rdf/biomarkerorgans");
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
 		$biomarkerorgandatas = $this->OrganData->findAll();
@@ -134,64 +115,48 @@ class RdfController extends AppController {
 		
 			// Studies
 			if (count($bod['StudyData']) > 0) {
-				echo "    <bmdb:BiomarkerOrganStudyDatas>\r\n";
 				foreach ($bod['StudyData'] as $studyData) {
-					echo "      <bmdb:BiomarkerOrganStudyData rdf:resource=\"".$this->escapeEntities("{$aboutURL}#{$studyData['id']}")."\">\r\n";
-					echo "        <bmdb:Study rdf:about=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['Study']['id']}\"/>\r\n";
-					echo "        <bmdb:Sensitivity>{$studyData['sensitivity']}</bmdb:Sensitivity>\r\n";
-					echo "        <bmdb:Specificity>{$studyData['specificity']}</bmdb:Specificity>\r\n";
-					echo "        <bmdb:NPV>{$studyData['npv']}</bmdb:NPV>\r\n";
-					echo "        <bmdb:PPV>{$studyData['ppv']}</bmdb:PPV>\r\n";
+					echo "    <bmdb:hasBiomarkerOrganStudyDatas>\r\n";
+					echo "        <bmdb:BiomarkerOrganStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}#{$studyData['id']}")."\">\r\n";
+					echo "          <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['Study']['id']}\"/>\r\n";
+					echo "          <bmdb:Sensitivity>{$studyData['sensitivity']}</bmdb:Sensitivity>\r\n";
+					echo "          <bmdb:Specificity>{$studyData['specificity']}</bmdb:Specificity>\r\n";
+					echo "          <bmdb:NPV>{$studyData['npv']}</bmdb:NPV>\r\n";
+					echo "          <bmdb:PPV>{$studyData['ppv']}</bmdb:PPV>\r\n";
 					
 					// Publications
 					if (count($studyData['Publication']) > 0) {
-						echo "        <bmdb:Publications>\r\n";
 						foreach ($studyData['Publication'] as $pub) {
-							echo "          <bmdb:Publication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+							echo "          <bmdb:referencesPublication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
 						}
-						echo "        </bmdb:Publications>\r\n";
-					} else {
-						echo "        <bmdb:Publications/>\r\n";
 					}
 					
 					// Resources
 					if (count($studyData['StudyDataResource']) > 0) {
-						echo "        <bmdb:Resources>\r\n";
 						foreach ($studyData['StudyDataResource'] as $res) {
-							echo "          <bmdb:Resource rdf:resource=\"{$res['URL']}\"/>\r\n";
+							echo "          <bmdb:referencesResource rdf:resource=\"{$res['URL']}\"/>\r\n";
 						}
-						echo "        </bmdb:Resources>\r\n";
-					} else {
-						echo "        <bmdb:Resources/>\r\n";
-					}
-					echo "      </bmdb:BiomarkerOrganStudyData>\r\n";
+					} 
+					echo "        </bmdb:BiomarkerOrganStudyData>\r\n";
+					echo "    </bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 				}
-				echo "    </bmdb:BiomarkerOrganStudyDatas>\r\n";
 			} else {
-				echo "    <bmdb:BiomarkerOrganStudyDatas/>\r\n";
+				echo "    <bmdb:hasBiomarkerOrganStudyDatas/>\r\n";
 			}
 			
 			// Publications
 			if (count($bod['Publication']) > 0) {
-				echo "    <bmdb:Publications>\r\n";
 				foreach ($bod['Publication'] as $pub) {
-					echo "      <bmdb:Publication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+					echo "    <bmdb:referencedInPublication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
 				}
-				echo "    </bmdb:Publications>\r\n";
-			} else {
-				echo "    <bmdb:Publications/>\r\n";
-			}
+			} 
 			
 			// Resources
 			if (count($bod['OrganDataResource']) > 0) {
-				echo "    <bmdb:Resources>\r\n";
 				foreach ($bod['OrganDataResource'] as $res) {
-					echo "      <bmdb:Resource rdf:resource=\"{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"{$res['URL']}\"/>\r\n";
 				}
-				echo "    </bmdb:Resources>\r\n";
-			} else {
-				echo "    <bmdb:Resources/>\r\n";
-			}
+			} 
 		
 			echo "  </bmdb:BiomarkerOrganData>\r\n";
 		} /* end foreach */
@@ -200,7 +165,6 @@ class RdfController extends AppController {
 	}
 
 	function studies() {
-		$this->checkSession("/rdf/studies");
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
 		$studies = $this->Study->findAll();
@@ -222,25 +186,17 @@ class RdfController extends AppController {
 			
 			// Publications
 			if (count($s['Publication']) > 0) {
-				echo "    <bmdb:Publications>\r\n";
 				foreach ($s['Publication'] as $pub) {
-					echo "      <bmdb:Publication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+					echo "    <bmdb:isDescribedIn rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
 				}
-				echo "    </bmdb:Publications>\r\n";
-			} else {
-				echo "    <bmdb:Publications/>\r\n";
-			}
+			} 
 			
 			// Resources
 			if (count($s['StudyResource']) > 0) {
-				echo "    <bmdb:Resources>\r\n";
 				foreach ($s['StudyResource'] as $res) {
-					echo "      <bmdb:Resource rdf:resource=\"{$res['url']}\"/>\r\n";
+					echo "    <bmdb:externalResource rdf:resource=\"{$res['URL']}\"/>\r\n";
 				}
-				echo "    </bmdb:Resources>\r\n";
-			} else {
-				echo "    <bmdb:Resources/>\r\n";
-			}
+			} 
 			echo "  </bmdb:Study>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();

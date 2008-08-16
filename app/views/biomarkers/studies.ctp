@@ -111,19 +111,23 @@
 				<br/>
 				<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications
 					<div class="editlink" style="font-size:100%;margin-top:-8px;">
-						<span class="fakelink toggle:addstudypub<?php echo $study['id']?>">+ Edit This List</span>
+						<span class="fakelink toggle:addstudypub<?php echo $study['id']?>">+ Add Publication</span>
 					</div>
 				</h5>
 				<div id="addstudypub<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">
+					<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 					<form action="/<?php echo PROJROOT;?>/biomarkers/addBiomarkerStudyDataPub" method="POST">
 						<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 						<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
 						<input type="hidden" id="publication<?php echo $study['id']?>_id" name="pub_id" value=""/>
-						<input type="text" class="pubsearch id:<?php echo $study['id']?>" id="publication<?php echo $study['id']?>search" value="" style="width:90%;"/>
-						<span class="hint" style="float:left;margin-top:3px;">Begin typing a publication title. A list of options will appear.<br/>
-		Don't see the publication you want? <a href="/<?php echo PROJROOT;?>/publications/import">Import a new publication</a></span>
-						<input type="button" class="cancelbutton toggle:addstudypub<?php echo $study['id']?>" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
-						<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+						<input type="text" class="pubsearch id:<?php echo $study['id']?>" id="publication<?php echo $study['id']?>search" value="" style="width:90%;"/><br/>
+						<div>
+							<span class="hint" style="float:left;margin-top:3px;">Begin typing a publication title. A list of options will appear.<br/>
+			Don't see the publication you want? <a href="/<?php echo PROJROOT;?>/publications/import">Import a new publication</a></span>
+							<input type="button" class="cancelbutton toggle:addstudypub<?php echo $study['id']?>" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+							<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+							<div class="clr"><!-- clear --></div>
+						</div>
 						
 					</form>
 					<div class="clr"><!-- clear --></div>
@@ -132,7 +136,7 @@
 				<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 				<?php foreach ($study['Publication'] as $publication):?>
 					<li><div class="studypubsnippet">
-							<a href="#"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeBiomarkerStudyDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
+							<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeBiomarkerStudyDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
 							<span style="color:#555;font-size:90%;">Author:
 							<?php echo $publication['author']?>. &nbsp; Published in
 							<?php echo $publication['journal']?>, &nbsp;
@@ -145,16 +149,17 @@
 				<br/>
 				<h5 style="position:relative;border-bottom:solid 1px #999;">Related Resources
 					<div class="editlink" style="font-size:100%;margin-top:-8px;">
-						<span class="fakelink toggle:addstudyres<?php echo $study['id']?>">+ Edit This List</span>
+						<span class="fakelink toggle:addstudyres<?php echo $study['id']?>">+ Add Resource</span>
 					</div>
 				</h5>
 				<div id="addstudyres<?php echo $study['id']?>" class="addstudyres" style="margin-left:14px;display:none;">
+					<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
 					<form action="/<?php echo PROJROOT;?>/biomarkers/addBiomarkerStudyDataResource" method="POST" style="margin-top:5px;">
 						<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 						<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
-						<div style="float:left;width:90px;color:#555;">URL: &nbsp;&nbsp;http://</div>
-						<input type="text" style="width:80%;" name="url"/><br/><br/>
-						<div style="float:left;width:90px;color:#555;">Description:</div>
+						<div style="float:left;width:130px;color:#555;">URL: &nbsp;&nbsp;http://</div>
+						<input type="text" style="width:70%;" name="url"/><br/><br/>
+						<div style="float:left;width:130px;color:#555;">Description:</div>
 						<input type="text" name="desc" style="float:left;width:50%;"/>
 						<input type="submit" name="associate_res" value="Associate" style="float:left;padding:2px;margin-right:0px;margin-left:6px;"/>
 						<input type="button" class="cancelbutton toggle:addstudyres<?php echo $study['id']?>" value="Cancel" style="float:left;padding:2px;margin:0px;margin-right:0px;margin-left:6px;"/>

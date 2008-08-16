@@ -38,6 +38,8 @@ class PublicationsController extends AppController {
 		$data = &$this->params['form'];
 		if ($data['id']) {
 			$this->redirect("/publications/view/{$data['id']}");
+		} else {
+			$this->redirect("/publications");
 		}
 	}
 	

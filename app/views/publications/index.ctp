@@ -40,7 +40,7 @@
 	<div>
 	<form action="/<?php echo PROJROOT;?>/publications/goto" method="POST">
 		<input type="hidden" id="publication_id" name="id" value=""/>
-		<input type="text" id="publication-search" value=""/>
+		<input type="text" id="publication-search" value="Begin typing title keywords here..."/>
 		<input type="submit" value="Search"/><br/>
 		<a href="/<?php echo PROJROOT;?>/publications/import">Import a Publication from PubMed</a>
 		<div class="clr"><!--  --></div>
