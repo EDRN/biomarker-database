@@ -134,7 +134,7 @@ class RdfController extends AppController {
 					// Resources
 					if (count($studyData['StudyDataResource']) > 0) {
 						foreach ($studyData['StudyDataResource'] as $res) {
-							echo "          <bmdb:referencesResource rdf:resource=\"{$res['URL']}\"/>\r\n";
+							echo "          <bmdb:referencesResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
 						}
 					} 
 					echo "        </bmdb:BiomarkerOrganStudyData>\r\n";
@@ -154,7 +154,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($bod['OrganDataResource']) > 0) {
 				foreach ($bod['OrganDataResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
 				}
 			} 
 		
@@ -194,7 +194,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($s['StudyResource']) > 0) {
 				foreach ($s['StudyResource'] as $res) {
-					echo "    <bmdb:externalResource rdf:resource=\"{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:externalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
 				}
 			} 
 			echo "  </bmdb:Study>\r\n";
