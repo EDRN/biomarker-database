@@ -64,10 +64,13 @@
   <tr>
     <th>Name (sort:
     	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/descending">down</a>)</th>
-    <th>QA State</th>
-    <th>Phase</th>
-    <th>Type</th>
-    <th>Organs</th>
+    <th>QA State (sort:
+    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/qastate/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/qastate/descending">down</a>)</th>
+    <th>Phase (sort:
+    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/phase/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/phase/descending">down</a>)</th>
+    <th>Type (sort: 
+    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/type/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/type/descending">down</a>)</th>
+    <th>Associated Organs</th>
   </tr>
   <?php $count = 0;?>
   <?php foreach ($biomarkers as $biomarker): ?>
