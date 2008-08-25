@@ -22,6 +22,7 @@ class RdfController extends AppController {
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkers\">biomarkers</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkerorgans\">biomarkerorgans</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/studies\">studies</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdf/publications\">publications</a></li>"
 			."</ul> to your query");
 	}
 	
