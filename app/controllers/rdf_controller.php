@@ -202,6 +202,26 @@ class RdfController extends AppController {
 		$this->printRdfEnd();
 		exit();
 	}
+
+	function publications() {
+		header("content-type:application/rdf+xml; charset=utf-8");
+		$this->printRdfStart();
+		$publications = $this->Publication->findAll();
+		foreach ($publications as $p) {
+			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/publications/view/{$p['Publication']['id']}";
+	
+			// Basics
+			echo "  <bmdb:Publication rdf:about=\"{$aboutURL}\">\r\n";
+			echo "    <bmdb:Title>".$this->escapeEntities($p['Publication']['title'])."</bmdb:Title>\r\n";
+			echo "    <bmdb:Author>{$p['Publication']['author']}</bmdb:Author>\r\n";
+			echo "    <bmdb:Journal>{$p['Publication']['journal']}</bmdb:Journal>\r\n";
+			echo "    <bmdb:Published>{$p['Publication']['published']}</bmdb:Published>\r\n";
+			echo "    <bmdb:PubMedId>{$p['Publication']['pubmed_id']}</bmdb:PubMedId>\r\n";
+			echo "  </bmdb:Publication>\r\n";
+		}/* end foreach */
+		$this->printRdfEnd();
+		exit();
+	}
 	
 	private function escapeEntities($str) {
 		return str_replace("<","&lt;",
