@@ -204,6 +204,10 @@
 					<h4>Study Results:</h4>
 					<table>
 						<tr>
+						<td class="label" style="border-bottom:dotted 1px #999;">Phase:</td>
+						<td><em><span id="phase<?php echo $study['id']?>" class="editablelist object:organ_study_data id:<?php echo $study['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php printor($study['phase'],'click to select');?></span></em></td>
+						</tr>
+						<tr>
 							<td class="label">Sensitivity:</td>
 							<td><em><span id="sensitivity<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:sensitivity"><?php echo $study['sensitivity']?></span></em>%</td>
 						</tr>
