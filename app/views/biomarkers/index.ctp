@@ -66,8 +66,6 @@
     	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/descending">down</a>)</th>
     <th>QA State (sort:
     	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/qastate/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/qastate/descending">down</a>)</th>
-    <th>Phase (sort:
-    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/phase/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/phase/descending">down</a>)</th>
     <th>Type (sort: 
     	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/type/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/type/descending">down</a>)</th>
     <th>Associated Organs</th>
@@ -87,7 +85,6 @@
   <tr>
     <td><?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
     <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
-    <td><?php printor($biomarker['Biomarker']['phase'],'Unknown');?></td>
     <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
     <td><?php echo $organsForBiomarker?></td>
   </tr>
@@ -95,7 +92,6 @@
   <tr style="background-color:#f4f4f4;">
     <td><?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
     <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
-    <td><?php printor($biomarker['Biomarker']['phase'],'Unknown');?></td>
     <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
     <td><?php echo $organsForBiomarker?></td>
   </tr>
