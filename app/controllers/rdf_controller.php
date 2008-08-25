@@ -56,7 +56,7 @@ class RdfController extends AppController {
 			// Studies
 			if (count($b['BiomarkerStudyData']) > 0) {
 				foreach ($b['BiomarkerStudyData'] as $study) {
-					echo "    <bmdb:referencedInStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/studies/{$b['Biomarker']['id']}#{$study['id']}\"/>\r\n";
+					echo "    <bmdb:referencedInStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$study['id']}\"/>\r\n";
 				}
 			} 
 			
