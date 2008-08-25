@@ -66,26 +66,35 @@
     	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/descending">down</a>)</th>
     <th>QA State</th>
     <th>Phase</th>
-    <th>Created</th>
     <th>Type</th>
+    <th>Organs</th>
   </tr>
   <?php $count = 0;?>
   <?php foreach ($biomarkers as $biomarker): ?>
+  <?php  	
+	// Build 'organsForBiomarker' list
+	$odatas = array();
+	foreach ($biomarker['OrganData'] as $od) {
+		$odatas[] = "<a href=\"/".PROJROOT."/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$od['id']}\">{$od['Organ']['name']}</a>"; 
+	}
+	$organsForBiomarker = implode(", ",$odatas);
+	if ($organsForBiomarker == "") { $organsForBiomarker = "<em>Unknown</em>";}
+  ?>
   <?php if ($count++ % 2 == 0) {?>
   <tr>
-    <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
+    <td><?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
     <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
     <td><?php printor($biomarker['Biomarker']['phase'],'Unknown');?></td>
-    <td><?php echo $biomarker['Biomarker']['created']?></td>
     <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
+    <td><?php echo $organsForBiomarker?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
-    <td> <?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
+    <td><?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
     <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
     <td><?php printor($biomarker['Biomarker']['phase'],'Unknown');?></td>
-    <td><?php echo $biomarker['Biomarker']['created']?></td>
     <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
+    <td><?php echo $organsForBiomarker?></td>
   </tr>
   <?php } ?>
   <?php endforeach;?>

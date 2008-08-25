@@ -28,9 +28,9 @@ class BiomarkersController extends AppController {
 		
 		if ($sort == "sort") {
 			$order = (($ad == "ascending") ? "ASC":"DESC");
-			$this->set('biomarkers', $this->Biomarker->findAll(null,null,"{$key} {$order}"));
+			$this->set('biomarkers', $this->Biomarker->findAll(null,null,"{$key} {$order}",null,1,2));
 		} else {
-			$this->set('biomarkers', $this->Biomarker->findAll());
+			$this->set('biomarkers', $this->Biomarker->findAll(null,null,null,null,1,2));
 		}
 				
 		// Get a list of all the biomarkers for the ajax search
@@ -53,10 +53,7 @@ class BiomarkersController extends AppController {
 			'recursive'  => 1
 			)
 		);
-		//$this->Biomarker->id = $id;
-		//$this->set('biomarker', $this->Biomarker->read());
 		$this->set('biomarker',$biomarker);
-		
 	}
 	
 	function savefield() {
