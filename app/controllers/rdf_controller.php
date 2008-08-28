@@ -14,7 +14,9 @@ class RdfController extends AppController {
 			'BiomarkerStudyDataResource',
 			'OrganDataResource',
 			'BiomarkerResource',
-			'Rdf'
+			'Rdf',
+			'Pi',
+			'Site',
 	);
 	
 	function index() {
@@ -23,6 +25,8 @@ class RdfController extends AppController {
 			."<li><a href=\"/".PROJROOT."/rdf/biomarkerorgans\">biomarkerorgans</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/studies\">studies</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/publications\">publications</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdf/pis\">principal investigators</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdf/sites\">sites</a></li>"
 			."</ul> to your query");
 	}
 	
@@ -198,6 +202,14 @@ class RdfController extends AppController {
 					echo "    <bmdb:externalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
 				}
 			} 
+			// Sites 
+			$sites = $this->Study->getSitesFor($s['Study']['id']);
+			if (count($sites) > 0) {
+				foreach ($sites as $site) {
+					$site_id = $site['sites_studies']['site_id'];
+					echo "    <bmdb:participatingSite rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/rdf/sites/{$site_id}\"/>\r\n";
+				}
+			}
 			echo "  </bmdb:Study>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
@@ -224,6 +236,50 @@ class RdfController extends AppController {
 		exit();
 	}
 	
+	function pis() {
+		header("content-type:application/rdf+xml; charset=utf-8");
+		$this->printRdfStart();
+		$results = $this->Pi->getemall();
+
+		foreach ($results as $p) {
+			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/rdf/pis/{$p['pis']['site_id']}";
+	
+			// Basics
+			echo "  <bmdb:PI rdf:about=\"{$aboutURL}\">\r\n";
+			echo "    <bmdb:Name>".$this->escapeEntities($p['pis']['name'])."</bmdb:Name>\r\n";
+			echo "    <bmdb:Title>{$p['pis']['title']}</bmdb:Title>\r\n";
+			echo "    <bmdb:Specialty>{$p['pis']['specialty']}</bmdb:Specialty>\r\n";
+			echo "    <bmdb:AddressLine1>{$p['pis']['addressLine1']}</bmdb:AddressLine1>\r\n";
+			echo "    <bmdb:AddressLine2>{$p['pis']['addressLine2']}</bmdb:AddressLine2>\r\n";
+			echo "    <bmdb:AddressLine3>{$p['pis']['addressLine3']}</bmdb:AddressLine3>\r\n";
+			echo "    <bmdb:Telephone>{$p['pis']['telephone']}</bmdb:Telephone>\r\n";
+			echo "    <bmdb:Fax>{$p['pis']['fax']}</bmdb:Fax>\r\n";
+			echo "    <bmdb:Email>{$p['pis']['email']}</bmdb:Email>\r\n";
+			echo "    <bmdb:belongsToSite rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/rdf/sites/{$p['pis']['site_id']}\"/>\r\n";
+			echo "  </bmdb:PI>\r\n";
+		}/* end foreach */
+		$this->printRdfEnd();
+		exit();
+	}
+	
+	function sites() {
+		header("content-type:application/rdf+xml; charset=utf-8");
+		$this->printRdfStart();
+		$results = $this->Site->getemall();
+
+		foreach ($results as $s) {
+			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/rdf/sites/{$s['sites']['site_id']}";
+	
+			// Basics
+			echo "  <bmdb:Site rdf:about=\"{$aboutURL}\">\r\n";
+			echo "    <bmdb:Name>".$this->escapeEntities($s['sites']['name'])."</bmdb:Name>\r\n";
+			echo "    <bmdb:SiteId>{$s['sites']['site_id']}</bmdb:SiteId>\r\n";
+			echo "    <bmdb:hasPrincipalInvestigator rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/pis/{$s['sites']['site_id']}\"/>\r\n";
+			echo "  </bmdb:Site>\r\n";
+		}/* end foreach */
+		$this->printRdfEnd();
+		exit();
+	}
 	private function escapeEntities($str) {
 		return str_replace("<","&lt;",
 			str_replace(">","&gt;",

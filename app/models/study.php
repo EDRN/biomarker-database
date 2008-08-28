@@ -25,5 +25,10 @@
 		);
 	
 		var $actsAs = 'ExtendAssociations';
+		
+		function getSitesFor($id) {
+			$q = "SELECT `site_id` FROM `sites_studies` WHERE `study_id`={$id} ";
+			return($this->query($q));
+		}
 	}
 ?>
