@@ -17,6 +17,7 @@ class RdfController extends AppController {
 			'Rdf',
 			'Pi',
 			'Site',
+			'Resource',
 	);
 	
 	function index() {
@@ -27,6 +28,7 @@ class RdfController extends AppController {
 			."<li><a href=\"/".PROJROOT."/rdf/publications\">publications</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/pis\">principal investigators</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdf/sites\">sites</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdf/resources\">resources</a></li>"
 			."</ul> to your query");
 	}
 	
@@ -87,14 +89,9 @@ class RdfController extends AppController {
 	function biomarkerorgans() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
-		$biomarkerorgandatas = $this->OrganData->findAll();
-		foreach ($biomarkerorgandatas as $b) {
-			$bod = $this->OrganData->find('first',
-				array(
-					'conditions' => array('Biomarker.id' => $b['OrganData']['id']),
-					'recursive'  => 2
-				)
-			);
+		$biomarkerorgandatas = $this->OrganData->findAll(null,null,null,null,1,2);
+		foreach ($biomarkerorgandatas as $bod) {
+			
 			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}";
 			
 			// Basics
@@ -107,6 +104,7 @@ class RdfController extends AppController {
 			echo "    <bmdb:SensitivityComment>".$this->escapeEntities($bod['OrganData']['sensitivity_comment'])."</bmdb:SensitivityComment>\r\n";
 			echo "    <bmdb:SpecificityMin>{$bod['OrganData']['specificity_min']}</bmdb:SpecificityMin>\r\n";
 			echo "    <bmdb:SpecificityMax>{$bod['OrganData']['specificity_max']}</bmdb:SpecificityMax>\r\n";
+			
 			echo "    <bmdb:SpecificityComment>".$this->escapeEntities($bod['OrganData']['specificity_comment'])."</bmdb:SpecificityComment>\r\n";
 			echo "    <bmdb:NPVMin>{$bod['OrganData']['npv_min']}</bmdb:NPVMin>\r\n";
 			echo "    <bmdb:NPVMax>{$bod['OrganData']['npv_max']}</bmdb:NPVMax>\r\n";
@@ -116,7 +114,6 @@ class RdfController extends AppController {
 			echo "    <bmdb:PPVComment>".$this->escapeEntities($bod['OrganData']['ppv_comment'])."</bmdb:PPVComment>\r\n";
 			echo "    <bmdb:Phase>{$bod['OrganData']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:QAState>{$bod['OrganData']['qastate']}</bmdb:QAState>\r\n";
-		
 		
 			// Studies
 			if (count($bod['StudyData']) > 0) {
@@ -168,7 +165,7 @@ class RdfController extends AppController {
 		$this->printRdfEnd();
 		exit();
 	}
-
+	
 	function studies() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
@@ -235,6 +232,21 @@ class RdfController extends AppController {
 		$this->printRdfEnd();
 		exit();
 	}
+
+	function resources() {
+		header("content-type:application/rdf+xml; charset=utf-8");
+		$this->printRdfStart();
+		$results = $this->Resource->getemall();
+		
+		foreach ($results as $url=>$desc) {
+			echo "  <bmdb:ExternalResource rdf:about=\"http://{$url}\">\r\n";
+			echo "    <bmdb:URI>http://{$url}</bmdb:URI>\r\n";
+			echo "    <bmdb:Description>{$desc}</bmdb:Description>\r\n";
+			echo "  </bmdb:ExternalResource>\r\n";
+		}
+		$this->printRdfEnd();
+		exit();
+	}
 	
 	function pis() {
 		header("content-type:application/rdf+xml; charset=utf-8");
@@ -281,15 +293,37 @@ class RdfController extends AppController {
 		exit();
 	}
 	private function escapeEntities($str) {
-		return str_replace("<","&lt;",
-			str_replace(">","&gt;",
-				str_replace("\"","&quot;",
-					str_replace("'","&apos;",
-						str_replace("&","&amp;",$str)
-					)
-				)
-			)
-		);
+		
+		/* Multiple characters */
+		$source = str_replace("ďż˝", "&quot;",  $str);
+		$source = str_replace("â„˘", "&trade;", $source);
+		$source = str_replace("\'",  "&apos;",  $source);
+		$source = str_replace("â€™", "&apos",   $source);
+		
+		
+		/* Single characters */
+		$source = str_replace("’", "&apos;",   $source);
+		$source = str_replace("´", "&apos;",   $source);
+		$source = str_replace("‘", "&apos;",   $source);
+		$source = str_replace("'", "&apos;",   $source);
+		$source = str_replace("™", "&trade;",  $source);
+		$source = str_replace("—", "&minus;",  $source);
+		$source = str_replace("–", "&minus;",  $source);
+		$source = str_replace("“", "&quot;",   $source);
+		$source = str_replace("”", "&quot;",   $source);
+		$source = str_replace("®", "&reg;",    $source);
+		$source = str_replace("†", "",  $source);
+		$source = str_replace("·", "-", $source);
+		$source = str_replace("•", "-", $source);
+		
+		
+		$source = str_replace("<",  "&lt;",   $source);
+		$source = str_replace(">",  "&gt;",   $source);
+		$source = str_replace("\"", "&quot;", $source);
+		$source = str_replace("'"," &apos;",  $source);
+		$source = str_replace("&"," &amp;",   $source);
+		
+		return $source;
 	}
 	
 	private function printRdfStart() {
