@@ -180,6 +180,9 @@ class RdfController extends AppController {
 			echo "    <bmdb:FHCRC_ID>{$s['Study']['FHCRC_ID']}</bmdb:FHCRC_ID>\r\n";
 			echo "    <bmdb:DMCC_ID>{$s['Study']['DMCC_ID']}</bmdb:DMCC_ID>\r\n";
 			echo "    <bmdb:StudyAbstract>".$this->escapeEntities($s['Study']['studyAbstract'])."</bmdb:StudyAbstract>\r\n";
+			echo "    <bmdb:StudyObjective>".$this->escapeEntities($s['Study']['studyObjective'])."</bmdb:StudyObjective>\r\n";
+			echo "    <bmdb:StudySpecificAims>".$this->escapeEntities($s['Study']['studySpecificAims'])."</bmdb:StudySpecificAims>\r\n";
+			echo "    <bmdb:StudyResultsOutcome>".$this->escapeEntities($s['Study']['studyResultsOutcome'])."</bmdb:StudyResultsOutcome>\r\n";
 			echo "    <bmdb:BiomarkerPopulationCharacteristics>{$s['Study']['bioPopChar']}</bmdb:BiomarkerPopulationCharacteristics>\r\n";
 			echo "    <bmdb:BPCDescription>".$this->escapeEntities($s['Study']['BPCDescription'])."</bmdb:BPCDescription>\r\n";
 			echo "    <bmdb:Design>{$s['Study']['design']}</bmdb:Design>\r\n";

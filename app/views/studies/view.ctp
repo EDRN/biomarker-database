@@ -83,10 +83,42 @@
 
 				<td><span id="designdesc" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:designDescription"><?php echo printor($study['Study']['designDescription'],'click to edit');?></span></td>
 			</tr>
+			<?php if($study['Study']['isEDRN'] == 1):?>
 			<tr>
 				<td class="label">Abstract:</td>
-				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="description" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:studyAbstract"><?php echo printor($study['Study']['studyAbstract'],'click to edit');?></span></td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyAbstract" class=""><?php echo printor($study['Study']['studyAbstract'],'<em>No Data Available</em>');?></span></td>
 			</tr>
+			<tr>
+				<td class="label">Objective:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyObjective" class=""><?php echo printor($study['Study']['studyObjective'],'<em>No Data Available</em>');?></span></td>
+			</tr>
+			<tr>
+				<td class="label">Specific Aims:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studySpecificAims" class=""><?php echo printor($study['Study']['studySpecificAims'],'<em>No Data Available</em>');?></span></td>
+			</tr>
+			<tr>
+				<td class="label">Results Outcome:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyResultsOutcome" class=""><?php echo printor($study['Study']['studyResultsOutcome'],'<em>No Data Available</em>');?></span></td>
+			</tr>
+			<?php endif; /* isEDRN==1 */?>
+			<?php if ($study['Study']['isEDRN'] != 1):?>
+			<tr>
+				<td class="label">Abstract:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyAbstract" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:studyAbstract"><?php echo printor($study['Study']['studyAbstract'],'click to edit');?></span></td>
+			</tr>
+			<tr>
+				<td class="label">Objective:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyObjective" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:studyObjective"><?php echo printor($study['Study']['studyObjective'],'click to edit');?></span></td>
+			</tr>
+			<tr>
+				<td class="label">Specific Aims:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studySpecificAims" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:studySpecificAims"><?php echo printor($study['Study']['studySpecificAims'],'click to edit');?></span></td>
+			</tr>
+			<tr>
+				<td class="label">Results Outcome:</td>
+				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyResultsOutcome" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:studyResultsOutcome"><?php echo printor($study['Study']['studyResultsOutcome'],'click to edit');?></span></td>
+			</tr>
+			<?php endif; /* isEDRN !=1 */?>
 		</table>
 		
 </div><!-- end content -->
