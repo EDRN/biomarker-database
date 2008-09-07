@@ -183,6 +183,7 @@ class RdfController extends AppController {
 			echo "    <bmdb:StudyObjective>".$this->escapeEntities($s['Study']['studyObjective'])."</bmdb:StudyObjective>\r\n";
 			echo "    <bmdb:StudySpecificAims>".$this->escapeEntities($s['Study']['studySpecificAims'])."</bmdb:StudySpecificAims>\r\n";
 			echo "    <bmdb:StudyResultsOutcome>".$this->escapeEntities($s['Study']['studyResultsOutcome'])."</bmdb:StudyResultsOutcome>\r\n";
+			echo "    <bmdb:CollaborativeGroups>".$this->escapeEntities($s['Study']['collaborativeGroups'])."</bmdb:CollaborativeGroups>\r\n";
 			echo "    <bmdb:BiomarkerPopulationCharacteristics>{$s['Study']['bioPopChar']}</bmdb:BiomarkerPopulationCharacteristics>\r\n";
 			echo "    <bmdb:BPCDescription>".$this->escapeEntities($s['Study']['BPCDescription'])."</bmdb:BPCDescription>\r\n";
 			echo "    <bmdb:Design>{$s['Study']['design']}</bmdb:Design>\r\n";
