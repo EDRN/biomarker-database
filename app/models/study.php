@@ -38,9 +38,12 @@
 			foreach ($res as $r) {
 				$site_ids[] = $r['sites_studies']['site_id'];
 			}
-			
-			$q = "SELECT * FROM `sites`	WHERE `id` IN (".implode(",",$site_ids).")";
-			return ($this->query($q));
+			if (count($site_ids) > 0) {
+				$q = "SELECT * FROM `sites`	WHERE `id` IN (".implode(",",$site_ids).")";
+				return ($this->query($q));
+			} else {
+				return array();
+			}
 		}
 	}
 ?>
