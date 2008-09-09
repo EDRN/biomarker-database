@@ -61,13 +61,13 @@
 
 <table id="elements" cellspacing="0" cellpadding="0">
   <tr>
-    <th>Title (sort:
+    <th>Title <br/>(sort:
     	<a href="/<?php echo PROJROOT;?>/studies/index/sort/title/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/title/descending">down</a>)</th>
-    <th style="width:160px;">DMCC ID (sort:
+    <th style="width:160px;">EDRN Study ID <br/>(sort:
     	<a href="/<?php echo PROJROOT;?>/studies/index/sort/FHCRC_ID/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/FHCRC_ID/descending">down</a>)</th>
-    <th style="width:125px;">Status (sort:
+    <th style="width:125px;">Status <br/>(sort:
     	<a href="/<?php echo PROJROOT;?>/studies/index/sort/DMCC_ID/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/DMCC_ID/descending">down</a>)</th>
-    <th>Abstract Clip</th>
+    <th style="vertical-align:top;">Abstract Clip</th>
   </tr>
   <?php $count = 0;?>
   <?php foreach ($studies as $study): ?>
