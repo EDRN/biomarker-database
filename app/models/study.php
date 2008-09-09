@@ -39,7 +39,7 @@
 				$site_ids[] = $r['sites_studies']['site_id'];
 			}
 			if (count($site_ids) > 0) {
-				$q = "SELECT * FROM `sites`	WHERE `id` IN (".implode(",",$site_ids).")";
+				$q = "SELECT * FROM `sites`	WHERE `site_id` IN (".implode(",",$site_ids).")";
 				return ($this->query($q));
 			} else {
 				return array();
