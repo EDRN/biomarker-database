@@ -41,6 +41,7 @@ class StudiesController extends AppController {
 			)
 		);
 		$this->set('study',$study);
+		$this->set('sites',$this->Study->getExtendedSiteDetailsFor($study['Study']['FHCRC_ID']));
 	}
 	
 	function savefield() {

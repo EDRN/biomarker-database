@@ -100,6 +100,16 @@
 				<td class="label">Results Outcome:</td>
 				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyResultsOutcome" class=""><?php echo printor($study['Study']['studyResultsOutcome'],'<em>No Data Available</em>');?></span></td>
 			</tr>
+			<tr>
+			    <td class="label">Participating Sites:</td>
+			    <td style="padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;">
+			    	<ul>
+			    	<?php foreach ($sites as $site) : ?>
+			    	  <li style="color:#000;"><?php echo "{$site['sites']['name']} ({$site['sites']['site_id']})"?></li>
+			    	<?php endforeach;?>
+			    	</ul>
+			    </td>
+			</tr>
 			<?php endif; /* isEDRN==1 */?>
 			<?php if ($study['Study']['isEDRN'] != 1):?>
 			<tr>
@@ -118,6 +128,7 @@
 				<td class="label">Results Outcome:</td>
 				<td style="text-align:justify;padding-left:18px;padding-right:18px;font-family:times,serif;font-size:110%;"><span id="studyResultsOutcome" class="editable textarea object:study id:<?php echo $study['Study']['id']?> attr:studyResultsOutcome"><?php echo printor($study['Study']['studyResultsOutcome'],'click to edit');?></span></td>
 			</tr>
+			    
 			<?php endif; /* isEDRN !=1 */?>
 		</table>
 		

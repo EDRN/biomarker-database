@@ -30,5 +30,17 @@
 			$q = "SELECT `site_id` FROM `sites_studies` WHERE `study_id`={$id} ";
 			return($this->query($q));
 		}
+		
+		function getExtendedSiteDetailsFor($id) {
+			$q = "SELECT `site_id` FROM `sites_studies` WHERE `study_id`={$id} ";
+			$res = $this->query($q);
+			$site_ids = array();
+			foreach ($res as $r) {
+				$site_ids[] = $r['sites_studies']['site_id'];
+			}
+			
+			$q = "SELECT * FROM `sites`	WHERE `id` IN (".implode(",",$site_ids).")";
+			return ($this->query($q));
+		}
 	}
 ?>
