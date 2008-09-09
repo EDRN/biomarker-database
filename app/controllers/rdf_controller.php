@@ -204,7 +204,7 @@ class RdfController extends AppController {
 				}
 			} 
 			// Sites 
-			$sites = $this->Study->getSitesFor($s['Study']['id']);
+			$sites = $this->Study->getSitesFor($s['Study']['FHCRC_ID']);
 			if (count($sites) > 0) {
 				foreach ($sites as $site) {
 					$site_id = $site['sites_studies']['site_id'];
