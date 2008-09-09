@@ -65,8 +65,7 @@
     	<a href="/<?php echo PROJROOT;?>/studies/index/sort/title/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/title/descending">down</a>)</th>
     <th style="width:160px;">EDRN Study ID <br/>(sort:
     	<a href="/<?php echo PROJROOT;?>/studies/index/sort/FHCRC_ID/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/FHCRC_ID/descending">down</a>)</th>
-    <th style="width:125px;">Status <br/>(sort:
-    	<a href="/<?php echo PROJROOT;?>/studies/index/sort/DMCC_ID/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/DMCC_ID/descending">down</a>)</th>
+    <th style="width:125px;vertical-align:top;">Organ Group(s) <br/></th>
     <th style="vertical-align:top;">Abstract Clip</th>
   </tr>
   <?php $count = 0;?>
@@ -90,14 +89,14 @@
   <tr>
     <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}");?> </a></td>
     <td style="vertical-align:top;text-align:center;"><?php echo $study['Study']['FHCRC_ID']?></td>
-    <td style="vertical-align:top;"><?php echo (($study['Study']['DMCC_ID'] == "Unregistered") ? "Unregistered" : "Registered");?></td>
+    <td style="vertical-align:top;"><?php echo $study['Study']['collaborativeGroups'];?></td>
     <td><?php echo substr($valueToDisplay,0,300);?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
     <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}");?> </a></td>
     <td style="vertical-align:top;text-align:center;"><?php echo $study['Study']['FHCRC_ID']?></td>
-    <td style="vertical-align:top;"><?php echo (($study['Study']['DMCC_ID'] == "Unregistered") ? "Unregistered" : "Registered");?></td>
+    <td style="vertical-align:top;"><?php echo $study['Study']['collaborativeGroups'];?></td>
     <td><?php echo substr($valueToDisplay,0,300);?></td>
   </tr>
   <?php } ?>
