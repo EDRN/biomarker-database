@@ -1,7 +1,8 @@
 <?php
 class StudiesController extends AppController {
 	
-	var $helpers = array('Html','Ajax','Javascript');
+	var $helpers = array('Html','Ajax','Javascript','Pagination');
+	var $components = array('Pagination');
 	var $uses = 
 		array(
 			'Study',
@@ -12,14 +13,15 @@ class StudiesController extends AppController {
 	/******************************************************************
 	 * BROWSE (INDEX)
 	 ******************************************************************/
-	function index($sort='',$key='',$ad='') {
+	function index() {
 		$this->checkSession("/studies");
-		if ($sort == "sort") {
-			$order = (($ad == "ascending") ? "ASC":"DESC");
-			$this->set('studies', $this->Study->findAll(null,null,"{$key} {$order}"));
-		} else {
-			$this->set('studies', $this->Study->findAll());
-		}
+		
+		$criteria = null;
+		$this->Pagination->resultsPerPage = array();
+		$this->Pagination->show = 15;
+		list($order,$limit,$page) = $this->Pagination->init($criteria);
+		$this->set('studies', $this->Study->findAll($criteria,NULL,$order,$limit,$page));
+		
 		
 		// Get a list of all the studies for the ajax search
 		$studies = $this->Study->find("all",array('title','id'));

@@ -46,5 +46,7 @@ class LdapUser extends AppModel
 			return false;
 		}
 	}
+	
+
 }
 ?>

@@ -52,52 +52,40 @@
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
 &nbsp;&nbsp;Browse the directory listing, or search by Title using the box on the right.
 </div>
-<!--
-<div class="navigation">
-	<a class="page current" href="#">1</a><a class="page " href="#">2</a><a class="page " href="#">3</a>
-	<span>Note... these page navigation buttons do not work.</span>
-</div>
--->
+
 <br/>
 
-<table id="elements" cellspacing="0" cellpadding="0">
-  <tr>
-    <th>Name (sort:
-    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/name/descending">down</a>)</th>
-    <th>QA State (sort:
-    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/qastate/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/qastate/descending">down</a>)</th>
-    <th>Type (sort: 
-    	<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/type/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/biomarkers/index/sort/type/descending">down</a>)</th>
-    <th>Associated Organs</th>
-  </tr>
-  <?php $count = 0;?>
-  <?php foreach ($biomarkers as $biomarker): ?>
-  <?php  	
-	// Build 'organsForBiomarker' list
+<? echo $this->renderElement('pagination'); // Render the pagination element ?> 
+<table id="biomarkerelements" cellspacing="0" cellpadding="0">
+<?php
+
+$pagination->setPaging($paging); // Initialize the pagination variables
+$th = array (
+            $pagination->sortBy('Name'),
+            $pagination->sortBy('qastate','QA State'),
+            $pagination->sortBy('Type'),
+			'Associated Organs'
+); // Generate the pagination sort links
+echo $html->tableHeaders($th); // Create the table headers with sort links if desired
+foreach ($biomarkers as $biomarker) {
+  	// Build 'organsForBiomarker' list
 	$odatas = array();
 	foreach ($biomarker['OrganData'] as $od) {
 		$odatas[] = "<a href=\"/".PROJROOT."/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$od['id']}\">{$od['Organ']['name']}</a>"; 
 	}
 	$organsForBiomarker = implode(", ",$odatas);
-	if ($organsForBiomarker == "") { $organsForBiomarker = "<em>Unknown</em>";}
-  ?>
-  <?php if ($count++ % 2 == 0) {?>
-  <tr>
-    <td><?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
-    <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
-    <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
-    <td><?php echo $organsForBiomarker?></td>
-  </tr>
-  <?php } else { ?>
-  <tr style="background-color:#f4f4f4;">
-    <td><?php echo $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}");?> </a></td>
-    <td><?php printor($biomarker['Biomarker']['qastate'],'Unknown');?></td>
-    <td><?php printor($biomarker['Biomarker']['type'],'Unknown')?></td>
-    <td><?php echo $organsForBiomarker?></td>
-  </tr>
-  <?php } ?>
-  <?php endforeach;?>
-</table>
+	if ($organsForBiomarker == "") { $organsForBiomarker = "<em style=\"color:#888;\">Unknown</em>";}
+    $tr = array (
+        $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}"),
+        (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate']),
+        (($biomarker['Biomarker']['type'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['type']),
+		$organsForBiomarker
+        );
+    echo $html->tableCells($tr,array('class'=>'altRow'),array('class'=>'evenRow'),true);
+}
+?>
+</table> 
+
 <p>&nbsp;</p>
 <p style="border-bottom:solid 2px #666;">&nbsp;</p>
 

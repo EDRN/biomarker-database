@@ -1,11 +1,13 @@
 <?php
 class BiomarkersController extends AppController {
 	
-	var $helpers = array('Html','Ajax','Javascript');
+	var $name    = "Biomarkers";
+	var $helpers = array('Html','Ajax','Javascript','Pagination');
+	var $components = array('Pagination');
 	var $uses = 
 		array(
-			'LdapUser',
 			'Biomarker',
+			'LdapUser',
 			'Organ',
 			'OrganData',
 			'Study',
@@ -21,17 +23,16 @@ class BiomarkersController extends AppController {
 	/******************************************************************
 	 * BROWSE (INDEX)
 	 ******************************************************************/
-	function index($sort='',$key='',$ad='') {
+	function index() {
 		$this->checkSession('/biomarkers');
 		
+		$criteria = null;
+		$this->Pagination->resultsPerPage = array();
+		$this->Pagination->show = 15;
+		list($order,$limit,$page) = $this->Pagination->init($criteria);
 		
+		$this->set('biomarkers', $this->Biomarker->findAll($criteria,NULL,$order,$limit,$page,2));
 		
-		if ($sort == "sort") {
-			$order = (($ad == "ascending") ? "ASC":"DESC");
-			$this->set('biomarkers', $this->Biomarker->findAll(null,null,"{$key} {$order}",null,1,2));
-		} else {
-			$this->set('biomarkers', $this->Biomarker->findAll(null,null,null,null,1,2));
-		}
 				
 		// Get a list of all the biomarkers for the ajax search
 		$biomarkers = $this->Biomarker->find("all",array('title','id'));

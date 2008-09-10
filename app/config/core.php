@@ -30,7 +30,7 @@
 /**
  * Added by ahart on 29.07.2008 to support installations in subdirectories
  */
-define('PROJROOT','bmdb');
+define('PROJROOT','edrn_bmdb-0.5.0');
 
 /**
  * CakePHP Debug Level:

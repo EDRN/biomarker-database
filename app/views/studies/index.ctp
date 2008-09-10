@@ -51,28 +51,24 @@
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
 &nbsp;&nbsp;Browse the directory listing, or search by Title using the box on the right.
 </div>
-<!--
-<div class="navigation">
-	<a class="page current" href="#">1</a><a class="page " href="#">2</a><a class="page " href="#">3</a>
-	<span>Note... these page navigation buttons do not work.</span>
-</div>
--->
+
 <br/>
 
-<table id="elements" cellspacing="0" cellpadding="0">
-  <tr>
-    <th>Title <br/>(sort:
-    	<a href="/<?php echo PROJROOT;?>/studies/index/sort/title/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/title/descending">down</a>)</th>
-    <th style="width:160px;">EDRN Study ID <br/>(sort:
-    	<a href="/<?php echo PROJROOT;?>/studies/index/sort/FHCRC_ID/ascending">up</a>|<a href="/<?php echo PROJROOT;?>/studies/index/sort/FHCRC_ID/descending">down</a>)</th>
-    <th style="width:125px;vertical-align:top;">Organ Group(s) <br/></th>
-    <th style="vertical-align:top;">Abstract Clip</th>
-  </tr>
-  <?php $count = 0;?>
-  <?php foreach ($studies as $study): ?>
-  <?php if ($count++ % 2 == 0) {?>
-  <?php 
-  	$valueToDisplay = (($study['Study']['studyAbstract'] != '') 
+<? echo $this->renderElement('pagination'); // Render the pagination element ?> 
+<table id="studyelements" cellspacing="0" cellpadding="0">
+<?php
+$pagination->setPaging($paging); // Initialize the pagination variables
+$th = array (
+            $pagination->sortBy('Title'),
+            $pagination->sortBy('FHCRC_ID','EDRN Study ID'),
+            $pagination->sortBy('collaborativeGroups','Organ Group'),
+			'Abstract Clip'
+); // Generate the pagination sort links
+echo $html->tableHeaders($th); // Create the table headers with sort links if desired
+
+
+  foreach ($studies as $study) {
+	$valueToDisplay = (($study['Study']['studyAbstract'] != '') 
 		? $study['Study']['studyAbstract']
 		: (($study['Study']['studyObjective'] != '')
 			? $study['Study']['studyObjective']
@@ -85,23 +81,16 @@
 				)
 			)
 		);
-  ?>
-  <tr>
-    <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}");?> </a></td>
-    <td style="vertical-align:top;text-align:center;"><?php echo $study['Study']['FHCRC_ID']?></td>
-    <td style="vertical-align:top;"><?php echo $study['Study']['collaborativeGroups'];?></td>
-    <td><?php echo substr($valueToDisplay,0,300);?></td>
-  </tr>
-  <?php } else { ?>
-  <tr style="background-color:#f4f4f4;">
-    <td style="vertical-align:top;"><?php echo $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}");?> </a></td>
-    <td style="vertical-align:top;text-align:center;"><?php echo $study['Study']['FHCRC_ID']?></td>
-    <td style="vertical-align:top;"><?php echo $study['Study']['collaborativeGroups'];?></td>
-    <td><?php echo substr($valueToDisplay,0,300);?></td>
-  </tr>
-  <?php } ?>
-  <?php endforeach;?>
-</table>
+    $tr = array (
+        $html->link($study['Study']['title'],"/studies/view/{$study['Study']['id']}"),
+        $study['Study']['FHCRC_ID'],
+        $study['Study']['collaborativeGroups'],
+		substr($valueToDisplay,0,300)
+        );
+    echo $html->tableCells($tr,array('class'=>'altRow'),array('class'=>'evenRow'),true);
+  }
+?>
+</table> 
 <script>
 // Activate Study "Search" Autocomplete
   new Autocompleter.Local(
