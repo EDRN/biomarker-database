@@ -25,7 +25,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarker['Biomarker']['name']?> </a> : 
+		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?> </a> : 
 		<span>Studies</span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
@@ -52,7 +52,7 @@
 <div id="outer_wrapper">
 <div id="main_section">
 <div id="content">
-<h2><?php echo $biomarker['Biomarker']['name']?></h2>
+<h2><?php echo $biomarkerName?></h2>
 		<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
 		<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
 			<?php echo $biomarker['Biomarker']['modified']?></h5>

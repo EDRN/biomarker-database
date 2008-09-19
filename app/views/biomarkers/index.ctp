@@ -75,8 +75,9 @@ foreach ($biomarkers as $biomarker) {
 	}
 	$organsForBiomarker = implode(", ",$odatas);
 	if ($organsForBiomarker == "") { $organsForBiomarker = "<em style=\"color:#888;\">Unknown</em>";}
+	$biomarkerName = Biomarker::getDefaultName($biomarker);
     $tr = array (
-        $html->link($biomarker['Biomarker']['name'],"/biomarkers/view/{$biomarker['Biomarker']['id']}"),
+        $html->link($biomarkerName,"/biomarkers/view/{$biomarker['Biomarker']['id']}"),
         (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate']),
         (($biomarker['Biomarker']['type'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['type']),
 		$organsForBiomarker
