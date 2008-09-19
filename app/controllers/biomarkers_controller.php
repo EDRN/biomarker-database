@@ -7,6 +7,7 @@ class BiomarkersController extends AppController {
 	var $uses = 
 		array(
 			'Biomarker',
+			'BiomarkerName',
 			'LdapUser',
 			'Organ',
 			'OrganData',
@@ -35,17 +36,19 @@ class BiomarkersController extends AppController {
 		
 				
 		// Get a list of all the biomarkers for the ajax search
-		$biomarkers = $this->Biomarker->find("all",array('title','id'));
+		$names = $this->BiomarkerName->find("all",array('name','biomarker_id'));
 		$biomarkerarr = array();
-		foreach ($biomarkers as $biomarker) {
-			$biomarkerarr[] = "{$biomarker['Biomarker']['name']}|{$biomarker['Biomarker']['id']}";
+		foreach ($names as $name) {
+			$biomarkerarr[] = "{$name['BiomarkerName']['name']}|{$name['BiomarkerName']['biomarker_id']}";
 		}
+		$s = '"'.implode("\",\"",$biomarkerarr).'"';
 		$this->set('biomarkerstring','"'.implode("\",\"",$biomarkerarr).'"');
 	}
 	
 	/******************************************************************
 	 * BASICS
 	 ******************************************************************/
+	
 	function view($id = null) {
 		$this->checkSession("/biomarkers/view/{$id}");
 		
@@ -55,6 +58,7 @@ class BiomarkersController extends AppController {
 			)
 		);
 		$this->set('biomarker',$biomarker);
+		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 	}
 	
 	function savefield() {
@@ -84,6 +88,52 @@ class BiomarkersController extends AppController {
 		die(); //prevent layout from being sent >:l
 	}
 	
+	function setPrimaryName($alias_id) {
+		$this->checkSession("/biomarkers");
+		$alias = $this->BiomarkerName->find($alias_id);
+		
+		// Load the requested alias
+		$this->BiomarkerName->id = $alias_id;
+		$alias = $this->BiomarkerName->find('first',array('conditions' => array('BiomarkerName.id' => $alias_id),'recursive'=>2));
+
+		foreach ($alias['Biomarker']['BiomarkerName'] as $a) {
+			if ($a['isPrimary'] == 1) {
+				$this->BiomarkerName->id = $a['id'];
+				$this->BiomarkerName->saveField('isPrimary',0);
+			}
+			if ($a['id'] == $alias['BiomarkerName']['id']) {
+				$this->BiomarkerName->id = $a['id'];
+				$this->BiomarkerName->saveField('isPrimary',1);
+			}
+		}
+
+		$this->redirect("/biomarkers/view/{$alias['Biomarker']['id']}");
+	}
+	
+	function addAlias() {
+		$this->checkSession("/biomarkers");
+		$data =& $this->params['form'];
+		$this->BiomarkerName->create(
+			array('biomarker_id'=>$data['biomarker_id'],
+					      'name'=>$data['altname']));
+		$this->BiomarkerName->save();
+		$this->redirect("/biomarkers/view/{$data['biomarker_id']}");
+	}
+	
+	function removeAlias($alias_id) {
+		$this->checkSession("/biomarkers");
+		$alias = $this->BiomarkerName->find('first',array('conditions' => array('BiomarkerName.id' => $alias_id),'recursive'=>2));
+		if ($alias['BiomarkerName']['isPrimary'] == 1) {
+			// Do Nothing... Can not delete the primary name
+		} else {
+			// Delete the alias
+			$biomarker_id = $alias['Biomarker']['id'];
+			$this->BiomarkerName->id = $alias['BiomarkerName']['id'];
+			$this->BiomarkerName->delete();
+			$this->redirect("/biomarkers/view/{$biomarker_id}");
+		}
+	}
+	
 	
 	/******************************************************************
 	 * ORGANS
@@ -97,6 +147,7 @@ class BiomarkersController extends AppController {
 			)
 		);
 		$this->set('biomarker',$biomarker);
+		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 		
 		// Get a list of all the Organs
 		$this->set('organ',$this->Organ->FindAll());
@@ -236,6 +287,7 @@ class BiomarkersController extends AppController {
 			)
 		);
 		$this->set('biomarker',$biomarker);
+		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 		
 		// Get a list of all the studies
 		$studies = $this->Study->find("all",array('title','id'));
@@ -304,6 +356,7 @@ class BiomarkersController extends AppController {
 			)
 		);
 		$this->set('biomarker',$biomarker);
+		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 	}
 	
 	function addPublication() {
@@ -332,6 +385,7 @@ class BiomarkersController extends AppController {
 			)
 		);
 		$this->set('biomarker',$biomarker);
+		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 	}
 	
 	function addResource() {
@@ -369,6 +423,10 @@ class BiomarkersController extends AppController {
 				$this->Biomarker->create(array('name'=>$data['name']));
 				$this->Biomarker->save();
 				$id = $this->Biomarker->getLastInsertID();
+				
+				// Create an 'alias' and set isPrimary to 1 (true)
+				$this->BiomarkerName->create(array('biomarker_id'=>$id,'name'=>$data['name'],'isPrimary'=>1));
+				$this->BiomarkerName->save();
 
 				$this->redirect("/biomarkers/view/{$id}");
 				

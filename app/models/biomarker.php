@@ -21,6 +21,11 @@ class Biomarker extends AppModel
 			'className' => 'BiomarkerResource',
 			'foreignKey'=> 'biomarker_id',
 			'dependent' => true
+		),
+		'BiomarkerName' => array(
+			'className' => 'BiomarkerName',
+			'foreignKey'=> 'biomarker_id',
+			'dependent' => true
 		)
 	);
 	
@@ -38,6 +43,13 @@ class Biomarker extends AppModel
 		),
 	
 	);
+	
+	public static function getDefaultName($biomarker) {
+		foreach ($biomarker['BiomarkerName'] as $name) {
+			if ($name['isPrimary'] == 1) {return $name['name'];}
+		}
+		return "unknown";
+	}
 	
 	var $actsAs = 'ExtendAssociations';
 	

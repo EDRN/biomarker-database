@@ -20,7 +20,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<span><?php echo $biomarker['Biomarker']['name']?> </span>
+		<span><?php echo $biomarkerName?> </span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
 				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
@@ -48,7 +48,7 @@
 <div id="main_section">
 <div id="content">
 
-		<h2><span id="name" class="editable object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:name"><?php echo $biomarker['Biomarker']['name']?></span></h2>
+		<h2><span id="name" class="editable object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:name"><?php echo $biomarkerName?></span></h2>
 		<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
 		<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
 			<?php echo $biomarker['Biomarker']['modified']?></h5>
@@ -72,6 +72,30 @@
 			<tr>
 				<td class="label">Type:</td>
 				<td><em><span id="type" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:type opts:Gene|Protein|Genetic|Genomic|Epigenetic|Proteomic|Glycomic|Metabolomic"><?php printor($biomarker['Biomarker']['type'],'click to select')?></span></em></td>
+			</tr>
+		</table>
+		<h4>Alternative Names</h4>
+		<table>
+			<tr>
+			  <th style="text-align:left;width:50px;text-decoration:underline;">Default?</th><th style="text-align:left;text-decoration:underline;">Name</th>
+			</tr>
+			<?php foreach ($biomarker['BiomarkerName'] as $alias):?>
+			<tr>
+			  <td><input name="alias" value="<?php echo $alias['id']?>" class="alias" type="radio" <?php if($alias['isPrimary'] == 1) { echo 'checked="checked"';}?>/></td>
+			  <td><?php echo $alias['name']?>&nbsp;&nbsp;<?php if ($alias['isPrimary'] != 1) { echo '<a class="removealias" title="remove this alias" href="/'.PROJROOT."/biomarkers/removeAlias/{$alias['id']}\">x</a>";}?></td>
+			</tr>
+			<?php endforeach;?>
+			<tr>
+			  <td colspan="2" style="border-top:dotted 1px #999;padding-top:3px;">Add Alternative Name:</td>
+			</tr>
+			<tr>
+			  <td colspan="2">
+			  	<form action="/<?php echo PROJROOT?>/biomarkers/addAlias" method="POST">
+			  		<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
+			  		<input type="text" name="altname"/>&nbsp;&nbsp;
+			  		<input type="submit" value="Add"/>
+			  	</form>
+			  </td>
 			</tr>
 		</table>
 
@@ -104,6 +128,19 @@
   window.addEvent('domready', function() {
     new eip($$('.editable'), '/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
     new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
+    
+    $$('.alias').each(function(x){
+    	x.addEvent('click',function() {
+    		window.location.href = '/<?php echo PROJROOT?>/biomarkers/setPrimaryName/'+x.value;
+    	});
+    });
+    
+    $$('.removealias').each(function(x) {
+    	x.addEvent('click',function() {
+    		return confirm('Really delete this alternative name?');
+    	})
+    });
+    
   });
   
 </script>
