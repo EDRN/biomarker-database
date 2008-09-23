@@ -40,9 +40,10 @@ class RdfController extends AppController {
 		$biomarkers = $this->Biomarker->findAll();
 		foreach ($biomarkers as $b) {
 			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$b['Biomarker']['id']}";
+			$biomarkerName = Biomarker::getDefaultName($b);
 			// Basics
 			echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
-			echo "    <bmdb:Title>".$this->escapeEntities($b['Biomarker']['name'])."</bmdb:Title>\r\n";
+			echo "    <bmdb:Title>".$this->escapeEntities($biomarkerName)."</bmdb:Title>\r\n";
 			echo "    <bmdb:ShortName>".$this->escapeEntities($b['Biomarker']['shortName'])."</bmdb:ShortName>\r\n";
 			echo "    <bmdb:BiomarkerID>urn:edrn:bmdb:biomarker:{$b['Biomarker']['id']}</bmdb:BiomarkerID>\r\n";
 			echo "    <bmdb:URN>urn:edrn:bmdb:biomarker:{$b['Biomarker']['id']}</bmdb:URN>\r\n";
@@ -53,6 +54,17 @@ class RdfController extends AppController {
 			echo "    <bmdb:Phase>{$b['Biomarker']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:Security>{$b['Biomarker']['security']}</bmdb:Security>\r\n";
 			echo "    <bmdb:Type>{$b['Biomarker']['type']}</bmdb:Type>\r\n";
+			// Alternative Names
+			if (count($b['BiomarkerName']) > 0) {
+				foreach ($b['BiomarkerName'] as $alias) {
+					if ($alias['name'] != $biomarkerName) {
+						echo "    <bmdb:Alias>".$this->escapeEntities($alias['name'])."</bmdb:Alias>\r\n";
+					}
+				}
+			} else {
+				
+			}
+			
 			// Organs
 			if (count($b['OrganData']) > 0) {
 				foreach ($b['OrganData'] as $bod) {
