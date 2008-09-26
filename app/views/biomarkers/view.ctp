@@ -135,11 +135,13 @@
     	});
     });
     
-    $$('.removealias').each(function(x) {
-    	x.addEvent('click',function() {
-    		return confirm('Really delete this alternative name?');
-    	})
-    });
+    /* 
+    	$$('.removealias').each(function(x) {
+    		x.addEvent('click',function() {
+    			return confirm('Really delete this alternative name?');
+    		})
+    	});
+    */
     
   });
   
