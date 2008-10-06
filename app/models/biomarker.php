@@ -70,7 +70,7 @@ class Biomarker extends AppModel
 
 		$result = array();
 		foreach ($results as $r) {
-			$result[] = array("id"=>$r['Biomarkers']['id'],"name"=>$this->getDefaultNameById($r['Biomarkers']['id']));
+			$result[] = array("id"=>$r['biomarkers']['id'],"name"=>$this->getDefaultNameById($r['biomarkers']['id']));
 		}
 		return $result;
 	}
