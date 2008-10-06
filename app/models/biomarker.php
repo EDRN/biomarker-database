@@ -62,7 +62,7 @@ class Biomarker extends AppModel
 	
 	public function getAvailableBiomarkersForPanel($id) {
 		/* which biomarkers are NOT part of this panel */
-		$q = "SELECT `id` FROM `Biomarkers` WHERE `id` NOT IN "
+		$q = "SELECT `id` FROM `biomarkers` WHERE `id` NOT IN "
 				."(SELECT `biomarker_id` FROM `biomarkers_biomarkers` "
 					."WHERE `panel_id`='{$id}') AND `id` <> '{$id}'";
 		
