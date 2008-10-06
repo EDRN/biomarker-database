@@ -64,6 +64,7 @@ $th = array (
             $pagination->sortBy('Name'),
             $pagination->sortBy('qastate','QA State'),
             $pagination->sortBy('Type'),
+			$pagination->sortBy('isPanel','Panel'),
 			'Associated Organs'
 ); // Generate the pagination sort links
 echo $html->tableHeaders($th); // Create the table headers with sort links if desired
@@ -80,6 +81,7 @@ foreach ($biomarkers as $biomarker) {
         $html->link($biomarkerName,"/biomarkers/view/{$biomarker['Biomarker']['id']}"),
         (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate']),
         (($biomarker['Biomarker']['type'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['type']),
+		(($biomarker['Biomarker']['isPanel'] == 0) ? "No" : "Yes"),
 		$organsForBiomarker
         );
     echo $html->tableCells($tr,array('class'=>'altRow'),array('class'=>'evenRow'),true);

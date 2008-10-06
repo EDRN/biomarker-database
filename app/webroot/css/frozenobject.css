@@ -162,3 +162,29 @@ a.removealias {
 	font-size:80%;
 	color:#c44;	
 }
+
+div#panelSelection {
+	position:relative;
+	width:96%;
+	margin-top:15px;
+	margin-left:auto;
+	margin-right:auto;
+	border:solid 2px #ccc;
+	background-color:#f4f4f4;
+}
+div#panelSelection select {
+	border:solid 1px #ccc;
+	width:47%;
+	float:left;
+	margin:5px;	
+}
+div#panelSelectionButtons {
+	margin:5px;
+	width:90%;
+	text-align: center;	
+}
+div#panelSelectionButtons input[type=button],
+	div#panelSelectionButtons input[type=submit] {
+	border:solid 1px #ccc;	
+}
+
