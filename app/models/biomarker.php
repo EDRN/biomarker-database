@@ -36,7 +36,7 @@ class Biomarker extends AppModel
 		 */
 		'Publication' => array(
 			'className' => 'Publication',
-			'join_table'=> 'biomarkers_publications',
+			'joinTable'=> 'biomarkers_publications',
 			'foreignKey'=> 'biomarker_id',
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
@@ -46,26 +46,24 @@ class Biomarker extends AppModel
 		 */
 		'Panel' => array(
 			'className' => 'Biomarker',
-			'join_table'=> 'biomarkers_biomarkers',
+			'joinTable'=> 'paneldata',
 			'foreignKey'=> 'panel_id',
 			'associationForeignKey'=>'biomarker_id',
 			'unique'=>true
 		)
-	
 	);
 	
 	public function clearPanelMembers($id) {
 		/* get rid of all membership records for this panel */
-		$q = "DELETE FROM `biomarkers_biomarkers` WHERE `panel_id` = '{$id}'";
+		$q = "DELETE FROM `paneldata` WHERE `panel_id` = '{$id}'";
 		$this->query($q);
 	}
 	
 	public function getAvailableBiomarkersForPanel($id) {
 		/* which biomarkers are NOT part of this panel */
 		$q = "SELECT `id` FROM `biomarkers` WHERE `id` NOT IN "
-				."(SELECT `biomarker_id` FROM `biomarkers_biomarkers` "
+				."(SELECT `biomarker_id` FROM `paneldata` "
 					."WHERE `panel_id`='{$id}') AND `id` <> '{$id}'";
-		
 		$results = $this->query($q);
 
 		$result = array();
@@ -77,12 +75,12 @@ class Biomarker extends AppModel
 	
 	public function getPanelMembership($id) {
 		/* which panels is this biomarker a member of? */
-		$q = "SELECT `panel_id` FROM `biomarkers_biomarkers` "
+		$q = "SELECT `panel_id` FROM `paneldata` "
 			. "WHERE `biomarker_id`='{$id}'";	
 		$results = $this->query($q);
 		$result = array();
 		foreach ($results as $r) {
-			$result[] = array("id"=>$r['biomarkers_biomarkers']['panel_id'],"name"=>$this->getDefaultNameById($r['biomarkers_biomarkers']['panel_id']));
+			$result[] = array("id"=>$r['paneldata']['panel_id'],"name"=>$this->getDefaultNameById($r['paneldata']['panel_id']));
 		}
 		return $result;
 	}
@@ -93,7 +91,7 @@ class Biomarker extends AppModel
 			if ($name['isPrimary'] == 1) {return $name['name'];}
 		}
 		return "unknown";
-	}
+	}	
 	
 	public function getDefaultNameById($biomarker_id) {
 		/* same as above, only given a biomarker id */
@@ -107,8 +105,33 @@ class Biomarker extends AppModel
 		}
 	}
 	
+	/* get a listing of all biomarkers suitable for display on the biomarker browse page */
+	public function getIndex() {
+		$q = "SELECT Biomarker.id, Biomarker.qastate, Biomarker.type, Biomarker.isPanel, Names.name ".
+			"FROM biomarkers as Biomarker ".
+				"JOIN biomarker_names AS Names ON (Names.biomarker_id=Biomarker.id AND Names.isPrimary=1) ".
+					"WHERE 1";
+		return $this->query($q);
+	}
+	
+	/* get important information about the biomarker-organ data pairs for a given biomarker */
+	public function getOrganDatasFor($biomarker_id) {
+		$q = "SELECT Biomarker.id, OrganData.id, Organ.name ".
+				"FROM biomarkers as Biomarker, organ_datas as OrganData, organs as Organ ".
+					"WHERE Biomarker.id={$biomarker_id} ".
+						"AND OrganData.biomarker_id = {$biomarker_id} ".
+						"AND Organ.id = OrganData.organ_id";
+		return $this->query($q);
+	}
+	
+	public function god($biomarker_id) {
+		return ($this->OrganData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2)));
+	}
+	public function getStudyDatasFor($biomarker_id){ 
+		return ($this->BiomarkerStudyData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2)));	
+	}
+	
 	
 	var $actsAs = 'ExtendAssociations';
-	
 }
 ?>

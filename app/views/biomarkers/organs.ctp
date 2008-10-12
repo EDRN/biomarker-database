@@ -28,7 +28,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?> </a> : 
+		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></a> : 
 		<span>Organs</span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
@@ -55,7 +55,7 @@
 <div id="outer_wrapper">
 <div id="main_section">
 <div id="content">
-<h2><?php echo $biomarkerName?></h2>
+<h2><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></h2>
 		<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
 		<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
 			<?php echo $biomarker['Biomarker']['modified']?></h5>
@@ -69,8 +69,8 @@
 <!-- SET UP PAGINATION FOR ORGANDATAS -->			
 <div id="smallEditlinks">
 	<ul>
-		<?php foreach($biomarker['OrganData'] as $od):?>
-		<li class="<?php echo (($od['Organ']['id'] == $organData['Organ']['id'])? "activeLink" : "");?>"><a href="/<?php echo PROJROOT;?>/biomarkers/organs/<?php echo $biomarker['Biomarker']['id'] . "/" . $od['id']?>"><?php echo $od['Organ']['name']?></a></li>
+		<?php foreach($organdatas as $od): ?>
+		<li class="<?php echo (($od['Organ']['id'] == $organData['Organ']['id'])? "activeLink" : "");?>"><a href="/<?php echo PROJROOT;?>/biomarkers/organs/<?php echo $biomarker['Biomarker']['id'] . "/" . $od['OrganData']['id']?>"><?php echo $od['Organ']['name']?></a></li>
 		<?php endforeach;?>	
 	</ul>
 	<div class="clr"><!-- clear --></div>
@@ -80,24 +80,24 @@
 
 <h4 class="organdatablockheader" style="background-color:transparent;font-size:18px;">Associated 
 		<div class="editlink">
-			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>" style="color:#d55;">x Delete</a>
+			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>" style="color:#d55;">x Delete</a>
 		</div>
 		<?php echo $organData['Organ']['name']?> Data:
 	</h4>
 	<div class="organdatablock">
 		<div class="lefttext">
-			<span id="description" class="editable textarea object:organ_data id:<?php echo $organData['id']?> attr:description"><?php printor($organData['description'],'No Description Provided Yet... Click Here to Add.');?></span>
+			<span id="description" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:description"><?php printor($organData['OrganData']['description'],'No Description Provided Yet... Click Here to Add.');?></span>
 		</div>
 		<div class="rightcol">
 			<h4>Attributes:</h4>
 			<table>
 				<tr>
 					<td class="label">Phase:</td>
-					<td><em><span id="security" class="editablelist object:organ_data id:<?php echo $organData['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php printor($organData['phase'],'click to select');?></span></em></td>
+					<td><em><span id="security" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php printor($organData['OrganData']['phase'],'click to select');?></span></em></td>
 				</tr>
 				<tr>
 					<td class="label">QA State:</td>
-					<td><span id="qastate"><em><span id="qastate" class="editablelist object:organ_data id:<?php echo $organData['id']?> attr:qastate opts:New|Under_Review|Accepted|Rejected"><?php printor($organData['qastate'],'click to select');?></span></em></td>
+					<td><span id="qastate"><em><span id="qastate" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:qastate opts:New|Under_Review|Accepted|Rejected"><?php printor($organData['OrganData']['qastate'],'click to select');?></span></em></td>
 				</tr>
 			</table>
 		</div>
@@ -111,11 +111,11 @@
 			<table style="background-color:#fff;">
 				<tr>
 					<td class="label">Minimum:</td>
-					<td><em><span id="sensitivitymin" class="editable object:organ_data id:<?php echo $organData['id']?> attr:sensitivity_min"><?php echo $organData['sensitivity_min']?></span></em>%</td>
+					<td><em><span id="sensitivitymin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:sensitivity_min"><?php echo $organData['OrganData']['sensitivity_min']?></span></em>%</td>
 				</tr>
 				<tr>
 					<td class="label">Maximum:</td>
-					<td><em><span id="sensitivitymax" class="editable object:organ_data id:<?php echo $organData['id']?> attr:sensitivity_max"><?php echo $organData['sensitivity_max']?></span></em>%</td>
+					<td><em><span id="sensitivitymax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:sensitivity_max"><?php echo $organData['OrganData']['sensitivity_max']?></span></em>%</td>
 				</tr>
 			</table>
 		</div>
@@ -125,11 +125,11 @@
 			<table style="background-color:#fff;">
 				<tr>
 					<td class="label">Minimum:</td>
-					<td><em><span id="specificitymin" class="editable object:organ_data id:<?php echo $organData['id']?> attr:specificity_min"><?php echo $organData['specificity_min']?></span></em>%</td>
+					<td><em><span id="specificitymin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:specificity_min"><?php echo $organData['OrganData']['specificity_min']?></span></em>%</td>
 				</tr>
 				<tr>
 					<td class="label">Maximum:</td>
-					<td><em><span id="specificitymax" class="editable object:organ_data id:<?php echo $organData['id']?> attr:specificity_max"><?php echo $organData['specificity_max']?></span></em>%</td>
+					<td><em><span id="specificitymax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:specificity_max"><?php echo $organData['OrganData']['specificity_max']?></span></em>%</td>
 				</tr>
 			</table>
 		</div>
@@ -139,11 +139,11 @@
 			<table style="background-color:#fff;">
 				<tr>
 					<td class="label">Minimum:</td>
-					<td><em><span id="npvmin" class="editable object:organ_data id:<?php echo $organData['id']?> attr:npv_min"><?php echo $organData['npv_min']?></span></em>%</td>
+					<td><em><span id="npvmin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:npv_min"><?php echo $organData['OrganData']['npv_min']?></span></em>%</td>
 				</tr>
 				<tr>
 					<td class="label">Maximum:</td>
-					<td><em><span id="npvmax" class="editable object:organ_data id:<?php echo $organData['id']?> attr:npv_max"><?php echo $organData['npv_max']?></span></em>%</td>
+					<td><em><span id="npvmax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:npv_max"><?php echo $organData['OrganData']['npv_max']?></span></em>%</td>
 				</tr>
 			</table>
 		</div>
@@ -153,11 +153,11 @@
 			<table style="background-color:#fff;">
 				<tr>
 					<td class="label">Minimum:</td>
-					<td><em><span id="ppvmin" class="editable object:organ_data id:<?php echo $organData['id']?> attr:ppv_min"><?php echo $organData['ppv_min']?></span></em>%</td>
+					<td><em><span id="ppvmin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:ppv_min"><?php echo $organData['OrganData']['ppv_min']?></span></em>%</td>
 				</tr>
 				<tr>
 					<td class="label">Maximum:</td>
-					<td><em><span id="ppvmax" class="editable object:organ_data id:<?php echo $organData['id']?> attr:ppv_max"><?php echo $organData['ppv_max']?></span></em>%</td>
+					<td><em><span id="ppvmax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:ppv_max"><?php echo $organData['OrganData']['ppv_max']?></span></em>%</td>
 				</tr>
 			</table>
 		</div>
@@ -177,7 +177,7 @@
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Study:</h5>
 			<div style="width:80%;">
 				<form action="/<?php echo PROJROOT;?>/biomarkers/addorganstudydata" method="POST">
-					<input type="hidden" name="organ_data_id" value="<?php echo $organData['id']?>"/>
+					<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 					<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 					<input type="hidden" id="study_id" name="study_id" value=""/>
 					<input type="text" id="study-search" value="" style="width:100%;"/>
@@ -192,7 +192,7 @@
 		<?php foreach ($organData['StudyData'] as $study):?>
 			<h4 style="margin:0px;margin-left:60px;padding-top:5px;border-left:solid 1px #ccc;border-top:solid 1px #ccc;"><?php echo $study['Study']['title']?>
 				<div class="editlink">
-					<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $study['id']?>" style="color:#d55;">x Delete</a>	
+					<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;">x Delete</a>	
 				</div>	
 			</h4>
 			<div class="studydetail">
@@ -238,7 +238,7 @@
 					<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 					<form action="/<?php echo PROJROOT;?>/biomarkers/addstudydatapub" method="POST">
 						<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
-						<input type="hidden" name="organ_data_id" value="<?php echo $organData['id']?>"/>
+						<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 						<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
 						<input type="hidden" id="publication<?php echo $study['id']?>_id" name="pub_id" value=""/>
 						<input type="text" class="pubsearch id:<?php echo $study['id']?>" id="publication<?php echo $study['id']?>search" value="" style="width:90%;"/><br/>
@@ -257,7 +257,7 @@
 				<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 				<?php foreach ($study['Publication'] as $publication):?>
 					<li><div class="studypubsnippet">
-							<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $study['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
+							<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
 							<span style="color:#555;font-size:90%;">Author:
 							<?php echo $publication['author']?>. &nbsp; Published in
 							<?php echo $publication['journal']?>, &nbsp;
@@ -277,7 +277,7 @@
 					<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
 					<form action="/<?php echo PROJROOT;?>/biomarkers/addStudyDataResource" method="POST" style="margin-top:5px;">
 						<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
-						<input type="hidden" name="organ_data_id" value="<?php echo $organData['id']?>"/>
+						<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 						<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
 						<div style="float:left;width:130px;color:#555;">URL: &nbsp;&nbsp;http://</div>
 						<input type="text" style="width:70%;" name="url"/><br/><br/>
@@ -293,7 +293,7 @@
 				<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 				<?php foreach ($study['StudyDataResource'] as $resource):?>
 					<li><div class="studyressnippet">
-							<a href="http://<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
+							<a href="http://<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
 							<span style="color:#555;font-size:90%;">
 							<?php echo $resource['description']?>
 							</span>
@@ -317,7 +317,7 @@
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataPub" method="POST">
 				<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
-				<input type="hidden" name="organ_data_id" value="<?php echo $organData['id']?>"/>
+				<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 				<input type="hidden" id="organpublication_id" name="pub_id" value=""/>
 				<input type="text" id="organpublicationsearch" value="" style="width:90%;"/><br/>
 				<div>
@@ -333,7 +333,7 @@
 		<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 		<?php foreach ($organData['Publication'] as $publication):?>
 			<li><div class="studypubsnippet">
-					<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
+					<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
 					<span style="color:#555;font-size:90%;">Author:
 					<?php echo $publication['author']?>. &nbsp; Published in
 					<?php echo $publication['journal']?>, &nbsp;
@@ -352,7 +352,7 @@
 			<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataResource" method="POST" style="margin-top:5px;">
 				<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
-				<input type="hidden" name="organ_data_id" value="<?php echo $organData['id']?>"/>
+				<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 				<div style="float:left;width:130px;color:#555;">URL: &nbsp;&nbsp;http://</div>
 				<input type="text" style="width:70%;" name="url"/><br/><br/>
 				<div style="float:left;width:130px;color:#555;">Description:</div>
@@ -366,7 +366,7 @@
 		<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 			<?php foreach ($organData['OrganDataResource'] as $resource):?>
 				<li><div class="studyressnippet">
-						<a href="http://<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
+						<a href="http://<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
 						<span style="color:#555;font-size:90%;">
 						<?php echo $resource['description']?>
 						</span>

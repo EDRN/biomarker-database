@@ -48,7 +48,7 @@ class RdfController extends AppController {
 			echo "    <bmdb:BiomarkerID>urn:edrn:bmdb:biomarker:{$b['Biomarker']['id']}</bmdb:BiomarkerID>\r\n";
 			echo "    <bmdb:URN>urn:edrn:bmdb:biomarker:{$b['Biomarker']['id']}</bmdb:URN>\r\n";
 			echo "    <bmdb:IsPanel>{$b['Biomarker']['isPanel']}</bmdb:IsPanel>\r\n";
-			echo "    <bmdb:PanelID>{$b['Biomarker']['panelID']}</bmdb:PanelID>\r\n";
+			//echo "    <bmdb:PanelID>{$b['Biomarker']['panelID']}</bmdb:PanelID>\r\n";
 			echo "    <bmdb:Description>".$this->escapeEntities($b['Biomarker']['description'])."</bmdb:Description>\r\n";
 			echo "    <bmdb:QAState>{$b['Biomarker']['qastate']}</bmdb:QAState>\r\n";
 			echo "    <bmdb:Phase>{$b['Biomarker']['phase']}</bmdb:Phase>\r\n";
@@ -61,8 +61,21 @@ class RdfController extends AppController {
 						echo "    <bmdb:Alias>".$this->escapeEntities($alias['name'])."</bmdb:Alias>\r\n";
 					}
 				}
-			} else {
-				
+			} 
+			
+			// Panel members
+			if ($b['Biomarker']['isPanel']) {
+				foreach ($b['Panel'] as $member) {
+					echo "    <bmdb:hasBiomarker rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$member['id']}\"/>\r\n";
+				}
+			}
+			
+			// Member of Panel(s)
+			$members = $this->Biomarker->getPanelMembership($b['Biomarker']['id']);
+			if (count($members) > 0) {
+				foreach ($members as $m) {
+					echo "    <bmdb:memberOfPanel rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$m['id']}\"/>\r\n";
+				}
 			}
 			
 			// Organs
@@ -88,7 +101,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($b['BiomarkerResource']) > 0) {
 				foreach ($b['BiomarkerResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"http://".$this->escapeEntities($res['URL'])."\"/>\r\n";
 				}
 			} 
 			echo "  </bmdb:Biomarker>\r\n";
@@ -148,7 +161,7 @@ class RdfController extends AppController {
 					// Resources
 					if (count($studyData['StudyDataResource']) > 0) {
 						foreach ($studyData['StudyDataResource'] as $res) {
-							echo "          <bmdb:referencesResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
+							echo "          <bmdb:referencesResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
 						}
 					} 
 					echo "        </bmdb:BiomarkerOrganStudyData>\r\n";
@@ -168,7 +181,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($bod['OrganDataResource']) > 0) {
 				foreach ($bod['OrganDataResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
 				}
 			} 
 		
@@ -212,7 +225,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($s['StudyResource']) > 0) {
 				foreach ($s['StudyResource'] as $res) {
-					echo "    <bmdb:externalResource rdf:resource=\"http://{$res['URL']}\"/>\r\n";
+					echo "    <bmdb:externalResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
 				}
 			} 
 			// Sites 
@@ -255,9 +268,9 @@ class RdfController extends AppController {
 		$results = $this->Resource->getemall();
 		
 		foreach ($results as $url=>$desc) {
-			echo "  <bmdb:ExternalResource rdf:about=\"http://{$url}\">\r\n";
-			echo "    <bmdb:URI>http://{$url}</bmdb:URI>\r\n";
-			echo "    <bmdb:Description>{$desc}</bmdb:Description>\r\n";
+			echo "  <bmdb:ExternalResource rdf:about=\"http://".$this->escapeEntities($url)."\">\r\n";
+			echo "    <bmdb:URI>http://".$this->escapeEntities($url)."</bmdb:URI>\r\n";
+			echo "    <bmdb:Description>".$this->escapeEntities($desc)."</bmdb:Description>\r\n";
 			echo "  </bmdb:ExternalResource>\r\n";
 		}
 		$this->printRdfEnd();
@@ -336,8 +349,8 @@ class RdfController extends AppController {
 		$source = str_replace("<",  "&lt;",   $source);
 		$source = str_replace(">",  "&gt;",   $source);
 		$source = str_replace("\"", "&quot;", $source);
-		$source = str_replace("'"," &apos;",  $source);
-		$source = str_replace("&"," &amp;",   $source);
+		$source = str_replace("'","&apos;",  $source);
+		$source = str_replace("&","&amp;",   $source);
 		
 		return $source;
 	}

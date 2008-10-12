@@ -32,8 +32,13 @@ class BiomarkersController extends AppController {
 		$this->Pagination->show = 15;
 		list($order,$limit,$page) = $this->Pagination->init($criteria);
 		
-		$this->set('biomarkers', $this->Biomarker->findAll($criteria,NULL,$order,$limit,$page,2));
+		$biomarkers = $this->Biomarker->getIndex();
 		
+		for ($i=0;$i<count($biomarkers);$i++) {
+			$biomarkers[$i]['OrganDatas'] = $this->Biomarker->getOrganDatasFor($biomarkers[$i]['Biomarker']['id']);
+		}
+		
+		$this->set('biomarkers',$biomarkers);
 				
 		// Get a list of all the biomarkers for the ajax search
 		$names = $this->BiomarkerName->find("all",array('name','biomarker_id'));
@@ -183,22 +188,24 @@ class BiomarkersController extends AppController {
 		// Load the Biomarker object
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
-			'recursive'  => 3
+			'recursive'  => 1
 			)
 		);
 		$this->set('biomarker',$biomarker);
 		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
-		
-		// Get a list of all the Organs
-		$this->set('organ',$this->Organ->FindAll());
+		$organdatas = $this->Biomarker->god($biomarker['Biomarker']['id']);
 		
 		// Try to load the current OrganData object
 		$this->set('organData',false);
-		foreach ($biomarker['OrganData'] as $od) {
-			if ($od['id'] == $organ_id) {
+		foreach ($organdatas as $od) {
+			if ($od['OrganData']['id'] == $organ_id) {
 				$this->set('organData',$od);
 			}
 		}
+		$this->set('organdatas',$organdatas);
+		
+		// Get a list of all the Organs
+		$this->set('organ',$this->Organ->FindAll());
 		
 		if ($organ_id == null && count($biomarker['OrganData']) > 0) {
 			$this->redirect("/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$biomarker['OrganData'][0]['id']}");
@@ -323,10 +330,13 @@ class BiomarkersController extends AppController {
 		$this->checkSession("/biomarkers/studies/{$id}");
 		$biomarker = $this->Biomarker->find('first',array(
 			'conditions' => array('Biomarker.id' => $id),
-			'recursive'  => 2
+			'recursive'  => 1
 			)
 		);
+		$studydatas = $this->Biomarker->getStudyDatasFor($id);
+
 		$this->set('biomarker',$biomarker);
+		$this->set('studydatas',$studydatas);
 		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 		
 		// Get a list of all the studies

@@ -20,7 +20,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<span><?php echo $biomarkerName?> </span>
+		<span><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
 				echo "Logged in as: {$_SESSION['username']}. &nbsp;";

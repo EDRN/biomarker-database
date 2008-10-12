@@ -71,12 +71,12 @@ echo $html->tableHeaders($th); // Create the table headers with sort links if de
 foreach ($biomarkers as $biomarker) {
   	// Build 'organsForBiomarker' list
 	$odatas = array();
-	foreach ($biomarker['OrganData'] as $od) {
-		$odatas[] = "<a href=\"/".PROJROOT."/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$od['id']}\">{$od['Organ']['name']}</a>"; 
+	foreach ($biomarker['OrganDatas'] as $od) {
+		$odatas[] = "<a href=\"/".PROJROOT."/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$od['OrganData']['id']}\">{$od['Organ']['name']}</a>"; 
 	}
 	$organsForBiomarker = implode(", ",$odatas);
 	if ($organsForBiomarker == "") { $organsForBiomarker = "<em style=\"color:#888;\">Unknown</em>";}
-	$biomarkerName = Biomarker::getDefaultName($biomarker);
+	$biomarkerName   = $biomarker['Names']['name'];
     $tr = array (
         $html->link($biomarkerName,"/biomarkers/view/{$biomarker['Biomarker']['id']}"),
         (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate']),
