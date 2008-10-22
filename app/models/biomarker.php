@@ -106,11 +106,13 @@ class Biomarker extends AppModel
 	}
 	
 	/* get a listing of all biomarkers suitable for display on the biomarker browse page */
-	public function getIndex() {
+	public function getIndex($order,$limit,$page) {
 		$q = "SELECT Biomarker.id, Biomarker.qastate, Biomarker.type, Biomarker.isPanel, Names.name ".
 			"FROM biomarkers as Biomarker ".
 				"JOIN biomarker_names AS Names ON (Names.biomarker_id=Biomarker.id AND Names.isPrimary=1) ".
-					"WHERE 1";
+					"WHERE 1 " .
+					"ORDER BY {$order} " . 
+					"LIMIT {$page},{$limit} ";
 		return $this->query($q);
 	}
 	

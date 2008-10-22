@@ -29,10 +29,10 @@ class BiomarkersController extends AppController {
 		
 		$criteria = null;
 		$this->Pagination->resultsPerPage = array();
-		$this->Pagination->show = 15;
+		$this->Pagination->show = 5;
 		list($order,$limit,$page) = $this->Pagination->init($criteria);
 		
-		$biomarkers = $this->Biomarker->getIndex();
+		$biomarkers = $this->Biomarker->getIndex($order,$limit,$page);
 		
 		for ($i=0;$i<count($biomarkers);$i++) {
 			$biomarkers[$i]['OrganDatas'] = $this->Biomarker->getOrganDatasFor($biomarkers[$i]['Biomarker']['id']);
