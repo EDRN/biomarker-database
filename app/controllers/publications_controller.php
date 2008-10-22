@@ -1,7 +1,8 @@
 <?php
 class PublicationsController extends AppController {
-	
+	var $name    = "Publications";
 	var $helpers = array('Html','Ajax','Javascript');
+	var $uses    = array('Publication');
 	
 	public function index() {
 		$this->checkSession("/publications");
@@ -45,9 +46,32 @@ class PublicationsController extends AppController {
 	
 	function ajax_retrieveInfo() {
 		/**
-		 * PUBMED DATA RETRIEVAL
+		 * EXISTS?
+		 * If the publication has previously been imported, simply display an error
+		 * instead of re-fetching the information.
 		 */
 		$data =& $this->params['form'];
+		if (!isset($data['pmid']) || empty($data['pmid'])) {
+			echo "<div class=\"error\">Please provide a PubMed ID first!<br/>"
+				."</div>";
+			exit();
+		}
+		$result = $this->Publication->find('first',array(
+				'conditions' => array('Publication.pubmed_id'=>$data['pmid'])));
+		if ($result) {
+			echo "<div class=\"error\"><strong>The Selected Publication Has Already Been Imported:</strong><br/>"
+				."\"{$result['Publication']['title']}\", "
+				."{$result['Publication']['author']}, "
+				."{$result['Publication']['journal']} <br/>"
+				."Link: <a href=\"/".PROJROOT."/publications/view/{$result['Publication']['id']}\">/".PROJROOT."/publications/view/{$result['Publication']['id']}</a> "
+				."</div>";
+			exit();
+		}
+
+		
+		/**
+		 * PUBMED DATA RETRIEVAL
+		 */
 		if (isset($data['pmid'])){
 			$docs = '';
 			
@@ -76,6 +100,17 @@ class PublicationsController extends AppController {
 				$update_id = "{$data['updateID']}";			
 			} else {
 				$update_id = "";
+			}
+			
+			/**
+			 * VALID DATA RETURNED?
+			 * If the 'title' field is empty, we can assume that no publication matched
+			 * the provided id. In this case, return an error to the user indicating no match.
+			 */
+			if (empty($pubmed['Title'])) {
+				echo "<div class=\"error\">No results for id: {$data['pmid']}. Please check your input.<br/>"
+				."</div>";
+			exit();
 			}
 			
 			$displayForm = <<<ENDDISPLAYFORM
