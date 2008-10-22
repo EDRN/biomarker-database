@@ -29,7 +29,7 @@ class BiomarkersController extends AppController {
 		
 		$criteria = null;
 		$this->Pagination->resultsPerPage = array();
-		$this->Pagination->show = 5;
+		$this->Pagination->show = 15;
 		list($order,$limit,$page) = $this->Pagination->init($criteria);
 		
 		$biomarkers = $this->Biomarker->getIndex($order,$limit,$page);
