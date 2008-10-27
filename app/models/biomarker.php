@@ -112,7 +112,7 @@ class Biomarker extends AppModel
 				"JOIN biomarker_names AS Names ON (Names.biomarker_id=Biomarker.id AND Names.isPrimary=1) ".
 					"WHERE 1 " .
 					"ORDER BY {$order} " . 
-					"LIMIT {$page},{$limit} ";
+					"LIMIT ".($limit * ($page-1)) .",{$limit} ";
 		return $this->query($q);
 	}
 	
