@@ -52,15 +52,10 @@
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
 &nbsp;&nbsp;Browse the directory listing, or search by Title using the box on the right.
 </div>
-<!--
-<div class="navigation">
-	<a class="page current" href="#">1</a><a class="page " href="#">2</a><a class="page " href="#">3</a>
-	<span>Note... these page navigation buttons do not work.</span>
-</div>
--->
+
 <br/>
 
-<table id="elements" cellspacing="0" cellpadding="0">
+<table id="publicationelements" cellspacing="0" cellpadding="0">
   <tr>
     <th>Title</th>
     <th>Journal</th>
