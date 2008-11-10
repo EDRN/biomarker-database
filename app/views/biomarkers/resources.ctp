@@ -28,7 +28,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></a> : 
+		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?><?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? ' (Panel)':'');?></a> : 
 		<span>Resources</span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {

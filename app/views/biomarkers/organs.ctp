@@ -28,7 +28,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></a> : 
+		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?><?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? ' (Panel)':'');?></a> : 
 		<span>Organs</span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
@@ -192,10 +192,11 @@
 		<?php foreach ($organData['StudyData'] as $study):?>
 			<h4 style="margin:0px;margin-left:60px;padding-top:5px;border-left:solid 1px #ccc;border-top:solid 1px #ccc;"><?php echo $study['Study']['title']?>
 				<div class="editlink">
+				    <span class="fakelink toggle:studydetail<?php echo $study['id']?>">+ More</span>&nbsp;&nbsp;|&nbsp;
 					<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;">x Delete</a>	
 				</div>	
 			</h4>
-			<div class="studydetail">
+			<div id="studydetail<?php echo $study['id']?>" class="studydetail" style="display:none;">
 				<div class="lefttext" style="margin-right:16px;">
 					<span id="description" class="textarea"><?php printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
 				</div>

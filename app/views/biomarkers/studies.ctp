@@ -25,7 +25,7 @@
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
-		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></a> : 
+		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?><?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? ' (Panel)':'');?></a> : 
 		<span>Studies</span>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
@@ -65,7 +65,7 @@
 	<form action="/<?php echo PROJROOT;?>/biomarkers/addStudyData" method="POST">
 		<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 		<input type="hidden" id="study_id" name="study_id" value=""/>
-		<input type="text" id="study-search" value="" style="width:100%;"/>
+		<input type="text" id="study-search" value="" style="width:99%;"/>
 		<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of options will appear.</span>
 		<input type="button" class="cancelbutton toggle:addstudydata" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:-4px;"/>
 		<input type="submit" name="associate_study" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
