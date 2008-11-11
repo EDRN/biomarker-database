@@ -74,6 +74,30 @@
 	<div class="clr"><!-- clear --></div>
 </div>
 <?php foreach ($studydatas as $study):?>
+	<?php 
+		   /*
+			* Calculate NPV/PPV if Sens/Spec/Prevalence data is available
+			* PPV = (Sens. x Prev.)/[Sens. x Prev. + (1-Spec.) x (1-Prev.)]
+			* NPV = [Spec. x (1-Prev.)]/[(1-Sens.) x Prev. + Spec. x (1-Prev.)]
+			* where
+			*
+			* Sens. = Sensitivity
+			* Spec. = Specificity
+			* Prev. = Prevalence
+			*/
+			$sens = ($study['BiomarkerStudyData']['sensitivity'] / 100);
+			$spec = ($study['BiomarkerStudyData']['specificity'] / 100);
+			$prev = $study['BiomarkerStudyData']['prevalence'];
+
+			if ($sens > 0 && $spec > 0 && $prev > 0) {
+				$ppv = (round(($sens * $prev)/($sens * $prev + (1-$spec) * (1-$prev)),2) * 100) . '%';
+				$npv = (round(($spec * (1-$prev))/((1-$sens)*$prev + $spec * (1-$prev)),2) * 100) . '%';
+			} else {
+				$ppv = 'n/a';
+				$npv = 'n/a';
+			}
+	
+	?>
 			<h4 style="margin:0px;margin-left:60px;margin-top:15px;padding-top:5px;border-left:solid 1px #ccc;border-top:solid 1px #ccc;"><?php echo $study['Study']['title']?>
 				<div class="editlink">
 					<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['BiomarkerStudyData']['id']?>" style="color:#d55;">x Delete</a>	
@@ -92,6 +116,10 @@
 							<td><em><span id="phase<?php echo $study['BiomarkerStudyData']['id']?>" class="editablelist object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php printor($study['BiomarkerStudyData']['phase'],'click to select');?></span></em></td>
 						</tr>
 						<tr>
+							<td class="label" style="border-bottom:dotted 1px #999;">Prevalence: (0 - 1.0)</td>
+							<td><em><span id="phase<?php echo $study['BiomarkerStudyData']['id']?>" class="editable object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:prevalence"><?php echo $study['BiomarkerStudyData']['prevalence']?></span></em></td>
+						</tr>
+						<tr>
 							<td class="label">Sensitivity:</td>
 							<td><em><span id="sensitivity<?php echo $study['BiomarkerStudyData']['id']?>" class="editable object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:sensitivity"><?php echo $study['BiomarkerStudyData']['sensitivity']?></span></em>%</td>
 						</tr>
@@ -101,11 +129,11 @@
 						</tr>
 							<tr>
 							<td class="label">NPV:</td>
-							<td><em><span id="npv<?php echo $study['BiomarkerStudyData']['id']?>" class="editable object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:npv"><?php echo $study['BiomarkerStudyData']['npv']?></span></em>%</td>
+							<td><em></em><?php echo $npv?></td>
 						</tr>
 						<tr>
 							<td class="label">PPV:</td>
-							<td><em><span id="ppv<?php echo $study['BiomarkerStudyData']['id']?>" class="editable object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:ppv"><?php echo $study['BiomarkerStudyData']['ppv']?></span></em>%</td>
+							<td><em></em><?php echo $ppv?></td>
 						</tr>
 					</table>
 					<br/>
