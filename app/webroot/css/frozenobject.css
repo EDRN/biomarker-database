@@ -188,3 +188,37 @@ div#panelSelectionButtons input[type=button],
 	border:solid 1px #ccc;	
 }
 
+input[type=text] {
+	border:solid 1px #ccc;
+	padding:3px;	
+}
+
+input[type=button],input[type=submit] {
+	border:solid 1px #ccc;	
+}
+
+div.spacer {
+	margin-left:16px;	
+}
+table.associatedstudies {
+	background-color:#fff; 
+	font-size:90%;
+	width:100%;
+	border-top:solid 1px #ccc;
+	
+}
+table.associatedstudies td {
+	padding:4px;
+	margin:2px;
+	border:solid 1px #ccc;
+	border-top:0px;
+	border-right:0px;
+	vertical-align:top;
+}
+table.associatedstudies th {
+	border-bottom:dotted 1px #ccc;
+	border-left:solid 1px #ccc;
+	background-color:#f2f2f2;
+	padding:5px;	
+}
+
