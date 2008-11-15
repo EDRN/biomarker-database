@@ -106,7 +106,7 @@
 		<h3>Aggregate Results</h3>
 		<div style="margin-left:30px;width:96%;">
 		
-		<!-- SENSITIVITY -->
+		
 		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%">
 			<h4>Sensitivity:</h4>
 			<table style="background-color:#fff;">
@@ -120,7 +120,7 @@
 				</tr>
 			</table>
 		</div>
-		<!-- SPECIFICITY -->
+		
 		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%;">
 			<h4>Specificity:</h4>
 			<table style="background-color:#fff;">
@@ -134,7 +134,7 @@
 				</tr>
 			</table>
 		</div>
-		<!-- NEGATIVE PREDICTIVE VALUE -->
+		
 		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%;">
 			<h4>N.P.V.:</h4>
 			<table style="background-color:#fff;">
@@ -148,7 +148,7 @@
 				</tr>
 			</table>
 		</div>
-		<!-- POSITIVE PREDICTIVE VALUE -->
+		
 		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%">
 			<h4>P.P.V.:</h4>
 			<table style="background-color:#fff;">
@@ -162,7 +162,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="clr"><!-- clear --></div>
+		<div class="clr">&nbsp;</div>
 		<p>&nbsp;</p>
 		</div>
 		-->
@@ -192,9 +192,10 @@
 			</div>
 		</div>
 		<div class="spacer">
+		<?php if (count($organData['StudyData']) > 0): ?>
 		<table class="associatedstudies" cellspacing="0" cellpadding="0">
 		  <tr><th>Study Title</th><th>Sensitivity</th><th>Specificity</th><th>N.P.V.</th><th>P.P.V.</th><th>Details</th><th>Remove</th></tr>
-		  
+		<?php endif;?>
 		<?php foreach ($organData['StudyData'] as $study):?>
 		<?php
 			/*
@@ -331,7 +332,9 @@
 			  </td>
 			</tr>
 		<?php endforeach;?>
-		</table>
+		<?php if (count($organData['StudyData']) > 0): ?>
+			</table>
+		<?php endif;?>
 		<br/>
 		</div><!-- end spacer -->
 		<h3 style="position:relative;margin-bottom:0px;">Supporting Publication Data &nbsp;(Biomarker-Organ level)
