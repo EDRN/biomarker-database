@@ -141,6 +141,12 @@
 				</div>
 				<div class="clr"><!-- clear --></div>
 				<br/>
+					<h5 style="position:relative;border-bottom:solid 1px #999;">Sensitivity / Specificity Details</h5>
+					<br/>
+					<div style="padding-left:20px;font-size:90%;">
+						<span id="sensspecdetail<?php echo $study['BiomarkerStudyData']['id']?>" class="editable textarea object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:sensspecdetail"><?php printor($study['BiomarkerStudyData']['sensspecdetail'],'No Details Provided Yet. Click here to add.');?></span>
+					</div>
+					<br/>
 				<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications
 					<div class="editlink" style="font-size:100%;margin-top:-8px;">
 						<span class="fakelink toggle:addstudypub<?php echo $study['BiomarkerStudyData']['id']?>">+ Add Publication</span>

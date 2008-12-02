@@ -194,7 +194,7 @@
 		<div class="spacer">
 		<?php if (count($organData['StudyData']) > 0): ?>
 		<table class="associatedstudies" cellspacing="0" cellpadding="0">
-		  <tr><th>Study Title</th><th>Sensitivity</th><th>Specificity</th><th>N.P.V.</th><th>P.P.V.</th><th>Details</th><th>Remove</th></tr>
+		  <tr><th>Study Title</th><th>Sensitivity</th><th>Specificity</th><th>N.P.V.</th><th>P.P.V.</th><th>Remove</th></tr>
 		<?php endif;?>
 		<?php foreach ($organData['StudyData'] as $study):?>
 		<?php
@@ -221,13 +221,12 @@
 			}
 		?>
 			<tr>
-			  <td style="width:350px;"><strong><?php echo $study['Study']['title']?></strong></td>
+			  <td style="width:350px;"><strong><span class="detailslink toggle:studydetail<?php echo $study['id']?>"><?php echo $study['Study']['title']?></span></strong></td>
 			  <td style="text-align:center;"><em><span id="sensitivity<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:sensitivity"><?php echo $study['sensitivity']?></span></em>%</td>
 			  <td style="text-align:center;"><em><span id="specificity<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:specificity"><?php echo $study['specificity']?></span></em>%</td>
 			  <td style="text-align:center;"><em><?php echo $npv;?></em></td>
 			  <td style="text-align:center;"><em><?php echo $ppv;?></em></td>
-			  <td style="font-size:80%;"><span class="detailslink toggle:studydetail<?php echo $study['id']?>">+/- Details</span></td>
-			  <td style="font-size:80%;"><a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;" onclick="return confirm('This action can not be undone. Continue?')">x Remove Association</a></td>
+			  <td style="font-size:80%;text-align:center;"><a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;" onclick="return confirm('This action can not be undone. Continue?')">x Remove Association</a></td>
 			</tr>
 			<tr id="studydetail<?php echo $study['id']?>" class="studydetail" style="display:none;border-bottom:solid 6px #ccc;background-color:#fff;">
 			  <td colspan="7" style="border:0border-bottom:solid 1px #ccc;padding-left:25px;">
@@ -252,6 +251,12 @@
 						<a style="text-decoration:underline;font-size:90%;" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
 					</div>
 					<div class="clr"><!-- clear --></div>
+					<br/>
+					<h5 style="position:relative;border-bottom:solid 1px #999;">Sensitivity / Specificity Details</h5>
+					<br/>
+					<div style="padding-left:20px;font-size:90%;">
+						<span id="sensspecdetail<?php echo $study['id']?>" class="editable textarea object:organ_study_data id:<?php echo $study['id']?> attr:sensspecdetail"><?php printor($study['sensspecdetail'],'No Details Provided Yet. Click here to add.');?></span>
+					</div>
 					<br/>
 					<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications
 						<div class="editlink" style="font-size:100%;margin-top:-8px;">
