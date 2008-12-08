@@ -1,25 +1,15 @@
-<?php echo $html->css('frozenobject');?>
-<?php echo $html->css('eip');?>
-<?php echo $html->css('autocomplete');?>
-<?php echo $javascript->link('mootools-release-1.11');?>
-<?php echo $javascript->link('eip');?>
-<?php echo $javascript->link('autocomplete/Observer');?>
-<?php echo $javascript->link('autocomplete/Autocompleter');?>
+<?php
+	// Include required CSS and JavaScript 
+	echo $html->css('bmdb-objects');
+	echo $html->css('eip');
+	echo $javascript->link('mootools-release-1.11');
+	echo $javascript->link('eip');
 
-<?php 
-	function printor($value,$alt) {
-		if ($value == "") {
-			echo $alt;
-		} else {
-			echo $value;
-		}
-	}
-
+	echo $html->css('autocomplete');
+	echo $javascript->link('autocomplete/Observer');
+	echo $javascript->link('autocomplete/Autocompleter');
 ?>
 <div class="menu">
-	<div class="mainContent">
-	<h2 class="title">EDRN Biomarker Database</h2>
-	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
 		<span style="color:#ddd;">You are here: &nbsp;</span>
@@ -27,18 +17,16 @@
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
 		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?><?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? ' (Panel)':'');?></a> : 
 		<span>Studies</span>
-		<div class="userdetails">
-			<?php if (isset($_SESSION['username'])) {
-				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
-				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
-			} else {
-				echo "Not Logged In. &nbsp; ";
-				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
-			}?>
-		</div>
 	</div><!-- End Breadcrumbs -->
-		
-	<div id="smalllinks">
+</div>
+<div id="outer_wrapper">
+<div id="main_section">
+<div id="content">
+<h2 class="biomarkerName"><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></h2>
+		<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
+		<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
+			<?php echo $biomarker['Biomarker']['modified']?></h5>
+<div id="smalllinks">
 		<ul>
 		  <li class=""><a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>">Basics</a></li>
 		  <li class=""><a href="/<?php echo PROJROOT;?>/biomarkers/organs/<?php echo $biomarker['Biomarker']['id']?>">Organs</a></li>
@@ -47,15 +35,7 @@
 		  <li class=""><a href="/<?php echo PROJROOT;?>/biomarkers/resources/<?php echo $biomarker['Biomarker']['id']?>">Resources</a></li>
 		</ul>
 		<div class="clr"><!--  --></div>
-	</div>
 </div>
-<div id="outer_wrapper">
-<div id="main_section">
-<div id="content">
-<h2><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></h2>
-		<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
-		<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
-			<?php echo $biomarker['Biomarker']['modified']?></h5>
 <h4 style="margin-bottom:0px;margin-left:20px;background-color: transparent;font-size: 18px;">Associated Study Data
 <div class="editlink">
 <span class="fakelink toggle:addstudydata">+ Add a Study</span>
@@ -105,7 +85,7 @@
 			</h4>
 			<div class="studydetail" style="margin-bottom:15px;">
 				<div class="lefttext" style="margin-right:16px;">
-					<span id="description" class="textarea"><?php printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
+					<span id="description" class="textarea"><?php Biomarker::printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
 				</div>
 				<!-- RELEVANT STUDY DATA -->
 				<div class="rightcol" style="margin-left:0px;margin-top:0;">
@@ -113,7 +93,7 @@
 					<table>
 						<tr>
 							<td class="label" style="border-bottom:dotted 1px #999;">Phase:</td>
-							<td><em><span id="phase<?php echo $study['BiomarkerStudyData']['id']?>" class="editablelist object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php printor($study['BiomarkerStudyData']['phase'],'click to select');?></span></em></td>
+							<td><em><span id="phase<?php echo $study['BiomarkerStudyData']['id']?>" class="editablelist object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php Biomarker::printor($study['BiomarkerStudyData']['phase'],'click to select');?></span></em></td>
 						</tr>
 						<tr>
 							<td class="label" style="border-bottom:dotted 1px #999;">Prevalence: (0 - 1.0)</td>
@@ -144,7 +124,7 @@
 					<h5 style="position:relative;border-bottom:solid 1px #999;">Sensitivity / Specificity Details</h5>
 					<br/>
 					<div style="padding-left:20px;font-size:90%;">
-						<span id="sensspecdetail<?php echo $study['BiomarkerStudyData']['id']?>" class="editable textarea object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:sensspecdetail"><?php printor($study['BiomarkerStudyData']['sensspecdetail'],'No Details Provided Yet. Click here to add.');?></span>
+						<span id="sensspecdetail<?php echo $study['BiomarkerStudyData']['id']?>" class="editable textarea object:study_data id:<?php echo $study['BiomarkerStudyData']['id']?> attr:sensspecdetail"><?php Biomarker::printor($study['BiomarkerStudyData']['sensspecdetail'],'No Details Provided Yet. Click here to add.');?></span>
 					</div>
 					<br/>
 				<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications

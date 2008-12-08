@@ -1,28 +1,16 @@
-<?php echo $html->css('frozenobject');?>
-<?php echo $html->css('eip');?>
-<?php echo $html->css('autocomplete');?>
-<?php echo $javascript->link('mootools-release-1.11');?>
-<?php echo $javascript->link('eip');?>
-<?php echo $javascript->link('autocomplete/Observer');?>
-<?php echo $javascript->link('autocomplete/Autocompleter');?>
-
-<?php 
-	function printor($value,$alt) {
-		if ($value == "") {
-			echo $alt;
-		} else {
-			echo $value;
-		}
-	}
-
-?>
 <?php
+	// Include required CSS and JavaScript 
+	echo $html->css('bmdb-objects');
+	echo $html->css('eip');
+	echo $javascript->link('mootools-release-1.11');
+	echo $javascript->link('eip');
 
+	echo $html->css('autocomplete');
+	echo $javascript->link('autocomplete/Observer');
+	echo $javascript->link('autocomplete/Autocompleter');
 ?>
+
 <div class="menu">
-	<div class="mainContent">
-	<h2 class="title">EDRN Biomarker Database</h2>
-	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
 		<span style="color:#ddd;">You are here: &nbsp;</span>
@@ -30,18 +18,17 @@
 		<a href="/<?php echo PROJROOT;?>/biomarkers/">Biomarkers</a> ::
 		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>"><?php echo $biomarkerName?><?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? ' (Panel)':'');?></a> : 
 		<span>Resources</span>
-		<div class="userdetails">
-			<?php if (isset($_SESSION['username'])) {
-				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
-				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
-			} else {
-				echo "Not Logged In. &nbsp; ";
-				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
-			}?>
-		</div>
 	</div><!-- End Breadcrumbs -->
-		
-	<div id="smalllinks">
+</div>
+<div id="outer_wrapper">
+<div id="main_section">
+<div id="content">
+<h2 class="biomarkerName"><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></h2>
+<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
+<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
+	<?php echo $biomarker['Biomarker']['modified']?>
+</h5>
+<div id="smalllinks">
 		<ul>
 		  <li class=""><a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $biomarker['Biomarker']['id']?>">Basics</a></li>
 		  <li class=""><a href="/<?php echo PROJROOT;?>/biomarkers/organs/<?php echo $biomarker['Biomarker']['id']?>">Organs</a></li>
@@ -50,17 +37,7 @@
 		  <li class="activeLink"><a href="/<?php echo PROJROOT;?>/biomarkers/resources/<?php echo $biomarker['Biomarker']['id']?>">Resources</a></li>
 		</ul>
 		<div class="clr"><!--  --></div>
-	</div>
 </div>
-<div id="outer_wrapper">
-<div id="main_section">
-<div id="content">
-<h2><?php echo $biomarkerName?> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></h2>
-<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
-<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
-	<?php echo $biomarker['Biomarker']['modified']?>
-</h5>
-
 <h4 style="margin-bottom:0px;margin-left:20px;background-color: transparent;font-size: 18px;">Associated Resources
 	<div class="editlink">
 	<span class="fakelink toggle:addstudyres">+ Add a Resource</a>
