@@ -1,0 +1,66 @@
+@CHARSET "UTF-8";
+
+
+/**
+ * AJAX EDITOR STYLE
+ */
+input[type=text].editor_field {
+	border:solid 1px #ccc;
+	padding:4px;
+}
+form.inplaceeditor-form textarea.editor_field {
+	width:90%;
+	border:solid 1px #ccc;
+	padding:4px;
+}
+.hint {
+	font-size:80%;
+	font-weight:normal;
+	color:#888;
+}
+.hint a {
+	text-decoration:underline;
+	color:#456;	
+}
+a {
+	color:#333;
+	text-decoration:none;	
+}
+a:hover {
+	text-decoration:underline;	
+}
+legend {
+	padding:3px;
+	margin:3px;
+}
+fieldset {
+	color:#000;
+	border:solid 1px #aaa;
+}
+div.autocomplete {
+	background-color:#eee;
+	border:1px solid #888888;
+	list-style-type:none;
+	list-style-position:inside;
+	list-style-image:none;
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	width:250px;
+	font-size:80%;
+}
+div.autocomplete ul {
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+}
+div.autocomplete ul li.selected {
+	background-color:#FFFFBB;
+}
+div.autocomplete ul li {
+	cursor:pointer;
+	display:block;
+	list-style-type:none;
+	margin:0pt;
+	padding:2px 2px 5px;
+}

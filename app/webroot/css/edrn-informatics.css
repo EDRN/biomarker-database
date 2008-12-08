@@ -1,0 +1,107 @@
+@CHARSET "UTF-8";
+
+html, body {
+	padding:0px;
+	margin:0px;
+	background-color:#fff;
+}
+
+/**
+ * DIV.EDRNINFORMATICS
+ * This is the header that preceeds application content. 
+ */
+div#edrninformatics {
+	position:relative;
+	height:46px;
+	background-color:#000;
+	padding:5px;
+	text-align:right;
+	border-bottom:solid 1px #000;
+	overflow:none;
+}
+
+/**
+ * DIV.EDRNLOGO
+ * This is the NCI/EDRN logo div which lives inside DIV.EDRNINFORMATICS.
+ */
+div#edrnlogo {
+	position:absolute;
+	top:0px;
+	left:0px;
+	/* each application should insert the location of the edrn/nci logo as follows:
+	background:url(..path/to/edrnlogo) scroll left top no-repeat; */
+	height:57px;
+	width:500px;
+}
+
+/**
+ * H2.APP-TITLE
+ * This is the title for the application. It lives on the right-hand side
+ * of DIV.EDRNINFORMATICS.
+ */
+h2.app-title {
+	background-color:#555;
+	margin:0px;
+	margin-left:-5px;
+	margin-right:-5px;
+	margin-top:0px;
+	padding:5px;
+	padding-left:0px;
+	color:#fff;
+	border-top:solid 1px #522;
+	border-bottom:solid 1px #300;
+	font-weight:normal;
+	font-size:15px;
+	letter-spacing:0.03em;
+}
+
+/**
+ * DIV.ERROR
+ * This provides a red 'error' box suitable for displaying error
+ * messages.
+ */
+div.error {
+	background-color:#fcc;
+	padding:5px;
+	margin-right:15px;
+	border:solid 1px #f44;
+}
+
+/**
+ * DIV.SUCCESS
+ * This provides a green 'success' box suitable for displaying
+ * successful messages.
+ */
+div.success  {
+	padding:5px;
+	border:solid 1px green;
+	background-color:#cfc;	
+	margin-right:10px;
+}
+
+/**
+ * DIV.USERDETAILS
+ * This provides information about the login-status of the user.
+ * It should live within div#edrninformatics
+ */
+div.userdetails {
+	position:absolute;
+	top:92px;
+	right:5px;
+	color:#ecc;
+	font-size:75%;
+	z-index:10
+}
+div.userdetails a {
+	text-decoration:underline;
+	color:#ecc;	
+}
+
+/**
+ * .CLR
+ * This is a utility which serves to reset things after a 
+ * series of floated elements
+ */
+.clr {
+	clear:both;
+}

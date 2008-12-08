@@ -1,0 +1,410 @@
+@CHARSET "UTF-8";
+
+html,body {
+	font-family:"Lucida Grande","Arial","Helvetica","Verdana","sans-serif";
+	font-size:14px;		
+}
+
+div#page {
+	position:relative;
+	width:100%;
+	min-width:1000px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+div#outer_wrapper {
+	position:relative;
+	background-color:#fff;
+}
+
+div#breadcrumbs {
+	position:relative;
+	padding:4px;
+	padding-right:5px;
+	padding-left:5px;
+	border-top:solid 2px #700003;
+	padding-bottom:5px;
+	background-color:#900003;	
+	color:#fff;
+	font-size:85%;
+}
+
+div#breadcrumbs a {
+	color:#fff;
+	font-weight:normal;
+	text-decoration:underline;	
+}
+
+div#content {
+	position:relative;
+	width:75%;
+	padding-top:5px;
+	padding-bottom:35px;
+	background-color:#fff;
+}
+
+div#content h2.biomarkerName {
+	margin-top:15px;
+	margin-bottom:0px;
+	color:#555;
+	font-size:21px;
+	font-weight:normal;
+}
+
+div.menu {
+	margin-top:30px;
+}
+
+div#supplements {
+	position:absolute;
+	right:28px;
+	top:17px;
+	width:20%;
+}
+
+
+div#supplements div.box {
+	position:relative;
+	font-size:90%;
+	width:100%;
+	border-top:solid 0px #733;
+	border-bottom:solid 1px #ccc;
+	margin-top:5px;
+	margin-bottom:5px;
+	padding:5px;
+	padding-bottom:25px;
+	background-color:#eee;
+}
+
+div#supplements div.box h3.title {
+	position:relative;
+	margin:-5px;
+	margin-bottom:3px;
+	padding:3px;
+	padding-left:6px;
+	border-bottom:solid 1px #500;
+	background-color:#fff;
+	color:#696559;
+}
+
+div#supplements div.box ul {
+	margin:0px;
+	padding:0px;	
+	margin-top:15px;
+}
+
+div#supplements div.box ul li {
+	padding-left:24px;	
+}
+
+div.editlink {
+	position:absolute;
+	top:8px;
+	right:2%;
+	font-size:70%;
+}
+
+div.editlink a,div.editlink, .fakelink, .detailslink {
+	color:#38c;	
+	cursor:pointer;
+	_cursor:hand;
+}
+.pseudolink {
+	color:#456;
+	cursor:pointer;
+	_cursor:hand;
+	text-decoration:underline;
+}
+
+/**
+ * Biomarker Menu Links (Basics,Organs,Studies.....)
+ */
+div#smalllinks {
+	text-align:right;
+	background-color:#ddd;
+	font-size:130%;
+	border-bottom:solid 1px #666;
+	margin-top:15px;
+	margin-bottom:8px;
+}
+
+div#smalllinks ul  {
+	list-style:none;
+	list-style-image:none;
+	list-style-position:outside;
+	margin:0px;
+	padding:0px;	
+}
+
+div#smalllinks ul li {
+	float:left;	
+	border:solid 1px #888;
+	border-top:solid 1px #bfbfbf;
+	background-color:#ddd;
+	margin-bottom:-1px;
+	margin-left:-1px;
+	padding:5px;
+}
+
+div#smalllinks ul li.activeLink {
+	background-color:#fff;	
+	border-bottom:solid 1px #fff;
+	border-top:solid 1px #bfbfbf;
+}
+
+div#smalllinks ul li a {
+	display:block;
+	font-size:85%;
+	color:#555;
+	text-decoration:none;
+}
+
+/**
+ * SMALL EDIT LINKS
+ **/
+div#smallEditlinks {
+	border-bottom:solid 1px #ccc;
+	background-color:#f0f0f0;
+	font-size:110%;
+	margin-top:20px;
+	margin-left:0px;
+}
+div#smallEditlinks ul  {
+	list-style:none;
+	list-style-image:none;
+	list-style-position:inside;
+	margin:0px;
+	padding:0px;
+	border:solid 0px red;	
+}
+div#smallEditlinks ul li {
+	float:left;	
+	border-right:solid 1px #bbb;
+	
+	
+	background-color:#ddd;
+	margin-bottom:-1px;
+	padding-right:15px;
+}
+div#smallEditlinks ul li.activeLink {
+	background-color:#fff;	
+	border-bottom:0px;
+	border-top:solid 1px #ccc;
+}
+div#smallEditlinks ul li a {
+	display:block;
+	padding:4px;
+	color:#555;
+	margin-left:10px;
+	text-decoration:none;
+}
+
+
+/**
+ * DIV.MAIN_SECTION
+ */
+div#main_section {
+	position:relative;
+	margin:0px;
+}
+
+div#main_section h4 {
+	position:relative;
+	padding-left:8px;
+	padding-bottom:3px;
+	font-weight:normal;
+	font-size:110%;
+	background-color:#eee;
+}
+
+div#main_section ul {
+	color:#900003;
+	margin:0px;
+	padding:0px;
+	list-style-type:none;
+	list-style-position:inside;	
+}
+
+div#main_section ul li {
+
+}
+
+div#main_section table.editable_info {
+	font-size:90%;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	border:solid 1px #ccc;
+	border-left:0px;
+	border-right:0px;
+	border-bottom:0;
+	background-color:#eee;
+	margin-bottom:25px;
+	margin-top:0px;
+}
+
+table.editable_info tr {	
+}
+
+table.editable_info td {
+	padding:3px;
+	padding-top:13px;
+	padding-bottom:13px;
+	padding-left:5px;
+	border-bottom:solid 1px #ccc;
+	vertical-align:top;
+	color:#111
+}
+
+table.editable_info td.label {
+	border-right:solid 1px #ccc;
+	background-color:#e5e5e5;
+	padding-top:3px;
+	padding-bottom:3px;
+	vertical-align:top;
+	font-weight:bold;
+	color:#000;
+}
+
+table.editable_info input[type=text] {
+	padding:6px;
+	border:inset 1px #ccc;
+	font-size:110%;
+	background-color:#fff;
+	color:#223222;	
+}
+
+table.editable_info textarea {
+	padding:6px;
+	border:inset 1px #ccc;
+	font-size:120%;
+	background-color:#fff;
+	color:#223222;	
+	font-family:Times,serif;
+}
+
+/* 
+ * DIV.OPTIONS_SECTION
+ */
+div#options_section, div.optbox{
+	position:absolute;
+	right:20px;
+	top:20px;
+	border:solid 1px #ccc;
+	width:240px;
+	background-color:#fff;
+	margin:0px;
+	padding:5px;
+}
+
+div#options_section h5, div.optbox h5 {
+	margin:0px;
+	margin-bottom:5px;	
+}
+
+div#options_section input[type=text] {
+	border:inset 1px #ccc;
+	padding:3px;	
+	margin-bottom:2px;
+}
+
+div.hidelink {
+	position:absolute;
+	top:5px;
+	right:0px;
+	font-size:11px;
+	text-align:right;
+	padding-right:2px;
+}
+
+div#options_section span.hint,
+div.optbox span.hint {
+	font-size:70%;
+	color:#555;
+	display:inline;	
+}
+
+div.ispanel {
+	padding:5px;
+	border:solid 1px #8c8;
+	background-color:#dfd;
+	margin-right:15px;
+	margin-bottom:5px;	
+}
+
+/**
+ * MINI-MENU STYLES
+ */
+ul.minimenu {
+	list-style:none;
+	list-style-image:none;
+	list-style-position:outside;
+	margin:0px;
+	padding:0px;
+}
+
+div#main_section ul.minimenu li, ul.minimenu li {
+	float:left;	
+	border-right:solid 1px #888;
+	border-top:solid 1px #aaa;
+	border-bottom:solid 1px #555;
+	background-color:#ccc;
+	margin-bottom:-1px;
+	height:20px;
+	padding:5px;
+}
+
+div#main_section ul.minimenu li.activeLink,
+ul.minimenu li.activeLink {
+	background-color:#fff;	
+	border-bottom:solid 1px #fff;
+}
+
+ul.minimenu li a {
+	display:block;
+	padding:4px;
+	color:#555;
+	text-decoration:none;
+}
+ul.minimenu span.pseudolink {
+	color:#000;	
+}
+div.minimenucontent {
+	padding:8px;
+	border-top:solid 1px #555;
+	display:block;	
+}
+div.minimenucontent h4 {
+	margin-top:0px;	
+}
+
+
+/**
+ * HEADERS (H1,H2,H3,......)
+ */
+h2.title {
+	background-color:#555;
+	padding:5px;
+	margin:0px;
+	color:#fff;
+	border-top:solid 2px #900;
+	border-bottom:solid 1px #300;
+	font-weight:normal;
+	font-size:15px;
+}
+
+h2.title a {
+	color:#89b;	
+	font-weight:normal;
+	text-decoration:none;
+}
+
+h2.title a:hover {
+	text-decoration:underline;
+	font-weight:normal;	
+}
+
+h4 {
+	border-bottom:dotted 1px #888;
+}

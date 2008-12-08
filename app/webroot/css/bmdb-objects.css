@@ -1,0 +1,235 @@
+@CHARSET "UTF-8";
+
+
+div#content h2 {
+margin-left:0px;
+border-bottom:solid 1px #333;
+margin-bottom:0px;
+
+}
+
+div#content h5#urn {
+	position:absolute;
+	top:22px;
+	right:0px;
+	font-size:16px;
+	font-weight:bold;
+	color:#ccc;
+}
+
+div#content h5 {
+	margin:0px;
+	margin-left:0px;
+	margin-top:2px;
+	color:#555;
+	font-weight:normal;
+}
+
+div.innercontent {
+	position:relative;
+	padding-left:8px;
+}
+
+div.lefttext {
+	float:left;
+	margin-left:0px;
+	margin-top:10px;
+	width:70%;
+	margin-right:6px;
+	text-align:justify;
+	color:#222;
+}
+
+div#rightcol,div.rightcol {
+	float:right;
+	margin-left:10px;
+	width:25%;
+	margin-top:-8px;
+}
+
+div#rightcol h4,div.rightcol h4 {
+margin-left:0px;
+margin-bottom:0px;
+margin-top:0px;
+padding:5px;
+background-color:#aaa;
+color:#333;
+border:0;
+}
+
+div#rightcol table,div.rightcol table {
+	font-size:12px;
+	background-color:#ddd;
+	width:100%;
+	color:#333;
+	font-family:arial,sans-serif;
+}
+
+div#rightcol table td,div.rightcol table td {
+	background-color:#eee;
+}
+
+div#rightcol table td.label,div.rightcol table td.label {
+	font-family:arial,sans-serif;
+	width:80px;
+	padding:5px;
+}
+
+h4.organdatablockheader {
+	font-weight:bold;
+	align:right;
+	margin-top:0px;
+	padding-top:30px;
+	margin-right:0px;
+	margin-left:16px;
+}
+
+h4.organdatablockheader div.editlink {
+	top:38px;	
+}
+
+div.organdatablock {
+	position:relative;
+	margin-left:20px;
+	
+}
+
+div.organdatablock h3 {
+	margin-left:16px;
+	/*background-color:#ded;*/
+	padding-left:8px;
+	padding-bottom:1px;
+	margin-right:0px;
+	font-size:17px;
+	font-weight:normal;
+	color:#222;
+	border-bottom:solid 1px #898;	
+}
+
+div.studydetail {
+	margin-left:60px;
+	border-left:solid 1px #ccc;	
+	margin-bottom:25px;
+	border-bottom:solid 1px #ccc;
+	padding:5px;
+}
+
+span.textarea {
+	font-family:times,serif;
+	font-size:120%;	
+	color:#222;
+}
+div.fakepagebreak {
+	background-color:#888;
+	margin-left:-5px;
+	margin-right:-5px;
+	
+}
+div.fakepagebottom {
+	border-top:solid 2px #666;
+	margin-right:3px;
+}
+div.fakepagetop {
+	border-bottom:solid 2px #666;
+	margin-right:3px;
+	height:35px;
+	
+}
+div#organdatacontent {
+	margin-left:0px;
+	margin-top:-10px;
+	border-left:solid 1px #ccc;	
+	border-bottom:solid 1px #ccc;
+	padding-bottom:25px;
+}
+div.studypubsnippet,div.studyressnippet {
+	padding-bottom:15px;
+}
+
+
+/*************/
+div.addstudydata {
+	background-color:#bbdfef;/*#dfb*/
+	margin-left:16px;
+	margin-top:-17px;	
+	margin-bottom:15px;
+	border:solid 1px #ccc;
+	border-top:0px;
+	padding:5px;
+	padding-left:10px;
+}
+
+div.addstudyres, div.addstudypub {
+	background-color:#bbdfef;
+	border:solid 1px #ccc;
+	border-top:0px;
+	padding:5px;
+	margin-left:20px;
+}
+
+
+a.removealias {
+	font-family:arial,sans-serif;
+	font-size:80%;
+	color:#c44;	
+}
+
+div#panelSelection {
+	position:relative;
+	width:96%;
+	margin-top:15px;
+	margin-left:auto;
+	margin-right:auto;
+	border:solid 2px #ccc;
+	background-color:#f4f4f4;
+}
+div#panelSelection select {
+	border:solid 1px #ccc;
+	width:47%;
+	float:left;
+	margin:5px;	
+}
+div#panelSelectionButtons {
+	margin:5px;
+	width:90%;
+	text-align: center;	
+}
+div#panelSelectionButtons input[type=button],
+	div#panelSelectionButtons input[type=submit] {
+	border:solid 1px #ccc;	
+}
+
+input[type=text] {
+	border:solid 1px #ccc;
+	padding:3px;	
+}
+
+input[type=button],input[type=submit] {
+	border:solid 1px #ccc;	
+}
+
+div.spacer {
+	margin-left:16px;	
+}
+table.associatedstudies {
+	background-color:#fff; 
+	font-size:90%;
+	width:100%;
+	border-top:solid 1px #ccc;
+	
+}
+table.associatedstudies td {
+	padding:4px;
+	margin:2px;
+	border:solid 1px #ccc;
+	border-top:0px;
+	border-right:0px;
+	vertical-align:top;
+}
+table.associatedstudies th {
+	border-bottom:dotted 1px #ccc;
+	border-left:solid 1px #ccc;
+	background-color:#f2f2f2;
+	padding:5px;	
+}
+
