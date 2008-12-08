@@ -1,28 +1,18 @@
-<?php echo $html->css('frozenobject');?>
-<?php echo $html->css('eip');?>
-<?php echo $html->css('autocomplete');?>
-<?php echo $javascript->link('mootools-release-1.11');?>
-<?php echo $javascript->link('eip');?>
-<?php echo $javascript->link('autocomplete/Observer');?>
-<?php echo $javascript->link('autocomplete/Autocompleter');?>
+<?php
+	// Include required CSS and JavaScript 
+	echo $html->css('bmdb-objects');
+	echo $html->css('eip');
+	echo $javascript->link('mootools-release-1.11');
+	echo $javascript->link('eip');
 
-<?php 
-	function printor($value,$alt) {
-		if ($value == "") {
-			echo $alt;
-		} else {
-			echo $value;
-		}
-	}
-
+	echo $html->css('autocomplete');
+	echo $javascript->link('autocomplete/Observer');
+	echo $javascript->link('autocomplete/Autocompleter');
 ?>
 <?php
 
 ?>
 <div class="menu">
-	<div class="mainContent">
-	<h2 class="title">EDRN Biomarker Database</h2>
-	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
 		<span style="color:#ddd;">You are here: &nbsp;</span>
@@ -30,32 +20,21 @@
 		<a href="/<?php echo PROJROOT;?>/studies/">Studies</a> ::
 		<a href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>"><?php echo $study['Study']['title']?> </a> : 
 		<span>Publications</span>
-		<div class="userdetails">
-			<?php if (isset($_SESSION['username'])) {
-				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
-				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
-			} else {
-				echo "Not Logged In. &nbsp; ";
-				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
-			}?>
-		</div>
 	</div><!-- End Breadcrumbs -->
-		
-	<div id="smalllinks">
-		<ul>
-		  <li class=""><a href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Basics</a></li>
-		  <li class="activeLink"><a href="/<?php echo PROJROOT;?>/studies/publications/<?php echo $study['Study']['id']?>">Publications</a></li>
-		  <li class=""><a href="/<?php echo PROJROOT;?>/studies/resources/<?php echo $study['Study']['id']?>">Resources</a></li>
-		</ul>
-		<div class="clr"><!--  --></div>
-	</div>
 </div>
 <div id="outer_wrapper">
 <div id="main_section">
 <div id="content">
 <h2><?php echo $study['Study']['title']?></h2>
 <h5 id="urn">urn:edrn:study:<?php echo $study['Study']['FHCRC_ID']?></h5>
-
+<div id="smalllinks">
+		<ul>
+		  <li class=""><a href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Basics</a></li>
+		  <li class="activeLink"><a href="/<?php echo PROJROOT;?>/studies/publications/<?php echo $study['Study']['id']?>">Publications</a></li>
+		  <li class=""><a href="/<?php echo PROJROOT;?>/studies/resources/<?php echo $study['Study']['id']?>">Resources</a></li>
+		</ul>
+		<div class="clr"><!--  --></div>
+</div>
 
 <h4 style="margin-bottom:0px;margin-left:20px;background-color: transparent;font-size: 18px;">Associated Publications
 <div class="editlink">
