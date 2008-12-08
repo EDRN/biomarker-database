@@ -2,42 +2,45 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<?php echo $html->css('frozen');?>
+<?php echo $html->css('edrn-informatics');?>
+<?php echo $html->css('bmdb-core.css');?>
+<?php echo $html->css('ajax-editor.css');?>
 <title>EDRN Biomarker Database: <?php echo $title_for_layout;?></title>
+<style type="text/css">
+	div#edrninformatics {
+		/* custom location for the background gradient */
+		background:url(/<?php echo PROJROOT?>/img/blackfade-syncd.jpg) scroll 0px 0px repeat-x;
+		background-color:#000;
+	}
+	
+	div#edrnlogo {
+		/* custom location for the NCI/EDRN logo */
+		background:url(/<?php echo PROJROOT?>/img/edrnlogo-bigger-red.gif) scroll -7px 1px no-repeat;
+	}
+	
+	div#smalllinks {
+		/* custom location for the background image */
+		background:url(/<?php echo PROJROOT?>/img/grayfade.gif) scroll left top repeat-x;
+	}
+</style>
 </head>
 <body>
 <div id="page">
-
-<div id="visual-portal-wrapper">
-
-<div id="portal-top">
-
-<div id="portal-header">
-<div>
-<div style="background-color: #b70003; text-align: center;">
-<table cellpadding="0" cellspacing="0">
-	<tr>
-		<td><a href="http://cancer.gov" class="link-plain"><img
-			src="http://edrn.jpl.nasa.gov/nci-logo.png" border="0" alt="NCI" /></a>
-		</td>
-
-		<td><a href="http://edrn.jpl.nasa.gov"><img
-			src="http://edrn.jpl.nasa.gov/edrn-banner.png" border="0" alt="EDRN" /></a>
-		</td>
-	</tr>
-</table>
+	<div id="edrninformatics">
+		<div id="edrnlogo"><!-- nci logo --></div>
+		<img src="/<?php echo PROJROOT?>/img/edrn_dna-bigger.jpg" style="height:55px;margin-top:-3px;margin-right:-5px;"/>
+		<h2 class="app-title">EDRN Biomarker Database</h2>
+		<div class="userdetails">
+			<?php if (isset($_SESSION['username'])) {
+				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
+				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
+			} else {
+				echo "Not Logged In. &nbsp; ";
+				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
+			}?>
+		</div>
+	</div>
+	<?php echo $content_for_layout;?>
 </div>
-</div>
-
-
-</div>
-
-
-</div>
-
-<div class="visualClear" id="clear-space-before-wrapper-table"><!-- --></div>
-</div>
-<?php echo $content_for_layout;?>
-
 </body>
 </html>

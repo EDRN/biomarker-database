@@ -6,6 +6,7 @@ class StudiesController extends AppController {
 	var $uses = 
 		array(
 			'Study',
+			'Biomarker',
 			'Publication',
 			'StudyResource'
 		);

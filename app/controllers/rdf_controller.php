@@ -78,6 +78,9 @@ class RdfController extends AppController {
 				}
 			}
 			
+			// Panel Details
+			// If the biomarker is a panel, show the members as a <bmdb:hasBiomarker>
+			// If the biomarker belongs to a panel, show a <bmdb:belongsToPanel>
 			// Organs
 			if (count($b['OrganData']) > 0) {
 				foreach ($b['OrganData'] as $bod) {

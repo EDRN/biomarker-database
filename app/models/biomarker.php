@@ -133,6 +133,13 @@ class Biomarker extends AppModel
 		return ($this->BiomarkerStudyData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2)));	
 	}
 	
+	public static function printor($value,$alt) {
+		if ($value == "") {
+			echo $alt;
+		} else {
+			echo $value;
+		}
+	}
 	
 	var $actsAs = 'ExtendAssociations';
 }
