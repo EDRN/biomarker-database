@@ -1,45 +1,22 @@
-<?php echo $html->css('frozenobject');?>
-<?php echo $html->css('eip');?>
-<?php echo $html->css('autocomplete');?>
-<?php echo $javascript->link('mootools-release-1.11');?>
-<?php echo $javascript->link('eip');?>
-<?php echo $javascript->link('autocomplete/Observer');?>
-<?php echo $javascript->link('autocomplete/Autocompleter');?>
-<?php echo $html->css('frozenbrowser');?>
-<?php 
-	function printor($value,$alt,$no_zero = false) {
-		if ($no_zero && $value == 0) {
-			echo $alt;
-			return;
-		}
+<?php
+	// Include required CSS and JavaScript 
+	echo $html->css('bmdb-objects');
+	echo $html->css('eip');
+	echo $javascript->link('mootools-release-1.11');
+	echo $javascript->link('eip');
 
-		if ($value == "") {
-			echo $alt;
-		} else {
-			echo $value;
-		}
-	}
-
+	echo $html->css('autocomplete');
+	echo $javascript->link('autocomplete/Observer');
+	echo $javascript->link('autocomplete/Autocompleter');
+	echo $html->css('bmdb-browser');
 ?>
-<?php echo $html->css('frozenbrowser');?>
 <div class="menu">
-	<div class="mainContent">
-		<h2 class="title">EDRN Biomarker Database</h2>
-	</div>
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
 	<a href="/<?php echo PROJROOT;?>/">Home</a> /
 	<a href="/<?php echo PROJROOT;?>/publications"> Publications</a> /
 	<?php echo $publication['Publication']['title']?>
-	<div class="userdetails">
-			<?php if (isset($_SESSION['username'])) {
-				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
-				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
-			} else {
-				echo "Not Logged In. &nbsp; ";
-				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
-			}?>
-	</div>
+
 	</div><!-- End Breadcrumbs -->
 
 </div>
