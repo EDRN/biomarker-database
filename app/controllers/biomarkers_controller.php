@@ -8,6 +8,7 @@ class BiomarkersController extends AppController {
 		array(
 			'Biomarker',
 			'BiomarkerName',
+			'Auditor',
 			'LdapUser',
 			'Organ',
 			'OrganData',
@@ -82,19 +83,22 @@ class BiomarkersController extends AppController {
 			$this->Biomarker->id = $data['id'];
 			$this->Biomarker->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
-
+			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		} else if ($data['object'] == "organ_data") {
 			$this->OrganData->id = $data['id'];
 			$this->OrganData->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
+			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		} else if ($data['object'] == "organ_study_data") {
 			$this->StudyData->id = $data['id'];
 			$this->StudyData->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
+			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		} else if ($data['object'] == "study_data") {
 			$this->BiomarkerStudyData->id = $data['id'];
 			$this->BiomarkerStudyData->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
+			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		}
 		echo ($output == "") 
 			? 'click to edit'
@@ -118,9 +122,9 @@ class BiomarkersController extends AppController {
 			if ($a['id'] == $alias['BiomarkerName']['id']) {
 				$this->BiomarkerName->id = $a['id'];
 				$this->BiomarkerName->saveField('isPrimary',1);
+				$this->Auditor->audit("set '{$alias['BiomarkerName']['name']}' as the Primary Name for biomarker #{$alias['Biomarker']['id']}.");		
 			}
 		}
-
 		$this->redirect("/biomarkers/view/{$alias['Biomarker']['id']}");
 	}
 	
@@ -131,6 +135,7 @@ class BiomarkersController extends AppController {
 			array('biomarker_id'=>$data['biomarker_id'],
 					      'name'=>$data['altname']));
 		$this->BiomarkerName->save();
+		$this->Auditor->audit("added '{$data['altname']}' as an alias for biomarker #{$data['biomarker_id']}. ");
 		$this->redirect("/biomarkers/view/{$data['biomarker_id']}");
 	}
 	
@@ -144,6 +149,7 @@ class BiomarkersController extends AppController {
 			$biomarker_id = $alias['Biomarker']['id'];
 			$this->BiomarkerName->id = $alias['BiomarkerName']['id'];
 			$this->BiomarkerName->delete();
+			$this->Auditor->audit("removed '{$alias['BiomarkerName']['name']}' as an alias for biomarker #{$biomarker_id}. ");
 			$this->redirect("/biomarkers/view/{$biomarker_id}");
 		}
 	}
@@ -477,7 +483,7 @@ class BiomarkersController extends AppController {
 				// Create an 'alias' and set isPrimary to 1 (true)
 				$this->BiomarkerName->create(array('biomarker_id'=>$id,'name'=>$data['name'],'isPrimary'=>1));
 				$this->BiomarkerName->save();
-
+				$this->Auditor->audit("created a new biomarker '{$data['name']}' with unique id '{$id}'.",Auditor::VERBOSITY_NORMAL,"biomarker",$id);
 				$this->redirect("/biomarkers/view/{$id}");
 				
 			} else {
@@ -492,6 +498,7 @@ class BiomarkersController extends AppController {
 		$this->checkSession("/biomarkers");
 		$this->Biomarker->id = $id;
 		$this->Biomarker->delete();
+		$this->Auditor->audit("deleted biomarker with unique id '{$id}'.",Auditor::VERBOSITY_NORMAL,"biomarker",$id);
 		$this->redirect("/biomarkers");
 	}
 	/******************************************************************
