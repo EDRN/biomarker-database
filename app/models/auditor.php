@@ -52,7 +52,6 @@ class Auditor extends AppModel
 		
 		
 	}
-	
-	
+
 }
 ?>
