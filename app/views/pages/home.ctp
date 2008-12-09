@@ -44,8 +44,8 @@
 		<h4>Latest Changes...</h4>
 		<ul style="list-style-type:square;color:#500003;">
 			<li><a href="/<?php echo PROJROOT;?>/auditors/weeklysummary">All activity this week</a></li>
-			<li><a href="#">Activity for a particular biomarker</a></li>
-			<li><a href="#">Activity for a particular user</a></li>
+			<li><span style="color:#aaa;">Activity for a particular biomarker</span></li>
+			<li><span style="color:#aaa;">Activity for a particular user</span></li>
 		</ul>
 	</div>
 </div>
