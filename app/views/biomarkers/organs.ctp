@@ -149,7 +149,7 @@
 		
 		
 		
-		<h3 style="position:relative;">Supporting Study Data
+		<h3 style="position:relative;margin-left:0px;">Supporting Study Data
 			<div class="editlink">
 				<span class="fakelink toggle:addstudydata">+ Add Study</span>
 			</div>
@@ -171,50 +171,19 @@
 			</div>
 		</div>
 		<div class="spacer">
-		<?php if (count($organData['StudyData']) > 0): ?>
-		<table class="associatedstudies" cellspacing="0" cellpadding="0">
-		  <tr><th>Study Title</th><th>Sensitivity</th><th>Specificity</th><th>N.P.V.</th><th>P.P.V.</th><th>Remove</th></tr>
-		<?php endif;?>
 		<?php foreach ($organData['StudyData'] as $study):?>
-		<?php
-			/*
-			 * Calculate NPV/PPV if Sens/Spec/Prevalence data is available
-			 * PPV = (Sens. x Prev.)/[Sens. x Prev. + (1-Spec.) x (1-Prev.)]
-			 * NPV = [Spec. x (1-Prev.)]/[(1-Sens.) x Prev. + Spec. x (1-Prev.)]
-			 * where
-			 *
-			 * Sens. = Sensitivity
-			 * Spec. = Specificity
-			 * Prev. = Prevalence
-			*/
-			$sens = $study['sensitivity'] / 100;
-			$spec = $study['specificity'] / 100;
-			$prev = $study['prevalence'];
-
-			if ($sens > 0 && $spec > 0 && $prev > 0) {
-				$ppv = (round(($sens * $prev)/($sens * $prev + (1-$spec) * (1-$prev)),2) * 100) . '%';
-				$npv = (round(($spec * (1-$prev))/((1-$sens)*$prev + $spec * (1-$prev)),2) * 100) . '%';
-			} else {
-				$ppv = 'n/a';
-				$npv = 'n/a';
-			}
-		?>
-			<tr>
-			  <td style="width:350px;"><strong><span class="detailslink toggle:studydetail<?php echo $study['id']?>"><?php echo $study['Study']['title']?></span></strong></td>
-			  <td style="text-align:center;"><em><span id="sensitivity<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:sensitivity"><?php echo $study['sensitivity']?></span></em>%</td>
-			  <td style="text-align:center;"><em><span id="specificity<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:specificity"><?php echo $study['specificity']?></span></em>%</td>
-			  <td style="text-align:center;"><em><?php echo $npv;?></em></td>
-			  <td style="text-align:center;"><em><?php echo $ppv;?></em></td>
-			  <td style="font-size:80%;text-align:center;"><a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;" onclick="return confirm('This action can not be undone. Continue?')">x Remove Association</a></td>
-			</tr>
-			<tr id="studydetail<?php echo $study['id']?>" class="studydetail" style="display:none;border-bottom:solid 6px #ccc;background-color:#fff;">
-			  <td colspan="7" style="border:0border-bottom:solid 1px #ccc;padding-left:25px;">
-				<div >
+		
+		<h4 style="background-color:transparent;margin-bottom:0px;border-bottom:solid 1px #ccc;padding-left:0px;"><?php echo $study['Study']['title']?></h4>
+		<div style="position:relative;margin-left:30px;background-color:#eee;margin-top:0px;padding-left:15px;">
+		<div style="position:absolute;top:-16px;right:0px;font-size:90%;">
+			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;" onclick="return confirm('This action can not be undone. Continue?')">x Remove Association</a>
+		</div>
+		<!-- start study  -->
 					<div class="lefttext" style="margin-right:16px;">
 						<span id="description" class="textarea"><?php Biomarker::printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
 					</div>
 					<!-- RELEVANT STUDY DATA -->
-					<div class="rightcol" style="margin-left:0px;margin-top:0;">
+					<div class="rightcol" style="margin-left:0px;margin-top:0;border-left:solid 1px #ccc;border-bottom:solid 1px #ccc;padding-bottom:5px;">
 						<h4 style="border-bottom:dotted 1px #888;background-color:#ddd;">Study Parameters:</h4>
 						<table cellspacing="0" cellpadding="3" style="padding-top:5px;background-color:#eee;">
 							<tr>
@@ -227,14 +196,83 @@
 							</tr>
 						</table>
 						<br/>
-						<a style="text-decoration:underline;font-size:90%;" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
+						<a style="text-decoration:underline;font-size:90%;padding-left:5px;" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
 					</div>
 					<div class="clr"><!-- clear --></div>
 					<br/>
-					<h5 style="position:relative;border-bottom:solid 1px #999;">Sensitivity / Specificity Details</h5>
+					<h5 style="position:relative;border-bottom:solid 1px #999;">Sensitivity / Specificity Information
+						<div class="editlink" style="font-size:100%;margin-top:-8px;">
+							<span class="fakelink toggle:addsensspec<?php echo $study['id']?>">+ Add Details</span>
+						</div>
+					</h5>
+					<div id="addsensspec<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">
+						<h5 style="margin-bottom:5px;margin-left:1px;">Add Sensitivity / Specificity Details:</h5>
+						<form style="color:#555;" action="/<?php echo PROJROOT;?>/biomarkers/addsensspec" method="POST">
+							<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
+							<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
+							<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
+							<input type="hidden" name="study_id" value="<?php echo $study['Study']['id']?>"/>
+							Sensitivity (%): <input type="text" name="sensitivity" style="width:50px;"/>&nbsp;&nbsp;
+							Specificity (%): <input type="text" name="specificity" style="width:50px;"/>&nbsp;&nbsp;
+							Prevalence  (0 - 1.0):  <input type="text" name="prevalence"  style="width:50px;"/>&nbsp;
+							<br/>
+							Details: <br/><textarea name="sensspec_details" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
+							<input type="submit" value="Add" name="add_details" style="margin-bottom:3px;"/>
+							<input type="button" value="Cancel" style="margin-bottom:3px;" class="cancelbutton toggle:addsensspec<?php echo $study['id']?>"/>
+						</form>
+					</div>
 					<br/>
-					<div style="padding-left:20px;font-size:90%;">
-						<span id="sensspecdetail<?php echo $study['id']?>" class="editable textarea object:organ_study_data id:<?php echo $study['id']?> attr:sensspecdetail"><?php Biomarker::printor($study['sensspecdetail'],'No Details Provided Yet. Click here to add.');?></span>
+					<div style="padding-left:0px;font-size:90%;">
+						<!-- display sens/spec details here -->
+						<?php if (count($study['Sensitivity']) > 0):?>
+						<table class="associatedstudies" style="width:100%;">
+						<tbody>
+							<tr><th style="text-align:left;">Notes</th><th>Sensitivity</th><th>Specificity</th><th>Prevalence</th><th>NPV</th><th>PPV</th><th>Delete</th></tr>
+						<?php endif;?>
+						<?php foreach ($study['Sensitivity'] as $s):?>
+						<?php
+						/*
+						 * Calculate NPV/PPV if Sens/Spec/Prevalence data is available
+						 * PPV = (Sens. x Prev.)/[Sens. x Prev. + (1-Spec.) x (1-Prev.)]
+						 * NPV = [Spec. x (1-Prev.)]/[(1-Sens.) x Prev. + Spec. x (1-Prev.)]
+						 * where
+						 *
+						 * Sens. = Sensitivity
+						 * Spec. = Specificity
+						 * Prev. = Prevalence
+						*/
+						$sens = $s['sensitivity'] / 100;
+						$spec = $s['specificity'] / 100;
+						$prev = $s['prevalence'];
+
+						if ($sens > 0 && $spec > 0 && $prev > 0) {
+							$ppv = (round(($sens * $prev)/($sens * $prev + (1-$spec) * (1-$prev)),2) * 100) . '%';
+							$npv = (round(($spec * (1-$prev))/((1-$sens)*$prev + $spec * (1-$prev)),2) * 100) . '%';
+						} else {
+							$ppv = 'n/a';
+							$npv = 'n/a';
+						}
+						?>
+							<tr><td><?php echo $s['notes']?></td>
+								<td style="text-align:center;"><?php echo $s['sensitivity'];?>%</td>
+								<td style="text-align:center;"><?php echo $s['specificity'];?>%</td>
+								<td style="text-align:center;"><?php echo $s['prevalence'];?></td>
+								<td style="text-align:center;"><?php echo $npv;?></td>
+								<td style="text-align:center;"><?php echo $ppv;?></td>
+								<td style="text-align:center;">
+									<a href="/<?php echo PROJROOT;?>/biomarkers/removesensspec/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $s['id']?>" 
+										style="color:#d55;" 
+										onclick="return confirm('This action can not be undone. Continue?')">
+										x
+									</a>
+								</td>
+							</tr>
+						
+						<?php endforeach;?>
+						<?php if (count($study['Sensitivity']) > 0):?>
+						</tbody>
+						</table>
+						<?php endif;?>
 					</div>
 					<br/>
 					<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications
@@ -313,12 +351,10 @@
 					</ul>
 					<br/> 
 				</div>
-			  </td>
-			</tr>
+		<!-- end study -->
+		
 		<?php endforeach;?>
-		<?php if (count($organData['StudyData']) > 0): ?>
-			</table>
-		<?php endif;?>
+		<?php if (count($organData['StudyData']) > 0): ?> <?php endif;?>
 		<br/>
 		</div><!-- end spacer -->
 		<h3 style="position:relative;margin-bottom:0px;">Supporting Publication Data &nbsp;(Biomarker-Organ level)

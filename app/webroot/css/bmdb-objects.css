@@ -233,3 +233,12 @@ table.associatedstudies th {
 	padding:5px;	
 }
 
+div.displaystudy {
+	position:relative;
+	margin-left:8px;
+	background-color:#eee;
+	margin-top:0px;
+	padding-left:25px;
+	border-top:solid 1px #ccc;	
+}
+
