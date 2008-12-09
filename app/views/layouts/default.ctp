@@ -15,7 +15,7 @@
 	
 	div#edrnlogo {
 		/* custom location for the NCI/EDRN logo */
-		background:url(/<?php echo PROJROOT?>/img/edrnlogo-bigger-red.gif) scroll -7px 1px no-repeat;
+		background:url(/<?php echo PROJROOT?>/img/edrnlogo-bigger-red2.gif) scroll -2px 1px no-repeat;
 	}
 	
 	div#smalllinks {
@@ -28,7 +28,7 @@
 <div id="page">
 	<div id="edrninformatics">
 		<div id="edrnlogo"><!-- nci logo --></div>
-		<img src="/<?php echo PROJROOT?>/img/edrn_dna-bigger.jpg" style="height:55px;margin-top:-3px;margin-right:-5px;"/>
+		<img src="/<?php echo PROJROOT?>/img/edrn_dna-bigger.jpg" style="height:65px;margin-top:-3px;margin-right:-5px;"/>
 		<h2 class="app-title">EDRN Biomarker Database</h2>
 		<div class="userdetails">
 			<?php if (isset($_SESSION['username'])) {
@@ -41,6 +41,12 @@
 		</div>
 	</div>
 	<?php echo $content_for_layout;?>
+</div>
+<div id="footer">
+	A Service of the National Cancer Institute<br/><br/>
+	<a href="http://hhs.gov" alt="Department of Health and Human Services"><img src="/<?php echo PROJROOT?>/img/footer_hhs.gif"/></a>
+	<a href="http://nih.gov"><img src="/<?php echo PROJROOT?>/img/footer_nih.gif" style="margin-left:12px;"/></a>
+	<a href="http://usa.gov"><img src="/<?php echo PROJROOT?>/img/footer_usagov.gif"/></a>
 </div>
 </body>
 </html>
