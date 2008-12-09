@@ -46,7 +46,16 @@ class BiomarkerStudyData extends AppModel {
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
 		),
-	
+		/*
+		 * A 'BiomarkerStudyData' object HAS AND BELONGS TO MANY 'Sensitivity' objects
+		 */
+		'Sensitivity' => array(
+			'className' => 'Sensitivity',
+			'join_table'=> 'biomarker_study_datas_sensitivities',
+			'foreignKey'=> 'biomarker_study_data_id',
+			'associationForeignKey'=>'sensitivity_id',
+			'unique'=>true
+		)
 	);
 	
 	var $actsAs = 'ExtendAssociations'; 

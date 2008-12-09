@@ -46,6 +46,16 @@ class StudyData extends AppModel {
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
 		),
+		/*
+		 * A 'StudyData' object HAS AND BELONGS TO MANY 'Sensitivity' objects
+		 */
+		'Sensitivity' => array(
+			'className' => 'Sensitivity',
+			'join_table'=> 'sensitivities_study_datas',
+			'foreignKey'=> 'study_data_id',
+			'associationForeignKey'=>'sensitivity_id',
+			'unique'=>true
+		)
 	
 	);
 	

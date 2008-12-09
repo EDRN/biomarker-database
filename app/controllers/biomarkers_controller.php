@@ -19,7 +19,8 @@ class BiomarkersController extends AppController {
 			'StudyDataResource',
 			'BiomarkerStudyDataResource',
 			'OrganDataResource',
-			'BiomarkerResource'
+			'BiomarkerResource',
+			'Sensitivity'
 		);
 
 	/******************************************************************
@@ -260,6 +261,63 @@ class BiomarkersController extends AppController {
 		$this->StudyData->delete();
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 	}
+	
+	// -- Add BiomarkerOrganStudyData Sensitivity Details--
+	function addSensSpec() {
+		$data =&$this->params['form'];
+		// Create the Sensitivity object
+		$this->Sensitivity->create(
+			array("study_id" =>$data['study_id'],
+				"sensitivity"=>$data['sensitivity'],
+				"specificity"=>$data['specificity'],
+				"prevalence" =>$data['prevalence'],
+				"notes"=>$data['sensspec_details'])
+			);
+		$this->Sensitivity->save();
+		$sensitivity_id = $this->Sensitivity->getLastInsertId();
+		
+		// Create the HABTM link
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
+		$this->StudyData->habtmAdd('Sensitivity',$data['study_data_id'],$sensitivity_id);
+		// Redirect
+		$this->redirect("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
+	}
+	
+	// -- Remove BiomarkerOrganStudyData Sensitivity Details--
+	function removeSensSpec($biomarker_id,$organ_data_id,$study_data_id,$sensitivity_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
+		$this->StudyData->habtmDelete("Sensitivity",$study_data_id,$sensitivity_id);
+		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
+	}
+	
+	// -- Add BiomarkerStudyData Sensitivity Details--
+	function addSensSpec2() {
+		$data =&$this->params['form'];
+		// Create the Sensitivity object
+		$this->Sensitivity->create(
+			array("study_id" =>$data['study_id'],
+				"sensitivity"=>$data['sensitivity'],
+				"specificity"=>$data['specificity'],
+				"prevalence" =>$data['prevalence'],
+				"notes"=>$data['sensspec_details'])
+			);
+		$this->Sensitivity->save();
+		$sensitivity_id = $this->Sensitivity->getLastInsertId();
+		
+		// Create the HABTM link
+		$this->checkSession("/biomarkers/studies/{$data['biomarker_id']}");
+		$this->BiomarkerStudyData->habtmAdd('Sensitivity',$data['study_data_id'],$sensitivity_id);
+		// Redirect
+		$this->redirect("/biomarkers/studies/{$data['biomarker_id']}");
+	}
+	
+	// -- Remove BiomarkerStudyData Sensitivity Details--
+	function removeSensSpec2($biomarker_id,$study_data_id,$sensitivity_id) {
+		$this->checkSession("/biomarkers/studies/{$biomarker_id}");
+		$this->BiomarkerStudyData->habtmDelete("Sensitivity",$study_data_id,$sensitivity_id);
+		$this->redirect("/biomarkers/studies/{$biomarker_id}");
+	}
+	
 	
 	function addStudyDataPub() {
 		$data = &$this->params['form'];
