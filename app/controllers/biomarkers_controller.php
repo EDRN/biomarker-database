@@ -83,22 +83,22 @@ class BiomarkersController extends AppController {
 			$this->Biomarker->id = $data['id'];
 			$this->Biomarker->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
-			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
+			$this->Auditor->audit("set '{$data['attr']}' to '{$data[$data['attr']]}' for marker ".$this->Biomarker->getDefaultNameById($data['id']).".");
 		} else if ($data['object'] == "organ_data") {
 			$this->OrganData->id = $data['id'];
 			$this->OrganData->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
-			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
+			$this->Auditor->audit("set '{$data['attr']}' to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		} else if ($data['object'] == "organ_study_data") {
 			$this->StudyData->id = $data['id'];
 			$this->StudyData->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
-			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
+			$this->Auditor->audit("set '{$data['attr']}' to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		} else if ($data['object'] == "study_data") {
 			$this->BiomarkerStudyData->id = $data['id'];
 			$this->BiomarkerStudyData->saveField($data['attr'],$data[$data['attr']]);
 			$output = $data[$data['attr']];
-			$this->Auditor->audit("changed the '{$data['object']}::{$data['attr']}' field to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
+			$this->Auditor->audit("set '{$data['attr']}' to '{$data[$data['attr']]}' for {$data['object']} #{$data['id']}. ");
 		}
 		echo ($output == "") 
 			? 'click to edit'
@@ -135,7 +135,7 @@ class BiomarkersController extends AppController {
 			array('biomarker_id'=>$data['biomarker_id'],
 					      'name'=>$data['altname']));
 		$this->BiomarkerName->save();
-		$this->Auditor->audit("added '{$data['altname']}' as an alias for biomarker #{$data['biomarker_id']}. ");
+		$this->Auditor->audit("added '{$data['altname']}' as an alias for " . $this->Biomarker->getDefaultNameById($data['biomarker_id']).".");
 		$this->redirect("/biomarkers/view/{$data['biomarker_id']}");
 	}
 	
@@ -149,7 +149,7 @@ class BiomarkersController extends AppController {
 			$biomarker_id = $alias['Biomarker']['id'];
 			$this->BiomarkerName->id = $alias['BiomarkerName']['id'];
 			$this->BiomarkerName->delete();
-			$this->Auditor->audit("removed '{$alias['BiomarkerName']['name']}' as an alias for biomarker #{$biomarker_id}. ");
+			$this->Auditor->audit("removed '{$alias['BiomarkerName']['name']}' as an alias for " . $this->Biomarker->getDefaultNameById($data['biomarker_id']).".");
 			$this->redirect("/biomarkers/view/{$biomarker_id}");
 		}
 	}
