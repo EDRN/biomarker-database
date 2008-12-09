@@ -19,7 +19,7 @@
 <div id="content">
 <h2>Latest Database Changes...</h2>
 <div style="color:#555;font-size:90%;padding-left:5px;padding-top:15px;">
-	The following table lists the latest changes to the database beginning one week ago through today, <?php echo date("M. d, Y");?>.
+	The following table contains a log of the latest changes made to the database...
 </div>
 <div>
 
