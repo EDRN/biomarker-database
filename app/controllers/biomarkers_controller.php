@@ -150,7 +150,7 @@ class BiomarkersController extends AppController {
 			$biomarker_id = $alias['Biomarker']['id'];
 			$this->BiomarkerName->id = $alias['BiomarkerName']['id'];
 			$this->BiomarkerName->delete();
-			$this->Auditor->audit("removed '{$alias['BiomarkerName']['name']}' as an alias for " . $this->Biomarker->getDefaultNameById($data['biomarker_id']).".");
+			$this->Auditor->audit("removed '{$alias['BiomarkerName']['name']}' as an alias for biomarker #{$biomarker_id}.");
 			$this->redirect("/biomarkers/view/{$biomarker_id}");
 		}
 	}
