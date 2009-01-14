@@ -37,7 +37,7 @@ class RdfController extends AppController {
 		
 		$this->printRdfStart();
 
-		$biomarkers = $this->Biomarker->findAll();
+		$biomarkers = $this->Biomarker->findAll(null,null,null,null,1,2);
 		foreach ($biomarkers as $b) {
 			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$b['Biomarker']['id']}";
 			$biomarkerName = Biomarker::getDefaultName($b);
@@ -89,9 +89,31 @@ class RdfController extends AppController {
 			}
 			// Studies
 			if (count($b['BiomarkerStudyData']) > 0) {
-				foreach ($b['BiomarkerStudyData'] as $study) {
-					echo "    <bmdb:referencedInStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$study['id']}\"/>\r\n";
+				echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
+				foreach ($b['BiomarkerStudyData'] as $studyData) {
+					$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
+					echo "        <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
+					echo "          <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['study_id']}\"/>\r\n";
+					
+					// Sensitivity/Specificity Information
+					if (count($studyData['Sensitivity']) > 0) {
+						echo "          <bmdb:SensitivityDatas>\r\n";
+						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
+							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
+							echo "            <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
+							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
+							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
+							echo "              <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
+							echo "              <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
+							echo "              <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
+							echo "            </bmdb:SensitivityData>\r\n";
+						}
+						echo "          </bmdb:SensitivityDatas>\r\n";
+					}
 				}
+				echo "    </bmdb:hasBiomarkerStudyDatas>\r\n";
+				
 			} 
 			
 			// Publications
@@ -157,10 +179,6 @@ class RdfController extends AppController {
 					echo "    <bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 					echo "        <bmdb:BiomarkerOrganStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}#{$studyData['id']}")."\">\r\n";
 					echo "          <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['Study']['id']}\"/>\r\n";
-					echo "          <bmdb:Sensitivity>{$studyData['sensitivity']}</bmdb:Sensitivity>\r\n";
-					echo "          <bmdb:Specificity>{$studyData['specificity']}</bmdb:Specificity>\r\n";
-					echo "          <bmdb:NPV>{$studyData['npv']}</bmdb:NPV>\r\n";
-					echo "          <bmdb:PPV>{$studyData['ppv']}</bmdb:PPV>\r\n";
 					
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
@@ -178,9 +196,6 @@ class RdfController extends AppController {
 						}
 						echo "          </bmdb:SensitivityDatas>\r\n";
 					}
-					
-
-					
 					
 					// Publications
 					if (count($studyData['Publication']) > 0) {
@@ -399,7 +414,7 @@ END;
 	}
 	
 	private function calculatePV($sensitivity,$specificity,$prevalence=0) {
-		if ($prev == 0) {
+		if ($prevalence == 0) {
 			return array(
 				"NPV"=>'',
 				"PPV"=>'');
@@ -415,7 +430,7 @@ END;
 		 * Prev. = Prevalence
 		*/
 		$sens = $sensitivity / 100;
-		$spec = $specitivity / 100;
+		$spec = $specificity / 100;
 		$prev = $prevalence;
 	
 		if ($sens > 0 && $spec > 0 && $prev > 0) {
