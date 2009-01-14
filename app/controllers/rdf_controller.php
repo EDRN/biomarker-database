@@ -166,40 +166,20 @@ class RdfController extends AppController {
 					if (count($studyData['Sensitivity']) > 0) {
 						echo "          <bmdb:SensitivityDatas>\r\n";
 						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
-							/*
-							 * Calculate NPV/PPV if Sens/Spec/Prevalence data is available
-							 * PPV = (Sens. x Prev.)/[Sens. x Prev. + (1-Spec.) x (1-Prev.)]
-							 * NPV = [Spec. x (1-Prev.)]/[(1-Sens.) x Prev. + Spec. x (1-Prev.)]
-							 * where
-							 *
-							 * Sens. = Sensitivity
-							 * Spec. = Specificity
-							 * Prev. = Prevalence
-							*/
-							$sens = $s['sensitivity'] / 100;
-							$spec = $s['specificity'] / 100;
-							$prev = $s['prevalence'];
-	
-							if ($sens > 0 && $spec > 0 && $prev > 0) {
-								$ppv = (round(($sens * $prev)/($sens * $prev + (1-$spec) * (1-$prev)),2) * 100);
-								$npv = (round(($spec * (1-$prev))/((1-$sens)*$prev + $spec * (1-$prev)),2) * 100);
-							} else {
-								$ppv = '';
-								$npv = '';
-							}
+							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
 							echo "            <bmdb:SensitivityData rdf:about=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}\">\r\n";
 							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
 							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
 							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
 							echo "              <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
-							echo "              <bmdb:NPV>{$npv}</bmdb:NPV>\r\n";
-							echo "              <bmdb:PPV>{$ppv}</bmdb:PPV>\r\n";
+							echo "              <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
+							echo "              <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
 							echo "            </bmdb:SensitivityData>\r\n";
 						}
 						echo "          </bmdb:SensitivityDatas>\r\n";
 					}
 					
-					
+
 					
 					
 					// Publications
@@ -416,6 +396,39 @@ END;
 	
 	private function printRdfEnd() {
 		echo "</rdf:RDF>\r\n";
+	}
+	
+	private function calculatePV($sensitivity,$specificity,$prevalence=0) {
+		if ($prev == 0) {
+			return array(
+				"NPV"=>'',
+				"PPV"=>'');
+		}
+		/*
+		 * Calculate NPV/PPV from Sens/Spec/Prevalence data 
+		 * PPV = (Sens. x Prev.)/[Sens. x Prev. + (1-Spec.) x (1-Prev.)]
+		 * NPV = [Spec. x (1-Prev.)]/[(1-Sens.) x Prev. + Spec. x (1-Prev.)]
+		 * where
+		 *
+		 * Sens. = Sensitivity
+		 * Spec. = Specificity
+		 * Prev. = Prevalence
+		*/
+		$sens = $sensitivity / 100;
+		$spec = $specitivity / 100;
+		$prev = $prevalence;
+	
+		if ($sens > 0 && $spec > 0 && $prev > 0) {
+			$ppv = (round(($sens * $prev)/($sens * $prev + (1-$spec) * (1-$prev)),2) * 100);
+			$npv = (round(($spec * (1-$prev))/((1-$sens)*$prev + $spec * (1-$prev)),2) * 100);
+		} else {
+			$ppv = '';
+			$npv = '';
+		}
+		
+		return array (
+			"NPV" => $npv,
+			"PPV" => $ppv);
 	}
 }
 ?>
