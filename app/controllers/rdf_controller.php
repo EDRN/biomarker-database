@@ -127,6 +127,12 @@ class RdfController extends AppController {
 			echo "    <bmdb:URN>urn:edrn:bmdb:biomarkerorgan:{$bod['OrganData']['id']}</bmdb:URN>\r\n";
 			echo "    <bmdb:Biomarker rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$bod['Biomarker']['id']}\"/>\r\n";
 			echo "    <bmdb:Organ>{$bod['Organ']['name']}</bmdb:Organ>\r\n";
+			/*
+			 * Note:
+			 * The following is no longer applicable. This information has been superceded by 
+			 * BiomarkerOrganStudyData sensitivity values.
+			 * 
+			 *
 			echo "    <bmdb:SensitivityMin>{$bod['OrganData']['sensitivity_min']}</bmdb:SensitivityMin>\r\n";
 			echo "    <bmdb:SensitivityMax>{$bod['OrganData']['sensitivity_max']}</bmdb:SensitivityMax>\r\n";
 			echo "    <bmdb:SensitivityComment>".$this->escapeEntities($bod['OrganData']['sensitivity_comment'])."</bmdb:SensitivityComment>\r\n";
@@ -140,6 +146,8 @@ class RdfController extends AppController {
 			echo "    <bmdb:PPVMin>{$bod['OrganData']['ppv_min']}</bmdb:PPVMin>\r\n";
 			echo "    <bmdb:PPVMax>{$bod['OrganData']['ppv_max']}</bmdb:PPVMax>\r\n";
 			echo "    <bmdb:PPVComment>".$this->escapeEntities($bod['OrganData']['ppv_comment'])."</bmdb:PPVComment>\r\n";
+			*
+			*/
 			echo "    <bmdb:Phase>{$bod['OrganData']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:QAState>{$bod['OrganData']['qastate']}</bmdb:QAState>\r\n";
 		
@@ -153,6 +161,46 @@ class RdfController extends AppController {
 					echo "          <bmdb:Specificity>{$studyData['specificity']}</bmdb:Specificity>\r\n";
 					echo "          <bmdb:NPV>{$studyData['npv']}</bmdb:NPV>\r\n";
 					echo "          <bmdb:PPV>{$studyData['ppv']}</bmdb:PPV>\r\n";
+					
+					// Sensitivity/Specificity Information
+					if (count($studyData['Sensitivity']) > 0) {
+						echo "          <bmdb:SensitivityDatas>\r\n";
+						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
+							/*
+							 * Calculate NPV/PPV if Sens/Spec/Prevalence data is available
+							 * PPV = (Sens. x Prev.)/[Sens. x Prev. + (1-Spec.) x (1-Prev.)]
+							 * NPV = [Spec. x (1-Prev.)]/[(1-Sens.) x Prev. + Spec. x (1-Prev.)]
+							 * where
+							 *
+							 * Sens. = Sensitivity
+							 * Spec. = Specificity
+							 * Prev. = Prevalence
+							*/
+							$sens = $s['sensitivity'] / 100;
+							$spec = $s['specificity'] / 100;
+							$prev = $s['prevalence'];
+	
+							if ($sens > 0 && $spec > 0 && $prev > 0) {
+								$ppv = (round(($sens * $prev)/($sens * $prev + (1-$spec) * (1-$prev)),2) * 100);
+								$npv = (round(($spec * (1-$prev))/((1-$sens)*$prev + $spec * (1-$prev)),2) * 100);
+							} else {
+								$ppv = '';
+								$npv = '';
+							}
+							echo "            <bmdb:SensitivityData rdf:about=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}\">\r\n";
+							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
+							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
+							echo "              <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
+							echo "              <bmdb:NPV>{$npv}</bmdb:NPV>\r\n";
+							echo "              <bmdb:PPV>{$ppv}</bmdb:PPV>\r\n";
+							echo "            </bmdb:SensitivityData>\r\n";
+						}
+						echo "          </bmdb:SensitivityDatas>\r\n";
+					}
+					
+					
+					
 					
 					// Publications
 					if (count($studyData['Publication']) > 0) {
