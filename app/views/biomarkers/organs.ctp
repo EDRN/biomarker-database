@@ -59,7 +59,8 @@
 
 <h4 class="organdatablockheader" style="background-color:transparent;font-size:18px;">Associated 
 		<div class="editlink">
-			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>" style="color:#d55;">x Delete</a>
+			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>" style="color:#d55;">x Delete</a>&nbsp;| 
+			<a href="/<?php echo PROJROOT;?>/acls/edit/biomarkerorgan/<?php echo $organData['OrganData']['id']?>/<?php echo $biomarker['Biomarker']['id']?>">Set Security <span style="color:green;font-weight:bold;">(BETA)</span></a>
 		</div>
 		<?php echo $organData['Organ']['name']?> Data:
 	</h4>

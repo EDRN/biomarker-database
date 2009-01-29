@@ -174,7 +174,7 @@ a.removealias {
 	color:#c44;	
 }
 
-div#panelSelection {
+div#panelSelection, div#groupSelection {
 	position:relative;
 	width:96%;
 	margin-top:15px;
@@ -183,19 +183,19 @@ div#panelSelection {
 	border:solid 2px #ccc;
 	background-color:#f4f4f4;
 }
-div#panelSelection select {
+div#panelSelection select, div#groupSelection select {
 	border:solid 1px #ccc;
 	width:47%;
 	float:left;
 	margin:5px;	
 }
-div#panelSelectionButtons {
+div#panelSelectionButtons, div#groupSelectionButtons {
 	margin:5px;
 	width:90%;
 	text-align: center;	
 }
 div#panelSelectionButtons input[type=button],
-	div#panelSelectionButtons input[type=submit] {
+	div#panelSelectionButtons input[type=submit], {
 	border:solid 1px #ccc;	
 }
 

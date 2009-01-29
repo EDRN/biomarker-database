@@ -47,5 +47,9 @@
 			<li><span style="color:#aaa;">Activity for a particular biomarker</span></li>
 			<li><span style="color:#aaa;">Activity for a particular user</span></li>
 		</ul>
+		<h4>Security...</h4>
+		<ul style="list-style-type:square;color:#500003;">
+			<li><a href="/<?php echo PROJROOT;?>/acls/manage">Bulk manage data security settings</a></li>
+		</ul>
 	</div>
 </div>
