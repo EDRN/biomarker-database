@@ -81,6 +81,14 @@ class RdfController extends AppController {
 			// Panel Details
 			// If the biomarker is a panel, show the members as a <bmdb:hasBiomarker>
 			// If the biomarker belongs to a panel, show a <bmdb:belongsToPanel>
+
+			// Access Control / Security
+			// Display the LDAP groups that should have access to this data
+			$groups = $this->Biomarker->readACL($b['Biomarker']['id']);
+			foreach ($groups as $group) {
+				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
+			}
+			
 			// Organs
 			if (count($b['OrganData']) > 0) {
 				foreach ($b['OrganData'] as $bod) {
@@ -92,26 +100,26 @@ class RdfController extends AppController {
 				echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
 				foreach ($b['BiomarkerStudyData'] as $studyData) {
 					$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
-					echo "      <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
-					echo "        <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['study_id']}\"/>\r\n";
+					echo "        <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
+					echo "          <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['study_id']}\"/>\r\n";
 					
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
-						echo "      <bmdb:SensitivityDatas>\r\n";
+						echo "          <bmdb:SensitivityDatas>\r\n";
 						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
 							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
-							echo "        <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
-							echo "          <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
-							echo "          <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
-							echo "          <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
-							echo "          <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
-							echo "          <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
-							echo "          <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
-							echo "        </bmdb:SensitivityData>\r\n";
+							echo "            <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
+							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
+							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
+							echo "              <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
+							echo "              <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
+							echo "              <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
+							echo "            </bmdb:SensitivityData>\r\n";
 						}
-						echo "      </bmdb:SensitivityDatas>\r\n";
+						echo "          </bmdb:SensitivityDatas>\r\n";
 					}
-					echo "      </bmdb:BiomarkerStudyData>\r\n";
+					echo "        </bmdb:BiomarkerStudyData>\r\n";
 				}
 				echo "    </bmdb:hasBiomarkerStudyDatas>\r\n";
 				
@@ -173,6 +181,13 @@ class RdfController extends AppController {
 			*/
 			echo "    <bmdb:Phase>{$bod['OrganData']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:QAState>{$bod['OrganData']['qastate']}</bmdb:QAState>\r\n";
+			
+			// Access Control / Security
+			// Display the LDAP groups that should have access to this data
+			$groups = $this->OrganData->readACL($bod['OrganData']['id']);
+			foreach ($groups as $group) {
+				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
+			}
 		
 			// Studies
 			if (count($bod['StudyData']) > 0) {
