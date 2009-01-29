@@ -85,6 +85,12 @@ class Biomarker extends AppModel
 		return $result;
 	}
 	
+	public function readACL($id) {
+		$q = "SELECT * FROM `acl` WHERE `objectType`='Biomarker' AND `objectId`='{$id}' ";
+		return $this->query($q);
+		
+	}
+	
 	public static function getDefaultName($biomarker) {
 		/* what is the current default name (out of all the aliases) for this marker */
 		foreach ($biomarker['BiomarkerName'] as $name) {

@@ -52,5 +52,10 @@ class OrganData extends AppModel
 	
 	var $actsAs = 'ExtendAssociations';
 	
+	public function readACL($id) {
+		$q = "SELECT * FROM `acl` WHERE `objectType`='biomarkerorgan' AND `objectId`='{$id}' ";
+		return $this->query($q);	
+	}
+	
 }
 ?>
