@@ -32,6 +32,20 @@ class RdfController extends AppController {
 			."</ul> to your query");
 	}
 	
+	/*
+	 * Function: getResourceBase
+	 * This function determines the host name to use as the base for all rdf::resource URLs.
+	 * Optionally, if $bIncludeProjRoot is true, the value of the constant PROJROOT is
+	 * appended to the end.
+	 * 
+	 */
+	private function getResourceBase($bIncludeProjRoot = true) {
+		return strip_tags($_SERVER['HTTP_HOST']) . (($bIncludeProjRoot) 
+				? "/".PROJROOT
+				: ""
+				);
+	}
+	
 	function biomarkers() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		
@@ -39,7 +53,7 @@ class RdfController extends AppController {
 
 		$biomarkers = $this->Biomarker->findAll(null,null,null,null,1,2);
 		foreach ($biomarkers as $b) {
-			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$b['Biomarker']['id']}";
+			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/view/{$b['Biomarker']['id']}";
 			$biomarkerName = Biomarker::getDefaultName($b);
 			// Basics
 			echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
@@ -66,7 +80,7 @@ class RdfController extends AppController {
 			// Panel members
 			if ($b['Biomarker']['isPanel']) {
 				foreach ($b['Panel'] as $member) {
-					echo "    <bmdb:hasBiomarker rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$member['id']}\"/>\r\n";
+					echo "    <bmdb:hasBiomarker rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$member['id']}\"/>\r\n";
 				}
 			}
 			
@@ -74,7 +88,7 @@ class RdfController extends AppController {
 			$members = $this->Biomarker->getPanelMembership($b['Biomarker']['id']);
 			if (count($members) > 0) {
 				foreach ($members as $m) {
-					echo "    <bmdb:memberOfPanel rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$m['id']}\"/>\r\n";
+					echo "    <bmdb:memberOfPanel rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$m['id']}\"/>\r\n";
 				}
 			}
 			
@@ -86,22 +100,22 @@ class RdfController extends AppController {
 			// Display the LDAP groups that should have access to this data
 			$groups = $this->Biomarker->readACL($b['Biomarker']['id']);
 			foreach ($groups as $group) {
-				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
+				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://{$this->getResourceBase()}/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
 			}
 			
 			// Organs
 			if (count($b['OrganData']) > 0) {
 				foreach ($b['OrganData'] as $bod) {
-					echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['id']}\"/>\r\n";
+					echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['id']}\"/>\r\n";
 				}
 			}
 			// Studies
 			if (count($b['BiomarkerStudyData']) > 0) {
 				echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
 				foreach ($b['BiomarkerStudyData'] as $studyData) {
-					$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
+					$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
 					echo "        <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
-					echo "          <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['study_id']}\"/>\r\n";
+					echo "          <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['study_id']}\"/>\r\n";
 					
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
@@ -128,7 +142,7 @@ class RdfController extends AppController {
 			// Publications
 			if (count($b['Publication']) > 0) {
 				foreach ($b['Publication'] as $pub) {
-					echo "    <bmdb:referencedInPublication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+					echo "    <bmdb:referencedInPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
 				}
 			} 
 		
@@ -151,34 +165,13 @@ class RdfController extends AppController {
 		$biomarkerorgandatas = $this->OrganData->findAll(null,null,null,null,1,2);
 		foreach ($biomarkerorgandatas as $bod) {
 			
-			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}";
+			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}";
 			
 			// Basics
 			echo "  <bmdb:BiomarkerOrganData rdf:about=\"{$aboutURL}\">\r\n";
 			echo "    <bmdb:URN>urn:edrn:bmdb:biomarkerorgan:{$bod['OrganData']['id']}</bmdb:URN>\r\n";
-			echo "    <bmdb:Biomarker rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/view/{$bod['Biomarker']['id']}\"/>\r\n";
+			echo "    <bmdb:Biomarker rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$bod['Biomarker']['id']}\"/>\r\n";
 			echo "    <bmdb:Organ>{$bod['Organ']['name']}</bmdb:Organ>\r\n";
-			/*
-			 * Note:
-			 * The following is no longer applicable. This information has been superceded by 
-			 * BiomarkerOrganStudyData sensitivity values.
-			 * 
-			 *
-			echo "    <bmdb:SensitivityMin>{$bod['OrganData']['sensitivity_min']}</bmdb:SensitivityMin>\r\n";
-			echo "    <bmdb:SensitivityMax>{$bod['OrganData']['sensitivity_max']}</bmdb:SensitivityMax>\r\n";
-			echo "    <bmdb:SensitivityComment>".$this->escapeEntities($bod['OrganData']['sensitivity_comment'])."</bmdb:SensitivityComment>\r\n";
-			echo "    <bmdb:SpecificityMin>{$bod['OrganData']['specificity_min']}</bmdb:SpecificityMin>\r\n";
-			echo "    <bmdb:SpecificityMax>{$bod['OrganData']['specificity_max']}</bmdb:SpecificityMax>\r\n";
-			
-			echo "    <bmdb:SpecificityComment>".$this->escapeEntities($bod['OrganData']['specificity_comment'])."</bmdb:SpecificityComment>\r\n";
-			echo "    <bmdb:NPVMin>{$bod['OrganData']['npv_min']}</bmdb:NPVMin>\r\n";
-			echo "    <bmdb:NPVMax>{$bod['OrganData']['npv_max']}</bmdb:NPVMax>\r\n";
-			echo "    <bmdb:NPVComment>".$this->escapeEntities($bod['OrganData']['npv_comment'])."</bmdb:NPVComment>\r\n";
-			echo "    <bmdb:PPVMin>{$bod['OrganData']['ppv_min']}</bmdb:PPVMin>\r\n";
-			echo "    <bmdb:PPVMax>{$bod['OrganData']['ppv_max']}</bmdb:PPVMax>\r\n";
-			echo "    <bmdb:PPVComment>".$this->escapeEntities($bod['OrganData']['ppv_comment'])."</bmdb:PPVComment>\r\n";
-			*
-			*/
 			echo "    <bmdb:Phase>{$bod['OrganData']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:QAState>{$bod['OrganData']['qastate']}</bmdb:QAState>\r\n";
 			
@@ -186,7 +179,7 @@ class RdfController extends AppController {
 			// Display the LDAP groups that should have access to this data
 			$groups = $this->OrganData->readACL($bod['OrganData']['id']);
 			foreach ($groups as $group) {
-				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
+				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://{$this->getResourceBase()}/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
 			}
 		
 			// Studies
@@ -194,14 +187,14 @@ class RdfController extends AppController {
 				foreach ($bod['StudyData'] as $studyData) {
 					echo "    <bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 					echo "        <bmdb:BiomarkerOrganStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}#{$studyData['id']}")."\">\r\n";
-					echo "          <bmdb:referencesStudy rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/studies/view/{$studyData['Study']['id']}\"/>\r\n";
+					echo "          <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['Study']['id']}\"/>\r\n";
 					
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
 						echo "          <bmdb:SensitivityDatas>\r\n";
 						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
 							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
-							echo "            <bmdb:SensitivityData rdf:about=\"http://cancer.jpl.nasa.gov/bmdb/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}\">\r\n";
+							echo "            <bmdb:SensitivityData rdf:about=\"http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}\">\r\n";
 							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
 							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
 							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
@@ -216,7 +209,7 @@ class RdfController extends AppController {
 					// Publications
 					if (count($studyData['Publication']) > 0) {
 						foreach ($studyData['Publication'] as $pub) {
-							echo "          <bmdb:referencesPublication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+							echo "          <bmdb:referencesPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
 						}
 					}
 					
@@ -236,7 +229,7 @@ class RdfController extends AppController {
 			// Publications
 			if (count($bod['Publication']) > 0) {
 				foreach ($bod['Publication'] as $pub) {
-					echo "    <bmdb:referencedInPublication rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+					echo "    <bmdb:referencedInPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
 				}
 			} 
 			
@@ -258,7 +251,7 @@ class RdfController extends AppController {
 		$this->printRdfStart();
 		$studies = $this->Study->findAll();
 		foreach ($studies as $s) {
-			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/studies/view/{$s['Study']['id']}";
+			$aboutURL = "http://{$this->getResourceBase()}/studies/view/{$s['Study']['id']}";
 	
 			// Basics
 			echo "  <bmdb:Study rdf:about=\"{$aboutURL}\">\r\n";
@@ -280,7 +273,7 @@ class RdfController extends AppController {
 			// Publications
 			if (count($s['Publication']) > 0) {
 				foreach ($s['Publication'] as $pub) {
-					echo "    <bmdb:isDescribedIn rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/publications/view/{$pub['id']}\"/>\r\n";
+					echo "    <bmdb:isDescribedIn rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
 				}
 			} 
 			
@@ -295,7 +288,7 @@ class RdfController extends AppController {
 			if (count($sites) > 0) {
 				foreach ($sites as $site) {
 					$site_id = $site['sites_studies']['site_id'];
-					echo "    <bmdb:participatingSite rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/rdf/sites/{$site_id}\"/>\r\n";
+					echo "    <bmdb:participatingSite rdf:resource=\"http://{$this->getResourceBase()}/rdf/sites/{$site_id}\"/>\r\n";
 				}
 			}
 			echo "  </bmdb:Study>\r\n";
@@ -309,7 +302,7 @@ class RdfController extends AppController {
 		$this->printRdfStart();
 		$publications = $this->Publication->findAll();
 		foreach ($publications as $p) {
-			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/publications/view/{$p['Publication']['id']}";
+			$aboutURL = "http://{$this->getResourceBase()}/publications/view/{$p['Publication']['id']}";
 	
 			// Basics
 			echo "  <bmdb:Publication rdf:about=\"{$aboutURL}\">\r\n";
@@ -345,7 +338,7 @@ class RdfController extends AppController {
 		$results = $this->Pi->getemall();
 
 		foreach ($results as $p) {
-			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/rdf/pis/{$p['pis']['site_id']}";
+			$aboutURL = "http://{$this->getResourceBase()}/rdf/pis/{$p['pis']['site_id']}";
 	
 			// Basics
 			echo "  <bmdb:PI rdf:about=\"{$aboutURL}\">\r\n";
@@ -358,7 +351,7 @@ class RdfController extends AppController {
 			echo "    <bmdb:Telephone>{$p['pis']['telephone']}</bmdb:Telephone>\r\n";
 			echo "    <bmdb:Fax>{$p['pis']['fax']}</bmdb:Fax>\r\n";
 			echo "    <bmdb:Email>{$p['pis']['email']}</bmdb:Email>\r\n";
-			echo "    <bmdb:belongsToSite rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/rdf/sites/{$p['pis']['site_id']}\"/>\r\n";
+			echo "    <bmdb:belongsToSite rdf:resource=\"http://{$this->getResourceBase()}/rdf/sites/{$p['pis']['site_id']}\"/>\r\n";
 			echo "  </bmdb:PI>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
@@ -371,13 +364,13 @@ class RdfController extends AppController {
 		$results = $this->Site->getemall();
 
 		foreach ($results as $s) {
-			$aboutURL = "http://cancer.jpl.nasa.gov/bmdb/rdf/sites/{$s['sites']['site_id']}";
+			$aboutURL = "http://{$this->getResourceBase()}/rdf/sites/{$s['sites']['site_id']}";
 	
 			// Basics
 			echo "  <bmdb:Site rdf:about=\"{$aboutURL}\">\r\n";
 			echo "    <bmdb:Name>".$this->escapeEntities($s['sites']['name'])."</bmdb:Name>\r\n";
 			echo "    <bmdb:SiteId>{$s['sites']['site_id']}</bmdb:SiteId>\r\n";
-			echo "    <bmdb:hasPrincipalInvestigator rdf:resource=\"http://cancer.jpl.nasa.gov/bmdb/pis/{$s['sites']['site_id']}\"/>\r\n";
+			echo "    <bmdb:hasPrincipalInvestigator rdf:resource=\"http://{$this->getResourceBase()}/pis/{$s['sites']['site_id']}\"/>\r\n";
 			echo "  </bmdb:Site>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
