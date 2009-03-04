@@ -1,4 +1,5 @@
 <?php
+
 class UsersController extends AppController {
 	
 	public $uses = array('LdapUser','User');
@@ -19,7 +20,12 @@ class UsersController extends AppController {
 				$this->set('error',true);
 			} else {
 				// Test provided data for validity
-				if ($this->LdapUser->auth($data['username'],$data['password'])) {
+				/* if ($this->LdapUser->auth($data['username'],$data['password'])) {
+				 * 
+				 * Use the new Single-Sign-On API:
+				 */
+				$edrnAuth = new Gov_Nasa_Jpl_Edrn_Security_EDRNAuthentication();
+				if ($edrnAuth->login($data['username'],$data['password'])) {
 					// Passed! Valid user
 					$this->Session->write('username',$data['username']);
 					if($this->Session->check('afterlogin')){

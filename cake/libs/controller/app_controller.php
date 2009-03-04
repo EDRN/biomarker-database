@@ -57,7 +57,7 @@ class AppController extends Controller {
 		// Then check the session
         if (!$this->Session->check('username'))
         {
-            // // If the session info hasn't been set, force the user to login
+            // If the session info hasn't been set, force the user to login
 			$this->Session->write('afterlogin',$afterlogin);
             $this->redirect('/users/login/');
             exit();
