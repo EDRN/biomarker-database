@@ -30,11 +30,7 @@
 /**
  * Added by ahart on 29.07.2008 to support installations in subdirectories
  */
-define('PROJROOT','edrn_bmdb-0.5.0');
-
-
-define('PEAR_PATH','path/to/pear'); # needed for Single-sign-on API
-set_include_path( get_include_path() . PATH_SEPARATOR . PEAR_PATH);
+define('PROJROOT','bmdb');
 
 /**
  * CakePHP Debug Level:
