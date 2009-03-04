@@ -184,8 +184,8 @@ class RdfController extends AppController {
 		
 			// Studies
 			if (count($bod['StudyData']) > 0) {
+				echo "    <bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 				foreach ($bod['StudyData'] as $studyData) {
-					echo "    <bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 					echo "        <bmdb:BiomarkerOrganStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}#{$studyData['id']}")."\">\r\n";
 					echo "          <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['Study']['id']}\"/>\r\n";
 					
@@ -219,9 +219,9 @@ class RdfController extends AppController {
 							echo "          <bmdb:referencesResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
 						}
 					} 
-					echo "        </bmdb:BiomarkerOrganStudyData>\r\n";
-					echo "    </bmdb:hasBiomarkerOrganStudyDatas>\r\n";
+					echo "        </bmdb:BiomarkerOrganStudyData>\r\n";	
 				}
+				echo "    </bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 			} else {
 				echo "    <bmdb:hasBiomarkerOrganStudyDatas/>\r\n";
 			}
