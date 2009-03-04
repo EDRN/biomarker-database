@@ -37,14 +37,27 @@
  * @package		cake
  * @subpackage	cake.cake.libs.controller
  */
+
+// use new single sign on API
+require_once "Gov/Nasa/Jpl/Edrn/Security/EDRNAuth.php";
+
 class AppController extends Controller {
 	
 	function checkSession($afterlogin='/') {
-
-		// If the session info hasn't been set...
+		
+		// First check for the magic cookie
+		$edrnAuth = new Gov_Nasa_Jpl_Edrn_Security_EDRNAuthentication();
+		if ($edrnAuth->isLoggedIn()) {
+			// Store the details for the templates to use
+			$this->set('LdapUser','[SingleSignOn User]');
+			// We have a valid user, so just return
+			return;
+		}
+		
+		// Then check the session
         if (!$this->Session->check('username'))
         {
-            // Force the user to login
+            // // If the session info hasn't been set, force the user to login
 			$this->Session->write('afterlogin',$afterlogin);
             $this->redirect('/users/login/');
             exit();
