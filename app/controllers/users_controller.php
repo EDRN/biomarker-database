@@ -25,7 +25,7 @@ class UsersController extends AppController {
 				 * Use the new Single-Sign-On API:
 				 */
 				$edrnAuth = new Gov_Nasa_Jpl_Edrn_Security_EDRNAuthentication();
-				if ($edrnAuth->login($data['username'],$data['password'])) {
+				if (@$edrnAuth->login($data['username'],$data['password'])) {
 					// Passed! Valid user
 					$this->Session->write('username',$data['username']);
 					if($this->Session->check('afterlogin')){

@@ -47,9 +47,10 @@ class AppController extends Controller {
 		
 		// First check for the magic cookie
 		$edrnAuth = new Gov_Nasa_Jpl_Edrn_Security_EDRNAuthentication();
-		if ($edrnAuth->isLoggedIn()) {
+		if (@$edrnAuth->isLoggedIn()) {
 			// Store the details for the templates to use
-			$this->set('LdapUser','[SingleSignOn User]');
+			$this->Session->write('username',$edrnAuth->getCurrentUsername());
+			$this->set('LdapUser',$edrnAuth->getCurrentUsername());
 			// We have a valid user, so just return
 			return;
 		}

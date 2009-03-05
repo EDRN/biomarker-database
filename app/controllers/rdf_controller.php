@@ -159,10 +159,25 @@ class RdfController extends AppController {
 		exit();
 	}
 	
+	
+	private function sensitivities($data) {
+		foreach ($data as $id => $s) {
+			$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
+			echo "  <bmdb:SensitivityData rdf:about=\"{$id}\">\r\n";
+			echo "    <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+			echo "    <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
+			echo "    <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
+			echo "    <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
+			echo "    <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
+			echo "    <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
+			echo "  </bmdb:SensitivityData>\r\n";
+		}
+	}
 	function biomarkerorgans() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
 		$biomarkerorgandatas = $this->OrganData->findAll(null,null,null,null,1,2);
+		$sensitivities = array();
 		foreach ($biomarkerorgandatas as $bod) {
 			
 			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}";
@@ -192,17 +207,13 @@ class RdfController extends AppController {
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
 						echo "          <bmdb:SensitivityDatas>\r\n";
+						echo "            <rdf:Bag>\r\n";
 						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
-							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
-							echo "            <bmdb:SensitivityData rdf:about=\"http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}\">\r\n";
-							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
-							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
-							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
-							echo "              <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
-							echo "              <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
-							echo "              <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
-							echo "            </bmdb:SensitivityData>\r\n";
+							$sens_id = "http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}";
+							echo "              <rdf:li rdf:resource=\"{$sens_id}\"/>\r\n";
+							$sensitivities[$sens_id] = $s;
 						}
+						echo "            </rdf:Bag>\r\n";
 						echo "          </bmdb:SensitivityDatas>\r\n";
 					}
 					
@@ -242,6 +253,9 @@ class RdfController extends AppController {
 		
 			echo "  </bmdb:BiomarkerOrganData>\r\n";
 		} /* end foreach */
+
+		// Print corresponding sensitivity datas
+		$this->sensitivities($sensitivities);
 		$this->printRdfEnd();
 		exit();
 	}
