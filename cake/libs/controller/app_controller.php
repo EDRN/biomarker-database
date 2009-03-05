@@ -65,14 +65,14 @@ class AppController extends Controller {
 		// First check for the magic cookie
 		if (@$this->edrnAuth->isLoggedIn()) {
 			// Store the details for the templates to use
-			$this->Session->write('username',@$edrnAuth->getCurrentUsername());
-			$this->set('LdapUser',@$edrnAuth->getCurrentUsername());
+			$this->Session->write('username',@$this->edrnAuth->getCurrentUsername());
+			$this->set('LdapUser',@$this->edrnAuth->getCurrentUsername());
 			// We have a valid user, so just return
 			return;
 		} else {
 			// No magic cookie, no party. send them to the login page
 			$this->Session->write('afterlogin',$afterlogin);
-            $this->redirect('/users/login/');
+			$this->redirect('/users/login/');
 		}
     }
 }
