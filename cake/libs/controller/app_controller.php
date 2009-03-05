@@ -50,13 +50,13 @@ class AppController extends Controller {
 		// Create an instance of the EDRN Authentication object
 		$this->edrnAuth = new Gov_Nasa_Jpl_Edrn_security_EDRNAuthentication();
 		// obtain the username of the current user
-		$username = $this->edrnAuth->getCurrentUsername();
+		$username = @$this->edrnAuth->getCurrentUsername();
 		if ($username) {
 			// If a user found, add username to the session
-			$this->Session->write('username',$username);
+			$_SESSION['username'] = $username;
 		} else {
 			// If no user, remove any username from the session
-			$this->Session->delete('username');
+			unset($_SESSION['username']);
 		}
 	}
 	
@@ -66,8 +66,8 @@ class AppController extends Controller {
 		// First check for the magic cookie
 		if (@$this->edrnAuth->isLoggedIn()) {
 			// Store the details for the templates to use
-			$this->Session->write('username',$edrnAuth->getCurrentUsername());
-			$this->set('LdapUser',$edrnAuth->getCurrentUsername());
+			$this->Session->write('username',@$edrnAuth->getCurrentUsername());
+			$this->set('LdapUser',@$edrnAuth->getCurrentUsername());
 			// We have a valid user, so just return
 			return;
 		} else {
