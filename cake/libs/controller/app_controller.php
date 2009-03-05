@@ -43,7 +43,7 @@ require_once "Gov/Nasa/Jpl/Edrn/Security/EDRNAuth.php";
 
 class AppController extends Controller {
 	
-	protected $edrnAuth;
+	var $edrnAuth;
 	
 	public function beforeFilter() {
 		// Create an instance of the EDRN Authentication object
