@@ -48,7 +48,14 @@ class UsersController extends AppController {
 	}
 	
 	function logout() {
+		// Clear the session information we created on login
 		$this->Session->delete('username');
+		
+		// Call the Single-Sign-On API logout method to clear cookies
+		$edrnAuth = new Gov_Nasa_Jpl_Edrn_Security_EDRNAuthentication();
+		$edrnAuth->logout();
+		
+		// Send the ex-user home
 		$this->redirect("/");
 	}
 	
