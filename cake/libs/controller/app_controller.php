@@ -45,18 +45,17 @@ class AppController extends Controller {
 	
 	protected $edrnAuth;
 	
-	public function __construct() {
-		parent::__construct();
+	public function beforeFilter() {
 		// Create an instance of the EDRN Authentication object
 		$this->edrnAuth = new Gov_Nasa_Jpl_Edrn_security_EDRNAuthentication();
 		// obtain the username of the current user
 		$username = @$this->edrnAuth->getCurrentUsername();
 		if ($username) {
 			// If a user found, add username to the session
-			$_SESSION['username'] = $username;
+			$this->Session->write('username',$username);
 		} else {
 			// If no user, remove any username from the session
-			unset($_SESSION['username']);
+			$this->Session->delete('username');
 		}
 	}
 	
