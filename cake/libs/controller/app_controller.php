@@ -43,11 +43,28 @@ require_once "Gov/Nasa/Jpl/Edrn/Security/EDRNAuth.php";
 
 class AppController extends Controller {
 	
+	protected $edrnAuth;
+	
+	public function __construct() {
+		parent::__construct();
+		// Create an instance of the EDRN Authentication object
+		$this->edrnAuth = new Gov_Nasa_Jpl_Edrn_security_EDRNAuthentication();
+		// obtain the username of the current user
+		$username = $this->edrnAuth->getCurrentUsername();
+		if ($username) {
+			// If a user found, add username to the session
+			$this->Session->write('username',$username);
+		} else {
+			// If no user, remove any username from the session
+			$this->Session->delete('username');
+		}
+	}
+	
+	
 	function checkSession($afterlogin='/') {
 		
 		// First check for the magic cookie
-		$edrnAuth = new Gov_Nasa_Jpl_Edrn_Security_EDRNAuthentication();
-		if (@$edrnAuth->isLoggedIn()) {
+		if (@$this->edrnAuth->isLoggedIn()) {
 			// Store the details for the templates to use
 			$this->Session->write('username',$edrnAuth->getCurrentUsername());
 			$this->set('LdapUser',$edrnAuth->getCurrentUsername());
