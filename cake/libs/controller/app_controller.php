@@ -53,21 +53,11 @@ class AppController extends Controller {
 			$this->set('LdapUser',$edrnAuth->getCurrentUsername());
 			// We have a valid user, so just return
 			return;
-		}
-		
-		// Then check the session
-        if (!$this->Session->check('username'))
-        {
-            // If the session info hasn't been set, force the user to login
+		} else {
+			// No magic cookie, no party. send them to the login page
 			$this->Session->write('afterlogin',$afterlogin);
             $this->redirect('/users/login/');
-            exit();
-        } else {
-            // Store the details for the templates to use
-            $this->set('LdapUser',$this->Session->read('LdapUser'));
-        }
+		}
     }
-	
-	
 }
 ?>
