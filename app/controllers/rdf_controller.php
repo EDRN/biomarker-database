@@ -159,6 +159,9 @@ class RdfController extends AppController {
 		exit();
 	}
 	
+	private function handleOrganStudyData($bosd) {
+		
+	}
 	
 	private function sensitivities($data) {
 		foreach ($data as $id => $s) {
@@ -173,6 +176,48 @@ class RdfController extends AppController {
 			echo "  </bmdb:SensitivityData>\r\n";
 		}
 	}
+	
+	//
+	// Generate RDF for the given BiomarkerOrganStudyData objects.
+	// Params:
+	// 	$data - a set of BiomarkerOrganStudyData objects
+	//  $biomarkerOrganData - a reference to the containing BiomarkerOrganData object
+	//  $sensitivities      - a reference to the list of sensitivityData objects
+	//
+	private function studydatas($data,&$biomarkerOrganData,&$sensitivities) {
+		foreach ($data as $about_id => $studyData) {
+			echo "  <bmdb:BiomarkerOrganStudyData rdf:about=\"{$about_id}\">\r\n";
+			echo "    <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['Study']['id']}\"/>\r\n";
+			
+			// Sensitivity/Specificity Information
+			if (count($studyData['Sensitivity']) > 0) {
+				echo "    <bmdb:SensitivityDatas>\r\n";
+				echo "      <rdf:Bag>\r\n";
+				foreach ($studyData['Sensitivity'] as $ordinal => $s) {
+					$sens_id = "http://{$this->getResourceBase()}/biomarkers/organs/{$biomarkerOrganData['Biomarker']['id']}/{$biomarkerOrganData['OrganData']['id']}/sensitivity-data-{$ordinal}";
+					echo "        <rdf:li rdf:resource=\"{$sens_id}\"/>\r\n";
+					$sensitivities[$sens_id] = $s;
+				}
+				echo "      </rdf:Bag>\r\n";
+				echo "    </bmdb:SensitivityDatas>\r\n";
+			}
+			// Publications
+			if (count($studyData['Publication']) > 0) {
+				foreach ($studyData['Publication'] as $pub) {
+					echo "        <bmdb:referencesPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
+				}
+			}
+			
+			// Resources
+			if (count($studyData['StudyDataResource']) > 0) {
+				foreach ($studyData['StudyDataResource'] as $res) {
+					echo "        <bmdb:referencesResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
+				}
+			} 
+			echo "  </bmdb:BiomarkerOrganStudyData>\r\n";
+		}
+	}
+	
 	function biomarkerorgans() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
@@ -180,7 +225,8 @@ class RdfController extends AppController {
 		$sensitivities = array();
 		foreach ($biomarkerorgandatas as $bod) {
 			
-			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}";
+			$aboutURL   = "http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}";
+			$studyDatas = array();
 			
 			// Basics
 			echo "  <bmdb:BiomarkerOrganData rdf:about=\"{$aboutURL}\">\r\n";
@@ -200,38 +246,13 @@ class RdfController extends AppController {
 			// Studies
 			if (count($bod['StudyData']) > 0) {
 				echo "    <bmdb:hasBiomarkerOrganStudyDatas>\r\n";
+				echo "      <rdf:Bag>\r\n";
 				foreach ($bod['StudyData'] as $studyData) {
-					echo "        <bmdb:BiomarkerOrganStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}#{$studyData['id']}")."\">\r\n";
-					echo "          <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['Study']['id']}\"/>\r\n";
-					
-					// Sensitivity/Specificity Information
-					if (count($studyData['Sensitivity']) > 0) {
-						echo "          <bmdb:SensitivityDatas>\r\n";
-						echo "            <rdf:Bag>\r\n";
-						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
-							$sens_id = "http://{$this->getResourceBase()}/biomarkers/organs/{$bod['Biomarker']['id']}/{$bod['OrganData']['id']}/sensitivity-data-{$ordinal}";
-							echo "              <rdf:li rdf:resource=\"{$sens_id}\"/>\r\n";
-							$sensitivities[$sens_id] = $s;
-						}
-						echo "            </rdf:Bag>\r\n";
-						echo "          </bmdb:SensitivityDatas>\r\n";
-					}
-					
-					// Publications
-					if (count($studyData['Publication']) > 0) {
-						foreach ($studyData['Publication'] as $pub) {
-							echo "          <bmdb:referencesPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
-						}
-					}
-					
-					// Resources
-					if (count($studyData['StudyDataResource']) > 0) {
-						foreach ($studyData['StudyDataResource'] as $res) {
-							echo "          <bmdb:referencesResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
-						}
-					} 
-					echo "        </bmdb:BiomarkerOrganStudyData>\r\n";	
+					$aboutId = $this->escapeEntities("{$aboutURL}#{$studyData['id']}"); 
+					echo "        <rdf:li rdf:resource=\"{$aboutId}\"/>\r\n";
+					$studyDatas[$aboutId] = $studyData;
 				}
+				echo "      </rdf:Bag>\r\n";
 				echo "    </bmdb:hasBiomarkerOrganStudyDatas>\r\n";
 			} else {
 				echo "    <bmdb:hasBiomarkerOrganStudyDatas/>\r\n";
@@ -252,6 +273,8 @@ class RdfController extends AppController {
 			} 
 		
 			echo "  </bmdb:BiomarkerOrganData>\r\n";
+			// Print corresponding study data objects
+			$this->studydatas($studyDatas,$bod,$sensitivities);
 		} /* end foreach */
 
 		// Print corresponding sensitivity datas
