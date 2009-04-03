@@ -1,7 +1,7 @@
 <div class="menu">
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs"/>
-		Home
+		<ul><li>Home</li></ul>
 	</div><!-- End Breadcrumbs -->
 </div>
 <div style="position:relative;min-height:300px;">
