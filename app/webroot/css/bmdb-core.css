@@ -361,6 +361,10 @@ div.minimenucontent h4 {
 	margin-top:0px;	
 }
 
+div#breadcrumbs a {
+	color:#fff;	
+}
+
 
 /**
  * HEADERS (H1,H2,H3,......)
