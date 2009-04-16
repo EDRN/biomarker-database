@@ -282,6 +282,74 @@ class BiomarkersController extends AppController {
 		// Redirect
 		$this->redirect("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
 	}
+	function editsensspec($sensitivity_id,$biomarker_id,$organ_data_id,$study_id,$source="organs") {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
+		
+		// Load the Biomarker object
+		$biomarker = $this->Biomarker->find('first',array(
+			'conditions' => array('Biomarker.id' => $biomarker_id),
+			'recursive'  => 1
+			)
+		);
+		$this->set('biomarker',$biomarker);
+		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+		
+		
+		// Try to load the current OrganData object
+		$organdatas = $this->Biomarker->god($biomarker_id);
+		$this->set('organData',false);
+		foreach ($organdatas as $od) {
+			if ($od['OrganData']['id'] == $organ_data_id) {
+				$this->set('organData',$od);
+				break;
+			}
+		}
+		
+		// Try to load the current study object
+		$study = $this->Study->find("first",array(
+				'conditions' => array('Study.id' => $study_id)
+			)
+		);
+		$this->set('study',$study);
+		
+		// Try to load the current sens/spec object
+		$sensitivity = $this->Sensitivity->find("first",array(
+				'conditions' => array('Sensitivity.id' => $sensitivity_id)
+			)
+		);
+		$this->set('sensitivity',$sensitivity);
+		
+		// Compute the next page to return to
+		if ($source == "organs") {
+			$this->set('next_page',"/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$od['OrganData']['id']}");
+		} else {
+			$this->set('next_page',"/biomarkers/studies/{$biomarker['Biomarker']['id']}");
+		}
+	}
+	function doEditSensSpec() {
+		// Get data from the form
+		$data =& $this->params['form'];
+		$biomarker_id   = $data['biomarker_id'];
+		$organ_data_id  = $data['organ_data_id'];
+		$sensitivity_id = $data['sensitivity_id'];
+		$next_page      = $data['next_page'];
+		
+		// Try to load the sens/spec data point
+		$sensitivity = $this->Sensitivity->find('first',array(
+			'conditions' => array('Sensitivity.id' => $sensitivity_id)
+			)
+		);
+		$this->Sensitivity->id = $sensitivity_id;
+		
+		// Save the changes
+		$this->Sensitivity->saveField('sensitivity',$data['sensitivity']);
+		$this->Sensitivity->saveField('specificity',$data['specificity']);
+		$this->Sensitivity->saveField('prevalence',$data['prevalence']);
+		$this->Sensitivity->saveField('notes',$data['notes']);
+		
+		// Return the user to the specified next page
+		$this->redirect($next_page);
+	}
 	
 	// -- Remove BiomarkerOrganStudyData Sensitivity Details--
 	function removeSensSpec($biomarker_id,$organ_data_id,$study_data_id,$sensitivity_id) {
