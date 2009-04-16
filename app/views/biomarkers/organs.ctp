@@ -82,72 +82,6 @@
 			</table>
 		</div>
 		<div class="clr"><!-- clear --></div>
-		<!-- 
-		<h3>Aggregate Results</h3>
-		<div style="margin-left:30px;width:96%;">
-		
-		
-		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%">
-			<h4>Sensitivity:</h4>
-			<table style="background-color:#fff;">
-				<tr>
-					<td class="label">Minimum:</td>
-					<td><em><span id="sensitivitymin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:sensitivity_min"><?php echo $organData['OrganData']['sensitivity_min']?></span></em>%</td>
-				</tr>
-				<tr>
-					<td class="label">Maximum:</td>
-					<td><em><span id="sensitivitymax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:sensitivity_max"><?php echo $organData['OrganData']['sensitivity_max']?></span></em>%</td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%;">
-			<h4>Specificity:</h4>
-			<table style="background-color:#fff;">
-				<tr>
-					<td class="label">Minimum:</td>
-					<td><em><span id="specificitymin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:specificity_min"><?php echo $organData['OrganData']['specificity_min']?></span></em>%</td>
-				</tr>
-				<tr>
-					<td class="label">Maximum:</td>
-					<td><em><span id="specificitymax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:specificity_max"><?php echo $organData['OrganData']['specificity_max']?></span></em>%</td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%;">
-			<h4>N.P.V.:</h4>
-			<table style="background-color:#fff;">
-				<tr>
-					<td class="label">Minimum:</td>
-					<td><em><span id="npvmin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:npv_min"><?php echo $organData['OrganData']['npv_min']?></span></em>%</td>
-				</tr>
-				<tr>
-					<td class="label">Maximum:</td>
-					<td><em><span id="npvmax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:npv_max"><?php echo $organData['OrganData']['npv_max']?></span></em>%</td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="rightcol" style="margin-left:0px;margin-top:-15px;width:24%">
-			<h4>P.P.V.:</h4>
-			<table style="background-color:#fff;">
-				<tr>
-					<td class="label">Minimum:</td>
-					<td><em><span id="ppvmin" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:ppv_min"><?php echo $organData['OrganData']['ppv_min']?></span></em>%</td>
-				</tr>
-				<tr>
-					<td class="label">Maximum:</td>
-					<td><em><span id="ppvmax" class="editable object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:ppv_max"><?php echo $organData['OrganData']['ppv_max']?></span></em>%</td>
-				</tr>
-			</table>
-		</div>
-		<div class="clr">&nbsp;</div>
-		<p>&nbsp;</p>
-		</div>
-		-->
-		
-		
 		
 		
 		<h3 style="position:relative;margin-left:0px;">Supporting Study Data
@@ -228,7 +162,7 @@
 						<?php if (count($study['Sensitivity']) > 0):?>
 						<table class="associatedstudies" style="width:100%;">
 						<tbody>
-							<tr><th style="text-align:left;">Notes</th><th>Sensitivity</th><th>Specificity</th><th>Prevalence</th><th>NPV</th><th>PPV</th><th>Delete</th></tr>
+							<tr><th style="text-align:left;">Notes</th><th>Sensitivity</th><th>Specificity</th><th>Prevalence</th><th>NPV</th><th>PPV</th><th>Edit</th><th>Delete</th></tr>
 						<?php endif;?>
 						<?php foreach ($study['Sensitivity'] as $s):?>
 						<?php
@@ -260,6 +194,7 @@
 								<td style="text-align:center;"><?php echo $s['prevalence'];?></td>
 								<td style="text-align:center;"><?php echo $npv;?></td>
 								<td style="text-align:center;"><?php echo $ppv;?></td>
+								<td style="text-align:center;"><a class="fakelink" href="/<?php echo PROJROOT;?>/biomarkers/editsensspec/<?php echo $s['id']?>/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>">Edit</a></td>
 								<td style="text-align:center;">
 									<a href="/<?php echo PROJROOT;?>/biomarkers/removesensspec/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $s['id']?>" 
 										style="color:#d55;" 
