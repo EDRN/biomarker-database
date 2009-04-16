@@ -1,0 +1,114 @@
+body {
+	font-family: arial, verdana, sans-serif;
+}
+
+span.highlighted {
+	background-color: #8a8;
+	color: #fff;
+}
+
+#search_results {
+	margin-top:10px;
+}
+
+#search_results ul {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+#search_results ul li {
+	font-size: 12px !important;
+	margin-bottom: 3px;
+}
+
+#search_results ul li a {
+	color: #568;
+	text-decoration: none;
+}
+
+#search_results ul li a:hover {
+	text-decoration: underline;
+}
+
+#search_results ul li b {
+	
+}
+
+input [type=text] {
+	border: solid 1px #ccc;
+	padding: 5px;
+	width: 100%;
+}
+
+input [type=button],input [type=submit] {
+	border-width: 1px;
+	padding: 3px;
+}
+
+input#search_term {
+	border: solid 1px #ccc;
+	padding: 5px;
+	width: 95%;
+}
+
+div.warn {
+	border: solid 1px #fc0;
+	background-color: #ff6;
+	color: #222;
+	padding: 3px;
+	font-size: 90%;
+}
+
+div.err a {
+	color: blue;
+}
+
+div.err {
+	border: solid 1px #733;
+	background-color: #fcc;
+	color: #522;
+	padding: 3px;
+	font-size: 90%;
+}
+div.success {
+	border:solid 1px green;
+	background-color:#cfc;
+	color:#282;
+	padding:3px;
+	font-size:90%;	
+}
+
+h1 {
+	border-bottom: solid 5px #ace;
+	font-size: 24px;
+	font-weight: normal;
+	color: #222;
+}
+
+h3 {
+	border-bottom: dotted 1px #aec;
+}
+
+label {
+	font-size:90%;
+	color:#444;
+	font-style:italic;
+}
+div#pubmed_shortcut {
+	position:absolute;
+	top:29px;
+	right:10px;
+	font-size:80%;	
+}
+.hint {
+	font-size: 80%;
+	color: #222;
+}
+
+.fakelink {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+	_cursor: hand;
+}
