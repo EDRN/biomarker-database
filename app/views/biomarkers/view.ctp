@@ -162,7 +162,7 @@
 <div class="box">
 <h3 class="title" style="">Curation Actions</h3>
 	<ul>
-	    <li><a href="/<?php echo PROJROOT;?>/acls/edit/biomarker/<?php echo $biomarker['Biomarker']['id']?>">Set Security <span style="color:green;font-weight:bold;">(BETA)</span></a></li>
+	    <li><a href="/<?php echo PROJROOT;?>/acls/edit/biomarker/<?php echo $biomarker['Biomarker']['id']?>">Set Security</a></li>
 		<li><a href="/<?php echo PROJROOT;?>/biomarkers/delete/<?php echo $biomarker['Biomarker']['id']?>" onclick="return confirm('All data for this Biomarker will be permanently deleted. Continue?');">Delete This Biomarker</a></li>
 	</ul>
 </div>
