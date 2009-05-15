@@ -138,3 +138,55 @@ table#studyelements td.column-2 {
 table#studyelements td.column-3 {
 	width:190px;	
 }
+div.dataTables_filter {
+	float:right;
+	text-align:right;
+	width:30%;
+	margin-right:5px;
+	padding-top:15px;
+	color:#666;
+}
+div.dataTables_filter input[type=text] {
+	width:60%;
+	margin-left:5px;
+}
+div.dataTables_length {
+	float:left;
+	font-size:90%;
+	color:#666;
+	padding-left:5px;
+	padding-top:20px;
+}
+div.dataTables_length select {
+	border-width:1px;
+	border-color:#888;
+	padding:1px;
+	padding-left:2px;
+	padding-right:2px;	
+}
+div.dataTables_wrapper {
+	position:relative;	
+}
+div.dataTables_info {
+	position:absolute;
+	top:0px;
+	left:5px;	
+	color:#666;
+	font-size:90%;
+}
+div.dataTables_paginate {
+	margin-right:5px;margin-top:5px;	
+}
+table.dataTable {
+	clear:both;
+}
+table.dataTable thead tr th {
+	cursor:pointer;
+	_cursor:hand;	
+}
+tr.odd, tr.odd td.sorting_1 {
+	background-color:#f2f2f2;
+}
+tr.even, tr.even td.sorting_1 {
+	background-color:#fcfcfc;
+}
