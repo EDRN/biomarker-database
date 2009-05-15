@@ -27,29 +27,24 @@ class BiomarkersController extends AppController {
 	 * BROWSE (INDEX)
 	 ******************************************************************/
 	function index() {
+		// Ensure that a valid user is logged in
 		$this->checkSession('/biomarkers');
 		
-		$criteria = null;
-		$this->Pagination->resultsPerPage = array();
-		$this->Pagination->show = 15;
-		list($order,$limit,$page) = $this->Pagination->init($criteria);
+		// Retrieve information about all of the biomarkers in the system,
+		// recursing only 1 level deep (don't need lots of study, etc data) here
+		$biomarkers = $this->Biomarker->find('all',array(
+			'conditions' => array(),
+			'recursive'  => 1
+		));
 		
-		$biomarkers = $this->Biomarker->getIndex($order,$limit,$page);
-		
+		// Populate each biomarker with the names of its associated organs and its default name
 		for ($i=0;$i<count($biomarkers);$i++) {
 			$biomarkers[$i]['OrganDatas'] = $this->Biomarker->getOrganDatasFor($biomarkers[$i]['Biomarker']['id']);
+			$biomarkers[$i]['DefaultName']= $this->Biomarker->getDefaultName($biomarkers[$i]);
 		}
 		
+		// Send it off to the view
 		$this->set('biomarkers',$biomarkers);
-				
-		// Get a list of all the biomarkers for the ajax search
-		$names = $this->BiomarkerName->find("all",array('name','biomarker_id'));
-		$biomarkerarr = array();
-		foreach ($names as $name) {
-			$biomarkerarr[] = "{$name['BiomarkerName']['name']}|{$name['BiomarkerName']['biomarker_id']}";
-		}
-		$s = '"'.implode("\",\"",$biomarkerarr).'"';
-		$this->set('biomarkerstring','"'.implode("\",\"",$biomarkerarr).'"');
 	}
 	
 	/******************************************************************
