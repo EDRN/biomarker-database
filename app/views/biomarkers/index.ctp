@@ -1,55 +1,39 @@
 <?php
 	// Include required CSS and JavaScript 
+	echo $javascript->link('jquery/jquery-1.3.2.min');
+	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+
+	
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
-	echo $javascript->link('mootools-release-1.11');
-	echo $javascript->link('eip');
-
-	echo $html->css('autocomplete');
-	echo $javascript->link('autocomplete/Observer');
-	echo $javascript->link('autocomplete/Autocompleter');
+	
+	echo $html->css('dataTables/dataTables.css');
 	echo $html->css('bmdb-browser');
 ?>
-
 <div class="menu">
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
 	<a href="/<?php echo PROJROOT;?>/">Home</a> / Biomarkers
 	</div><!-- End Breadcrumbs -->
-
 </div>
 <div class="searcher">
-	<div>
-	<form action="/<?php echo PROJROOT;?>/biomarkers/goto" method="POST">
-		<input type="hidden" id="biomarker_id" name="id" value=""/>
-		<input type="text" id="biomarker-search" value=""/>
-		<input type="submit" value="Search"/>
-		<div class="clr"><!--  --></div>
-	</form>
-	</div>
-	<a href="/<?php echo PROJROOT;?>/biomarkers/create">Create a New Biomarker</a>
-
+	<a href="/<?php echo PROJROOT;?>/biomarkers/create">+ Create a New Biomarker</a>
 </div>
+
 <h2>Biomarker Directory:</h2>
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
-&nbsp;&nbsp;Browse the directory listing, or search by Title using the box on the right.
+&nbsp;&nbsp;Browse the directory listing, or search any field using the search box on the right.
 </div>
 
 <br/>
 
-<? echo $this->renderElement('pagination'); // Render the pagination element ?> 
-<table id="biomarkerelements" cellspacing="0" cellpadding="0">
+<table id="biomarkerelements" class="dataTable" cellspacing="0" cellpadding="0">
+<thead>
+	<tr><th>Name</th><th style="display:none;">Aliases</th><th>QA State</th><th>Type</th><th>Panel</th><th>Associated Organs</th></tr>
+</thead>
+<tbody>
 <?php
-
-$pagination->setPaging($paging); // Initialize the pagination variables
-$th = array (
-            $pagination->sortBy('Name'),
-            $pagination->sortBy('qastate','QA State'),
-            $pagination->sortBy('Type'),
-			$pagination->sortBy('isPanel','Panel'),
-			'Associated Organs'
-); // Generate the pagination sort links
-echo $html->tableHeaders($th); // Create the table headers with sort links if desired
+// Compute table cells
 foreach ($biomarkers as $biomarker) {
   	// Build 'organsForBiomarker' list
 	$odatas = array();
@@ -58,49 +42,36 @@ foreach ($biomarkers as $biomarker) {
 	}
 	$organsForBiomarker = implode(", ",$odatas);
 	if ($organsForBiomarker == "") { $organsForBiomarker = "<em style=\"color:#888;\">Unknown</em>";}
-	$biomarkerName   = $biomarker['Names']['name'];
-    $tr = array (
-        $html->link($biomarkerName,"/biomarkers/view/{$biomarker['Biomarker']['id']}"),
-        (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate']),
-        (($biomarker['Biomarker']['type'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['type']),
-		(($biomarker['Biomarker']['isPanel'] == 0) ? "No" : "Yes"),
-		$organsForBiomarker
-        );
-    echo $html->tableCells($tr,array('class'=>'altRow'),array('class'=>'evenRow'),true);
-}
+	$biomarkerName   = $biomarker['DefaultName'];
+	$biomarkerNames  = array();
+	foreach ($biomarker['BiomarkerName'] as $n) {
+		$biomarkerNames[] = $n['name'];
+	} 
 ?>
-</table> 
+<tr>
+  <td><?php echo $html->link($biomarkerName,"/biomarkers/view/{$biomarker['Biomarker']['id']}");?></td>
+  <td style="display:none;"><?php echo implode(" ", $biomarkerNames);?></td>
+  <td><?php echo (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate'])?></td>
+  <td><?php echo (($biomarker['Biomarker']['type'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['type'])?></td>
+  <td><?php echo (($biomarker['Biomarker']['isPanel'] == 0) ? "No" : "Yes")?></td>
+  <td><?php echo $organsForBiomarker?></td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+
 
 <p>&nbsp;</p>
 <p style="border-bottom:solid 2px #666;">&nbsp;</p>
 
 
-<script>
-// Activate Study "Search" Autocomplete
-  new Autocompleter.Local(
-      $('biomarker-search'),
-      <?php
-      	echo "[".$biomarkerstring."]";
-      ?>
-	  ,{
-      'postData':{'object':'study','attr':'title'},
-      'postVar': 'needle',
-      'target' : 'biomarker_id',
-      'minLength' : 2,
-      'parseChoices': function(el) {
-        var value = el.getFirst().innerHTML;
-        var id    = el.getFirst().id;
-        alert(value);
-        el.inputValue = value;
-        el.inputId    = id;
-        this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-      },
-      'filterTokens': function(token) {
-      	var regex = new RegExp('' + this.queryValue.escapeRegExp(), 'i');
-      	return this.tokens.filter(function(token) {
-          var d = token.split('|');
-          return regex.test(d[0]);
-        });
-      }  
-  });
+<script type="text/javascript">
+
+$(document).ready(function() {
+	// Turn the table into a sortable, searchable table
+	$("#biomarkerelements").dataTable();
+	// Give the search box the initial focus
+	$("#biomarkerelements_filter > input").focus();
+
+});
 </script>
