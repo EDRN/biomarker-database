@@ -115,7 +115,7 @@ class RdfController extends AppController {
 				foreach ($b['BiomarkerStudyData'] as $studyData) {
 					$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
 					echo "        <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
-					echo "          <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['study_id']}\"/>\r\n";
+					echo "          <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['Study']['FHCRC_ID']}\"/>\r\n";
 					
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
@@ -187,7 +187,7 @@ class RdfController extends AppController {
 	private function studydatas($data,&$biomarkerOrganData,&$sensitivities) {
 		foreach ($data as $about_id => $studyData) {
 			echo "  <bmdb:BiomarkerOrganStudyData rdf:about=\"{$about_id}\">\r\n";
-			echo "    <bmdb:referencesStudy rdf:resource=\"http://{$this->getResourceBase()}/studies/view/{$studyData['Study']['id']}\"/>\r\n";
+			echo "    <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['Study']['FHCRC_ID']}\"/>\r\n";
 			
 			// Sensitivity/Specificity Information
 			if (count($studyData['Sensitivity']) > 0) {
@@ -289,10 +289,16 @@ class RdfController extends AppController {
 		$this->printRdfStart();
 		$studies = $this->Study->findAll();
 		foreach ($studies as $s) {
-			$aboutURL = "http://{$this->getResourceBase()}/studies/view/{$s['Study']['id']}";
+			//$aboutURL = "http://{$this->getResourceBase()}/studies/view/{$s['Study']['id']}";
+			$aboutURL = "http://edrn.nci.nih.gov/data/protocols/{$s['Study']['FHCRC_ID']}";
 	
 			// Basics
-			echo "  <bmdb:Study rdf:about=\"{$aboutURL}\">\r\n";
+			echo "  <rdf:Description rdf:about=\"{$aboutURL}\">\r\n";
+			/*
+			 * THIS INFORMATION NOW COMES FROM THE DMCC
+			 * http://ginger.fhcrc.org/dmcc/rdf-data/protocols/rdf
+			 * 
+			 **
 			echo "    <bmdb:Title>".$this->escapeEntities($s['Study']['title'])."</bmdb:Title>\r\n";
 			echo "    <bmdb:URN>urn:edrn:bmdb:study:{$s['Study']['id']}</bmdb:URN>\r\n";
 			echo "    <bmdb:FHCRC_ID>{$s['Study']['FHCRC_ID']}</bmdb:FHCRC_ID>\r\n";
@@ -307,6 +313,7 @@ class RdfController extends AppController {
 			echo "    <bmdb:Design>{$s['Study']['design']}</bmdb:Design>\r\n";
 			echo "    <bmdb:DesignDescription>".$this->escapeEntities($s['Study']['designDescription'])."</bmdb:DesignDescription>\r\n";
 			echo "    <bmdb:BiomarkerStudyType>{$s['Study']['biomarkerStudyType']}</bmdb:BiomarkerStudyType>\r\n";
+			*/
 			
 			// Publications
 			if (count($s['Publication']) > 0) {
@@ -322,6 +329,11 @@ class RdfController extends AppController {
 				}
 			} 
 			// Sites 
+			/*
+			 * THIS INFORMATION NOW COMES FROM THE DMCC
+			 * http://ginger.fhcrc.org/dmcc/rdf-data/protocols/rdf
+			 * 
+			 **
 			$sites = $this->Study->getSitesFor($s['Study']['FHCRC_ID']);
 			if (count($sites) > 0) {
 				foreach ($sites as $site) {
@@ -329,7 +341,8 @@ class RdfController extends AppController {
 					echo "    <bmdb:participatingSite rdf:resource=\"http://{$this->getResourceBase()}/rdf/sites/{$site_id}\"/>\r\n";
 				}
 			}
-			echo "  </bmdb:Study>\r\n";
+			*/
+			echo "  </rdf:Description>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
 		exit();
