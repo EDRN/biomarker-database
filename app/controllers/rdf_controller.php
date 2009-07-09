@@ -18,6 +18,7 @@ class RdfController extends AppController {
 			'Pi',
 			'Site',
 			'Resource',
+			'Acl'
 	);
 	
 	function index() {
@@ -100,7 +101,8 @@ class RdfController extends AppController {
 			// Display the LDAP groups that should have access to this data
 			$groups = $this->Biomarker->readACL($b['Biomarker']['id']);
 			foreach ($groups as $group) {
-				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://{$this->getResourceBase()}/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
+				$cn = $this->Acl->getCommonNameFor($group['acl']['ldapGroup']);
+				echo "    <bmdb:AccessGrantedTo>{$cn}</bmdb:AccessGrantedTo>\r\n";
 			}
 			
 			// Organs
@@ -298,7 +300,7 @@ class RdfController extends AppController {
 			 * THIS INFORMATION NOW COMES FROM THE DMCC
 			 * http://ginger.fhcrc.org/dmcc/rdf-data/protocols/rdf
 			 * 
-			 **
+			 **/
 			echo "    <bmdb:Title>".$this->escapeEntities($s['Study']['title'])."</bmdb:Title>\r\n";
 			echo "    <bmdb:URN>urn:edrn:bmdb:study:{$s['Study']['id']}</bmdb:URN>\r\n";
 			echo "    <bmdb:FHCRC_ID>{$s['Study']['FHCRC_ID']}</bmdb:FHCRC_ID>\r\n";
@@ -313,7 +315,7 @@ class RdfController extends AppController {
 			echo "    <bmdb:Design>{$s['Study']['design']}</bmdb:Design>\r\n";
 			echo "    <bmdb:DesignDescription>".$this->escapeEntities($s['Study']['designDescription'])."</bmdb:DesignDescription>\r\n";
 			echo "    <bmdb:BiomarkerStudyType>{$s['Study']['biomarkerStudyType']}</bmdb:BiomarkerStudyType>\r\n";
-			*/
+			/**/
 			
 			// Publications
 			if (count($s['Publication']) > 0) {
@@ -333,7 +335,7 @@ class RdfController extends AppController {
 			 * THIS INFORMATION NOW COMES FROM THE DMCC
 			 * http://ginger.fhcrc.org/dmcc/rdf-data/protocols/rdf
 			 * 
-			 **
+			 **/
 			$sites = $this->Study->getSitesFor($s['Study']['FHCRC_ID']);
 			if (count($sites) > 0) {
 				foreach ($sites as $site) {
@@ -341,7 +343,7 @@ class RdfController extends AppController {
 					echo "    <bmdb:participatingSite rdf:resource=\"http://{$this->getResourceBase()}/rdf/sites/{$site_id}\"/>\r\n";
 				}
 			}
-			*/
+			/**/
 			echo "  </rdf:Description>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
