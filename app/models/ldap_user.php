@@ -47,6 +47,17 @@ class LdapUser extends AppModel
 		}
 	}
 	
+	function getLDAPGroups() {
+		return array(
+			array("name"=>"edrn.pi"),
+			array("name"=>"edrn.nci"),
+			array("name"=>"edrn.curator"),
+			array("name"=>"edrn.review.0309"),
+			array("name"=>"edrn.dmcc"),
+			array("name"=>"edrn.ic")
+		);
+	}
+	
 
 }
 ?>
