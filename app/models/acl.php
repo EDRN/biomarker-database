@@ -22,12 +22,12 @@ class Acl extends AppModel {
 		return array(
 			// This is temporary placeholder data which will be replaced
 			// with a live query to the LDAP server.
-			array("edrn.pi"          =>"Principal Investigators"),
-			array("edrn.nci"         =>"National Cancer Institute"),
-			array("edrn.curator"     =>"Curators"),
-			array("edrn.review.0309" =>"Reviewers"),
-			array("edrn.ic"          =>"Informatics Team"),
-			array("edrn.dmcc"        =>"Data Management and Coordinating Center")
+			"edrn.pi"          =>"Principal Investigators",
+			"edrn.nci"         =>"National Cancer Institute",
+			"edrn.curator"     =>"Curators",
+			"edrn.review.0309" =>"Lung and Upper Aerodigestive",
+			"edrn.ic"          =>"Informatics Team",
+			"edrn.dmcc"        =>"Data Management and Coordinating Center"
 		);
 	}
 	
