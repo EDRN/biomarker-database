@@ -243,7 +243,8 @@ class RdfController extends AppController {
 			// Display the LDAP groups that should have access to this data
 			$groups = $this->OrganData->readACL($bod['OrganData']['id']);
 			foreach ($groups as $group) {
-				echo "    <bmdb:AccessGrantedTo rdf:resource=\"http://{$this->getResourceBase()}/acls/ldap-groups/{$group['acl']['ldapGroup']}\"/>\r\n";
+				$cn = $this->Acl->getCommonNameFor($group['acl']['ldapGroup']);
+				echo "    <bmdb:AccessGrantedTo>{$cn}</bmdb:AccessGrantedTo>\r\n";
 			}
 		
 			// Studies
