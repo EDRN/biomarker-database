@@ -4,41 +4,46 @@ class Acl extends AppModel {
 	
 	var $useTable = "acl";
 	var $name     = "Acl";
+
+    var $host       = 'ldaps://cancer.jpl.nasa.gov';
+    var $port       = 636; //389;
+    var $baseDn 	= 'dc=edrn,dc=jpl,dc=nasa,dc=gov';
+    var $user       = 'uid=bmdb,dc=edrn,dc=jpl,dc=nasa,dc=gov';
+    var $pass       = 'bmdb';
+
+    var $ds;
+    
+	function __construct() {
+    	parent::__construct();
+    	$this->ds = ldap_connect($this->host, $this->port);
+    	ldap_set_option($this->ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+    	ldap_bind($this->ds, $this->user, $this->pass);
+	}
+	
+	function __destruct() {
+	    ldap_close($this->ds);
+	}
+	
+	function findAll($attribute = 'uid', $value = '*', $baseDn = 'dc=edrn,dc=jpl,dc=nasa,dc=gov') {
+		$r = ldap_search($this->ds, $baseDn, $attribute . '=' . $value);
+		if ($r) {
+			//if the result contains entries with surnames,
+			//sort by surname:
+			ldap_sort($this->ds, $r, "sn");
+
+			return ldap_get_entries($this->ds, $r);
+		}
+	}
 	
 	public function getLDAPGroups() {
-		return array(
-			// This is temporary placeholder data which will be replaced
-			// with a live query to the LDAP server.
-			array("name"=>"edrn.pi"),
-			array("name"=>"edrn.nci"),
-			array("name"=>"edrn.curator"),
-			array("name"=>"edrn.review.0309"),
-			array("name"=>"edrn.ic"),
-			array("name"=>"edrn.dmcc")
-		);
-	}
-	
-	public function getLDAPGroupCommonNames() {
-		return array(
-			// This is temporary placeholder data which will be replaced
-			// with a live query to the LDAP server.
-			"edrn.pi"          =>"Principal Investigators",
-			"edrn.nci"         =>"National Cancer Institute",
-			"edrn.curator"     =>"Curators",
-			"edrn.review.0309" =>"Lung and Upper Aerodigestive",
-			"edrn.ic"          =>"Informatics Team",
-			"edrn.dmcc"        =>"Data Management and Coordinating Center"
-		);
-	}
-	
-	public function getCommonNameFor($name) {
-		$cnData = self::getLDAPGroupCommonNames();
-		foreach ($cnData as $username => $commonName) {
-			if ($name == $username) {
-				return $commonName;
-			}
+		$result    = $this->findAll("objectClass","groupOfUniqueNames");
+		$numGroups = $result['count'];
+		
+		$resultArray = array();
+		for ( $i = 0; $i < $numGroups; $i++ ) {
+			$resultArray[] = array("name" => $result[$i]['cn'][0]);
 		}
-		return $name;
+		return $resultArray;
 	}
 }
 ?>
