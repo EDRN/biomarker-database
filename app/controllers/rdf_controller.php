@@ -101,8 +101,7 @@ class RdfController extends AppController {
 			// Display the LDAP groups that should have access to this data
 			$groups = $this->Biomarker->readACL($b['Biomarker']['id']);
 			foreach ($groups as $group) {
-				$cn = $this->Acl->getCommonNameFor($group['acl']['ldapGroup']);
-				echo "    <bmdb:AccessGrantedTo>{$cn}</bmdb:AccessGrantedTo>\r\n";
+				echo "    <bmdb:AccessGrantedTo>{$group['acl']['ldapGroup']}</bmdb:AccessGrantedTo>\r\n";
 			}
 			
 			// Organs
@@ -243,8 +242,7 @@ class RdfController extends AppController {
 			// Display the LDAP groups that should have access to this data
 			$groups = $this->OrganData->readACL($bod['OrganData']['id']);
 			foreach ($groups as $group) {
-				$cn = $this->Acl->getCommonNameFor($group['acl']['ldapGroup']);
-				echo "    <bmdb:AccessGrantedTo>{$cn}</bmdb:AccessGrantedTo>\r\n";
+				echo "    <bmdb:AccessGrantedTo>{$group['acl']['ldapGroup']}</bmdb:AccessGrantedTo>\r\n";
 			}
 		
 			// Studies
