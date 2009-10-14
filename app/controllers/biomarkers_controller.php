@@ -59,17 +59,21 @@ class BiomarkersController extends AppController {
 			'recursive'  => 1
 			)
 		);
-		$this->set('biomarker',$biomarker);
-		if ($biomarker['Biomarker']['isPanel'] == 1) {
-
-			$this->set('availableMarkers',$this->Biomarker->getAvailableBiomarkersForPanel($id));
-			for ($i=0;$i<count($biomarker['Panel']);$i++) {
-				$biomarker['Panel'][$i]['defaultName'] = $this->Biomarker->getDefaultNameById($biomarker['Panel'][$i]['id']);
+		if ($biomarker !== false) {
+			$this->set('biomarker',$biomarker);
+			if ($biomarker['Biomarker']['isPanel'] == 1) {
+	
+				$this->set('availableMarkers',$this->Biomarker->getAvailableBiomarkersForPanel($id));
+				for ($i=0;$i<count($biomarker['Panel']);$i++) {
+					$biomarker['Panel'][$i]['defaultName'] = $this->Biomarker->getDefaultNameById($biomarker['Panel'][$i]['id']);
+				}
+				$this->set('panelMarkers',$biomarker['Panel']);
 			}
-			$this->set('panelMarkers',$biomarker['Panel']);
+			$this->set('panelMembership',$this->Biomarker->getPanelMembership($biomarker['Biomarker']['id']));
+			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+		} else {
+			die("<b>Error:</b> No matching Biomarker for id {$id}");
 		}
-		$this->set('panelMembership',$this->Biomarker->getPanelMembership($biomarker['Biomarker']['id']));
-		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 	}
 	
 	function savefield() {
@@ -597,6 +601,15 @@ class BiomarkersController extends AppController {
 		if ($this->params['form']) {
 			$data = &$this->params['form'];
 			if ($data['name'] != '') {
+				// Check for existing biomarker of same name (uniqueness check)
+				$biomarker = $this->Biomarker->find('first',array(
+					'conditions' => array('Biomarker.name' => $data['name']),
+					'recursive'  => 1
+					)
+				);
+				if (is_array($biomarker) && isset($biomarker['Biomarker'])) {
+					die("<b>Error:</b> Biomarker '{$data['name']}' already exists.");
+				}
 				$this->Biomarker->create(array('name'=>$data['name']));
 				$this->Biomarker->save();
 				$id = $this->Biomarker->getLastInsertID();
