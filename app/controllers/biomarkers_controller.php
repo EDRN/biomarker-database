@@ -197,33 +197,38 @@ class BiomarkersController extends AppController {
 			'recursive'  => 1
 			)
 		);
-		$this->set('biomarker',$biomarker);
-		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
-		$organdatas = $this->Biomarker->god($biomarker['Biomarker']['id']);
+
+		if ($biomarker !== false) {
+			$this->set('biomarker',$biomarker);
+			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+			$organdatas = $this->Biomarker->god($biomarker['Biomarker']['id']);
 		
-		// Try to load the current OrganData object
-		$this->set('organData',false);
-		foreach ($organdatas as $od) {
-			if ($od['OrganData']['id'] == $organ_id) {
-				$this->set('organData',$od);
+			// Try to load the current OrganData object
+			$this->set('organData',false);
+			foreach ($organdatas as $od) {
+				if ($od['OrganData']['id'] == $organ_id) {
+					$this->set('organData',$od);
+				}
 			}
-		}
-		$this->set('organdatas',$organdatas);
+			$this->set('organdatas',$organdatas);
 		
-		// Get a list of all the Organs
-		$this->set('organ',$this->Organ->FindAll());
+			// Get a list of all the Organs
+			$this->set('organ',$this->Organ->FindAll());
 		
-		if ($organ_id == null && count($biomarker['OrganData']) > 0) {
-			$this->redirect("/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$biomarker['OrganData'][0]['id']}");
-		}
+			if ($organ_id == null && count($biomarker['OrganData']) > 0) {
+				$this->redirect("/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$biomarker['OrganData'][0]['id']}");
+			}
 		
-		// Get a list of all the studies
-		$studies = $this->Study->find("all",array('title','id'));
-		$studyarr = array();
-		foreach ($studies as $study) {
-			$studyarr[] = "{$study['Study']['title']}|{$study['Study']['id']}";
+			// Get a list of all the studies
+			$studies = $this->Study->find("all",array('title','id'));
+			$studyarr = array();
+			foreach ($studies as $study) {
+				$studyarr[] = "{$study['Study']['title']}|{$study['Study']['id']}";
+			}
+			$this->set('studystring','"'.implode("\",\"",$studyarr).'"');
+		} else {
+			die("<b>Error:</b> No matching Biomarker for id {$id}");
 		}
-		$this->set('studystring','"'.implode("\",\"",$studyarr).'"');
 	}
 	
 	function addOrganData() {
@@ -464,19 +469,23 @@ class BiomarkersController extends AppController {
 			'recursive'  => 1
 			)
 		);
-		$studydatas = $this->Biomarker->getStudyDatasFor($id);
-
-		$this->set('biomarker',$biomarker);
-		$this->set('studydatas',$studydatas);
-		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
-		
-		// Get a list of all the studies
-		$studies = $this->Study->find("all",array('title','id'));
-		$studyarr = array();
-		foreach ($studies as $study) {
-			$studyarr[] = "{$study['Study']['title']}|{$study['Study']['id']}";
+		if ($biomarker != false) {
+			$studydatas = $this->Biomarker->getStudyDatasFor($id);
+	
+			$this->set('biomarker',$biomarker);
+			$this->set('studydatas',$studydatas);
+			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+			
+			// Get a list of all the studies
+			$studies = $this->Study->find("all",array('title','id'));
+			$studyarr = array();
+			foreach ($studies as $study) {
+				$studyarr[] = "{$study['Study']['title']}|{$study['Study']['id']}";
+			}
+			$this->set('studystring','"'.implode("\",\"",$studyarr).'"');
+		} else {
+			die("<b>Error:</b> No matching Biomarker for id {$id}");
 		}
-		$this->set('studystring','"'.implode("\",\"",$studyarr).'"');
 	}
 	function addStudyData() {
 		$data = &$this->params['form'];
@@ -536,8 +545,12 @@ class BiomarkersController extends AppController {
 			'recursive'  => 1
 			)
 		);
-		$this->set('biomarker',$biomarker);
-		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+		if ($biomarker != false) {
+			$this->set('biomarker',$biomarker);
+			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+		} else {
+			die("<b>Error:</b> No matching Biomarker for id {$id}");
+		}
 	}
 	
 	function addPublication() {
@@ -565,8 +578,12 @@ class BiomarkersController extends AppController {
 			'recursive'  => 1
 			)
 		);
-		$this->set('biomarker',$biomarker);
-		$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+		if ($biomarker != false) {
+			$this->set('biomarker',$biomarker);
+			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+		} else {
+			die("<b>Error:</b> No matching Biomarker for id {$id}");
+		}
 	}
 	
 	function addResource() {
