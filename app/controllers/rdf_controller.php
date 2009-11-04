@@ -205,7 +205,7 @@ class RdfController extends AppController {
 			// Publications
 			if (count($studyData['Publication']) > 0) {
 				foreach ($studyData['Publication'] as $pub) {
-					echo "        <bmdb:referencesPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
+					echo "        <bmdb:referencedInPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
 				}
 			}
 			
@@ -357,13 +357,13 @@ class RdfController extends AppController {
 			$aboutURL = "http://{$this->getResourceBase()}/publications/view/{$p['Publication']['id']}";
 	
 			// Basics
-			echo "  <bmdb:Publication rdf:about=\"{$aboutURL}\">\r\n";
-			echo "    <bmdb:Title>".$this->escapeEntities($p['Publication']['title'])."</bmdb:Title>\r\n";
-			echo "    <bmdb:Author>{$p['Publication']['author']}</bmdb:Author>\r\n";
-			echo "    <bmdb:Journal>{$p['Publication']['journal']}</bmdb:Journal>\r\n";
+			echo "  <edrntype:Publication rdf:about=\"{$aboutURL}\">\r\n";
+			echo "    <dc:title>".$this->escapeEntities($p['Publication']['title'])."</dc:title>\r\n";
+			echo "    <dc:author>{$p['Publication']['author']}</dc:author>\r\n";
+			echo "    <edrn:journal>{$p['Publication']['journal']}</edrn:journal>\r\n";
 			echo "    <bmdb:Published>{$p['Publication']['published']}</bmdb:Published>\r\n";
-			echo "    <bmdb:PubMedId>{$p['Publication']['pubmed_id']}</bmdb:PubMedId>\r\n";
-			echo "  </bmdb:Publication>\r\n";
+			echo "    <edrn:pmid>{$p['Publication']['pubmed_id']}</edrn:pmid>\r\n";
+			echo "  </edrntype:Publication>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
 		exit();
@@ -465,7 +465,11 @@ class RdfController extends AppController {
 	private function printRdfStart() {
 		echo <<<END
 <?xml version='1.0' encoding='UTF-8'?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bmdb="http://edrn.nci.nih.gov/rdf/rdfs/bmdb-1.0.0#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+         xmlns:bmdb="http://edrn.nci.nih.gov/rdf/rdfs/bmdb-1.0.0#"
+         xmlns:edrn="http://edrn.nci.nih.gov/rdf/schema.rdf#"
+         xmlns:edrntype="http://edrn.nci.nih.gov/rdf/types.rdf#" 
+         xmlns:dc="http://purl.org/dc/terms/">
 
 END;
 	}

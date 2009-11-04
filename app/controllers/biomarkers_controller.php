@@ -619,13 +619,23 @@ class BiomarkersController extends AppController {
 			$data = &$this->params['form'];
 			if ($data['name'] != '') {
 				// Check for existing biomarker of same name (uniqueness check)
-				$biomarker = $this->Biomarker->find('first',array(
-					'conditions' => array('Biomarker.name' => $data['name']),
-					'recursive'  => 1
+				$biomarker = $this->BiomarkerName->find('first',array(
+					'conditions' => array("BiomarkerName.name" => $data['name']),
+					'recursive'  => 2
 					)
 				);
 				if (is_array($biomarker) && isset($biomarker['Biomarker'])) {
-					die("<b>Error:</b> Biomarker '{$data['name']}' already exists.");
+					// Determine the primary name for the resulting biomarker
+					$primaryBiomarkerName = '';
+					foreach ($biomarker['Biomarker']['BiomarkerName'] as $bn) {
+						if ($bn['isPrimary'] == 1) {
+							$primaryBiomarkerName = $bn['name']; 
+							break; 
+						}
+					}
+					// Provide an explanation message to the user
+					die("<b>Error:</b> Biomarker '{$data['name']}' already exists as 
+						either the name or an alias of: '{$primaryBiomarkerName}'");
 				}
 				$this->Biomarker->create(array('name'=>$data['name']));
 				$this->Biomarker->save();
