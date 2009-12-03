@@ -150,7 +150,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($b['BiomarkerResource']) > 0) {
 				foreach ($b['BiomarkerResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"http://".$this->escapeEntities($res['URL'])."\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
 				}
 			} 
 			echo "  </bmdb:Biomarker>\r\n";
@@ -212,7 +212,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($studyData['StudyDataResource']) > 0) {
 				foreach ($studyData['StudyDataResource'] as $res) {
-					echo "        <bmdb:referencesResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
+					echo "        <bmdb:referencesResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
 				}
 			} 
 			echo "  </bmdb:BiomarkerOrganStudyData>\r\n";
@@ -270,7 +270,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($bod['OrganDataResource']) > 0) {
 				foreach ($bod['OrganDataResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
+					echo "    <bmdb:hasExternalResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
 				}
 			} 
 		
@@ -326,7 +326,7 @@ class RdfController extends AppController {
 			// Resources
 			if (count($s['StudyResource']) > 0) {
 				foreach ($s['StudyResource'] as $res) {
-					echo "    <bmdb:externalResource rdf:resource=\"".$this->escapeEntities($res['URL'])."\"/>\r\n";
+					echo "    <bmdb:externalResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
 				}
 			} 
 			// Sites 
@@ -375,8 +375,8 @@ class RdfController extends AppController {
 		$results = $this->Resource->getemall();
 		
 		foreach ($results as $url=>$desc) {
-			echo "  <bmdb:ExternalResource rdf:about=\"http://".$this->escapeEntities($url)."\">\r\n";
-			echo "    <bmdb:URI>http://".$this->escapeEntities($url)."</bmdb:URI>\r\n";
+			echo "  <bmdb:ExternalResource rdf:about=\"{$this->escapeEntities($url)}\">\r\n";
+			echo "    <bmdb:URI>{$this->escapeEntities($url)}</bmdb:URI>\r\n";
 			echo "    <bmdb:Description>".$this->escapeEntities($desc)."</bmdb:Description>\r\n";
 			echo "  </bmdb:ExternalResource>\r\n";
 		}

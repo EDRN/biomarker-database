@@ -46,8 +46,8 @@
 <div id="addstudyres" class="addstudyres" style="margin-left:20px;display:none;">
 	<form action="/<?php echo PROJROOT;?>/biomarkers/addResource" method="POST" style="margin-top:5px;">
 		<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
-		<div style="float:left;width:110px;color:#555;">URL: &nbsp;&nbsp;http://</div>
-		<input type="text" style="width:70%;" name="url"/><br/><br/>
+		<div style="float:left;width:110px;color:#555;">URL:</div>
+		<input type="text" style="width:70%;" name="url" value="http://"/><br/><br/>
 		<div style="float:left;width:110px;color:#555;">Description:</div>
 		<input type="text" name="desc" style="float:left;width:50%;"/>
 		<input type="submit" name="associate_res" value="Associate" style="float:left;padding:2px;margin-right:0px;margin-left:6px;"/>
@@ -59,7 +59,7 @@
 <ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 	<?php foreach ($biomarker['BiomarkerResource'] as $resource):?>
 		<li><div class="studyressnippet">
-				<a href="http://<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
+				<a href="<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
 				<span style="color:#555;font-size:90%;">
 				<?php echo $resource['description']?>
 				</span>
