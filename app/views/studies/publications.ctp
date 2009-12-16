@@ -15,7 +15,7 @@
 <div class="menu">
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">
-		<span style="color:#ddd;">You are here: &nbsp;</span>
+		<span>You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
 		<a href="/<?php echo PROJROOT;?>/studies/">Studies</a> ::
 		<a href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>"><?php echo $study['Study']['title']?> </a> : 
