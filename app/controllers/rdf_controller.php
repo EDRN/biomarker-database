@@ -22,15 +22,44 @@ class RdfController extends AppController {
 	);
 	
 	function index() {
-		die("Please add one of <ul>"
-			."<li><a href=\"/".PROJROOT."/rdf/biomarkers\">biomarkers</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdf/biomarkerorgans\">biomarkerorgans</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdf/studies\">studies</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdf/publications\">publications</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdf/pis\">principal investigators</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdf/sites\">sites</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdf/resources\">resources</a></li>"
-			."</ul> to your query");
+		$host = $_SERVER['HTTP_HOST'];
+		$root   = PROJROOT;
+		echo <<<__END
+<h2>BMDB::RDF</h2>
+The EDRN Biomarker Database provides data exports in Resource Description Format (RDF). 
+There are currently three flavors of RDF export supported:
+
+<h3>RDF - Plone-3 (all)</h3>
+<table style="border:solid 1px #ccc;font-size:80%;font-family:courier-" cellspacing="3" cellpadding="5" border="1">
+  <tr><th style="text-align:left;">Biomarkers </th><td><a href="/{$root}/rdf/biomarkers">http://{$host}/{$root}/rdf/biomarkers</a></td></tr>
+  <tr><th style="text-align:left;">Biomarker Organs </th><td><a href="/{$root}/rdf/biomarkerorgans">http://{$host}/{$root}/rdf/biomarkerorgans</a></td></tr>
+  <tr><th style="text-align:left;">Publications </th><td><a href="/{$root}/rdf/publications">http://{$host}/{$root}/rdf/publications</a></td></tr>
+  <tr><th style="text-align:left;">Principal Investigators </th><td><a href="/{$root}/rdf/pis">http://{$host}/{$root}/rdf/pis</a></td></tr>
+  <tr><th style="text-align:left;">Sites </th><td><a href="/{$root}/rdf/sites">http://{$host}/{$root}/rdf/sites</a></td></tr>
+  <tr><th style="text-align:left;">Resources </th><td><a href="/{$root}/rdf/resources">http://{$host}/{$root}/rdf/resources</a></td></tr>
+</table>
+  
+<h3>RDF - Plone-2 (all)</h3>
+<table style="border:solid 1px #ccc;font-size:80%;font-family:courier-" cellspacing="3" cellpadding="5" border="1">
+  <tr><th style="text-align:left;">Biomarkers </th><td><a href="/{$root}/rdfp2/biomarkers">http://{$host}/{$root}/rdfp2/biomarkers</a></td></tr>
+  <tr><th style="text-align:left;">Biomarker Organs </th><td><a href="/{$root}/rdfp2/biomarkerorgans">http://{$host}/{$root}/rdfp2/biomarkerorgans</a></td></tr>
+  <tr><th style="text-align:left;">Publications </th><td><a href="/{$root}/rdfp2/publications">http://{$host}/{$root}/rdfp2/publications</a></td></tr>
+  <tr><th style="text-align:left;">Principal Investigators </th><td><a href="/{$root}/rdfp2/pis">http://{$host}/{$root}/rdfp2/pis</a></td></tr>
+  <tr><th style="text-align:left;">Sites </th><td><a href="/{$root}/rdfp2/sites">http://{$host}/{$root}/rdfp2/sites</a></td></tr>
+  <tr><th style="text-align:left;">Resources </th><td><a href="/{$root}/rdfp2/resources">http://{$host}/{$root}/rdfp2/resources</a></td></tr>
+</table>
+
+<h3>RDF - Plone-2 (public only)</h3>
+<table style="border:solid 1px #ccc;font-size:80%;font-family:courier-" cellspacing="3" cellpadding="5" border="1">
+  <tr><th style="text-align:left;">Biomarkers </th><td><a href="/{$root}/rdfp2public/biomarkers">http://{$host}/{$root}/rdfp2public/biomarkers</a></td></tr>
+  <tr><th style="text-align:left;">Biomarker Organs </th><td><a href="/{$root}/rdfp2public/biomarkerorgans">http://{$host}/{$root}/rdfp2public/biomarkerorgans</a></td></tr>
+  <tr><th style="text-align:left;">Publications </th><td><a href="/{$root}/rdfp2public/publications">http://{$host}/{$root}/rdfp2public/publications</a></td></tr>
+  <tr><th style="text-align:left;">Principal Investigators </th><td><a href="/{$root}/rdfp2public/pis">http://{$host}/{$root}/rdfp2public/pis</a></td></tr>
+  <tr><th style="text-align:left;">Sites </th><td><a href="/{$root}/rdfp2public/sites">http://{$host}/{$root}/rdfp2public/sites</a></td></tr>
+  <tr><th style="text-align:left;">Resources </th><td><a href="/{$root}/rdfp2public/resources">http://{$host}/{$root}/rdfp2public/resources</a></td></tr>
+</table>
+__END;
+		die();
 	}
 	
 	/*
