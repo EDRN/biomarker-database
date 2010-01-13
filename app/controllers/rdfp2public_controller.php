@@ -23,14 +23,17 @@ class Rdfp2publicController extends AppController {
 	);
 	
 	function index() {
-		die("PLONE 2 RDF Streams<br/><br/>Please add one of <ul>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/biomarkers\">biomarkers</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/biomarkerorgans\">biomarkerorgans</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/studies\">studies</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/publications\">publications</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/pis\">principal investigators</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/sites\">sites</a></li>"
-			."<li><a href=\"/".PROJROOT."/rdfp2/resources\">resources</a></li>"
+		die("PLONE 2 (PUBLIC-ONLY) RDF Streams<br/><br/>"
+			."<a href=\"/".PROJROOT."/rdf/\">"
+			."Click here</a> for more information about the RDF provided by this application<br/><br/>"
+			."Please add one of <ul>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/biomarkers\">biomarkers</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/biomarkerorgans\">biomarkerorgans</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/studies\">studies</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/publications\">publications</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/pis\">principal investigators</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/sites\">sites</a></li>"
+			."<li><a href=\"/".PROJROOT."/rdfp2public/resources\">resources</a></li>"
 			."</ul> to your query");
 	}
 	
