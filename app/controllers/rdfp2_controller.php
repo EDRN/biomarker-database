@@ -23,7 +23,10 @@ class Rdfp2Controller extends AppController {
 	);
 	
 	function index() {
-		die("PLONE 2 RDF Streams<br/><br/>Please add one of <ul>"
+		die("PLONE 2 RDF Streams<br/><br/>"
+			."<a href=\"/".PROJROOT."/rdf/\">"
+			."Click here</a> for more information about the RDF provided by this application<br/><br/>"
+			."Please add one of <ul>"
 			."<li><a href=\"/".PROJROOT."/rdfp2/biomarkers\">biomarkers</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdfp2/biomarkerorgans\">biomarkerorgans</a></li>"
 			."<li><a href=\"/".PROJROOT."/rdfp2/studies\">studies</a></li>"
