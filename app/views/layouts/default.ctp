@@ -10,7 +10,10 @@
 <body>
 <div id="page">
 	<div id="edrninformatics">
-		<div id="edrnlogo"><!-- nci logo --></div>
+		<div id="edrnlogo">
+		    <strong>Early Detection Research Network</strong><br/>
+		    <span class="smaller">Division of Cancer Prevention</span>
+	    </div>
 		<div id="edrn-dna"><!-- dna graphic --></div>
 		<h2 class="app-title">EDRN Biomarker Database</h2>
 		<div class="userdetails">
