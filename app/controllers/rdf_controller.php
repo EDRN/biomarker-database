@@ -179,7 +179,7 @@ __END;
 			// Resources
 			if (count($b['BiomarkerResource']) > 0) {
 				foreach ($b['BiomarkerResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
+					echo "    <bmdb:referencesResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
 				}
 			} 
 			echo "  </bmdb:Biomarker>\r\n";
@@ -299,7 +299,7 @@ __END;
 			// Resources
 			if (count($bod['OrganDataResource']) > 0) {
 				foreach ($bod['OrganDataResource'] as $res) {
-					echo "    <bmdb:hasExternalResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
+					echo "    <bmdb:referencesResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
 				}
 			} 
 		
