@@ -57,7 +57,7 @@ class Rdfp2publicController extends AppController {
 		$this->printRdfStart();
 
 		$biomarkers = $this->Biomarker->find('all',array(
-			'conditions' => array('Biomarker.security' => 'Public'),
+			'conditions' => array('Biomarker.QAState' => 'Accepted'),
 			'recursive'  => 2
 			)
 		);
@@ -233,9 +233,8 @@ class Rdfp2publicController extends AppController {
 		$biomarkerorgandatas = $this->OrganData->findAll(null,null,null,null,1,2);
 		$sensitivities = array();
 		foreach ($biomarkerorgandatas as $bod) {
-			
 			// Ensure that the corresponding biomarker is publicly viewable
-			if ($bod['Biomarker']['security'] != 'Public') {
+			if ($bod['Biomarker']['qastate'] != 'Accepted') {
 				continue;
 			}
 			
