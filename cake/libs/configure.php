@@ -269,7 +269,7 @@ class Configure extends Object {
 
 		if (array_key_exists('debug', $config)) {
 			if ($_this->debug) {
-				error_reporting(E_ALL);
+				error_reporting(E_ALL ^ E_DEPRECATED ^ E_WARNING);
 
 				if (function_exists('ini_set')) {
 					ini_set('display_errors', 1);
