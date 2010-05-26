@@ -80,8 +80,29 @@ class BiomarkersController extends AppController {
 		$data =& $this->params['form'];
 		$this->checkSession("/biomarkers/view/{$data['id']}");
 		if ($data['object'] == "biomarker") {
-			$this->Biomarker->id = $data['id'];
-			$this->Biomarker->saveField($data['attr'],$data[$data['attr']]);
+			/**
+			 * If the attribute to be saved is the 'name', this should be handled
+			 * specially because 'name' is not directly associated with the Biomarker
+			 * object itself, but rather comes from a list of Aliases, one of which
+			 * has been designated as 'primary'. If the user is attempting to update
+			 * the Biomarker name, what really must be updated is the value of the 
+			 * primary Alias for that biomarker.
+			 */
+			if ($data['attr'] == 'name') {
+				// Retrieve the alias
+				$alias = $this->BiomarkerName->find('first',
+					array('conditions' => 
+						array('BiomarkerName.biomarker_id' => $data['id'],
+						      'BiomarkerName.isPrimary'    => 1),
+					'recursive'=>1));
+				// Make the update
+				$this->BiomarkerName->id = $alias['BiomarkerName']['id'];
+				$this->BiomarkerName->saveField('name',$data['name']);
+			} else {
+				// Make the update
+				$this->Biomarker->id = $data['id'];
+				$this->Biomarker->saveField($data['attr'],$data[$data['attr']]);
+			}
 			$output = $data[$data['attr']];
 			$this->Auditor->audit("set '{$data['attr']}' to '{$data[$data['attr']]}' for marker ".$this->Biomarker->getDefaultNameById($data['id']).".");
 		} else if ($data['object'] == "organ_data") {
