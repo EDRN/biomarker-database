@@ -4,17 +4,26 @@
 		<ul><li>Home</li></ul>
 	</div><!-- End Breadcrumbs -->
 </div>
-<div style="position:relative;min-height:300px;">
+<div style="position:relative;min-height:355px;">
 	<div style="background-color:#fff;position:absolute;left:5px;height:100%;width:32%;">
 		<div style="padding-left:5px;padding-right:5px;">
 			<h2 style="margin-top:15px;color:#993231;border-bottom:dotted 1px #456;padding-bottom:2px;padding-top:5px;">Welcome!</h2>
 			<p>The EDRN Biomarker Database is a repository for the collection and annotation of the
-			full spectrum of cancer biomarker research data.</p>
-			<p>The information stored in the database is first curated, and then peer-reviewed. When
-			the quality of the data has been assured, it will be made available to the public through
-			the EDRN Public Portal.</p>
-			<p>Due to the fact that the data has not yet been publicly released, users must log-in in 
-			order to browse and edit the database.</p> 
+			full spectrum of EDRN cancer biomarker research data.</p>
+			<p>The information in the database is curated and peer-reviewed for quality control. When
+			the quality has been assured, the data will be available to the public through
+			the 
+			<a href="http://cancer.gov/edrn">EDRN Public Portal</a>.</p>
+			<div style="background-color:#cde;padding:5px;line-height:18px;">
+			<p>Learn about the Early Detection Research Network (EDRN) by visiting the 
+				<a href="http://cancer.gov/edrn">EDRN Public Portal</a>. For specific questions
+				about this website, please email the webmaster at 
+				<a href="mailto:hkincaid@jpl.nasa.gov">hkincaid@jpl.nasa.gov</a>
+			</p> 
+			</div>
+			<p style="font-size:90%;"><b>Note:</b> Some data on this site has not yet been publicly released. As a result, 
+				users must first log-in to browse and edit the database.</p>
+			
 		</div>
 	</div>
 	<div style="background-color:#fff;position:absolute;left:33%;height:100%;margin-top:10px;border-left:solid 1px #999;border-right:solid 1px #999;width:32%;">
