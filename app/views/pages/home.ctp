@@ -8,19 +8,24 @@
 	<div style="background-color:#fff;position:absolute;left:5px;height:100%;width:32%;">
 		<div style="padding-left:5px;padding-right:5px;">
 			<h2 style="margin-top:15px;color:#993231;border-bottom:dotted 1px #456;padding-bottom:2px;padding-top:5px;">Welcome!</h2>
+			<div style="border:solid 2px #cde;padding:5px;line-height:18px;">
+			<img src="/<?php echo PROJROOT?>/img/question-mark.png" style="float:left;padding-right:5px;padding-top:4px"/>
+			<p style="margin-top:0px;margin-bottom:0px;line-height:25px">
+				Learn about the Early Detection Research Network (EDRN)
+				<a href="http://cancer.gov/edrn" style="text-decoration:underline;">Visit the EDRN Public Portal</a>
+			</p> 
+			</div>
 			<p>The EDRN Biomarker Database is a repository for the collection and annotation of the
 			full spectrum of EDRN cancer biomarker research data.</p>
 			<p>The information in the database is curated and peer-reviewed for quality control. When
 			the quality has been assured, the data will be available to the public through
 			the 
 			<a href="http://cancer.gov/edrn">EDRN Public Portal</a>.</p>
-			<div style="background-color:#cde;padding:5px;line-height:18px;">
-			<p>Learn about the Early Detection Research Network (EDRN) by visiting the 
-				<a href="http://cancer.gov/edrn">EDRN Public Portal</a>. For specific questions
+			
+			<p>For specific questions
 				about this website, please email the webmaster at 
-				<a href="mailto:hkincaid@jpl.nasa.gov">hkincaid@jpl.nasa.gov</a>
-			</p> 
-			</div>
+				<a href="mailto:hkincaid@jpl.nasa.gov">hkincaid@jpl.nasa.gov</a>	
+			</p>
 			<p style="font-size:90%;"><b>Note:</b> Some data on this site has not yet been publicly released. As a result, 
 				users must first log-in to browse and edit the database.</p>
 			
