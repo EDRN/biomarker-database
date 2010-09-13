@@ -19,7 +19,7 @@
 </div>
 <div class="searcher">
 	<div>
-	<form action="/<?php echo PROJROOT;?>/studies/goto" method="POST">
+	<form action="/<?php echo PROJROOT;?>/studies/redirection" method="POST">
 		<input type="hidden" id="study_id" name="id" value=""/>
 		<input type="text" id="study-search" value=""/>
 		<input type="submit" value="Search"/>

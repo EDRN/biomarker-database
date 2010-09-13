@@ -9,23 +9,31 @@
 </head>
 <body>
 <div id="page">
-	<div id="edrninformatics">
-		<div id="edrnlogo">
-		    <strong>Early Detection Research Network</strong><br/>
-		    <span class="smaller">Division of Cancer Prevention</span>
-	    </div>
-		<div id="edrn-dna"><!-- dna graphic --></div>
-		<h2 class="app-title">EDRN Biomarker Database</h2>
-		<div class="userdetails">
-			<?php if (isset($_SESSION['username'])) {
-				echo "Logged in as: {$_SESSION['username']}. &nbsp;";
-				echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
-			} else {
-				echo "Not Logged In. &nbsp; ";
-				echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
-			}?>
+	<div id="ncibanner">
+		<div id="ncibanner-inner">
+		  <a href="http://www.cancer.gov/"><h2 class="ncilogo">National Cancer Institute</h2></a>
+		  <a href="http://www.cancer.gov/"><h2 class="cdglogo">www.cancer.gov</h2></a>
+		  <a href="http://www.nih.gov/"><h2 class="nihlogo">National Institutes of Health</h2></a>
 		</div>
 	</div>
+	<br class="clr"/>
+	<div id="edrnlogo">
+		<h1><img id="edrnlogo-logo" src="./assets/edrn-skin/img/edrn-logo.png"/>Early Detection Research Network</h1>
+		<h2>Research and development of biomarkers and technologies for the clinical application of early cancer detection strategies</h2>
+	</div>
+	<div id="dcplogo">
+		<a href="http://prevention.cancer.gov"><h2 class="dcplogo">Division of Cancer Prevention</h2></a>
+	</div>
+	<div class="userdetails">
+		<?php if (isset($_SESSION['username'])) {
+			echo "Logged in as: {$_SESSION['username']}. &nbsp;";
+			echo "<a href=\"/".PROJROOT."/users/logout\">Log Out</a>";
+		} else {
+			echo "Not Logged In. &nbsp; ";
+			echo "<a href=\"/".PROJROOT."/users/login\">Log In</a>";
+		}?>
+	</div>
+	<h2 class="app-title" style="margin-top:146px;">EDRN Biomarker Database</h2>
 	<?php echo $content_for_layout;?>
 </div>
 <div id="footer">

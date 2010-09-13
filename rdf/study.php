@@ -66,7 +66,7 @@ END;
 		if (count($s->getPublications()) > 0) {
 			echo "    <bmdb:Publications>\r\n";
 			foreach ($s->getPublications() as $pub) {
-				echo "      <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
+				echo "      <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/redirect/publication/?id={$pub->getObjId()}\"/>\r\n";
 			}
 			echo "    </bmdb:Publications>\r\n";
 		} else {

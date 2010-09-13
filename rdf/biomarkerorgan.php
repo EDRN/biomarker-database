@@ -64,7 +64,7 @@ END;
 				if (count($studyData->getPublications()) > 0) {
 					echo "        <bmdb:Publications>\r\n";
 					foreach ($studyData->getPublications() as $pub) {
-						echo "          <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
+						echo "          <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/redirection/publication/?id={$pub->getObjId()}\"/>\r\n";
 					}
 					echo "        </bmdb:Publications>\r\n";
 				} else {
@@ -92,7 +92,7 @@ END;
 		if (count($bod->getPublications()) > 0) {
 			echo "    <bmdb:Publications>\r\n";
 			foreach ($bod->getPublications() as $pub) {
-				echo "      <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/goto/publication/?id={$pub->getObjId()}\"/>\r\n";
+				echo "      <bmdb:Publication rdf:about=\"http://bmdb.jpl.nasa.gov/redirection/publication/?id={$pub->getObjId()}\"/>\r\n";
 			}
 			echo "    </bmdb:Publications>\r\n";
 		} else {

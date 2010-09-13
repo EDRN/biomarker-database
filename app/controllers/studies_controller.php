@@ -164,9 +164,9 @@ class StudiesController extends AppController {
 		}
 	}
 	/******************************************************************
-	 * GOTO
+	 * REDIRECTION
 	 ******************************************************************/
-	function goto() {
+	function redirection() {
 		$data = &$this->params['form'];
 		if ($data['id']) {
 			$this->redirect("/studies/view/{$data['id']}");

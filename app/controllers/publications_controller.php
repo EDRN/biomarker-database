@@ -35,7 +35,7 @@ class PublicationsController extends AppController {
 		exit();
 	}
 	
-	function goto() {
+	function redirection() {
 		$data = &$this->params['form'];
 		if ($data['id']) {
 			$this->redirect("/publications/view/{$data['id']}");

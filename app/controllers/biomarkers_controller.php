@@ -700,9 +700,9 @@ class BiomarkersController extends AppController {
 		die();
 	}
 	/******************************************************************
-	 * GOTO
+	 * REDIRECTION
 	 ******************************************************************/
-	function goto() {
+	function redirection() {
 		$data = &$this->params['form'];
 		if ($data['id']) {
 			$this->redirect("/biomarkers/view/{$data['id']}");

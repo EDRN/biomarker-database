@@ -22,5 +22,6 @@
  * @lastmodified	$Date: 2008-01-01 22:33:52 -0800 (Tue, 01 Jan 2008) $
  * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
  */
+date_default_timezone_set('America/Los_Angeles');
 require 'webroot' . DIRECTORY_SEPARATOR . 'index.php';
 ?>
