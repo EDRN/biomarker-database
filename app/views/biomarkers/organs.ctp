@@ -66,7 +66,11 @@
 	</h4>
 	<div class="organdatablock">
 		<div class="lefttext">
+			<h5>Description</h5>
 			<span id="description" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:description"><?php Biomarker::printor($organData['OrganData']['description'],'No Description Provided Yet... Click Here to Add.');?></span>
+			<h5>Performance Comment</h5>
+			<span id="performance_comment" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:performance_comment"><?php Biomarker::printor($organData['OrganData']['performance_comment'],'No Performance Comment Provided Yet... Click Here to Add.');?></span>
+			
 		</div>
 		<div class="rightcol">
 			<h4 style="border-bottom:dotted 1px #888;background-color:#ddd;">Attributes:</h4>
