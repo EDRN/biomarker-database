@@ -263,6 +263,7 @@ __END;
 			echo "    <bmdb:URN>urn:edrn:bmdb:biomarkerorgan:{$bod['OrganData']['id']}</bmdb:URN>\r\n";
 			echo "    <bmdb:Biomarker rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$bod['Biomarker']['id']}\"/>\r\n";
 			echo "    <bmdb:Description>". $this->escapeEntities($bod['OrganData']['description']). "</bmdb:Description>\r\n";
+			echo "    <bmdb:PerformanceComment>". $this->escapeEntities($bod['OrganData']['performance_comment']). "</bmdb:PerformanceComment>\r\n";
 			echo "    <bmdb:Organ>{$bod['Organ']['name']}</bmdb:Organ>\r\n";
 			echo "    <bmdb:Phase>{$bod['OrganData']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:QAState>{$bod['OrganData']['qastate']}</bmdb:QAState>\r\n";
