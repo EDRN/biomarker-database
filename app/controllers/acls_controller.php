@@ -27,8 +27,6 @@ class AclsController extends AppController {
 		
 	public static function utilAlphabetizeGroupNames($groups) {
 		$result = array();
-		$ids   = array_keys($groups);
-		$names = array();
 		foreach ($groups as $groupId => $groupData) {
 			$result[$groupId] = $groupData['name'];
 		}
