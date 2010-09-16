@@ -115,11 +115,12 @@ class AclsController extends AppController {
 	function manage() {
 		$this->checkSession("/");
 		
-		$allgroups = $this->Acl->getLDAPGroups();
+		$allgroups    = $this->Acl->getLDAPGroups();
+		$sortedGroups = self::utilAlphabetizeGroupNames($allgroups);
 		
 		$message = isset($_GET['message']) ? $_GET['message'] : '';
 		$this->set('message',$message);
-		$this->set('allgroups',$allgroups);
+		$this->set('allgroups',$sortedGroups);
 	}
 	
 	function bulkGrant() {
