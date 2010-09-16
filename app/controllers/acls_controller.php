@@ -24,6 +24,17 @@ class AclsController extends AppController {
 			'BiomarkerResource',
 			'Sensitivity'
 		);
+		
+	public static function utilAlphabetizeGroupNames($groups) {
+		$result = array();
+		$ids   = array_keys($groups);
+		$names = array();
+		foreach ($groups as $groupId => $groupData) {
+			$result[$groupId] = $groupData['name'];
+		}
+		sort($result);
+		return $result;
+	}
 			
 	function edit($objectType,$objectId,$parentId='') {
 		$list     = false;
@@ -44,21 +55,23 @@ class AclsController extends AppController {
 		$this->checkSession("/{$returnto}");
 		
 		// Determine selected and available groups
-		$allgroups = $this->Acl->getLDAPGroups();
+		$allgroups    = $this->Acl->getLDAPGroups();
+		$sortedGroups = self::utilAlphabetizeGroupNames($allgroups);
+		
 		$availableGroups = array();
 		$selectedGroups  = array();
 		
-		foreach ($allgroups as $group) {
+		foreach ($sortedGroups as $groupId => $groupName) {
 			$groupIsSelected = false;
 			foreach ($list as $result) {
-				if ($result['acl']['ldapGroup'] == $group['name']) {
-					$selectedGroups[] = $group;
+				if ($result['acl']['ldapGroup'] == $groupName) {
+					$selectedGroups[$groupId] = $groupName;
 					$groupIsSelected = true;
 					break;		
 				}
 			}
 			if (!$groupIsSelected) {
-				$availableGroups[] = $group;
+				$availableGroups[$groupId] = $groupName;
 			}
 		}
 		
