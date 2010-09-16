@@ -33,8 +33,8 @@ object's page and clicking on "Set Security".
   		</select> to 
   	all members of 
   		<select name="group">
-  			<?php foreach ($allgroups as $g):?>
-  				<option value="<?php echo $g['name']?>"><?php echo $g['name']?></option>
+  			<?php foreach ($allgroups as $gId => $gName):?>
+  				<option value="<?php echo $gName?>"><?php echo $gName?></option>
   			<?php endforeach;?>
   		</select>
   		<input type="submit" value="Confirm"/>
@@ -50,8 +50,8 @@ object's page and clicking on "Set Security".
   		</select> by 
   	all members of 
   		<select name="group">
-  			<?php foreach ($allgroups as $g):?>
-  				<option value="<?php echo $g['name']?>"><?php echo $g['name']?></option>
+  			<?php foreach ($allgroups as $gId => $gName):?>
+  				<option value="<?php echo $gName?>"><?php echo $gName?></option>
   			<?php endforeach;?>
   		</select>
   		<input type="submit" value="Confirm"/>
