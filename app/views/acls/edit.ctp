@@ -28,14 +28,14 @@ Now viewing the Access Control List for:
 		<input type="hidden" name="values" id="group_values" value=""/>
 		
 		<select id="allGroups" name="allGroups" size="20"  multiple="MULTIPLE">
-		<?php foreach ($availableGroups as $g): ?>
-			<option id="opt-<?php echo $g['name'];?>" value="<?php echo $g['name'];?>"><?php echo $g['name'];?></option>
+		<?php foreach ($availableGroups as $gId => $gName): ?>
+			<option id="opt-<?php echo $gName;?>" value="<?php echo $gName;?>"><?php echo $gName;?></option>
 		<?php endforeach;?>
 		
 		</select>
 		<select id="selectedGroups" name="selectedGroups" size="20" multiple="MULTIPLE" style="float:right;">
-		<?php foreach ($selectedGroups as $g): ?>
-			<option id="opt-<?php echo $g['name']?>" value="<?php echo $g['name']?>"><?php echo $g['name']?></option>
+		<?php foreach ($selectedGroups as $gId => $gName): ?>
+			<option id="opt-<?php echo $gName?>" value="<?php echo $gName?>"><?php echo $gName?></option>
 		<?php endforeach;?>
 		</select>
 		<div style="clear:both;"><!-- clear --></div>
