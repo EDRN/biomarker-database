@@ -219,6 +219,9 @@ __END;
 			echo "  <bmdb:BiomarkerOrganStudyData rdf:about=\"{$about_id}\">\r\n";
 			echo "    <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['Study']['FHCRC_ID']}\"/>\r\n";
 			
+			// Decision Rule
+			echo "    <bmdb:DecisionRule>{$this->escapeEntities($studyData['decision_rule'])}</bmdb:DecisionRule>\r\n";
+			
 			// Sensitivity/Specificity Information
 			if (count($studyData['Sensitivity']) > 0) {
 				echo "    <bmdb:SensitivityDatas>\r\n";
