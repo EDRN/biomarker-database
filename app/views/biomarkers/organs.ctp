@@ -147,7 +147,7 @@
 						</div>
 					</h5>
 					<div id="addsensspec<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">
-						<h5 style="margin-bottom:5px;margin-left:1px;">Add Sensitivity / Specificity Details:</h5>
+						<h5 style="margin-bottom:5px;margin-left:1px;">Add Biomarker Characteristics Details:</h5>
 						<form style="color:#555;" action="/<?php echo PROJROOT;?>/biomarkers/addsensspec" method="POST">
 							<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 							<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
@@ -229,6 +229,10 @@
 						</table>
 						<?php endif;?>
 					</div>
+					<br/>
+					<h5 style="position:relative;border-bottom:solid 1px #999;">Decision Rule</h5>
+					<span id="performance_comment" class="editable textarea object:organ_study_data id:<?php echo $study['id']?> attr:decision_rule"><?php Biomarker::printor($study['decision_rule'],'No Decision Rule Detail Provided Yet... Click Here to Add.');?></span>
+			
 					<br/>
 					<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications
 						<div class="editlink" style="font-size:100%;margin-top:-8px;">
