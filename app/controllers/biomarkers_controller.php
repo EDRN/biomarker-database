@@ -296,6 +296,7 @@ class BiomarkersController extends AppController {
 				"sensitivity"=>$data['sensitivity'],
 				"specificity"=>$data['specificity'],
 				"prevalence" =>$data['prevalence'],
+				"specificAssayType" => $data['specificAssayType'],
 				"notes"=>$data['sensspec_details'])
 			);
 		$this->Sensitivity->save();
@@ -370,6 +371,7 @@ class BiomarkersController extends AppController {
 		$this->Sensitivity->saveField('sensitivity',$data['sensitivity']);
 		$this->Sensitivity->saveField('specificity',$data['specificity']);
 		$this->Sensitivity->saveField('prevalence',$data['prevalence']);
+		$this->Sensitivity->saveField('specificAssayType',$data['specificAssayType']);
 		$this->Sensitivity->saveField('notes',$data['notes']);
 		
 		// Return the user to the specified next page
@@ -392,6 +394,7 @@ class BiomarkersController extends AppController {
 				"sensitivity"=>$data['sensitivity'],
 				"specificity"=>$data['specificity'],
 				"prevalence" =>$data['prevalence'],
+				"specificAssayType" => $data['specificAssayType'],
 				"notes"=>$data['sensspec_details'])
 			);
 		$this->Sensitivity->save();
