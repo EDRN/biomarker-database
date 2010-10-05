@@ -27,6 +27,7 @@
 		  <tr><th>Sensitivity:</th><td><input type="text" name="sensitivity" value="<?php echo $sensitivity['Sensitivity']['sensitivity']?>"/>&nbsp;%</td></tr>
 		  <tr><th>Specificity:</th><td><input type="text" name="specificity" value="<?php echo $sensitivity['Sensitivity']['specificity']?>"/>&nbsp;%</td></tr>
 		  <tr><th>Prevalence:</th><td><input type="text" name="prevalence" value="<?php echo $sensitivity['Sensitivity']['prevalence']?>"/>&nbsp;%</td></tr>
+	  	  <tr><th>Specific Assay Type:</th><td><textarea name="specificAssayType" style="width:95%;border-width:1px;padding:2px;height:80px;"><?php echo $sensitivity['Sensitivity']['specificAssayType']?></textarea></td></tr>
 	  	<tr><th>Notes:</th><td><textarea name="notes" style="width:95%;border-width:1px;padding:2px;height:80px;"><?php echo $sensitivity['Sensitivity']['notes']?></textarea></td></tr>
 	  	<tr><td colspan="2" style="text-align:right;"><a class="fakelink" href="/<?php echo PROJROOT . "{$next_page}";?>">
 	  		cancel &amp; return</a>&nbsp;&nbsp;&nbsp;<input type="submit" value="Save Changes"/></td>
