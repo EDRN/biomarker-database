@@ -141,7 +141,7 @@
 					</div>
 					<div class="clr"><!-- clear --></div>
 					<br/>
-					<h5 style="position:relative;border-bottom:solid 1px #999;">Sensitivity / Specificity Information
+					<h5 style="position:relative;border-bottom:solid 1px #999;">Biomarker Characteristics Summary
 						<div class="editlink" style="font-size:100%;margin-top:-8px;">
 							<span class="fakelink toggle:addsensspec<?php echo $study['id']?>">+ Add Details</span>
 						</div>
@@ -168,7 +168,14 @@
 						<?php if (count($study['Sensitivity']) > 0):?>
 						<table class="associatedstudies" style="width:100%;">
 						<tbody>
-							<tr><th style="text-align:left;">Notes</th><th>Sensitivity</th><th>Specificity</th><th>Prevalence</th><th>NPV</th><th>PPV</th><th>Edit</th><th>Delete</th></tr>
+							<tr><th style="text-align:left;">Notes</th>
+								<th>Sensitivity</th><th>Specificity</th>
+								<th>Prevalence</th>
+								<th>NPV</th>
+								<th>PPV</th>
+								<th>Assay Type</th>
+								<th>Edit</th>
+								<th>Delete</th></tr>
 						<?php endif;?>
 						<?php foreach ($study['Sensitivity'] as $s):?>
 						<?php
@@ -200,7 +207,10 @@
 								<td style="text-align:center;"><?php echo $s['prevalence'];?></td>
 								<td style="text-align:center;"><?php echo $npv;?></td>
 								<td style="text-align:center;"><?php echo $ppv;?></td>
-								<td style="text-align:center;"><a class="fakelink" href="/<?php echo PROJROOT;?>/biomarkers/editsensspec/<?php echo $s['id']?>/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>">Edit</a></td>
+								<td style="text-align:center;"><?php echo $s['specificAssayType'];?></td>
+								<td style="text-align:center;">
+									<a class="fakelink" href="/<?php echo PROJROOT;?>/biomarkers/editsensspec/<?php echo $s['id']?>/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>">Edit</a>
+								</td>
 								<td style="text-align:center;">
 									<a href="/<?php echo PROJROOT;?>/biomarkers/removesensspec/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $s['id']?>" 
 										style="color:#d55;" 
