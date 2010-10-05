@@ -157,7 +157,10 @@
 							Specificity (%): <input type="text" name="specificity" style="width:50px;"/>&nbsp;&nbsp;
 							Prevalence  (0 - 1.0):  <input type="text" name="prevalence"  style="width:50px;"/>&nbsp;
 							<br/>
-							Details: <br/><textarea name="sensspec_details" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
+							Specific Assay Type: <br/>
+							<textarea name="specificAssayType" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
+							<br/>
+							Notes: <br/><textarea name="sensspec_details" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
 							<input type="submit" value="Add" name="add_details" style="margin-bottom:3px;"/>
 							<input type="button" value="Cancel" style="margin-bottom:3px;" class="cancelbutton toggle:addsensspec<?php echo $study['id']?>"/>
 						</form>
