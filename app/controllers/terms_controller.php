@@ -20,6 +20,31 @@ class TermsController extends AppController {
 	
 	function define() {
 		
+		// If form data is provided, attempt to add a new term
+		if (isset($this->params['form']['label']) && isset($this->params['form']['definition'])) {
+			
+			// Check for existing term (uniqueness check)
+			$term = $this->Term->find('first',array(
+				'conditions' => array("Term.label" => $this->params['form']['label']),
+				'recursive'  => 1
+				)
+			);
+			if (is_array($term) && isset($term['Term'])) {
+				// Provide an explanation message to the user
+				die("<b>Error:</b> The term '{$this->params['form']['label']}' has 
+					already been defined");
+			} else {
+				// Create the term in the database
+				$this->Term->create(array(
+					"label" => $this->params['form']['label'],
+					"definition" => $this->params['form']['definition']));
+				$this->Term->save();
+			
+				$this->redirect("/terms");
+			}
+		}
+		
+		// Otherwise, just show the web form
 	}
 	
 	/******************************************************************
