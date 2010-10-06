@@ -1,13 +1,11 @@
 <?php
 	// Include required CSS and JavaScript
 	echo $html->css('bmdb-objects');
-	echo $html->css('eip');
-	echo $javascript->link('mootools-release-1.11');
-	echo $javascript->link('eip');
-
-	echo $html->css('autocomplete');
-	echo $javascript->link('autocomplete/Observer');
-	echo $javascript->link('autocomplete/Autocompleter');
+	
+	echo $javascript->link('jquery/jquery-1.3.2.min');
+	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+	
+	echo $html->css('dataTables/dataTables.css');
 	echo $html->css('bmdb-browser');
 ?>
 <div class="menu">
@@ -17,17 +15,7 @@
 	</div><!-- End Breadcrumbs -->
 
 </div>
-<div class="searcher">
-	<div>
-	<form action="/<?php echo PROJROOT;?>/terms/redirection" method="POST">
-		<input type="hidden" id="term_id" name="id" value=""/>
-		<input type="text" id="term-search" value="Begin typing a term here..."/>
-		<input type="submit" value="Search"/><br/>
-		<a href="/<?php echo PROJROOT;?>/terms/define">Define a new Term</a>
-		<div class="clr"><!--  --></div>
-	</form>
-	</div>
-</div>
+
 <h2>Term Directory:</h2>
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
 &nbsp;&nbsp;Browse the directory listing, or search for a term using the box on the right.
@@ -35,11 +23,14 @@
 
 <br/>
 
-<table id="termelements" cellspacing="0" cellpadding="0">
+<table id="termelements" class="dataTable" cellspacing="0" cellpadding="0">
+  <thead>
   <tr>
     <th>Term</th>
     <th>Definition</th>
   </tr>
+  </thead>
+  <tbody>
   <?php $count = 0;?>
   <?php foreach ($terms as $term): ?>
   <?php if ($count++ % 2 == 0) {?>
@@ -54,6 +45,7 @@
   </tr>
   <?php } ?>
   <?php endforeach;?>
+  </tbody>
 </table>
 <p>&nbsp;</p>
 <p style="border-bottom:solid 2px #666;">&nbsp;</p>
@@ -75,4 +67,15 @@
        this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
      }
    });
+</script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	// Turn the table into a sortable, searchable table
+	$("#termelements").dataTable();
+	// Give the search box the initial focus
+	$("#termelements_filter > input").focus();
+
+});
 </script>
