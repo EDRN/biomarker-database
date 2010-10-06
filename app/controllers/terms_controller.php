@@ -19,6 +19,7 @@ class TermsController extends AppController {
 	}
 	
 	function define() {
+		$this->checkSession('/terms/define');
 		
 		// If form data is provided, attempt to add a new term
 		if (isset($this->params['form']['label']) && isset($this->params['form']['definition'])) {
@@ -45,6 +46,27 @@ class TermsController extends AppController {
 		}
 		
 		// Otherwise, just show the web form
+	}
+	
+	function view($id) {
+		$this->checkSession("/terms/view/{$id}");
+		$this->Term->id = $id;
+		$this->set('term', $this->Term->read());
+	}
+	
+	function edit($id = null) {
+		$this->checkSession("/terms");
+		// If form data is present, attempt to update the term
+		if (isset($this->params['form']['id'])) {
+			$this->Term->id = $this->params['form']['id'];
+			$this->Term->saveField('definition',$this->params['form']['definition']);
+			$this->redirect("/terms/view/{$this->Term->id}");
+		}
+		
+		// Otherwise just show the update form
+		$this->checkSession("/terms/view/{$id}");
+		$this->Term->id = $id;
+		$this->set('term', $this->Term->read());
 	}
 	
 	/******************************************************************
