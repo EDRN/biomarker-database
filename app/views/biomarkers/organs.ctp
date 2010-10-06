@@ -87,9 +87,40 @@
 				</tr>
 			</table>
 		</div>
+		
+		<!-- DEFINITIONS -->
 		<div class="clr"><!-- clear --></div>
+		<h3 style="position:relative;margin-left:0px;">Definitions
+			<div class="editlink">
+				<span class="fakelink toggle:adddefinition">+ Add Definition</span>
+			</div>
+		</h3>
+		<div id="adddefinition" class="addstudydata" style="display:none;">
+			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Definition:</h5>
+			<div style="width:80%;">
+				<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganTermDefinition" method="POST">
+					<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
+					<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
+					<input type="hidden" id="term_id" name="term_id" value=""/>
+					<input type="text" id="term-search" value="" style="width:100%;"/>
+					<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of defined terms will appear.</span><br/>
+					<input type="button" class="cancelbutton toggle:adddefinition" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:-4px;"/>
+					<input type="submit" name="associate_term" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+					
+				</form>
+				<div class="clr"><!-- clear --></div>
+			</div>
+		</div>
+		<dl>
+		    <dt>test</dt>
+		    <dd>What you do when you aren't sure something is working yet</dd>
+		<?php foreach ($organData['Term'] as $term):?>
+			<dt><?php echo $term['label']?> &nbsp;&nbsp;<a style="color:#d55;font-size:90%;" alt="Remove" href="/<?php echo PROJROOT?>/biomarkers/removeOrganTermDefinition/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $term['id']?>">x Remove Definition</a></dt>
+			<dd><?php echo $term['definition']?></dd>
+		<?php endforeach?>
+		</dl>
 		
-		
+		<!-- SUPPORTING STUDY DATA -->
 		<h3 style="position:relative;margin-left:0px;">Supporting Study Data
 			<div class="editlink">
 				<span class="fakelink toggle:addstudydata">+ Add Study</span>
@@ -489,6 +520,22 @@
           }  
        });
     });
+    
+  // Activate OrganData Associate Definition autocomplete box
+  new Autocompleter.Ajax.Xhtml(
+  	$('term-search'),
+  	'/<?php echo PROJROOT;?>/terms/ajax_autocompleteTerms', {
+  		'postData':{},
+  		'postVar' : 'needle',
+  		'target'  : 'term_id',
+  		'parseChoices': function(el) {
+  			var value = el.getFirst().innerHTML;
+  			var id    = el.getFirst().id;
+  			el.inputValue = value;
+  			el.inputId    = id;
+  			this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
+  		}
+  });
     
   // Activate OrganData Associate Publication autocomplete box
   new Autocompleter.Ajax.Xhtml(
