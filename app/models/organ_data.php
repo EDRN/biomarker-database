@@ -47,6 +47,17 @@ class OrganData extends AppModel
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
 		),
+		
+		/*
+		 * A 'OrganData' object HAS AND BELONGS TO MANY 'Term' objects
+		 */
+		'Term' => array(
+			'className' => 'Term',
+			'join_table'=> 'organ_datas_terms',
+			'foreignKey'=> 'organ_data_id',
+			'associationForeignKey'=>'term_id',
+			'unique'=>true
+		),
 	
 	);
 	
