@@ -20,7 +20,8 @@ class BiomarkersController extends AppController {
 			'BiomarkerStudyDataResource',
 			'OrganDataResource',
 			'BiomarkerResource',
-			'Sensitivity'
+			'Sensitivity',
+			'Term'
 		);
 
 	/******************************************************************
@@ -480,6 +481,19 @@ class BiomarkersController extends AppController {
 		$this->OrganDataResource->delete();
 		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 		
+	}
+	
+	function addOrganTermDefinition() {
+		$data = &$this->params['form'];
+		$this->checkSession("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
+		$this->OrganData->habtmAdd('Term',$data['organ_data_id'],$data['term_id']);
+		$this->redirect("/biomarkers/organs/{$data['biomarker_id']}/{$data['organ_data_id']}");
+	}
+	
+	function removeOrganTermDefinition($biomarker_id,$organ_data_id,$term_id) {
+		$this->checkSession("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
+		$this->OrganData->habtmDelete('Term',$organ_data_id,$term_id);
+		$this->redirect("/biomarkers/organs/{$biomarker_id}/{$organ_data_id}");
 	}
 	
 	/******************************************************************
