@@ -18,7 +18,8 @@ class RdfController extends AppController {
 			'Pi',
 			'Site',
 			'Resource',
-			'Acl'
+			'Acl',
+			'Term'
 	);
 	
 	function index() {
@@ -463,6 +464,24 @@ __END;
 			echo "    <bmdb:SiteId>{$s['sites']['site_id']}</bmdb:SiteId>\r\n";
 			echo "    <bmdb:hasPrincipalInvestigator rdf:resource=\"http://{$this->getResourceBase()}/pis/{$s['sites']['site_id']}\"/>\r\n";
 			echo "  </bmdb:Site>\r\n";
+		}/* end foreach */
+		$this->printRdfEnd();
+		exit();
+	}
+	
+	function terms() {
+		header("content-type:application/rdf+xml; charset=utf-8");
+		$this->printRdfStart();
+		$results = $this->Term->findAll();
+
+		foreach ($results as $t) {
+			$aboutURL = "http://{$this->getResourceBase()}/terms/view/{$t['Term']['id']}";
+	
+			// Basics
+			echo "  <bmdb:Term rdf:about=\"{$aboutURL}\">\r\n";
+			echo "    <bmdb:Label>".$this->escapeEntities($t['Term']['label'])."</bmdb:Label>\r\n";
+			echo "    <bmdb:Definition>{$t['Term']['definition']}</bmdb:Definition>\r\n";
+			echo "  </bmdb:Term>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();
 		exit();
