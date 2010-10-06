@@ -53,6 +53,11 @@
 			  <li><a href="/<?php echo PROJROOT;?>/publications/">Browse Publications</a></li>
 			  <li><a href="/<?php echo PROJROOT;?>/publications/import">Import from Pub-Med</a></li>
 			</ul>
+			<h4>Terms / Glossary</h4>
+			<ul style="list-style-type:square;color:#500003;">
+			  <li><a href="/<?php echo PROJROOT;?>/terms/">Browse Terms</a></li>
+			  <li><a href="/<?php echo PROJROOT;?>/terms/define">Define a Term</a></li>
+			</ul>
 		</div>
 		<div class="clr"><!--  --></div>
 	</div>
