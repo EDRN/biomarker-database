@@ -112,8 +112,6 @@
 			</div>
 		</div>
 		<dl>
-		    <dt>test</dt>
-		    <dd>What you do when you aren't sure something is working yet</dd>
 		<?php foreach ($organData['Term'] as $term):?>
 			<dt><?php echo $term['label']?> &nbsp;&nbsp;<a style="color:#d55;font-size:90%;" alt="Remove" href="/<?php echo PROJROOT?>/biomarkers/removeOrganTermDefinition/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $term['id']?>">x Remove Definition</a></dt>
 			<dd><?php echo $term['definition']?></dd>
