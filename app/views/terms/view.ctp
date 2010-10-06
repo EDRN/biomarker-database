@@ -24,3 +24,5 @@
 <blockquote>
 	<?php echo $term['Term']['definition']?>
 </blockquote>
+<hr/>
+<a href="/<?php echo PROJROOT?>/terms/edit/<?php echo $term['Term']['id']?>">Edit this Definition</a>

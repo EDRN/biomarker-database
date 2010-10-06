@@ -44,14 +44,12 @@
   <?php foreach ($terms as $term): ?>
   <?php if ($count++ % 2 == 0) {?>
   <tr>
-    <td> <?php echo $html->link($term['Term']['label'],"/terms/view/{$term['Term']['id']}");?> </a></td>
-    <td> <?php echo $term['Term']['label']?></td>
+    <td> <?php echo $html->link($term['Term']['label'],"/terms/view/{$term['Term']['id']}");?></td>
     <td> <?php echo $term['Term']['definition']?></td>
   </tr>
   <?php } else { ?>
   <tr style="background-color:#f4f4f4;">
     <td> <?php echo $html->link($term['Term']['label'],"/terms/view/{$term['Term']['id']}");?> </a></td>
-    <td> <?php echo $term['Term']['label']?></td>
     <td> <?php echo $term['Term']['definition']?></td>
   </tr>
   <?php } ?>
