@@ -34,3 +34,47 @@
 </div>
 
 <br/>
+
+<table id="termelements" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Term</th>
+    <th>Definition</th>
+  </tr>
+  <?php $count = 0;?>
+  <?php foreach ($terms as $term): ?>
+  <?php if ($count++ % 2 == 0) {?>
+  <tr>
+    <td> <?php echo $html->link($term['Term']['label'],"/terms/view/{$term['Term']['id']}");?> </a></td>
+    <td> <?php echo $term['Term']['label']?></td>
+    <td> <?php echo $term['Term']['definition']?></td>
+  </tr>
+  <?php } else { ?>
+  <tr style="background-color:#f4f4f4;">
+    <td> <?php echo $html->link($term['Term']['label'],"/terms/view/{$term['Term']['id']}");?> </a></td>
+    <td> <?php echo $term['Term']['label']?></td>
+    <td> <?php echo $term['Term']['definition']?></td>
+  </tr>
+  <?php } ?>
+  <?php endforeach;?>
+</table>
+<p>&nbsp;</p>
+<p style="border-bottom:solid 2px #666;">&nbsp;</p>
+
+
+<script>
+  // Activate Term Search autocomplete box
+  new Autocompleter.Ajax.Xhtml(
+   $('term-search'),
+     '/<?php echo PROJROOT;?>/terms/ajax_autocompleteTerms', {
+     'postData':{'object':'Term','attr':'Label'},
+     'postVar': 'needle',
+     'target' : 'term_id',
+     'parseChoices': function(el) {
+       var value = el.getFirst().innerHTML;
+       var id    = el.getFirst().id;
+       el.inputValue = value;
+       el.inputId    = id;
+       this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
+     }
+   });
+</script>
