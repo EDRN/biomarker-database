@@ -103,7 +103,8 @@
 					<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 					<input type="hidden" id="term_id" name="term_id" value=""/>
 					<input type="text" id="term-search" value="" style="width:100%;"/>
-					<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of defined terms will appear.</span><br/>
+					<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of defined terms will appear.</span> &nbsp;
+					<span class="hint" style="float:left;margin-top:3px;">Can't find your term? <a href="/<?php echo PROJROOT?>/terms/define">Define It!</a></span><br/>
 					<input type="button" class="cancelbutton toggle:adddefinition" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:-4px;"/>
 					<input type="submit" name="associate_term" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
 					
