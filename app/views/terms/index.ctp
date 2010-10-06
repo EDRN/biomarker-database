@@ -15,6 +15,9 @@
 	</div><!-- End Breadcrumbs -->
 
 </div>
+<div class="searcher">
++ <a href="/<?php echo PROJROOT;?>/terms/define">Define a new Term</a>
+</div>
 
 <h2>Term Directory:</h2>
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">

@@ -182,6 +182,14 @@ div#smallEditlinks ul li a {
 	text-decoration:none;
 }
 
+blockquote {
+	font-size:200%;
+	font-family:"Times New Roman",serif;
+	font-style:italic;
+	color:#888;
+		
+}
+
 
 /**
  * DIV.MAIN_SECTION

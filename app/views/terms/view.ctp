@@ -22,7 +22,7 @@
 
 <h2>Definition for <?php echo $term['Term']['label']?>:</h2>
 <blockquote>
-	<?php echo $term['Term']['definition']?>
+	&quot;<?php echo $term['Term']['definition']?>&quot;
 </blockquote>
 <hr/>
 <a href="/<?php echo PROJROOT?>/terms/edit/<?php echo $term['Term']['id']?>">Edit this Definition</a>
