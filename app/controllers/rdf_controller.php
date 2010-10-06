@@ -277,6 +277,12 @@ __END;
 			foreach ($groups as $group) {
 				echo "    <bmdb:AccessGrantedTo>{$group['acl']['ldapGroup']}</bmdb:AccessGrantedTo>\r\n";
 			}
+			
+			// Associated Term Definitions
+			foreach ($bod['Term'] as $term) {
+				$aboutId = $this->escapeEntities("http://{$this->getResourceBase()}/terms/view/{$term['id']}");
+				echo "    <bmdb:ReferencesTerm rdf:resource=\"{$aboutId}\"/>\r\n"; 
+			}
 		
 			// Studies
 			if (count($bod['StudyData']) > 0) {
@@ -461,6 +467,7 @@ __END;
 		$this->printRdfEnd();
 		exit();
 	}
+	
 	private function escapeEntities($str) {
 		
 		/* Multiple characters */
