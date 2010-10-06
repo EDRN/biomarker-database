@@ -21,4 +21,21 @@ class TermsController extends AppController {
 	function define() {
 		
 	}
+	
+	/******************************************************************
+	 * AJAX
+	 ******************************************************************/
+	function ajax_autocompleteTerms () {
+		$data =& $this->params['form'];
+		$needle  = $data['needle'];
+		$results = $this->Term->query("SELECT `label` AS `label`,`id` AS `id` FROM `terms` WHERE `label` LIKE '%{$needle}%'");
+		$rstr = '';
+		
+		foreach ($results as $r) {
+			$rstr .= "<li><span id=\"{$r['terms']['id']}\">{$r['terms']['label']}</span></li>";	
+			
+		}
+		echo ($rstr);
+		die();
+	}
 }
