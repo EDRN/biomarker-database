@@ -479,8 +479,8 @@ __END;
 	
 			// Basics
 			echo "  <bmdb:Term rdf:about=\"{$aboutURL}\">\r\n";
-			echo "    <bmdb:Label>".$this->escapeEntities($t['Term']['label'])."</bmdb:Label>\r\n";
-			echo "    <bmdb:Definition>{$t['Term']['definition']}</bmdb:Definition>\r\n";
+			echo "    <dc:Title>".$this->escapeEntities($t['Term']['label'])."</dc:Title>\r\n";
+			echo "    <dc:Description>{$this->escapeEntities($t['Term']['definition'])}</dc:Description>\r\n";
 			echo "  </bmdb:Term>\r\n";
 		}/* end foreach */
 		$this->printRdfEnd();

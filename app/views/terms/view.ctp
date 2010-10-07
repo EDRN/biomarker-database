@@ -26,3 +26,5 @@
 </blockquote>
 <hr/>
 <a href="/<?php echo PROJROOT?>/terms/edit/<?php echo $term['Term']['id']?>">Edit this Definition</a>
+&nbsp;|&nbsp;
+<a href="/<?php echo PROJROOT?>/terms/delete/<?php echo $term['Term']['id']?>">Delete this Definition</a>

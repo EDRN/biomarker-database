@@ -69,6 +69,12 @@ class TermsController extends AppController {
 		$this->set('term', $this->Term->read());
 	}
 	
+	function delete($id) {
+		$this->Term->id = $id;
+		$this->Term->delete();
+		$this->redirect("/terms/");
+	}
+	
 	/******************************************************************
 	 * AJAX
 	 ******************************************************************/
