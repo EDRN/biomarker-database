@@ -199,6 +199,7 @@ __END;
 			$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
 			echo "  <bmdb:SensitivityData rdf:about=\"{$id}\">\r\n";
 			echo "    <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+			echo "    <bmdb:SpecificAssayType>{$this->escapeEntities($s['specificAssayType'])}</bmdb:SpecificAssayType>\r\n";
 			echo "    <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
 			echo "    <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
 			echo "    <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
