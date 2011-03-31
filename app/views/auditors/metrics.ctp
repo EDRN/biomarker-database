@@ -18,6 +18,9 @@
 <div id="content">
 <div class="metricSection">
 	<h2>Biomarker Statistics</h2>
+	<div class="rdflink">
+	<a href="/<?php echo PROJROOT?>/rdf/biomarkers">Download as <img src="/<?php echo PROJROOT?>/img/RDF_icon.gif"/></a>
+	</div>
 	<span class="bigMetric"><?php echo $numBiomarkers?></span>
 	<h4>Latest</h4>
 	<ul>
@@ -28,6 +31,9 @@
 </div>
 <div class="metricSection">
 	<h2>Protocol Statistics</h2>
+	<div class="rdflink">
+	<a href="/<?php echo PROJROOT?>/rdf/studies">Download as <img src="/<?php echo PROJROOT?>/img/RDF_icon.gif"/></a>
+	</div>
 	<span class="bigMetric"><?php echo $numProtocols?></span>
 	<h4>Latest</h4>
 	<ul>
@@ -39,6 +45,9 @@
 </div>
 <div class="metricSection last">
 	<h2>Publication Statistics</h2>
+	<div class="rdflink">
+	<a href="/<?php echo PROJROOT?>/rdf/publications">Download as <img src="/<?php echo PROJROOT?>/img/RDF_icon.gif"/></a>
+	</div>
 	<span class="bigMetric"><?php echo $numPublications?></span>
 	<h4>Latest</h4>
 	<ul>
