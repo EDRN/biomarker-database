@@ -1,0 +1,27 @@
+div#content {
+	width:100%;	
+}
+
+.metricSection {
+	border:solid 1px #ccc;
+	padding:15px;
+	color:#555;
+	font-size:90%;
+	width:295px;
+	float:left;
+	margin-top:15px;
+	margin-right:8px;
+	margin-bottom:15px;
+		
+}
+.metricSection.last {
+	margin-right:0px;	
+}
+
+.bigMetric {
+	font-size:4em;	
+}
+
+.clear {
+	clear:both;	
+}
