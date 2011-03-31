@@ -3,6 +3,7 @@ div#content {
 }
 
 .metricSection {
+	position:relative;
 	border:solid 1px #ccc;
 	padding:15px;
 	color:#555;
@@ -20,6 +21,18 @@ div#content {
 
 .bigMetric {
 	font-size:4em;	
+}
+
+.rdflink {
+	position:absolute;
+	top:55px;
+	right:15px;
+	width:110px;
+	text-align:right;
+}
+.rdflink img {
+	border:none;
+	vertical-align:middle;	
 }
 
 .clear {
