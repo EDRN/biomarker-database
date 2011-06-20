@@ -97,7 +97,7 @@ class AclsController extends AppController {
 			$q = "INSERT INTO `acl` (`ldapGroup`,`objectType`,`objectId`,`readOnly`) VALUES ";
 			$values = array();
 			foreach ($groups as $g) {
-				$values[] = "('{$g}','{$ot}','{$oid}','0')";	// grant r/w access
+				$values[] = "('".mysql_real_escape_string($g)."','{$ot}','{$oid}','0')";	// grant r/w access
 			}
 			$q .= implode(",",$values);
 			if (count($values) > 0) {
@@ -157,7 +157,7 @@ class AclsController extends AppController {
 			$q = "INSERT INTO `acl` (`ldapGroup`,`objectType`,`objectId`,`readOnly`) VALUES ";
 			$values = array();
 			foreach ($ids as $id) {
-				$values[] = "('{$group}','{$ot}','{$id}','0') "; // grant r/w access
+				$values[] = "('".mysql_real_escape_string($group)."','{$ot}','{$id}','0') "; // grant r/w access
 			}
 			$q .= implode(",",$values);;
 			
