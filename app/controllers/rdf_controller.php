@@ -4,6 +4,7 @@ class RdfController extends AppController {
 	var $name = 'Rdf';
 	var $uses = array(
 			'Biomarker',
+			'BiomarkerDataset',
 			'Organ',
 			'OrganData',
 			'Study',
@@ -132,6 +133,12 @@ __END;
 			$groups = $this->Biomarker->readACL($b['Biomarker']['id']);
 			foreach ($groups as $group) {
 				echo "    <bmdb:AccessGrantedTo>{$group['acl']['ldapGroup']}</bmdb:AccessGrantedTo>\r\n";
+			}
+			
+			// Associated eCAS Datasets
+			$datasets = $this->BiomarkerDataset->getDatasetsForBiomarker($b['Biomarker']['id']);
+			foreach ($datasets as $dataset) {
+				echo "    <bmdb:AssociatedDataset rdf:resource=\"http://{$this->getResourceBase()}/ecas/data/dataset/{$dataset['name']}\"/>\r\n";
 			}
 			
 			// Organs
