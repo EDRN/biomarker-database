@@ -163,6 +163,7 @@
 <h3 class="title" style="">Curation Actions</h3>
 	<ul>
 	    <li><a href="/<?php echo PROJROOT;?>/acls/edit/biomarker/<?php echo $biomarker['Biomarker']['id']?>">Set Security</a></li>
+	    <li><a href="/<?php echo PROJROOT;?>/biomarkers/data/<?php echo $biomarker['Biomarker']['id']?>">Associate Datasets</a></li>
 		<li><a href="/<?php echo PROJROOT;?>/biomarkers/delete/<?php echo $biomarker['Biomarker']['id']?>" onclick="return confirm('All data for this Biomarker will be permanently deleted. Continue?');">Delete This Biomarker</a></li>
 	</ul>
 </div>
@@ -223,8 +224,7 @@
     	    removeOption('allBiomarkers',value);
     	    addOption('panelBiomarkers',value,text);
     	    i=-1; // reset to account for changed indices
-    	  }
-    	  
+    	  }    	  
     	}	
     });
   
