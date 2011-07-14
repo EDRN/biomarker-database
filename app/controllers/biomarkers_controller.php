@@ -8,6 +8,7 @@ class BiomarkersController extends AppController {
 		array(
 			'Biomarker',
 			'BiomarkerName',
+			'BiomarkerDataset',
 			'Auditor',
 			'LdapUser',
 			'Organ',
@@ -75,6 +76,68 @@ class BiomarkersController extends AppController {
 		} else {
 			die("<b>Error:</b> No matching Biomarker for id {$id}");
 		}
+	}
+	
+	
+	
+	
+	
+	public function data($id = null) {
+		$this->checkSession("/biomarkers/data/{$id}");
+		
+		$biomarker = $this->Biomarker->find('first',array(
+			'conditions' => array('Biomarker.id' => $id),
+			'recursive'  => 1
+			)
+		);
+		if ($biomarker !== false) {
+			$this->set('biomarker',$biomarker);
+			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
+			
+			// Get list of eCAS Datasets that are associated
+			$dsAssociated = $this->BiomarkerDataset->getDatasetsForBiomarker($id);
+			
+			// Get list of eCAS Datasets that can be associated
+			$data        = $this->BiomarkerDataset->getEcasDatasets();
+			$data        = $data['rdf:RDF']['_children'];
+			$dsAvailable = array();
+			foreach ($data as $pid => $pdata) {
+				$dsname = str_replace("edrn:",'',$pid);
+				$dsAvailable[$dsname] = array(
+					"name" => $dsname,
+					"id"   => '' // future use
+				);
+			}					
+			
+			// Filter out the ones that have already been associated
+			foreach ($dsAssociated as $dsId => $dsdata) {
+				unset($dsAvailable[$dsId]);
+			}			
+
+			// Send the results to the view
+			ksort($dsAssociated);
+			ksort($dsAvailable);	
+			$this->set('availableDatasets',$dsAvailable);
+			$this->set('associatedDatasets',$dsAssociated);		
+			
+			
+		} else {
+			die("<b>Error:</b> No matching Biomarker for id {$id}");
+		}
+	}
+	
+	function updateDatasets(){ 
+		$data =& $this->params['form'];
+		
+		// Process the input
+		$biomarker_id = $data['biomarker_id'];
+		$dataset_ids  = array_slice(explode(',',$data['values']),1);
+		
+		// Persist the changes
+		$this->BiomarkerDataset->setDatasetsForBiomarker($biomarker_id,$dataset_ids);
+				
+		// Send the user back to the page
+		$this->redirect("/biomarkers/data/{$biomarker_id}");
 	}
 	
 	function savefield() {
