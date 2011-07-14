@@ -174,7 +174,7 @@ a.removealias {
 	color:#c44;	
 }
 
-div#panelSelection, div#groupSelection {
+div#panelSelection, div#groupSelection, div#datasetSelection {
 	position:relative;
 	width:96%;
 	margin-top:15px;
@@ -183,19 +183,22 @@ div#panelSelection, div#groupSelection {
 	border:solid 2px #ccc;
 	background-color:#f4f4f4;
 }
-div#panelSelection select, div#groupSelection select {
+div#panelSelection select, div#groupSelection select,
+div#datasetSelection select {
 	border:solid 1px #ccc;
 	width:47%;
 	float:left;
 	margin:5px;	
 }
-div#panelSelectionButtons, div#groupSelectionButtons {
+div#panelSelectionButtons, div#groupSelectionButtons,
+div#datasetSelectionButtons {
 	margin:5px;
 	width:90%;
 	text-align: center;	
 }
 div#panelSelectionButtons input[type=button],
-	div#panelSelectionButtons input[type=submit], {
+	div#panelSelectionButtons input[type=submit],
+	div#datasetSelectionButtons input[type=submit] {
 	border:solid 1px #ccc;	
 }
 
@@ -243,5 +246,12 @@ div.displaystudy {
 }
 div#content div.organdatablock div.lefttext h5 {
 	margin:10px 0px;	
+}
+
+p.instructions {
+	line-height:25px;
+	border:dotted 1px #89b;
+	background-color:#eff;
+	padding:8px;	
 }
 
