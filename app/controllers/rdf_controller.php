@@ -138,7 +138,7 @@ __END;
 			// Associated eCAS Datasets
 			$datasets = $this->BiomarkerDataset->getDatasetsForBiomarker($b['Biomarker']['id']);
 			foreach ($datasets as $dataset) {
-				echo "    <bmdb:AssociatedDataset rdf:resource=\"http://{$this->getResourceBase()}/ecas/data/dataset/{$dataset['name']}\"/>\r\n";
+				echo "    <bmdb:AssociatedDataset rdf:resource=\"http://{$this->getResourceBase(false)}/ecas/data/dataset/urn:edrn:{$dataset['name']}\"/>\r\n";
 			}
 			
 			// Organs

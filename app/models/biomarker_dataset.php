@@ -2,7 +2,7 @@
 class BiomarkerDataset extends AppModel {
 	
 	var $useTable = "biomarker_datasets";
-	var $name     = "BiomarkerData";
+	var $name     = "BiomarkerDataset";
 	
 	function __construct() {
 		parent::__construct();
