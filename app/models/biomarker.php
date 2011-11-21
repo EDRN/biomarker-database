@@ -99,6 +99,16 @@ class Biomarker extends AppModel
 		return "unknown";
 	}	
 	
+	public static function getHgncName($biomarker) {
+		/* what is the official HGNC name (from among the aliases) for this marker */
+		foreach ($biomarker['BiomarkerName'] as $name) {
+			if ($name['isHgnc'] == 1) {
+				return $name['name'];
+			}
+		}
+		return "Unknown";
+	}
+	
 	public function getDefaultNameById($biomarker_id) {
 		/* same as above, only given a biomarker id */
 		$q = "SELECT `name` FROM `biomarker_names` WHERE `biomarker_id`='{$biomarker_id}' AND `isPrimary`='1'";
