@@ -213,6 +213,28 @@ class BiomarkersController extends AppController {
 		$this->redirect("/biomarkers/view/{$alias['Biomarker']['id']}");
 	}
 	
+	function setHgncName($alias_id) {
+		$this->checkSession("/biomarkers");
+		$alias = $this->BiomarkerName->find($alias_id);
+	
+		// Load the requested alias
+		$this->BiomarkerName->id = $alias_id;
+		$alias = $this->BiomarkerName->find('first',array('conditions' => array('BiomarkerName.id' => $alias_id),'recursive'=>2));
+	
+		foreach ($alias['Biomarker']['BiomarkerName'] as $a) {
+			if ($a['isHgnc'] == 1) {
+				$this->BiomarkerName->id = $a['id'];
+				$this->BiomarkerName->saveField('isHgnc',0);
+			}
+			if ($a['id'] == $alias['BiomarkerName']['id']) {
+				$this->BiomarkerName->id = $a['id'];
+				$this->BiomarkerName->saveField('isHgnc',1);
+				$this->Auditor->audit("set '{$alias['BiomarkerName']['name']}' as the HGNC Name for biomarker #{$alias['Biomarker']['id']}.");
+			}
+		}
+		$this->redirect("/biomarkers/view/{$alias['Biomarker']['id']}");
+	}
+	
 	function addAlias() {
 		$this->checkSession("/biomarkers");
 		$data =& $this->params['form'];
