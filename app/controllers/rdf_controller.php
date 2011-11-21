@@ -89,7 +89,7 @@ __END;
 			$biomarkerName = Biomarker::getDefaultName($b);
 			$biomarkerHgncName = Biomarker::getHgncName($b);
 			if ($biomarkerHgncName == 'Unknown') {
-				$biomarkerHgncName == ''; // Don't default to 'Unknown', let applications handle it
+				$biomarkerHgncName = ''; // Don't default to 'Unknown', let applications handle it
 			}
 			// Basics
 			echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
