@@ -41,7 +41,7 @@
 			<div class="clr"><!--  --></div>
 		</div>
 		<div class="innercontent">
-		<div class="lefttext">
+		<div class="lefttext" style="width:60%;">
 			<span id="description" class="editable textarea object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:description">
 				<?php Biomarker::printor($biomarker['Biomarker']['description'],'No Description Available Yet. Click here to add.');?>
 			</span>
@@ -93,7 +93,7 @@
 			
 			<?php endif; /* end if isPanel= 1 */?>
 		</div>
-		<div id="rightcol">
+		<div id="rightcol" style="width:35%;">
 		<!-- BASIC ATTRIBUTES -->
 		<h4>Attributes:</h4>
 		<table cellspacing="0" cellpadding="3" style="padding-bottom:2px;">
@@ -132,23 +132,31 @@
 		<h4>Alternative Names</h4>
 		<table cellspacing="0" cellpadding="3" style="padding-bottom:2px;">
 			<tr>
-			  <th style="text-align:left;width:50px;">Default</th><th style="text-align:left;">Name</th>
+			  <th style="text-align:left;width:20px;">HGNC</th>
+			  <th style="text-align:left;width:20px;">Default</th>
+			  <th style="text-align:left;width:30px;">Name</th>
 			</tr>
 			<?php foreach ($biomarker['BiomarkerName'] as $alias):?>
 			<tr>
 			  <td style="text-align:center;">
+				<input name="hgnc" value="<?php echo $alias['id']?>" class="hgnc" type="radio" <?php if($alias['isHgnc'] == 1) { echo 'checked="checked"';}?>/>
+			  </td>
+			  <td style="text-align:center;">
 				<input name="alias" value="<?php echo $alias['id']?>" class="alias" type="radio" <?php if($alias['isPrimary'] == 1) { echo 'checked="checked"';}?>/>
 			  </td>
 			  <td>
-			  	<?php echo $alias['name']?>&nbsp;&nbsp;<?php if ($alias['isPrimary'] != 1) { echo '<a class="removealias" title="remove this alias" href="/'.PROJROOT."/biomarkers/removeAlias/{$alias['id']}\">x</a>";}?>
+			  	<?php echo $alias['name']?>&nbsp;&nbsp;
+			  	<?php if ($alias['isPrimary'] != 1) {
+			  		echo '<a class="removealias" title="remove this alias" href="/'.PROJROOT."/biomarkers/removeAlias/{$alias['id']}\">x</a>";
+			  	}?>
 			  </td>
 			</tr>
 			<?php endforeach;?>
 			<tr>
-			  <td colspan="2" style="border-top:dotted 1px #999;padding-top:3px;">Add Alternative Name:</td>
+			  <td colspan="3" style="border-top:dotted 1px #999;padding-top:3px;">Add Alternative Name:</td>
 			</tr>
 			<tr>
-			  <td colspan="2">
+			  <td colspan="3">
 			  	<form action="/<?php echo PROJROOT?>/biomarkers/addAlias" method="POST">
 			  		<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 			  		<input type="text" name="altname"/>&nbsp;&nbsp;
@@ -220,6 +228,12 @@
     	});
     });
     
+    $$('.hgnc').each(function(x) {
+    	x.addEvent('click',function() {
+    		window.location.href = '/<?php echo PROJROOT?>/biomarkers/setHgncName/'+x.value;
+    	});
+    });
+    
     $('ispanel').addEvent('click',function() {
     	if (this.checked) {
     		window.location.href = '/<?php echo PROJROOT?>/biomarkers/setPanel/'+this.name+'/yes';
@@ -230,60 +244,6 @@
     			this.checked = true;
     		}
     	}
-    });
-    
-    
-    function addOption(which,value,text) {
-    	var o = new Element('option',{'id': 'opt-'+value, 'value': value});
-    	o.innerHTML = text;
-    	o.inject(which);
-    }
-    
-    function removeOption(which,value) {
-        sel = $(which);
-        for(i=0;i<sel.options.length;i++){
-        	if(sel.options[i].value == value) {
-        		sel.options[i] = null;
-        		break;
-        	}
-        }
-    }
-    
-    $('moveright').addEvent('click',function() {
-    	var all = $('allBiomarkers');
-    	for (i=0;i<all.options.length;i++) {
-    		
-    	  if(all.options[i].selected) {
-    	    value= all.options[i].value;
-    	    text = all.options[i].innerHTML;
-    	    removeOption('allBiomarkers',value);
-    	    addOption('panelBiomarkers',value,text);
-    	    i=-1; // reset to account for changed indices
-    	  }    	  
-    	}	
-    });
-  
-    
-    $('moveleft').addEvent('click',function() {
-    	var panel = $('panelBiomarkers');
-    	for (i=0;i<panel.options.length;i++) {
-    	  if(panel.options[i].selected) {
-    	    value= panel.options[i].value;
-    	    text = panel.options[i].innerHTML;
-    	    removeOption('panelBiomarkers',value);
-    	    addOption('allBiomarkers',value,text);
-    	    i=-1; // reset to account for changed indices
-    	  }
-    	}
-    }); 
-    
-    $('save').addEvent('click',function() {
-        var str   = 'ignore';
-    	var panel = $('panelBiomarkers');
-    	for (i=0;i<panel.options.length;i++) {
-    		str += ','+panel.options[i].value;
-    	}
-    	$('panel_biomarker_values').value = str;
     });
     
     // Activate all Fake Links
