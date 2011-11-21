@@ -11,13 +11,13 @@
 	<div id="breadcrumbs">
 		<span style="color:#ddd;">You are here: &nbsp;</span>
 		<a href="/<?php echo PROJROOT;?>/">Home</a> :: 
-		<span>Latest Changes this week</span>
+		<span>Changes in the past month</span>
 	</div><!-- End Breadcrumbs -->
 </div>
 <div id="outer_wrapper">
 <div id="main_section">
 <div id="content">
-<h2>Latest Database Changes This Week...</h2>
+<h2>Database Changes in the Past Month...</h2>
 <div style="color:#555;font-size:90%;padding-left:5px;padding-top:15px;">
 	The following table contains a log of the latest changes made to the database...
 </div>
