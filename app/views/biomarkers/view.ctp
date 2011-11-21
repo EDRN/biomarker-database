@@ -19,10 +19,16 @@
 <div id="main_section">
 <div id="content">
 
-		<h2 class="biomarkerName"><span id="name" class="editable object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:name"><?php echo $biomarkerName?></span> <?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?></h2>
+		<h2 class="biomarkerName">
+			<span id="name" class="editable object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:name">
+				<?php echo $biomarkerName?>
+			</span> 
+			<?php echo ((($biomarker['Biomarker']['isPanel']) == 1) ? '(Panel)':'');?>
+		</h2>
 		<h5 id="urn">urn:edrn:biomarker:<?php echo $biomarker['Biomarker']['id']?></h5>
 		<h5>Created: <?php echo $biomarker['Biomarker']['created']?>. &nbsp;Last Modified: 
-			<?php echo $biomarker['Biomarker']['modified']?></h5>
+			<?php echo $biomarker['Biomarker']['modified']?>
+		</h5>
 			
 		<div id="smalllinks">
 			<ul>
@@ -36,7 +42,9 @@
 		</div>
 		<div class="innercontent">
 		<div class="lefttext">
-			<span id="description" class="editable textarea object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:description"><?php Biomarker::printor($biomarker['Biomarker']['description'],'No Description Available Yet. Click here to add.');?></span>
+			<span id="description" class="editable textarea object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:description">
+				<?php Biomarker::printor($biomarker['Biomarker']['description'],'No Description Available Yet. Click here to add.');?>
+			</span>
 			<?php if ($biomarker['Biomarker']['isPanel']):?>
 				<h2>Panel Details:</h2>
 				<div style="position:relative;">
@@ -75,7 +83,11 @@
 				</div> 
 				<ul style="margin-top:5px;list-style-type:square;color:#888;">
 				  <?php foreach($panelMarkers as $b):?>
-				  	<li style="margin:15px;"><a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $b['id']?>"><?php echo $b['defaultName']?></a></li>
+				  	<li style="margin:15px;">
+				  		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $b['id']?>">
+				  			<?php echo $b['defaultName']?>
+				  		</a>
+				  	</li>
 				  <?php endforeach ?>
 				</ul>
 			
@@ -87,15 +99,34 @@
 		<table cellspacing="0" cellpadding="3" style="padding-bottom:2px;">
 			<tr>
 				<td class="label">Security:</td>
-				<td><em><span id="security" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:security opts:Public|Private"><?php Biomarker::printor($biomarker['Biomarker']['security'],'click to select')?></span></em></td>
+				<td><em>
+					<span id="security" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:security opts:Public|Private">
+						<?php Biomarker::printor($biomarker['Biomarker']['security'],'click to select')?>
+					</span>
+					</em>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">QA State:</td>
-				<td><span id="qastate"><em><span id="qastate" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:qastate opts:New|Under_Review|Accepted|Rejected"><?php Biomarker::printor($biomarker['Biomarker']['qastate'],'click to select');?></span></em></td>
+				<td>
+					<span id="qastate">
+						<em>
+							<span id="qastate" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:qastate opts:New|Under_Review|Accepted|Rejected">
+								<?php Biomarker::printor($biomarker['Biomarker']['qastate'],'click to select');?>
+							</span>
+						</em>
+					</span>
+				</td>
 			</tr>
 			<tr>
 				<td class="label">Type:</td>
-				<td><em><span id="type" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:type opts:Gene|Protein|Genetic|Genomic|Epigenetic|Proteomic|Glycomic|Metabolomic"><?php Biomarker::printor($biomarker['Biomarker']['type'],'click to select')?></span></em></td>
+				<td>
+					<em>
+					<span id="type" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:type opts:Gene|Protein|Genetic|Genomic|Epigenetic|Proteomic|Glycomic|Metabolomic">
+						<?php Biomarker::printor($biomarker['Biomarker']['type'],'click to select')?>
+					</span>
+					</em>
+				</td>
 			</tr>
 		</table>
 		<h4>Alternative Names</h4>
@@ -105,8 +136,12 @@
 			</tr>
 			<?php foreach ($biomarker['BiomarkerName'] as $alias):?>
 			<tr>
-			  <td style="text-align:center;"><input name="alias" value="<?php echo $alias['id']?>" class="alias" type="radio" <?php if($alias['isPrimary'] == 1) { echo 'checked="checked"';}?>/></td>
-			  <td><?php echo $alias['name']?>&nbsp;&nbsp;<?php if ($alias['isPrimary'] != 1) { echo '<a class="removealias" title="remove this alias" href="/'.PROJROOT."/biomarkers/removeAlias/{$alias['id']}\">x</a>";}?></td>
+			  <td style="text-align:center;">
+				<input name="alias" value="<?php echo $alias['id']?>" class="alias" type="radio" <?php if($alias['isPrimary'] == 1) { echo 'checked="checked"';}?>/>
+			  </td>
+			  <td>
+			  	<?php echo $alias['name']?>&nbsp;&nbsp;<?php if ($alias['isPrimary'] != 1) { echo '<a class="removealias" title="remove this alias" href="/'.PROJROOT."/biomarkers/removeAlias/{$alias['id']}\">x</a>";}?>
+			  </td>
 			</tr>
 			<?php endforeach;?>
 			<tr>
