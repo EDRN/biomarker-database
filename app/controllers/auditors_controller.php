@@ -22,24 +22,57 @@ class AuditorsController extends AppController {
 			'Term'
 		);
 	
-	public function weeklySummary() {
+	public function weeklySummary($format = 'html') {
 		$this->checkSession("/auditors/weeklySummary");
-		$audits = $names = $this->Auditor->find("all",
-			array("order"=>'`timestamp` DESC'));
-		$this->set("audits",$audits);
+		$audits = $this->actionsSince(strtotime('1 WEEK AGO'));
+		$this->set("audits",$audits);	
 		
+		if (strtolower($format) == 'json' ) {
+			echo json_encode($audits);
+			exit();
+		}
 	}
 	
-	public function metrics() {
+	public function previousMonth($format = 'html') {
+		$this->checkSession("/auditors/weeklySummary");
+		$audits = $this->actionsSince(strtotime('1 MONTH AGO'));
+		$this->set("audits",$audits);
+		
+		if (strtolower($format) == 'json' ) {
+			echo json_encode($audits);
+			exit();
+		}
+	}
+	
+	protected function actionsSince($unix_time) {
+		$actions = $this->Auditor->find('all',array(
+			'conditions' => array(
+				"`timestamp` > '" . date('Y-m-d 00:00:00',$unix_time) ."'"
+			)
+			,'order'=>'`timestamp` DESC'));
+		
+		return $actions;
+	}
+	
+	public function metrics($format='html') {
 		$this->checkSession("/auditors/metrics");
 		
+		if (strtolower($format) == 'json') {
+			return $this->metrics_json();
+		} else {
+			return $this->metrics_html();
+		}
+	}
+	
+	protected function metrics_html() {
+			
 		/***
 		 * BIOMARKER METRICS
 		 *************************************************************/
 		$biomarkers = $this->Biomarker->find('all',array(
 			'conditions' => array(),
 			'recursive'  => 1,
-			"order"=>'`id` DESC'
+			"order"=>'`created` DESC'
 		));
 		
 		// Populate each biomarker with the names of its default name
@@ -70,5 +103,60 @@ class AuditorsController extends AppController {
 		$this->set('numPublications',count($pubs));
 		$this->set('latestPublications', array_splice($pubs,0,5));
 	}
+	
+	public function metrics_json() {
+	
+		$data = array(
+				'collected' => microtime(true)
+		);
+	
+		/** Biomarker metrics **/
+		$biomarkers = $this->Biomarker->find('all',array(
+				'conditions' => array(),
+				'recursive'  => 1,
+				"order"=>'`created` ASC',
+		));
+	
+		$numBiomarkers = count($biomarkers);
+	
+		$data['Biomarker'] = array(
+				'count' => count($biomarkers),
+				'latest'=> array()
+		);
+	
+		
+		$latest = array_splice($biomarkers,-5);
+		foreach ($latest as $marker) {
+			$defaultName = $this->Biomarker->getDefaultName($marker);
+			$hgncName    = $this->Biomarker->getHgncName($marker);
+			$ploneName   = strtolower(str_replace(' ','-',$defaultName));
+				
+			$data['Biomarker']['latest'][] = array(
+					"name"       => $defaultName,
+					"hgncName"   => $hgncName,
+					"portalName" => $ploneName,
+					"modified"   => $marker['Biomarker']['modified']			
+			);
+		}
+	
+		/** Publication metrics **/
+		$publications = $this->Publication->findAll();
+
+		$data['Publication'] = array(
+			'count' => count($publications),
+			'latest'=> array()
+		);
+		
+		$latest = array_splice($publications,0,5);
+		foreach ($latest as $pub) {
+			$data['Publication']['latest'][] = array(
+				"title" => $pub['Publication']['title'],
+				"author"=> $pub['Publication']['author'],
+				"journal"=>$pub['Publication']['journal'],
+				"published" => $pub['Publication']['published']
+			);	
+		}	
+		echo json_encode($data);
+		exit();
+	}
 }
-?>
