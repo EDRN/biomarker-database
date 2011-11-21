@@ -87,10 +87,15 @@ __END;
 		foreach ($biomarkers as $b) {
 			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/view/{$b['Biomarker']['id']}";
 			$biomarkerName = Biomarker::getDefaultName($b);
+			$biomarkerHgncName = Biomarker::getHgncName($b);
+			if ($biomarkerHgncName == 'Unknown') {
+				$biomarkerHgncName == ''; // Don't default to 'Unknown', let applications handle it
+			}
 			// Basics
 			echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
 			echo "    <bmdb:Title>".$this->escapeEntities($biomarkerName)."</bmdb:Title>\r\n";
 			echo "    <bmdb:ShortName>".$this->escapeEntities($b['Biomarker']['shortName'])."</bmdb:ShortName>\r\n";
+			echo "    <bmdb:HgncName>".$this->escapeEntities($biomarkerHgncName)."</bmdb:HgncName>\r\n";
 			echo "    <bmdb:BiomarkerID>urn:edrn:bmdb:biomarker:{$b['Biomarker']['id']}</bmdb:BiomarkerID>\r\n";
 			echo "    <bmdb:URN>urn:edrn:bmdb:biomarker:{$b['Biomarker']['id']}</bmdb:URN>\r\n";
 			echo "    <bmdb:IsPanel>{$b['Biomarker']['isPanel']}</bmdb:IsPanel>\r\n";
