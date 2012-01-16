@@ -104,6 +104,8 @@ __END;
 			echo "    <bmdb:QAState>{$b['Biomarker']['qastate']}</bmdb:QAState>\r\n";
 			echo "    <bmdb:Phase>{$b['Biomarker']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:Security>{$b['Biomarker']['security']}</bmdb:Security>\r\n";
+			echo "    <bmdb:Created>{$b['Biomarker']['created']}</bmdb:Created>\r\n";
+			echo "    <bmdb:Modified>{$b['Biomarker']['modified']}</bmdb:Modified>\r\n";
 			echo "    <bmdb:Type>{$b['Biomarker']['type']}</bmdb:Type>\r\n";
 			// Alternative Names
 			if (count($b['BiomarkerName']) > 0) {
@@ -415,6 +417,8 @@ __END;
 			echo "    <dc:author>{$p['Publication']['author']}</dc:author>\r\n";
 			echo "    <edrn:journal>{$p['Publication']['journal']}</edrn:journal>\r\n";
 			echo "    <bmdb:Published>{$p['Publication']['published']}</bmdb:Published>\r\n";
+			echo "    <bmdb:Created>{$p['Publication']['created']}</bmdb:Created>\r\n";
+			echo "    <bmdb:Modified>{$p['Publication']['modified']}</bmdb:Modified>\r\n";
 			echo "    <edrn:pmid>{$p['Publication']['pubmed_id']}</edrn:pmid>\r\n";
 			echo "  </edrntype:Publication>\r\n";
 		}/* end foreach */
