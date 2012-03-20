@@ -73,5 +73,10 @@
 		<ul style="list-style-type:square;color:#500003;">
 			<li><a href="/<?php echo PROJROOT;?>/acls/manage">Bulk manage data security settings</a></li>
 		</ul>
+
+		<h4>Data Access APIs</h4>
+		<ul style="list-style-type:square;color:#500003;">
+			<li><a href="/<?php echo PROJROOT;?>/apis">Browse Available APIs</a></li>
+		</ul>
 	</div>
 </div>
