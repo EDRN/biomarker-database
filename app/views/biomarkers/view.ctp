@@ -246,6 +246,59 @@
     	}
     });
     
+    function addOption(which,value,text) { 	 
+	         var o = new Element('option',{'id': 'opt-'+value, 'value': value}); 	 
+	         o.innerHTML = text; 	 
+	         o.inject(which); 	 
+	     } 	 
+	  	 
+     function removeOption(which,value) { 	 
+         sel = $(which); 	 
+         for(i=0;i<sel.options.length;i++){ 	 
+                 if(sel.options[i].value == value) { 	 
+                         sel.options[i] = null; 	 
+                         break; 	 
+                 } 	 
+         } 	 
+     } 	 
+	  	 
+     $('moveright').addEvent('click',function() { 	 
+         var all = $('allBiomarkers'); 	 
+         for (i=0;i<all.options.length;i++) { 	 
+  	 
+           if(all.options[i].selected) { 	 
+             value= all.options[i].value; 	 
+             text = all.options[i].innerHTML; 	 
+             removeOption('allBiomarkers',value); 	 
+             addOption('panelBiomarkers',value,text); 	 
+             i=-1; // reset to account for changed indices 	 
+           } 	 
+         } 	 
+     }); 	 
+	  	 
+	  	 
+     $('moveleft').addEvent('click',function() { 	 
+         var panel = $('panelBiomarkers'); 	 
+         for (i=0;i<panel.options.length;i++) { 	 
+           if(panel.options[i].selected) { 	 
+             value= panel.options[i].value; 	 
+             text = panel.options[i].innerHTML; 	 
+             removeOption('panelBiomarkers',value); 	 
+             addOption('allBiomarkers',value,text); 	 
+             i=-1; // reset to account for changed indices 	 
+           } 	 
+         } 	 
+     }); 	 
+	  	 
+     $('save').addEvent('click',function() { 	 
+         var str   = 'ignore'; 	 
+         var panel = $('panelBiomarkers'); 	 
+         for (i=0;i<panel.options.length;i++) { 	 
+                 str += ','+panel.options[i].value; 	 
+         } 	 
+         $('panel_biomarker_values').value = str; 	 
+     });
+     
     // Activate all Fake Links
    $$('.fakelink').each(function(a){
    	  // Get the id
