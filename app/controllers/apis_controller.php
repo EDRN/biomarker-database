@@ -67,10 +67,14 @@ class ApisController extends AppController {
 	  for ($i=0;$i<count($biomarkers);$i++) {
 	    $biomarkers[$i]['OrganDatas'] = $this->Biomarker->getOrganDatasFor($biomarkers[$i]['Biomarker']['id']);
 	    $biomarkers[$i]['DefaultName']= $this->Biomarker->getDefaultName($biomarkers[$i]);
+	    $biomarkers[$i]['HgncName']   = $this->Biomarker->getHgncName($biomarkers[$i]);
+	    $biomarkers[$i]['AlternativeNames'] = implode('|',$this->Biomarker->getAlternativeNames($biomarkers[$i]));
 
 	    foreach ($biomarkers[$i]['OrganDatas'] as $od) {
 	      $od_full = $this->OrganData->find('first',array('conditions'=>array('OrganData.id'=>$od['OrganData']['id'])));
 	      $csv[]   = array("Biomarker Name" => $biomarkers[$i]['DefaultName']
+			      , "HgncName"     => $biomarkers[$i]['HgncName']
+			      , "AlternativeNames" => $biomarkers[$i]['AlternativeNames'] 
 			      , "Organ"        => $od['Organ']['name']
 			      , "Type"         => $biomarkers[$i]['Biomarker']['type']
 			      , "QA State"     => $od_full['OrganData']['qastate']
