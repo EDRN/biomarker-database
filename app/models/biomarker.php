@@ -108,6 +108,14 @@ class Biomarker extends AppModel
 		}
 		return "Unknown";
 	}
+
+	public static function getAlternativeNames($biomarker) {
+	  $names = array();
+	  foreach ($biomarker['BiomarkerName'] as $name) {
+	    $names[] = $name['name'];
+	  }
+	  return $names;
+	}
 	
 	public function getDefaultNameById($biomarker_id) {
 		/* same as above, only given a biomarker id */
