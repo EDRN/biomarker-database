@@ -73,7 +73,7 @@ class ApisController extends AppController {
 	    foreach ($biomarkers[$i]['OrganDatas'] as $od) {
 	      $od_full = $this->OrganData->find('first',array('conditions'=>array('OrganData.id'=>$od['OrganData']['id'])));
 	      $csv[]   = array(
-	          , "Id"             => $biomarkers[$i]['Biomarker']['id']
+	          "Id"               => $biomarkers[$i]['Biomarker']['id']
 	          , "Biomarker Name" => $biomarkers[$i]['DefaultName']
 			      , "HgncName"       => $biomarkers[$i]['HgncName']
 			      , "AlternativeNames" => $biomarkers[$i]['AlternativeNames'] 
