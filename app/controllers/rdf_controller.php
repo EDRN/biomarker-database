@@ -157,29 +157,37 @@ __END;
 			// Studies
 			if (count($b['BiomarkerStudyData']) > 0) {
 				echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
+				echo "      <rdf:Bag>\r\n";
 				foreach ($b['BiomarkerStudyData'] as $studyData) {
 					$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
-					echo "        <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
-					echo "          <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['Study']['FHCRC_ID']}\"/>\r\n";
+					echo "        <rdf:li>\r\n";
+					echo "          <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
+					echo "            <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['Study']['FHCRC_ID']}\"/>\r\n";
 					
 					// Sensitivity/Specificity Information
 					if (count($studyData['Sensitivity']) > 0) {
-						echo "          <bmdb:SensitivityDatas>\r\n";
+						echo "            <bmdb:SensitivityDatas>\r\n";
+						echo "              <rdf:Bag>\r\n";
 						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
 							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
-							echo "            <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
-							echo "              <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
-							echo "              <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
-							echo "              <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
-							echo "              <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
-							echo "              <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
-							echo "              <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
-							echo "            </bmdb:SensitivityData>\r\n";
+							echo "                <rdf:li>\r\n";
+							echo "                  <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
+							echo "                    <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+							echo "                    <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
+							echo "                    <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
+							echo "                    <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
+							echo "                    <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
+							echo "                    <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
+							echo "                  </bmdb:SensitivityData>\r\n";
+							echo "                </rdf:li>\r\n";
 						}
-						echo "          </bmdb:SensitivityDatas>\r\n";
+						echo "              </rdf:Bag>\r\n";
+						echo "            </bmdb:SensitivityDatas>\r\n";
 					}
-					echo "        </bmdb:BiomarkerStudyData>\r\n";
+					echo "          </bmdb:BiomarkerStudyData>\r\n";
+					echo "        </rdf:li>\r\n";
 				}
+				echo "      </rdf:Bag>\r\n";
 				echo "    </bmdb:hasBiomarkerStudyDatas>\r\n";
 				
 			} 
@@ -198,6 +206,7 @@ __END;
 				}
 			} 
 			echo "  </bmdb:Biomarker>\r\n";
+
 		} /* end foreach */
 
 		$this->printRdfEnd();
