@@ -76,7 +76,16 @@
 
 $(document).ready(function() {
 	// Turn the table into a sortable, searchable table
-	$("#termelements").dataTable();
+	$("#termelements").dataTable({
+		// Fix the incorrect pagination button display by removing the link text. Otherwise, the pagination
+                // button image is overlapped by the text and made unusable.
+		"oLanguage": {
+                        "oPaginate": {
+                                "sNext": "",
+                                "sPrevious": ""
+                        }
+                },
+	});
 	// Give the search box the initial focus
 	$("#termelements_filter > input").focus();
 
