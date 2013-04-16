@@ -149,6 +149,47 @@ class Biomarker extends AppModel
 						"AND Organ.id = OrganData.organ_id";
 		return $this->query($q);
 	}
+
+	public function runFilteringBiomarkerQuery($sWhere, $sLimit, $sOrder) {
+		// We need to always filter out results based on primary name. If we want to
+		// add the ability to search over alterantive names later then this section
+		// should be removed!
+		if ($sWhere == "") {
+			$sWhere = ' WHERE isPrimary=1 ';
+		} else {
+			$sWhere = $sWhere . ' AND isPrimary=1 ';
+		}
+
+		$q = 'SELECT SQL_CALC_FOUND_ROWS biomarker_names.name, organs.name, biomarkers.id, '.
+		     'biomarkers.name, biomarkers.shortName, biomarkers.created, biomarkers.modified, '.
+		     'biomarkers.description, biomarkers.qastate, biomarkers.phase, biomarkers.security, '.
+		     'biomarkers.type, biomarkers.isPanel, biomarkers.panelID, biomarker_names.isPrimary '.
+			'FROM biomarkers '.
+			'LEFT JOIN biomarker_names ON biomarkers.id = biomarker_names.biomarker_id '.
+			'LEFT JOIN organ_datas ON biomarkers.id = organ_datas.biomarker_id '.
+			'LEFT JOIN organs ON organs.id = organ_datas.organ_id '.
+			$sWhere. 
+			' GROUP BY biomarkers.id '.
+			$sOrder.
+			$sLimit;
+		return $this->query($q);
+	}
+
+	public function getFilteredTotal() {
+		$q = 'SELECT FOUND_ROWS() as filteredCount';
+		return $this->query($q);
+	}
+
+	public function getBiomarkerCount() {
+		$q = 'SELECT count(Biomarker.id) as numBiomarker FROM biomarkers as Biomarker';
+		return $this->query($q);
+	}
+
+	public function getBiomarkerNames($biomarker_id) {
+		//$q = "SELECT BiomarkerNames.id, BiomarkerNames.biomarker_id, BiomarkerNames.name, BiomarkerNames.isPrimary, BiomarkerNames.isHgnc FROM biomarker_names AS BiomarkerNames WHERE biomarker_names.biomarker_id={$biomarker_id}";
+		$q = "SELECT id, biomarker_id, name, isPrimary, isHgnc FROM biomarker_names WHERE biomarker_names.biomarker_id={$biomarker_id}";
+		return $this->query($q);
+	}
 	
 	public function god($biomarker_id) {
 		return ($this->OrganData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2)));
