@@ -31,22 +31,6 @@ class BiomarkersController extends AppController {
 	function index() {
 		// Ensure that a valid user is logged in
 		$this->checkSession('/biomarkers');
-		
-		// Retrieve information about all of the biomarkers in the system,
-		// recursing only 1 level deep (don't need lots of study, etc data) here
-		$biomarkers = $this->Biomarker->find('all',array(
-			'conditions' => array(),
-			'recursive'  => 1
-		));
-		
-		// Populate each biomarker with the names of its associated organs and its default name
-		for ($i=0;$i<count($biomarkers);$i++) {
-			$biomarkers[$i]['OrganDatas'] = $this->Biomarker->getOrganDatasFor($biomarkers[$i]['Biomarker']['id']);
-			$biomarkers[$i]['DefaultName']= $this->Biomarker->getDefaultName($biomarkers[$i]);
-		}
-		
-		// Send it off to the view
-		$this->set('biomarkers',$biomarkers);
 	}
 	
 	/******************************************************************
