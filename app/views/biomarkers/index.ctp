@@ -1,6 +1,7 @@
 <?php
 	// Include required CSS and JavaScript 
-	echo $javascript->link('jquery/jquery-1.3.2.min');
+	//echo $javascript->link('jquery/jquery-1.3.2.min');
+	echo $javascript->link('jquery/jquery-1.8.2.min');
 	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
 
 	
@@ -29,34 +30,10 @@
 
 <table id="biomarkerelements" class="dataTable" cellspacing="0" cellpadding="0">
 <thead>
-	<tr><th>Name</th><th style="display:none;">Aliases</th><th>QA State</th><th>Type</th><th>Panel</th><th>Associated Organs</th></tr>
+	<!--<tr><th>Name</th><th style="display:none;">Aliases</th><th>QA State</th><th>Type</th><th>Panel</th><th>Associated Organs</th></tr>-->
+	<tr><th>Name</th><th>QA State</th><th>Type</th><th>Panel</th><th>Associated Organs</th></tr>
 </thead>
 <tbody>
-<?php
-// Compute table cells
-foreach ($biomarkers as $biomarker) {
-  	// Build 'organsForBiomarker' list
-	$odatas = array();
-	foreach ($biomarker['OrganDatas'] as $od) {
-		$odatas[] = "<a href=\"/".PROJROOT."/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$od['OrganData']['id']}\">{$od['Organ']['name']}</a>"; 
-	}
-	$organsForBiomarker = implode(", ",$odatas);
-	if ($organsForBiomarker == "") { $organsForBiomarker = "<em style=\"color:#888;\">Unknown</em>";}
-	$biomarkerName   = $biomarker['DefaultName'];
-	$biomarkerNames  = array();
-	foreach ($biomarker['BiomarkerName'] as $n) {
-		$biomarkerNames[] = $n['name'];
-	} 
-?>
-<tr>
-  <td><?php echo $html->link($biomarkerName,"/biomarkers/view/{$biomarker['Biomarker']['id']}");?></td>
-  <td style="display:none;"><?php echo implode(" ", $biomarkerNames);?></td>
-  <td><?php echo (($biomarker['Biomarker']['qastate'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['qastate'])?></td>
-  <td><?php echo (($biomarker['Biomarker']['type'] == "")? "<em style=\"color:#888;\">Unknown</em>" : $biomarker['Biomarker']['type'])?></td>
-  <td><?php echo (($biomarker['Biomarker']['isPanel'] == 0) ? "No" : "Yes")?></td>
-  <td><?php echo $organsForBiomarker?></td>
-</tr>
-<?php } ?>
 </tbody>
 </table>
 
@@ -66,12 +43,26 @@ foreach ($biomarkers as $biomarker) {
 
 
 <script type="text/javascript">
-
 $(document).ready(function() {
-	// Turn the table into a sortable, searchable table
-	$("#biomarkerelements").dataTable();
-	// Give the search box the initial focus
-	$("#biomarkerelements_filter > input").focus();
-
+	$("#biomarkerelements").dataTable({
+		"bProcessing": true,
+		"bServerSide": true,
+		"bDeferRender": true,
+		"sAjaxSource": "../apis/biomarkers_json",
+		"oLanguage": {
+			"oPaginate": {
+				"sNext": "",
+				"sPrevious": ""
+			}
+		},
+		"aoColumns": [
+			{"sWidth": "50%"},
+			{"sWidth": "15%"},
+			{"sWidth": "15%"},
+			{"sWidth": "10%"},
+			{"sWidth": "15%"},
+		],
+		"aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+	});
 });
 </script>
