@@ -111,6 +111,8 @@ class ApisController extends AppController {
 			// Also, search over biomarker IDs for convenience. 
 			$searchWhere .= "biomarkers.id LIKE '%".mysql_real_escape_string($_GET['sSearch'])."%'";
 			$searchWhere .= ')';
+		} else {
+			$searchWhere = " WHERE isPrimary=1 ";
 		}
 		// If aliasing searching is desired in the future this is necessary to speed up queries when the user isn't running
 		// a search. Otherwise the overall performance tanks to ~12s load times per page of results. 

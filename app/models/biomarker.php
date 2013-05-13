@@ -151,14 +151,13 @@ class Biomarker extends AppModel
 	}
 
 	public function runFilteringBiomarkerQuery($sWhere, $sLimit, $sOrder) {
-		// We need to always filter out results based on primary name. If we want to
-		// add the ability to search over alterantive names later then this section
-		// should be removed!
-		if ($sWhere == "") {
-			$sWhere = ' WHERE isPrimary=1 ';
-		} else {
-			$sWhere = $sWhere . ' AND isPrimary=1 ';
-		}
+		// This needs to be commented out if we want to be able to search over 
+		// alternate names.
+		//if ($sWhere == "") {
+		//	$sWhere = ' WHERE isPrimary=1 ';
+		//} else {
+		//	$sWhere = $sWhere . ' AND isPrimary=1 ';
+		//}
 
 		$q = 'SELECT SQL_CALC_FOUND_ROWS biomarker_names.name, organs.name, biomarkers.id, '.
 		     'biomarkers.name, biomarkers.shortName, biomarkers.created, biomarkers.modified, '.
