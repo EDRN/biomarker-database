@@ -48,7 +48,7 @@ $(document).ready(function() {
 		"bProcessing": true,
 		"bServerSide": true,
 		"bDeferRender": true,
-		"sAjaxSource": "http://<?php echo $_SERVER['HTTP_HOST'];?>/bmdb/apis/biomarkers_json",
+		"sAjaxSource": "http://<?php echo $_SERVER['HTTP_HOST'];?>/bmdb/apis/biomarkers_search",
 		"oLanguage": {
 			"oPaginate": {
 				"sNext": "",
