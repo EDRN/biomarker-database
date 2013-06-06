@@ -150,30 +150,6 @@ class Biomarker extends AppModel
 		return $this->query($q);
 	}
 
-	public function runFilteringBiomarkerQuery($sWhere, $sLimit, $sOrder) {
-		// This needs to be commented out if we want to be able to search over 
-		// alternate names.
-		//if ($sWhere == "") {
-		//	$sWhere = ' WHERE isPrimary=1 ';
-		//} else {
-		//	$sWhere = $sWhere . ' AND isPrimary=1 ';
-		//}
-
-		$q = 'SELECT SQL_CALC_FOUND_ROWS biomarker_names.name, organs.name, biomarkers.id, '.
-		     'biomarkers.name, biomarkers.shortName, biomarkers.created, biomarkers.modified, '.
-		     'biomarkers.description, biomarkers.qastate, biomarkers.phase, biomarkers.security, '.
-		     'biomarkers.type, biomarkers.isPanel, biomarkers.panelID, biomarker_names.isPrimary '.
-			'FROM biomarkers '.
-			'LEFT JOIN biomarker_names ON biomarkers.id = biomarker_names.biomarker_id '.
-			'LEFT JOIN organ_datas ON biomarkers.id = organ_datas.biomarker_id '.
-			'LEFT JOIN organs ON organs.id = organ_datas.organ_id '.
-			$sWhere. 
-			' GROUP BY biomarkers.id '.
-			$sOrder.
-			$sLimit;
-		return $this->query($q);
-	}
-
 	public function runBiomarkerSearch($where, $limit, $order) {
 		$q = 'SELECT SQL_CALC_FOUND_ROWS id, name, defaultname, hgnc, qastate, type, panel, organs, aliases ' . 
 			 'FROM biomarkers_search ' .
