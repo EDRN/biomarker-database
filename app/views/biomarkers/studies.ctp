@@ -375,4 +375,18 @@
 			}
 		});
 	});
+
+	// Activate publication search links
+	$('.pubsearch').each(function() {
+		$(this).autocomplete({
+			source: 'http://tumor.jpl.nasa.gov/bmdb/biomarkers/getAutocompletePublications',
+			select: function(event, ul) {
+				var studyName = ul.item.value.split('|')[0];
+				var studyId = ul.item.value.split('|')[1];
+				$(this).siblings("[name='pub_id']").val(studyId);
+				ul.item.label = studyName;
+				ul.item.value = studyName;
+			}
+		});
+	});
 </script>
