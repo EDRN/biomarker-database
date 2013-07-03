@@ -1,14 +1,15 @@
 <?php
-	// Include required CSS and JavaScript 
+	// Include required CSS and JavaScript
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
+	echo $javascript->link('mootools-release-1.11');
 	echo $javascript->link('eip');
 
-	echo $javascript->link('jquery/jquery-1.8.2.min.js');
- 	echo $javascript->link('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
-
-    echo $html->css('jquery-ui/jquery-ui-1.10.3.custom.min.css');
 	echo $html->css('autocomplete');
+
+	echo $javascript->link('jquery/jquery-1.8.2.min.js');
+	echo $javascript->link('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
+	echo $html->css('jquery-ui/jquery-ui-1.10.3.custom.min.css');
 ?>
 <div class="menu">
 	<!-- Breadcrumbs Area -->
@@ -270,115 +271,114 @@
   });
   
   // Activate Study "Search" Autocomplete
-  new Autocompleter.Local(
-      $('study-search'),
-      <?php
-      	echo "[".$studystring."]";
-      ?>
-	  ,{
-      'postData':{'object':'study','attr':'title'},
-      'postVar': 'needle',
-      'target' : 'study_id',
-      'minLength' : 2,
-      'parseChoices': function(el) {
-        var value = el.getFirst().innerHTML;
-        var id    = el.getFirst().id;
-        alert(value);
-        el.inputValue = value;
-        el.inputId    = id;
-        this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-      },
-      'filterTokens': function(token) {
-      	var regex = new RegExp('' + this.queryValue.escapeRegExp(), 'i');
-      	return this.tokens.filter(function(token) {
-          var d = token.split('|');
-          return regex.test(d[0]);
-        });
-      }  
-  });
+  //new Autocompleter.Local(
+      //$('study-search'),
+      //<?php
+          //echo "[".$studystring."]";
+      //?>
+	  //,{
+      //'postData':{'object':'study','attr':'title'},
+      //'postVar': 'needle',
+      //'target' : 'study_id',
+      //'minLength' : 2,
+      //'parseChoices': function(el) {
+        //var value = el.getFirst().innerHTML;
+        //var id    = el.getFirst().id;
+        //alert(value);
+        //el.inputValue = value;
+        //el.inputId    = id;
+        //this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
+      //},
+      //'filterTokens': function(token) {
+          //var regex = new RegExp('' + this.queryValue.escapeRegExp(), 'i');
+          //return this.tokens.filter(function(token) {
+          //var d = token.split('|');
+          //return regex.test(d[0]);
+        //});
+      //}  
+  //});
   
   // Activate all BiomarkerStudyData Associate Publication autocomplete boxes
-  $$('.pubsearch').each(function(input){
-      // Get the id
-      var classes = input.getProperty('class').split(" ");
-      for (i=classes.length-1;i>=0;i--) {
-        if (classes[i].contains('id:')) {
-          var id = classes[i].split(":")[1];
-        }
-      }
-      var idval = (id) ? id : '';
-      new Autocompleter.Ajax.Xhtml(
-        $('publication'+idval+'search'),
-          '/<?php echo PROJROOT;?>/biomarkers/ajax_autocompletePublications', {
-          'postData':{'object':'Publication','attr':'Title'},
-          'postVar': 'needle',
-          'target' : 'publication'+idval+'_id',
-          'parseChoices': function(el) {
-            var value = el.getFirst().innerHTML;
-            var id    = el.getFirst().id;
-            el.inputValue = value;
-            el.inputId    = id;
-            this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-          }  
-       });
-    });
+  //$$('.pubsearch').each(function(input){
+      //// Get the id
+      //var classes = input.getProperty('class').split(" ");
+      //for (i=classes.length-1;i>=0;i--) {
+        //if (classes[i].contains('id:')) {
+          //var id = classes[i].split(":")[1];
+        //}
+      //}
+      //var idval = (id) ? id : '';
+      //new Autocompleter.Ajax.Xhtml(
+        //$('publication'+idval+'search'),
+          //'/<?php echo PROJROOT;?>/biomarkers/ajax_autocompletePublications', {
+          //'postData':{'object':'Publication','attr':'Title'},
+          //'postVar': 'needle',
+          //'target' : 'publication'+idval+'_id',
+          //'parseChoices': function(el) {
+            //var value = el.getFirst().innerHTML;
+            //var id    = el.getFirst().id;
+            //el.inputValue = value;
+            //el.inputId    = id;
+            //this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
+          //}  
+       //});
+    //});
 
-   // Activate all Fake Links
-   $$('.fakelink').each(function(a){
-   	  // Get the id
-      var classes = a.getProperty('class').split(" ");
-      for (i=classes.length-1;i>=0;i--) {
-        if (classes[i].contains('toggle:')) {
-          var toggle = classes[i].split(":")[1];
-        }
-      }
-      var toggleval = (toggle) ? toggle : '';
-      a.addEvent('click',
-        function() {
-          if($(toggleval).style.display == 'none') {
-            // show
-            new Fx.Style(toggleval, 'opacity').set(0);
-            $(toggleval).setStyle('display','block');
-            $(toggleval).effect('opacity',{duration:400, transition:Fx.Transitions.linear}).start(0,1);
-          } else {
-            // hide
-            $(toggleval).effect('opacity',{
-              duration:200, 
-              transition:Fx.Transitions.linear,onComplete:function(){
-                $(toggleval).setStyle('display','none');
-              }
-            }).start(1,0);
-          }
-      });
-   });
+	$(function() {
+		// Activate all Fake Links
+		$('.fakelink').each(function(index){
+			var classes = $(this).attr('class').split(/\s+/);
+
+			for (i=classes.length-1;i>=0;i--) {
+				if (classes[i].contains('toggle:')) {
+					var toggle = classes[i].split(":")[1];
+				}
+			}
+			var toggleval = (toggle) ? toggle : '';
+
+			$(this).click(function() {
+				var toggleTarget = '#' + toggle;
+
+				if($(toggleTarget).css("display") == 'none') {
+					// show
+					$(toggleTarget).css('display', 'block');
+					$(toggleTarget).css('opacity', 1);
+				} else {
+					// hide
+					$(toggleTarget).css('display', 'none');
+					$(toggleTarget).css('opacity', 0);
+				}
+			});
+		});
+	});
    
    // Activate all Cancel Buttons 
-   $$('.cancelbutton').each(function(a){
-   	  // Get the id
-      var classes = a.getProperty('class').split(" ");
-      for (i=classes.length-1;i>=0;i--) {
-        if (classes[i].contains('toggle:')) {
-          var toggle = classes[i].split(":")[1];
-        }
-      }
-      var toggleval = (toggle) ? toggle : '';
-      a.addEvent('click',
-        function() {
-          if($(toggleval).style.display == 'none') {
-            // show
-            new Fx.Style(toggleval, 'opacity').set(0);
-            $(toggleval).setStyle('display','block');
-            $(toggleval).effect('opacity',{duration:400, transition:Fx.Transitions.linear}).start(0,1);
-          } else {
-            // hide
-            $(toggleval).effect('opacity',{
-              duration:200, 
-              transition:Fx.Transitions.linear,onComplete:function(){
-                $(toggleval).setStyle('display','none');
-              }
-            }).start(1,0);
-          }
-      });
-   });
+   //$$('.cancelbutton').each(function(a){
+         //// Get the id
+      //var classes = a.getProperty('class').split(" ");
+      //for (i=classes.length-1;i>=0;i--) {
+        //if (classes[i].contains('toggle:')) {
+          //var toggle = classes[i].split(":")[1];
+        //}
+      //}
+      //var toggleval = (toggle) ? toggle : '';
+      //a.addEvent('click',
+        //function() {
+          //if($(toggleval).style.display == 'none') {
+            //// show
+            //new Fx.Style(toggleval, 'opacity').set(0);
+            //$(toggleval).setStyle('display','block');
+            //$(toggleval).effect('opacity',{duration:400, transition:Fx.Transitions.linear}).start(0,1);
+          //} else {
+            //// hide
+            //$(toggleval).effect('opacity',{
+              //duration:200, 
+              //transition:Fx.Transitions.linear,onComplete:function(){
+                //$(toggleval).setStyle('display','none');
+              //}
+            //}).start(1,0);
+          //}
+      //});
+   //});
 
 </script>
