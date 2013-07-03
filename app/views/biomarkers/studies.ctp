@@ -264,65 +264,11 @@
 </div>
 </div>
 <script type="text/javascript">
-  // Activate Edit-in-place text editors
-  window.addEvent('domready', function() {
-    new eip($$('.editable'), '/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
-    new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
-  });
-  
-  // Activate Study "Search" Autocomplete
-  //new Autocompleter.Local(
-      //$('study-search'),
-      //<?php
-          //echo "[".$studystring."]";
-      //?>
-	  //,{
-      //'postData':{'object':'study','attr':'title'},
-      //'postVar': 'needle',
-      //'target' : 'study_id',
-      //'minLength' : 2,
-      //'parseChoices': function(el) {
-        //var value = el.getFirst().innerHTML;
-        //var id    = el.getFirst().id;
-        //alert(value);
-        //el.inputValue = value;
-        //el.inputId    = id;
-        //this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-      //},
-      //'filterTokens': function(token) {
-          //var regex = new RegExp('' + this.queryValue.escapeRegExp(), 'i');
-          //return this.tokens.filter(function(token) {
-          //var d = token.split('|');
-          //return regex.test(d[0]);
-        //});
-      //}  
-  //});
-  
-  // Activate all BiomarkerStudyData Associate Publication autocomplete boxes
-  //$$('.pubsearch').each(function(input){
-      //// Get the id
-      //var classes = input.getProperty('class').split(" ");
-      //for (i=classes.length-1;i>=0;i--) {
-        //if (classes[i].contains('id:')) {
-          //var id = classes[i].split(":")[1];
-        //}
-      //}
-      //var idval = (id) ? id : '';
-      //new Autocompleter.Ajax.Xhtml(
-        //$('publication'+idval+'search'),
-          //'/<?php echo PROJROOT;?>/biomarkers/ajax_autocompletePublications', {
-          //'postData':{'object':'Publication','attr':'Title'},
-          //'postVar': 'needle',
-          //'target' : 'publication'+idval+'_id',
-          //'parseChoices': function(el) {
-            //var value = el.getFirst().innerHTML;
-            //var id    = el.getFirst().id;
-            //el.inputValue = value;
-            //el.inputId    = id;
-            //this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-          //}  
-       //});
-    //});
+	// Activate Edit-in-place text editors
+	window.addEvent('domready', function() {
+		new eip($$('.editable'), '/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
+		new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
+	});
 
 	$(function() {
 		// Activate study searches
