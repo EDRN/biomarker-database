@@ -389,4 +389,15 @@
 			}
 		});
 	});
+
+	// Set custom rendering function for the autocomplete elements . We need to remove
+	// the additional information passed along with the name that is preset after a pipe
+	// before drawing the elements.
+	$.ui.autocomplete.prototype._renderItem = function(ul, item) {
+		var newLabel = item.label.split("|")[0];
+		return $("<li></li>")
+				.data("item.autocomplete", newLabel)
+				.append("<a>" + newLabel + "</a>")
+				.appendTo(ul);
+	};
 </script>
