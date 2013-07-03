@@ -462,30 +462,12 @@
 
 <script type="text/javascript">
 
-  // Activate Edit-in-place text editors
-  window.addEvent('domready', function() {
-    new eip($$('.editable'), '/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
-    new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
-  });
-  
-  // Activate OrganData Associate Definition autocomplete box
-  new Autocompleter.Ajax.Xhtml(
-  	$('term-search'),
-  	'/<?php echo PROJROOT;?>/terms/ajax_autocompleteTerms', {
-  		'postData':{},
-  		'postVar' : 'needle',
-  		'target'  : 'term_id',
-  		'parseChoices': function(el) {
-  			var value = el.getFirst().innerHTML;
-  			var id    = el.getFirst().id;
-  			el.inputValue = value;
-  			el.inputId    = id;
-  			this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-  		}
-  });
+	// Activate Edit-in-place text editors
+	window.addEvent('domready', function() {
+		new eip($$('.editable'), '/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
+		new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
+	});
 
-</script>
-<script type="text/javascript">
 	$(function() {
 		// Activate study searches
 		var studyStrings = <?php echo "[" . $studystring . "]"; ?>;
@@ -586,6 +568,20 @@
 				var studyName = ul.item.value.split('|')[0];
 				var studyId = ul.item.value.split('|')[1];
 				$(this).siblings("[name='pub_id']").val(studyId);
+				ul.item.label = studyName;
+				ul.item.value = studyName;
+			}
+		});
+	});
+
+	// Activate term autocomplete box
+	$('#term-search').each(function() {
+		$(this).autocomplete({
+			source: 'http://tumor.jpl.nasa.gov/bmdb/terms/getAutocompleteTerms',
+			select: function(event, ul) {
+				var studyName = ul.item.value.split('|')[0];
+				var studyId = ul.item.value.split('|')[1];
+				$(this).siblings("[name='term_id']").val(studyId);
 				ul.item.label = studyName;
 				ul.item.value = studyName;
 			}
