@@ -351,34 +351,28 @@
 			});
 		});
 	});
-   
-   // Activate all Cancel Buttons 
-   //$$('.cancelbutton').each(function(a){
-         //// Get the id
-      //var classes = a.getProperty('class').split(" ");
-      //for (i=classes.length-1;i>=0;i--) {
-        //if (classes[i].contains('toggle:')) {
-          //var toggle = classes[i].split(":")[1];
-        //}
-      //}
-      //var toggleval = (toggle) ? toggle : '';
-      //a.addEvent('click',
-        //function() {
-          //if($(toggleval).style.display == 'none') {
-            //// show
-            //new Fx.Style(toggleval, 'opacity').set(0);
-            //$(toggleval).setStyle('display','block');
-            //$(toggleval).effect('opacity',{duration:400, transition:Fx.Transitions.linear}).start(0,1);
-          //} else {
-            //// hide
-            //$(toggleval).effect('opacity',{
-              //duration:200, 
-              //transition:Fx.Transitions.linear,onComplete:function(){
-                //$(toggleval).setStyle('display','none');
-              //}
-            //}).start(1,0);
-          //}
-      //});
-   //});
 
+	// Activate all Cancel Buttons
+	$('.cancelbutton').each(function(index) {
+		var classes = $(this).attr('class').split(/\s+/);
+		for (i=classes.length-1;i>=0;i--) {
+			if (classes[i].contains('toggle:')) {
+				var toggle = classes[i].split(":")[1];
+			}
+		}
+
+		var toggleval = (toggle) ? toggle : '';
+		$(this).click(function() {
+			var toggleTarget = '#' + toggle;
+			if($(toggleTarget).css("display") == 'none') {
+				// show
+				$(toggleTarget).css('display', 'block');
+				$(toggleTarget).css('opacity', 1);
+			} else {
+				// hide
+				$(toggleTarget).css('display', 'none');
+				$(toggleTarget).css('opacity', 0);
+			}
+		});
+	});
 </script>
