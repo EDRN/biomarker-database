@@ -483,23 +483,7 @@
   			this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
   		}
   });
-    
-  // Activate OrganData Associate Publication autocomplete box
-  new Autocompleter.Ajax.Xhtml(
-        $('organpublicationsearch'),
-          '/<?php echo PROJROOT;?>/biomarkers/ajax_autocompletePublications', {
-          'postData':{'object':'Publication','attr':'Title'},
-          'postVar': 'needle',
-          'target' : 'organpublication_id',
-          'parseChoices': function(el) {
-            var value = el.getFirst().innerHTML;
-            var id    = el.getFirst().id;
-            el.inputValue = value;
-            el.inputId    = id;
-            this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-          }
-    });
-   
+
 </script>
 <script type="text/javascript">
 	$(function() {
@@ -596,6 +580,20 @@
 
 	// Activate publication search links
 	$('.pubsearch').each(function() {
+		$(this).autocomplete({
+			source: 'http://tumor.jpl.nasa.gov/bmdb/biomarkers/getAutocompletePublications',
+			select: function(event, ul) {
+				var studyName = ul.item.value.split('|')[0];
+				var studyId = ul.item.value.split('|')[1];
+				$(this).siblings("[name='pub_id']").val(studyId);
+				ul.item.label = studyName;
+				ul.item.value = studyName;
+			}
+		});
+	});
+
+	// Activate OrganData Associate Publication autocomplete box
+	$('#organpublicationsearch').each(function() {
 		$(this).autocomplete({
 			source: 'http://tumor.jpl.nasa.gov/bmdb/biomarkers/getAutocompletePublications',
 			select: function(event, ul) {
