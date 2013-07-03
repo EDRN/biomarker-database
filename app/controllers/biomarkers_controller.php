@@ -796,5 +796,23 @@ class BiomarkersController extends AppController {
 			$this->redirect("/biomarkers");
 		}
 	}
+	/******************************************************************
+	 * Autocomplete source
+	 ******************************************************************/
+	function getAutocompletePublications() {
+		$search = "";
+		if ($_GET['term'] != "") {
+				$search = $_GET['term'];
+		}
+
+		$results = $this->Publication->query("SELECT `title` as `title`, `id` as `id` FROM `publications` where `title` LIKE '%{$search}%' ORDER BY `title`");
+		$returnString = array();
+		foreach ($results as $r) {
+				array_push($returnString, "{$r['publications']['title']}|{$r['publications']['id']}");
+		}
+
+		echo json_encode($returnString);
+		die();
+	}
 }
 ?>
