@@ -352,12 +352,17 @@
 
 	// Set custom rendering function for the autocomplete elements . We need to remove
 	// the additional information passed along with the name that is preset after a pipe
-	// before drawing the elements.
+	// before drawing the elements. We also highlight the matching substring in each results.
 	$.ui.autocomplete.prototype._renderItem = function(ul, item) {
+		// Strip out the info we want
 		var newLabel = item.label.split("|")[0];
+
+		// Highlight the substring
+		var re = new RegExp('(' + this.term + ')', 'i');
+		var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:Blue;'>$1</span>");
 		return $("<li></li>")
 				.data("item.autocomplete", newLabel)
-				.append("<a>" + newLabel + "</a>")
+				.append("<a>" + highlightedLabel + "</a>")
 				.appendTo(ul);
 	};
 </script>
