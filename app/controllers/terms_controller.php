@@ -91,4 +91,22 @@ class TermsController extends AppController {
 		echo ($rstr);
 		die();
 	}
+	/******************************************************************
+	 * Autocomplete source
+	 ******************************************************************/
+	function getAutocompleteTerms() {
+		$search = "";
+		if ($_GET['term'] != "") {
+				$search = $_GET['term'];
+		}
+
+		$results = $this->Term->query("SELECT `label` as `label`, `id` as `id` FROM `terms` where `label` LIKE '%{$search}%' ORDER BY `label`");
+		$returnString = array();
+		foreach ($results as $r) {
+				array_push($returnString, "{$r['terms']['label']}|{$r['terms']['id']}");
+		}
+
+		echo json_encode($returnString);
+		die();
+	}
 }
