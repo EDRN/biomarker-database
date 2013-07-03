@@ -118,6 +118,7 @@
 							<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 							<input type="hidden" name="study_data_id" value="<?php echo $study['BiomarkerStudyData']['id']?>"/>
 							<input type="hidden" name="study_id" value="<?php echo $study['Study']['id']?>"/>
+							<input type="hidden" name="specificAssayType" value=""/>
 							Sensitivity (%): <input type="text" name="sensitivity" style="width:50px;"/>&nbsp;&nbsp;
 							Specificity (%): <input type="text" name="specificity" style="width:50px;"/>&nbsp;&nbsp;
 							Prevalence  (0 - 1.0):  <input type="text" name="prevalence"  style="width:50px;"/>&nbsp;
