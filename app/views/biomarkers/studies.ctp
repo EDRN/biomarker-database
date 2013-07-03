@@ -325,6 +325,20 @@
     //});
 
 	$(function() {
+		// Activate study searches
+		var studyStrings = <?php echo "[" . $studystring . "]"; ?>;
+		$('#study-search').autocomplete({
+			source: studyStrings,
+			select: function(event, ui) {
+				var studyName = ui.item.value.split('|')[0];
+				var studyId = ui.item.value.split('|')[1];
+				$(this).siblings('#study_id').val(studyId);
+
+				ui.item.label = studyName;
+				ui.item.value = studyName;
+			}
+		});
+
 		// Activate all Fake Links
 		$('.fakelink').each(function(index){
 			var classes = $(this).attr('class').split(/\s+/);
