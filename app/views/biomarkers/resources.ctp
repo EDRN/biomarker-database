@@ -77,80 +77,55 @@
 </div>
 
 <script type="text/javascript">
-  // Activate OrganData Associate Publication autocomplete box
-  new Autocompleter.Ajax.Xhtml(
-   $('publicationsearch'),
-     '/<?php echo PROJROOT;?>/biomarkers/ajax_autocompletePublications', {
-     'postData':{'object':'Publication','attr':'Title'},
-     'postVar': 'needle',
-     'target' : 'publication_id',
-     'parseChoices': function(el) {
-       var value = el.getFirst().innerHTML;
-       var id    = el.getFirst().id;
-       el.inputValue = value;
-       el.inputId    = id;
-       this.addChoiceEvents(el).getFirst().setHTML(this.markQueryValue(value));
-     }
-   });
-   
-   // Activate all Fake Links
-   $$('.fakelink').each(function(a){
-   	  // Get the id
-      var classes = a.getProperty('class').split(" ");
-      for (i=classes.length-1;i>=0;i--) {
-        if (classes[i].contains('toggle:')) {
-          var toggle = classes[i].split(":")[1];
-        }
-      }
-      var toggleval = (toggle) ? toggle : '';
-      a.addEvent('click',
-        function() {
-          if($(toggleval).style.display == 'none') {
-            // show
-            new Fx.Style(toggleval, 'opacity').set(0);
-            $(toggleval).setStyle('display','block');
-            $(toggleval).effect('opacity',{duration:400, transition:Fx.Transitions.linear}).start(0,1);
-          } else {
-            // hide
-            $(toggleval).effect('opacity',{
-              duration:200, 
-              transition:Fx.Transitions.linear,onComplete:function(){
-                $(toggleval).setStyle('display','none');
-              }
-            }).start(1,0);
-          }
-      });
-   });
-   
-   // Activate all Cancel Buttons 
-   $$('.cancelbutton').each(function(a){
-   	  // Get the id
-      var classes = a.getProperty('class').split(" ");
-      for (i=classes.length-1;i>=0;i--) {
-        if (classes[i].contains('toggle:')) {
-          var toggle = classes[i].split(":")[1];
-        }
-      }
-      var toggleval = (toggle) ? toggle : '';
-      a.addEvent('click',
-        function() {
-          if($(toggleval).style.display == 'none') {
-            // show
-            new Fx.Style(toggleval, 'opacity').set(0);
-            $(toggleval).setStyle('display','block');
-            $(toggleval).effect('opacity',{duration:400, transition:Fx.Transitions.linear}).start(0,1);
-          } else {
-            // hide
-            $(toggleval).effect('opacity',{
-              duration:200, 
-              transition:Fx.Transitions.linear,onComplete:function(){
-                $(toggleval).setStyle('display','none');
-              }
-            }).start(1,0);
-          }
-      });
-   });
+	$(function() {
+		// Activate all Fake Links
+		$('.fakelink').each(function(index){
+			var classes = $(this).attr('class').split(/\s+/);
 
+			for (i=classes.length-1;i>=0;i--) {
+				if (classes[i].contains('toggle:')) {
+					var toggle = classes[i].split(":")[1];
+				}
+			}
+			var toggleval = (toggle) ? toggle : '';
+
+			$(this).click(function() {
+				var toggleTarget = '#' + toggle;
+
+				if($(toggleTarget).css("display") == 'none') {
+					// show
+					$(toggleTarget).css('display', 'block');
+					$(toggleTarget).css('opacity', 1);
+				} else {
+					// hide
+					$(toggleTarget).css('display', 'none');
+					$(toggleTarget).css('opacity', 0);
+				}
+			});
+		});
+
+		// Activate all Cancel Buttons
+		$('.cancelbutton').each(function(index) {
+			var classes = $(this).attr('class').split(/\s+/);
+			for (i=classes.length-1;i>=0;i--) {
+				if (classes[i].contains('toggle:')) {
+					var toggle = classes[i].split(":")[1];
+				}
+			}
+
+			var toggleval = (toggle) ? toggle : '';
+			$(this).click(function() {
+				var toggleTarget = '#' + toggle;
+				if($(toggleTarget).css("display") == 'none') {
+					// show
+					$(toggleTarget).css('display', 'block');
+					$(toggleTarget).css('opacity', 1);
+				} else {
+					// hide
+					$(toggleTarget).css('display', 'none');
+					$(toggleTarget).css('opacity', 0);
+				}
+			});
+		});
+	});		
 </script>
-		
-			
