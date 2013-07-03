@@ -563,7 +563,7 @@
 	// Activate publication search links
 	$('.pubsearch').each(function() {
 		$(this).autocomplete({
-			source: 'http://tumor.jpl.nasa.gov/bmdb/biomarkers/getAutocompletePublications',
+			source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
 			select: function(event, ul) {
 				var studyName = ul.item.value.split('|')[0];
 				var studyId = ul.item.value.split('|')[1];
@@ -577,7 +577,7 @@
 	// Activate term autocomplete box
 	$('#term-search').each(function() {
 		$(this).autocomplete({
-			source: 'http://tumor.jpl.nasa.gov/bmdb/terms/getAutocompleteTerms',
+			source: '/<?php echo PROJROOT;?>/terms/getAutocompleteTerms',
 			select: function(event, ul) {
 				var studyName = ul.item.value.split('|')[0];
 				var studyId = ul.item.value.split('|')[1];
@@ -591,7 +591,7 @@
 	// Activate OrganData Associate Publication autocomplete box
 	$('#organpublicationsearch').each(function() {
 		$(this).autocomplete({
-			source: 'http://tumor.jpl.nasa.gov/bmdb/biomarkers/getAutocompletePublications',
+			source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
 			select: function(event, ul) {
 				var studyName = ul.item.value.split('|')[0];
 				var studyId = ul.item.value.split('|')[1];

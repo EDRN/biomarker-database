@@ -136,7 +136,7 @@
 		// Activate publication search links
 		$('#publicationsearch').each(function() {
 			$(this).autocomplete({
-				source: 'http://tumor.jpl.nasa.gov/bmdb/biomarkers/getAutocompletePublications',
+				source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
 				select: function(event, ul) {
 					var studyName = ul.item.value.split('|')[0];
 					var studyId = ul.item.value.split('|')[1];
