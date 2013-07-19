@@ -605,7 +605,7 @@
 
 		// Highlight the substring
 		var re = new RegExp('(' + this.term + ')', 'i');
-		var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:Blue;'>$1</span>");
+		var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:#93d1ed;'>$1</span>");
 		return $("<li></li>")
 				.data("item.autocomplete", newLabel)
 				.append("<a>" + highlightedLabel + "</a>")
