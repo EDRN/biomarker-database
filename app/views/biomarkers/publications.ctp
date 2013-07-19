@@ -45,7 +45,7 @@
 </div>
 </h4>
 </h3>
-<div id="addstudypub" class="addstudypub" style="display:none;">
+<div id="addstudypub" class="addstudypub fadeOut">
 	<form action="/<?php echo PROJROOT;?>/biomarkers/addPublication" method="POST">
 		<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 		<input type="hidden" id="publication_id" name="pub_id" value=""/>
@@ -97,14 +97,12 @@
 			$(this).click(function() {
 				var toggleTarget = '#' + toggle;
 
-				if($(toggleTarget).css("display") == 'none') {
+				if ($(toggleTarget).hasClass("fadeOut")) {
 					// show
-					$(toggleTarget).css('display', 'block');
-					$(toggleTarget).css('opacity', 1);
+					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
 				} else {
 					// hide
-					$(toggleTarget).css('display', 'none');
-					$(toggleTarget).css('opacity', 0);
+					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
 				}
 			});
 		});
@@ -121,14 +119,12 @@
 			var toggleval = (toggle) ? toggle : '';
 			$(this).click(function() {
 				var toggleTarget = '#' + toggle;
-				if($(toggleTarget).css("display") == 'none') {
+				if ($(toggleTarget).hasClass("fadeOut")) {
 					// show
-					$(toggleTarget).css('display', 'block');
-					$(toggleTarget).css('opacity', 1);
+					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
 				} else {
 					// hide
-					$(toggleTarget).css('display', 'none');
-					$(toggleTarget).css('opacity', 0);
+					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
 				}
 			});
 		});
