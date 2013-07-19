@@ -97,7 +97,7 @@
 				<span class="fakelink toggle:adddefinition">+ Add Definition</span>
 			</div>
 		</h3>
-		<div id="adddefinition" class="addstudydata" style="display:none;">
+		<div id="adddefinition" class="addstudydata fadeOut">
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Definition:</h5>
 			<div style="width:80%;">
 				<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganTermDefinition" method="POST">
@@ -127,7 +127,7 @@
 				<span class="fakelink toggle:addstudydata">+ Add Study</span>
 			</div>
 		</h3>
-		<div id="addstudydata" class="addstudydata" style="display:none;">
+		<div id="addstudydata" class="addstudydata fadeOut">
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Study:</h5>
 			<div style="width:80%;">
 				<form action="/<?php echo PROJROOT;?>/biomarkers/addorganstudydata" method="POST">
@@ -178,7 +178,7 @@
 							<span class="fakelink toggle:addsensspec<?php echo $study['id']?>">+ Add Details</span>
 						</div>
 					</h5>
-					<div id="addsensspec<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">
+					<div id="addsensspec<?php echo $study['id']?>" class="addstudypub fadeOut" style="margin-left:14px;">
 						<h5 style="margin-bottom:5px;margin-left:1px;">Add Biomarker Characteristics Details:</h5>
 						<form style="color:#555;" action="/<?php echo PROJROOT;?>/biomarkers/addsensspec" method="POST">
 							<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
@@ -271,7 +271,7 @@
 							<span class="fakelink toggle:addstudypub<?php echo $study['id']?>">+ Add Publication</span>
 						</div>
 					</h5>
-					<div id="addstudypub<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">
+					<div id="addstudypub<?php echo $study['id']?>" class="addstudypub fadeOut" style="margin-left:14px;">
 						<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 						<form action="/<?php echo PROJROOT;?>/biomarkers/addstudydatapub" method="POST">
 							<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
@@ -310,7 +310,7 @@
 							<span class="fakelink toggle:addstudyres<?php echo $study['id']?>">+ Add Resource</span>
 						</div>
 					</h5>
-					<div id="addstudyres<?php echo $study['id']?>" class="addstudyres" style="margin-left:14px;display:none;">
+					<div id="addstudyres<?php echo $study['id']?>" class="addstudyres fadeOut" style="margin-left:14px;">
 						<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
 						<form action="/<?php echo PROJROOT;?>/biomarkers/addStudyDataResource" method="POST" style="margin-top:5px;">
 							<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
@@ -353,7 +353,7 @@
 				<span class="fakelink toggle:addstudypub">+ Add a Publication</a>
 			</div>
 		</h3>
-		<div id="addstudypub" class="addstudypub" style="margin-left:16px;padding-top:8px;display:none;">
+		<div id="addstudypub" class="addstudypub fadeOut" style="margin-left:16px;padding-top:8px;">
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataPub" method="POST">
 				<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
@@ -388,7 +388,7 @@
 				<span class="fakelink toggle:addstudyres">+ Add a Resource</span>
 			</div>
 		</h3>
-		<div id="addstudyres" class="addstudyres" style="margin-left:16px;display:none;">
+		<div id="addstudyres" class="addstudyres fadeOut" style="margin-left:16px;">
 			<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataResource" method="POST" style="margin-top:5px;">
 				<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
@@ -499,12 +499,10 @@
 
 				if($(toggleTarget).css("display") == 'none') {
 					// show
-					$(toggleTarget).css('display', 'block');
-					$(toggleTarget).css('opacity', 1);
+					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
 				} else {
 					// hide
-					$(toggleTarget).css('display', 'none');
-					$(toggleTarget).css('opacity', 0);
+					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
 				}
 			});
 		});
@@ -523,14 +521,12 @@
 			$(this).click(function() {
 				var toggleTarget = '#' + toggle;
 
-				if($(toggleTarget).css("display") == 'none') {
+				if ($(toggleTarget).hasClass("fadeOut")) {
 					// show
-					$(toggleTarget).css('display', 'block');
-					$(toggleTarget).css('opacity', 1);
+					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
 				} else {
 					// hide
-					$(toggleTarget).css('display', 'none');
-					$(toggleTarget).css('opacity', 0);
+					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
 				}
 			});
 		});
@@ -548,14 +544,12 @@
 		var toggleval = (toggle) ? toggle : '';
 		$(this).click(function() {
 			var toggleTarget = '#' + toggle;
-			if($(toggleTarget).css("display") == 'none') {
+			if($(toggleTarget).hasClass("fadeOut")) {
 				// show
-				$(toggleTarget).css('display', 'block');
-				$(toggleTarget).css('opacity', 1);
+				$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
 			} else {
 				// hide
-				$(toggleTarget).css('display', 'none');
-				$(toggleTarget).css('opacity', 0);
+				$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
 			}
 		});
 	});
