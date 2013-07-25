@@ -461,6 +461,7 @@
 </div>
 
 <script type="text/javascript">
+	jQuery.noConflict();
 
 	// Activate Edit-in-place text editors
 	window.addEvent('domready', function() {
@@ -468,147 +469,99 @@
 		new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
 	});
 
-	$(function() {
-		// Activate study searches
-		var studyStrings = <?php echo "[" . $studystring . "]"; ?>;
-		$('#study-search').autocomplete({
-			source: studyStrings,
-			select: function(event, ui) {
-				var studyName = ui.item.value.split('|')[0];
-				var studyId = ui.item.value.split('|')[1];
-				$(this).siblings('#study_id').val(studyId);
+	// jQuery and MooTools clobber eachothers namespaces. `jQuery.noConflict()` prevents the clobbering
+	// and this function let's us still call the jQuery code with $. 
+	(function($) {
+		$(function() {
+			// Activate study searches
+			var studyStrings = <?php echo "[" . $studystring . "]"; ?>;
+			$('#study-search').autocomplete({
+				source: studyStrings,
+				select: function(event, ui) {
+					var studyName = ui.item.value.split('|')[0];
+					var studyId = ui.item.value.split('|')[1];
+					$(this).siblings('#study_id').val(studyId);
 
-				ui.item.label = studyName;
-				ui.item.value = studyName;
-			}
-		});
-		
-		// Activate all Fake Links
-		$('.detailslink').each(function(a){
-			var classes = $(this).attr('class').split(/\s+/);
-
-			for (i=classes.length-1;i>=0;i--) {
-				if (classes[i].contains('toggle:')) {
-					var toggle = classes[i].split(":")[1];
-				}
-			}
-			var toggleval = (toggle) ? toggle : '';
-
-			$(this).click(function() {
-				var toggleTarget = '#' + toggle;
-
-				if($(toggleTarget).css("display") == 'none') {
-					// show
-					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
-				} else {
-					// hide
-					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
+					ui.item.label = studyName;
+					ui.item.value = studyName;
 				}
 			});
-		});
 
-		// Activate all Fake Links
-		$('.fakelink').each(function(index){
-			var classes = $(this).attr('class').split(/\s+/);
+			// Activate all Fake Links
+			$('.fakelink').each(function(index){
+				var classes = $(this).attr('class').split(/\s+/);
 
-			for (i=classes.length-1;i>=0;i--) {
-				if (classes[i].contains('toggle:')) {
-					var toggle = classes[i].split(":")[1];
+				for (i=classes.length-1;i>=0;i--) {
+					if (classes[i].contains('toggle:')) {
+						var toggle = classes[i].split(":")[1];
+					}
 				}
-			}
-			var toggleval = (toggle) ? toggle : '';
+				var toggleval = (toggle) ? toggle : '';
 
-			$(this).click(function() {
-				var toggleTarget = '#' + toggle;
+				$(this).click(function() {
+					var toggleTarget = '#' + toggle;
 
-				if ($(toggleTarget).hasClass("fadeOut")) {
-					// show
-					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
-				} else {
-					// hide
-					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
-				}
+					if ($(toggleTarget).hasClass("fadeOut")) {
+						// show
+						$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
+					} else {
+						// hide
+						$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
+					}
+				});
 			});
+
+			// Activate all Cancel Buttons
+			$('.cancelbutton').each(function(index) {
+				var classes = $(this).attr('class').split(/\s+/);
+				for (i=classes.length-1;i>=0;i--) {
+					if (classes[i].contains('toggle:')) {
+						var toggle = classes[i].split(":")[1];
+					}
+				}
+
+				var toggleval = (toggle) ? toggle : '';
+				$(this).click(function() {
+					var toggleTarget = '#' + toggle;
+					if ($(toggleTarget).hasClass("fadeOut")) {
+						// show
+						$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
+					} else {
+						// hide
+						$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
+					}
+				});
+			});
+
+			// Activate publication search links
+			$('.pubsearch').each(function() {
+				$(this).autocomplete({
+					source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
+					select: function(event, ul) {
+						var studyName = ul.item.value.split('|')[0];
+						var studyId = ul.item.value.split('|')[1];
+						$(this).siblings("[name='pub_id']").val(studyId);
+						ul.item.label = studyName;
+						ul.item.value = studyName;
+					}
+				});
+			});
+
+			// Set custom rendering function for the autocomplete elements . We need to remove
+			// the additional information passed along with the name that is preset after a pipe
+			// before drawing the elements. We also highlight the matching substring in each results.
+			$.ui.autocomplete.prototype._renderItem = function(ul, item) {
+				// Strip out the info we want
+				var newLabel = item.label.split("|")[0];
+
+				// Highlight the substring
+				var re = new RegExp('(' + this.term + ')', 'i');
+				var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:#93d1ed;'>$1</span>");
+				return $("<li></li>")
+						.data("item.autocomplete", newLabel)
+						.append("<a>" + highlightedLabel + "</a>")
+						.appendTo(ul);
+			};
 		});
-	});
-
-	// Activate all Cancel Buttons
-	$('.cancelbutton').each(function(index) {
-		var classes = $(this).attr('class').split(/\s+/);
-		for (i=classes.length-1;i>=0;i--) {
-			if (classes[i].contains('toggle:')) {
-				var toggle = classes[i].split(":")[1];
-			}
-		}
-
-		var toggleval = (toggle) ? toggle : '';
-		$(this).click(function() {
-			var toggleTarget = '#' + toggle;
-			if($(toggleTarget).hasClass("fadeOut")) {
-				// show
-				$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
-			} else {
-				// hide
-				$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
-			}
-		});
-	});
-
-	// Activate publication search links
-	$('.pubsearch').each(function() {
-		$(this).autocomplete({
-			source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
-			select: function(event, ul) {
-				var studyName = ul.item.value.split('|')[0];
-				var studyId = ul.item.value.split('|')[1];
-				$(this).siblings("[name='pub_id']").val(studyId);
-				ul.item.label = studyName;
-				ul.item.value = studyName;
-			}
-		});
-	});
-
-	// Activate term autocomplete box
-	$('#term-search').each(function() {
-		$(this).autocomplete({
-			source: '/<?php echo PROJROOT;?>/terms/getAutocompleteTerms',
-			select: function(event, ul) {
-				var studyName = ul.item.value.split('|')[0];
-				var studyId = ul.item.value.split('|')[1];
-				$(this).siblings("[name='term_id']").val(studyId);
-				ul.item.label = studyName;
-				ul.item.value = studyName;
-			}
-		});
-	});
-
-	// Activate OrganData Associate Publication autocomplete box
-	$('#organpublicationsearch').each(function() {
-		$(this).autocomplete({
-			source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
-			select: function(event, ul) {
-				var studyName = ul.item.value.split('|')[0];
-				var studyId = ul.item.value.split('|')[1];
-				$(this).siblings("[name='pub_id']").val(studyId);
-				ul.item.label = studyName;
-				ul.item.value = studyName;
-			}
-		});
-	});
-
-	// Set custom rendering function for the autocomplete elements . We need to remove
-	// the additional information passed along with the name that is preset after a pipe
-	// before drawing the elements. We also highlight the matching substring in each results.
-	$.ui.autocomplete.prototype._renderItem = function(ul, item) {
-		// Strip out the info we want
-		var newLabel = item.label.split("|")[0];
-
-		// Highlight the substring
-		var re = new RegExp('(' + this.term + ')', 'i');
-		var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:#93d1ed;'>$1</span>");
-		return $("<li></li>")
-				.data("item.autocomplete", newLabel)
-				.append("<a>" + highlightedLabel + "</a>")
-				.appendTo(ul);
-	};
+	})(jQuery);
 </script>
