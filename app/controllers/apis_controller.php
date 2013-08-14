@@ -97,7 +97,7 @@ class ApisController extends AppController {
 
 		// List of column names from the database that will be displayed in the table in the SAME order. These will be 
 		// used for searching and ordering when forming the query string.
-		$aColumns = array('defaultname', 'qastate', 'type', 'panel', 'organs');
+		$aColumns = array('primary_name', 'qastate', 'type', 'isPanel', 'organs');
 
 		$searchWhere = "";
 		if ( $_GET['sSearch'] != "" ) {
@@ -109,7 +109,7 @@ class ApisController extends AppController {
 
 			// Also, search over biomarker IDs and aliases.
 			$searchWhere .= "id LIKE '%".mysql_real_escape_string($_GET['sSearch'])."%'";
-			$searchWhere .= " OR aliases LIKE '%".mysql_real_escape_string($_GET['sSearch'])."%'";
+			$searchWhere .= " OR names LIKE '%".mysql_real_escape_string($_GET['sSearch'])."%'";
 			$searchWhere .= ')';
 		} 
 
@@ -166,11 +166,11 @@ class ApisController extends AppController {
 
 			// Save the current row
 			$json[] = array(
-				"<a href=\"/bmdb/biomarkers/view/{$b['biomarkers_search']['id']}\">".$b['biomarkers_search']['defaultname'].'</a>',
-				$b['biomarkers_search']['qastate'],
-				$b['biomarkers_search']['type'],
-				$b['biomarkers_search']['panel'],
-				$b['biomarkers_search']['organs'],
+				"<a href=\"/bmdb/biomarkers/view/{$b['search_view']['id']}\">".$b['search_view']['primary_name'].'</a>',
+				$b['search_view']['qastate'],
+				$b['search_view']['type'],
+				($b['search_view']['isPanel'] == 1) ? "Yes" : "No",
+				$b['search_view']['organs'],
 			);
 		}
 
