@@ -150,14 +150,14 @@ class Biomarker extends AppModel
 		return $this->query($q);
 	}
 
-	public function runBiomarkerSearch($where, $limit, $order) {
-		$q = 'SELECT SQL_CALC_FOUND_ROWS id, name, defaultname, hgnc, qastate, type, panel, organs, aliases ' . 
-			 'FROM biomarkers_search ' .
-			 $where.
-			 $order.
-			 $limit;
-		return $this->query($q);
-	}
+        public function runBiomarkerSearch($where, $limit, $order) {
+                $q = 'SELECT SQL_CALC_FOUND_ROWS id, primary_name, qastate, type, isPanel, organs, names ' .
+                         'FROM search_view ' .
+                         $where.
+                         $order.
+                         $limit;
+                return $this->query($q);
+        }
 
 	public function getFilteredTotal() {
 		$q = 'SELECT FOUND_ROWS() as filteredCount';
