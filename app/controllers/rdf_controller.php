@@ -424,7 +424,7 @@ __END;
 			echo "  <edrntype:Publication rdf:about=\"{$aboutURL}\">\r\n";
 			echo "    <dc:title>".$this->escapeEntities($p['Publication']['title'])."</dc:title>\r\n";
 			echo "    <dc:author>{$p['Publication']['author']}</dc:author>\r\n";
-			echo "    <edrn:journal>{$p['Publication']['journal']}</edrn:journal>\r\n";
+			echo "    <edrn:journal>".$this->escapeEntities($p['Publication']['journal'])."</edrn:journal>\r\n";
 			echo "    <bmdb:Published>{$p['Publication']['published']}</bmdb:Published>\r\n";
 			echo "    <bmdb:Created>{$p['Publication']['created']}</bmdb:Created>\r\n";
 			echo "    <bmdb:Modified>{$p['Publication']['modified']}</bmdb:Modified>\r\n";
