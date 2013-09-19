@@ -30,7 +30,12 @@
 			$q = "SELECT `site_id` FROM `sites_studies` WHERE `study_id`={$id} ";
 			return($this->query($q));
 		}
-		
+
+                function getMaxId() {
+                        $q = "SELECT MAX(`FHCRC_ID`) FROM `studies`";
+                        return($this->query($q));
+                }
+                
 		function getExtendedSiteDetailsFor($id) {
 			$q = "SELECT `site_id` FROM `sites_studies` WHERE `study_id`={$id} ";
 			$res = $this->query($q);

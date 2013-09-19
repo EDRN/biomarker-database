@@ -151,8 +151,13 @@ class StudiesController extends AppController {
 		if ($this->params['form']) {
 			$data = &$this->params['form'];
 			if ($data['title'] != '') {
+				// The format of the max Id that is returned from the server is a bit on the ugly side...
+				$newId = $this->Study->getMaxId();
+				$newId = $newId[0][0]["MAX(`FHCRC_ID`)"] + 1;
+
 				$this->Study->create(array('title'=>$data['title'],
-					'isEDRN'=>0));
+					'isEDRN'=>0, 'FHCRC_ID'=>$newId));
+
 				$this->Study->save();
 				$id = $this->Study->getLastInsertID();
 

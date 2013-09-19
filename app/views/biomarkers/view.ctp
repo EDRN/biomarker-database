@@ -111,7 +111,7 @@
 				<td>
 					<span id="qastate">
 						<em>
-							<span id="qastate" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:qastate opts:New|Under_Review|Accepted|Rejected">
+							<span id="qastate" class="editablelist object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:qastate opts:New|Under_Review|Curated|Accepted|Rejected">
 								<?php Biomarker::printor($biomarker['Biomarker']['qastate'],'click to select');?>
 							</span>
 						</em>

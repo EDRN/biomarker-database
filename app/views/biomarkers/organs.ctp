@@ -85,7 +85,7 @@
 				</tr>
 				<tr>
 					<td class="label">QA State:</td>
-					<td><span id="qastate"><em><span id="qastate" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:qastate opts:New|Under_Review|Accepted|Rejected"><?php Biomarker::printor($organData['OrganData']['qastate'],'click to select');?></span></em></td>
+					<td><span id="qastate"><em><span id="qastate" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:qastate opts:New|Under_Review|Curated|Accepted|Rejected"><?php Biomarker::printor($organData['OrganData']['qastate'],'click to select');?></span></em></td>
 				</tr>
 			</table>
 		</div>
@@ -127,6 +127,7 @@
 				<span class="fakelink toggle:addstudydata">+ Add Study</span>
 			</div>
 		</h3>
+		<!--<div id="addstudydata" class="addstudydata" style="display:none;">-->
 		<div id="addstudydata" class="addstudydata fadeOut">
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Study:</h5>
 			<div style="width:80%;">
@@ -178,6 +179,7 @@
 							<span class="fakelink toggle:addsensspec<?php echo $study['id']?>">+ Add Details</span>
 						</div>
 					</h5>
+					<!--<div id="addsensspec<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">-->
 					<div id="addsensspec<?php echo $study['id']?>" class="addstudypub fadeOut" style="margin-left:14px;">
 						<h5 style="margin-bottom:5px;margin-left:1px;">Add Biomarker Characteristics Details:</h5>
 						<form style="color:#555;" action="/<?php echo PROJROOT;?>/biomarkers/addsensspec" method="POST">
@@ -271,6 +273,7 @@
 							<span class="fakelink toggle:addstudypub<?php echo $study['id']?>">+ Add Publication</span>
 						</div>
 					</h5>
+					<!--<div id="addstudypub<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">-->
 					<div id="addstudypub<?php echo $study['id']?>" class="addstudypub fadeOut" style="margin-left:14px;">
 						<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 						<form action="/<?php echo PROJROOT;?>/biomarkers/addstudydatapub" method="POST">
@@ -310,6 +313,7 @@
 							<span class="fakelink toggle:addstudyres<?php echo $study['id']?>">+ Add Resource</span>
 						</div>
 					</h5>
+					<!--<div id="addstudyres<?php echo $study['id']?>" class="addstudyres" style="margin-left:14px;display:none;">-->
 					<div id="addstudyres<?php echo $study['id']?>" class="addstudyres fadeOut" style="margin-left:14px;">
 						<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
 						<form action="/<?php echo PROJROOT;?>/biomarkers/addStudyDataResource" method="POST" style="margin-top:5px;">
@@ -353,6 +357,7 @@
 				<span class="fakelink toggle:addstudypub">+ Add a Publication</a>
 			</div>
 		</h3>
+		<!--<div id="addstudypub" class="addstudypub" style="margin-left:16px;padding-top:8px;display:none;">-->
 		<div id="addstudypub" class="addstudypub fadeOut" style="margin-left:16px;padding-top:8px;">
 			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataPub" method="POST">
@@ -469,9 +474,9 @@
 		new eiplist($$('.editablelist'),'/<?php echo PROJROOT;?>/biomarkers/savefield', {action: 'update'});
 	});
 
-	// jQuery and MooTools clobber eachothers namespaces. `jQuery.noConflict()` prevents the clobbering
+	// jQuery and MooTools clobber eachother's namespaces. `jQuery.noConflict()` prevents the clobbering
 	// and this function let's us still call the jQuery code with $. 
-	(function($) {
+        (function($) {
 		$(function() {
 			// Activate study searches
 			var studyStrings = <?php echo "[" . $studystring . "]"; ?>;
@@ -485,6 +490,30 @@
 					ui.item.label = studyName;
 					ui.item.value = studyName;
 				}
+			});
+			
+			// Activate all Fake Links
+			$('.detailslink').each(function(a){
+				var classes = $(this).attr('class').split(/\s+/);
+
+				for (i=classes.length-1;i>=0;i--) {
+					if (classes[i].contains('toggle:')) {
+						var toggle = classes[i].split(":")[1];
+					}
+				}
+				var toggleval = (toggle) ? toggle : '';
+
+				$(this).click(function() {
+					var toggleTarget = '#' + toggle;
+
+					if($(toggleTarget).css("display") == 'none') {
+						// show
+						$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
+					} else {
+						// hide
+						$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
+					}
+				});
 			});
 
 			// Activate all Fake Links
@@ -510,58 +539,86 @@
 					}
 				});
 			});
-
-			// Activate all Cancel Buttons
-			$('.cancelbutton').each(function(index) {
-				var classes = $(this).attr('class').split(/\s+/);
-				for (i=classes.length-1;i>=0;i--) {
-					if (classes[i].contains('toggle:')) {
-						var toggle = classes[i].split(":")[1];
-					}
-				}
-
-				var toggleval = (toggle) ? toggle : '';
-				$(this).click(function() {
-					var toggleTarget = '#' + toggle;
-					if ($(toggleTarget).hasClass("fadeOut")) {
-						// show
-						$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
-					} else {
-						// hide
-						$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
-					}
-				});
-			});
-
-			// Activate publication search links
-			$('.pubsearch').each(function() {
-				$(this).autocomplete({
-					source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
-					select: function(event, ul) {
-						var studyName = ul.item.value.split('|')[0];
-						var studyId = ul.item.value.split('|')[1];
-						$(this).siblings("[name='pub_id']").val(studyId);
-						ul.item.label = studyName;
-						ul.item.value = studyName;
-					}
-				});
-			});
-
-			// Set custom rendering function for the autocomplete elements . We need to remove
-			// the additional information passed along with the name that is preset after a pipe
-			// before drawing the elements. We also highlight the matching substring in each results.
-			$.ui.autocomplete.prototype._renderItem = function(ul, item) {
-				// Strip out the info we want
-				var newLabel = item.label.split("|")[0];
-
-				// Highlight the substring
-				var re = new RegExp('(' + this.term + ')', 'i');
-				var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:#93d1ed;'>$1</span>");
-				return $("<li></li>")
-						.data("item.autocomplete", newLabel)
-						.append("<a>" + highlightedLabel + "</a>")
-						.appendTo(ul);
-			};
 		});
-	})(jQuery);
+
+		// Activate all Cancel Buttons
+		$('.cancelbutton').each(function(index) {
+			var classes = $(this).attr('class').split(/\s+/);
+			for (i=classes.length-1;i>=0;i--) {
+				if (classes[i].contains('toggle:')) {
+					var toggle = classes[i].split(":")[1];
+				}
+			}
+
+			var toggleval = (toggle) ? toggle : '';
+			$(this).click(function() {
+				var toggleTarget = '#' + toggle;
+				if($(toggleTarget).hasClass("fadeOut")) {
+					// show
+					$(toggleTarget).removeClass("fadeOut").addClass("fadeIn");
+				} else {
+					// hide
+					$(toggleTarget).removeClass("fadeIn").addClass("fadeOut");
+				}
+			});
+		});
+
+		// Activate publication search links
+		$('.pubsearch').each(function() {
+			$(this).autocomplete({
+				source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
+				select: function(event, ul) {
+					var studyName = ul.item.value.split('|')[0];
+					var studyId = ul.item.value.split('|')[1];
+					$(this).siblings("[name='pub_id']").val(studyId);
+					ul.item.label = studyName;
+					ul.item.value = studyName;
+				}
+			});
+		});
+
+		// Activate term autocomplete box
+		$('#term-search').each(function() {
+			$(this).autocomplete({
+				source: '/<?php echo PROJROOT;?>/terms/getAutocompleteTerms',
+				select: function(event, ul) {
+					var studyName = ul.item.value.split('|')[0];
+					var studyId = ul.item.value.split('|')[1];
+					$(this).siblings("[name='term_id']").val(studyId);
+					ul.item.label = studyName;
+					ul.item.value = studyName;
+				}
+			});
+		});
+
+		// Activate OrganData Associate Publication autocomplete box
+		$('#organpublicationsearch').each(function() {
+			$(this).autocomplete({
+				source: '/<?php echo PROJROOT;?>/biomarkers/getAutocompletePublications',
+				select: function(event, ul) {
+					var studyName = ul.item.value.split('|')[0];
+					var studyId = ul.item.value.split('|')[1];
+					$(this).siblings("[name='pub_id']").val(studyId);
+					ul.item.label = studyName;
+					ul.item.value = studyName;
+				}
+			});
+		});
+
+		// Set custom rendering function for the autocomplete elements . We need to remove
+		// the additional information passed along with the name that is preset after a pipe
+		// before drawing the elements. We also highlight the matching substring in each results.
+		$.ui.autocomplete.prototype._renderItem = function(ul, item) {
+			// Strip out the info we want
+			var newLabel = item.label.split("|")[0];
+
+			// Highlight the substring
+			var re = new RegExp('(' + this.term + ')', 'i');
+			var highlightedLabel = newLabel.replace(re, "<span style='font-weight:bold;color:#93d1ed;'>$1</span>");
+			return $("<li></li>")
+					.data("item.autocomplete", newLabel)
+					.append("<a>" + highlightedLabel + "</a>")
+					.appendTo(ul);
+		};
+        })(jQuery);
 </script>
