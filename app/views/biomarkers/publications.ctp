@@ -68,7 +68,8 @@
 			<span style="color:#555;font-size:90%;">Author:
 			<?php echo $publication['author']?>. &nbsp; Published in
 			<?php echo $publication['journal']?>, &nbsp;
-			<?php echo $publication['published']?></span>
+			<?php echo $publication['published']?>, &nbsp;
+                        Id: <a href="http://www.ncbi.nlm.nih.gov/pubmed/<?php echo $publication['pubmed_id']?>"><?php echo $publication['pubmed_id']?></a></span>
 		</div>
 	</li>
 <?php endforeach;?>

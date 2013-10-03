@@ -31,6 +31,21 @@
 			return($this->query($q));
 		}
 
+		function getPeople($id) {
+			$q = "SELECT `givenname`, `surname`, `location`, `person_id`, `study_id` FROM `person_study` JOIN `people` ON `person_study`.`person_id`=`people`.`dmcc_id` WHERE `study_id`={$id}";
+                        return($this->query($q));
+                }
+
+		function dropResearcher($person_id, $study_id) {
+			$q = "DELETE FROM `person_study` WHERE `person_id`={$person_id} AND `study_id`={$study_id}";
+			return($this->query($q));
+		}
+	
+		function associateResearcher($person_id, $study_id) {
+			$q = "INSERT INTO `person_study` (person_id, study_id) VALUES({$person_id}, {$study_id})";
+			return($this->query($q));
+		}
+
                 function getMaxId() {
                         $q = "SELECT MAX(`FHCRC_ID`) FROM `studies`";
                         return($this->query($q));

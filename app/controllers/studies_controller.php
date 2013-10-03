@@ -45,6 +45,7 @@ class StudiesController extends AppController {
 		);
 		$this->set('study',$study);
 		$this->set('sites',$this->Study->getExtendedSiteDetailsFor($study['Study']['FHCRC_ID']));
+		$this->set('people', $this->Study->getPeople($id));
 	}
 	
 	function savefield() {
@@ -122,7 +123,22 @@ class StudiesController extends AppController {
 		$this->StudyResource->delete();
 		$this->redirect("/studies/resources/{$study_id}");
 	}
-	
+
+
+	/******************************************************************
+	 * RESEARCHERS
+	 ******************************************************************/
+
+	function removeResearcher($person_id, $study_id) {
+		$this->Study->dropResearcher($person_id, $study_id);
+		$this->redirect("/studies/view/{$study_id}");
+	}
+
+	function addResearcher() {
+		$data = &$this->params['form'];
+		$this->Study->associateResearcher($data['person_id'], $data['study_id']);
+		$this->redirect("/studies/view/{$data['study_id']}");
+	}
 	
 	/******************************************************************
 	 * AJAX
@@ -178,6 +194,25 @@ class StudiesController extends AppController {
 		} else {
 			$this->redirect("/studies/");
 		}
+	}
+
+	/******************************************************************
+	 * AUTOCOMPLETE
+	 ******************************************************************/
+	function getResearcherList() {
+		$search = "";
+		if ($_GET['term'] != "") {
+			$search = $_GET['term'];
+		}
+
+		$results = $this->Study->query("SELECT `givenname`, `surname`, `dmcc_id` FROM `people` WHERE `givenname` LIKE '%{$search}%' or `surname` LIKE '%{$search}%' ORDER BY `surname`");
+		$returnString = array();
+		foreach ($results as $r) {
+			array_push($returnString, "{$r['people']['givenname']} {$r['people']['surname']}|{$r['people']['dmcc_id']}");
+		}
+
+		echo json_encode($returnString);
+		die();
 	}
 
 }
