@@ -83,14 +83,40 @@ __END;
 		
 		$this->printRdfStart();
 
-		$biomarkers = $this->Biomarker->findAll(null,null,null,null,1,2);
+		$biomarkers = $this->Biomarker->query("SELECT * from biomarkers as Biomarker");
+
 		foreach ($biomarkers as $b) {
+			// Grab the aliases and determine default and HGNC names
+			$aliases = $this->Biomarker->query("SELECT * FROM biomarker_names as BiomarkerName where biomarker_id={$b['Biomarker']['id']}");
+			$biomarkerName = "Unknown";
+			$biomarkerHgncName = "Unknown";
+
+			foreach ($aliases as $name) {
+				if ($name['BiomarkerName']['isPrimary'] == "1") {
+					$biomarkerName = $name['BiomarkerName']['name'];
+				}
+				if ($name['BiomarkerName']['isHgnc'] == "1") {
+					$biomarkerHgncName = $name['BiomarkerName']['name'];
+				}
+			}
+
+			// Grab organ information for the biomarker
+			$organData = $this->Biomarker->query("SELECT * FROM organ_datas as OrganData where biomarker_id={$b['Biomarker']['id']}");
+
+			// Grab publication information
+			$publicationData = $this->Biomarker->query("SELECT publication_id FROM biomarkers_publications as BiomarkerPublications where biomarker_id={$b['Biomarker']['id']}");
+
+			// Grab resource information
+			$resourceData = $this->Biomarker->query("SELECT URL from biomarker_resources AS BiomarkerResources where biomarker_id={$b['Biomarker']['id']}");
+
+			// Grab studies' information
+			$studiesData = $this->Biomarker->query("select * from biomarker_study_datas join studies on biomarker_study_datas.study_id = studies.id where biomarker_study_datas.biomarker_id={$b['Biomarker']['id']}");
+
 			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/view/{$b['Biomarker']['id']}";
-			$biomarkerName = Biomarker::getDefaultName($b);
-			$biomarkerHgncName = Biomarker::getHgncName($b);
 			if ($biomarkerHgncName == 'Unknown') {
 				$biomarkerHgncName = ''; // Don't default to 'Unknown', let applications handle it
 			}
+
 			// Basics
 			echo "  <bmdb:Biomarker rdf:about=\"{$aboutURL}\">\r\n";
 			echo "    <bmdb:Title>".$this->escapeEntities($biomarkerName)."</bmdb:Title>\r\n";
@@ -107,21 +133,27 @@ __END;
 			echo "    <bmdb:Created>{$b['Biomarker']['created']}</bmdb:Created>\r\n";
 			echo "    <bmdb:Modified>{$b['Biomarker']['modified']}</bmdb:Modified>\r\n";
 			echo "    <bmdb:Type>{$b['Biomarker']['type']}</bmdb:Type>\r\n";
+
 			// Alternative Names
-			if (count($b['BiomarkerName']) > 0) {
-				foreach ($b['BiomarkerName'] as $alias) {
-					if ($alias['name'] != $biomarkerName) {
-						echo "    <bmdb:Alias>".$this->escapeEntities($alias['name'])."</bmdb:Alias>\r\n";
+			if (count($aliases) > 0) {
+				foreach ($aliases as $alias) {
+					if ($alias['BiomarkerName']['name'] != $biomarkerName) {
+						echo "    <bmdb:Alias>".$this->escapeEntities($alias['BiomarkerName']['name'])."</bmdb:Alias>\r\n";
 					}
 				}
 			} 
 			
+			// Panel Details
+			// If the biomarker is a panel, show the members as a <bmdb:hasBiomarker>
+			// If the biomarker belongs to a panel, show a <bmdb:memberOfPanel>
 			// Panel members
 			if ($b['Biomarker']['isPanel']) {
-				foreach ($b['Panel'] as $member) {
-					echo "    <bmdb:hasBiomarker rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$member['id']}\"/>\r\n";
+				$members = $this->Biomarker->query("SELECT biomarker_id as id FROM paneldata as Member where panel_id={$b['Biomarker']['id']}");
+				foreach ($members as $member) {
+					echo "    <bmdb:hasBiomarker rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$member['Member']['id']}\"/>\r\n";
 				}
 			}
+			
 			
 			// Member of Panel(s)
 			$members = $this->Biomarker->getPanelMembership($b['Biomarker']['id']);
@@ -130,10 +162,7 @@ __END;
 					echo "    <bmdb:memberOfPanel rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/view/{$m['id']}\"/>\r\n";
 				}
 			}
-			
-			// Panel Details
-			// If the biomarker is a panel, show the members as a <bmdb:hasBiomarker>
-			// If the biomarker belongs to a panel, show a <bmdb:belongsToPanel>
+
 
 			// Access Control / Security
 			// Display the LDAP groups that should have access to this data
@@ -142,33 +171,41 @@ __END;
 				echo "    <bmdb:AccessGrantedTo>{$group['acl']['ldapGroup']}</bmdb:AccessGrantedTo>\r\n";
 			}
 			
+			
 			// Associated eCAS Datasets
 			$datasets = $this->BiomarkerDataset->getDatasetsForBiomarker($b['Biomarker']['id']);
 			foreach ($datasets as $dataset) {
 				echo "    <bmdb:AssociatedDataset rdf:resource=\"http://{$this->getResourceBase(false)}/ecas/data/dataset/urn:edrn:{$dataset['name']}\"/>\r\n";
 			}
+
 			
 			// Organs
-			if (count($b['OrganData']) > 0) {
-				foreach ($b['OrganData'] as $bod) {
-					echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['id']}\"/>\r\n";
+			if (count($organData) > 0) {
+				foreach ($organData as $bod) {
+					echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['OrganData']['id']}\"/>\r\n";
 				}
 			}
+			
 			// Studies
-			if (count($b['BiomarkerStudyData']) > 0) {
+			if (count($studiesData) > 0) {
 				echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
 				echo "      <rdf:Bag>\r\n";
-				foreach ($b['BiomarkerStudyData'] as $studyData) {
-					$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['id']}";
+
+				foreach ($studiesData as $studyData) {
+					$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['biomarker_study_datas']['id']}";
 					echo "        <rdf:li>\r\n";
 					echo "          <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
-					echo "            <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['Study']['FHCRC_ID']}\"/>\r\n";
+					echo "            <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['studies']['FHCRC_ID']}\"/>\r\n";
 					
+					// NOTE: Currently none of this information is being inserted. A more robust spec needs to be discussed to handle
+					// the various locations where this information can fall on a biomarker.
+					//
 					// Sensitivity/Specificity Information
-					if (count($studyData['Sensitivity']) > 0) {
+					/*
+					if (count($studyData['biomarker_study_datas']['Sensitivity']) > 0) {
 						echo "            <bmdb:SensitivityDatas>\r\n";
 						echo "              <rdf:Bag>\r\n";
-						foreach ($studyData['Sensitivity'] as $ordinal => $s) {
+						foreach ($studyData['biomarker_study_datas']['Sensitivity'] as $ordinal => $s) {
 							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
 							echo "                <rdf:li>\r\n";
 							echo "                  <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
@@ -184,6 +221,7 @@ __END;
 						echo "              </rdf:Bag>\r\n";
 						echo "            </bmdb:SensitivityDatas>\r\n";
 					}
+					*/
 					echo "          </bmdb:BiomarkerStudyData>\r\n";
 					echo "        </rdf:li>\r\n";
 				}
@@ -193,18 +231,20 @@ __END;
 			} 
 			
 			// Publications
-			if (count($b['Publication']) > 0) {
-				foreach ($b['Publication'] as $pub) {
-					echo "    <bmdb:referencedInPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['id']}\"/>\r\n";
+			if (count($publicationData) > 0) {
+				foreach ($publicationData as $pub) {
+					echo "    <bmdb:referencedInPublication rdf:resource=\"http://{$this->getResourceBase()}/publications/view/{$pub['BiomarkerPublications']['publication_id']}\"/>\r\n";
 				}
 			} 
 		
+			
 			// Resources
-			if (count($b['BiomarkerResource']) > 0) {
-				foreach ($b['BiomarkerResource'] as $res) {
-					echo "    <bmdb:referencesResource rdf:resource=\"{$this->escapeEntities($res['URL'])}\"/>\r\n";
+			if (count($resourceData) > 0) {
+				foreach ($resourceData as $res) {
+					echo "    <bmdb:referencesResource rdf:resource=\"{$this->escapeEntities($res['BiomarkerResources']['URL'])}\"/>\r\n";
 				}
 			} 
+			
 			echo "  </bmdb:Biomarker>\r\n";
 
 		} /* end foreach */

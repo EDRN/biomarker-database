@@ -139,6 +139,21 @@ class StudiesController extends AppController {
 		$this->Study->associateResearcher($data['person_id'], $data['study_id']);
 		$this->redirect("/studies/view/{$data['study_id']}");
 	}
+
+	/******************************************************************
+	 * SITES
+	 ******************************************************************/
+
+	function addSite() {
+		$data = &$this->params['form'];
+		$this->Study->associateSite($data['site_id'], $data['study_id']);
+		$this->redirect("/studies/view/{$data['redirect_id']}");
+	}
+
+	function removeSite($site_id, $study_id, $redirect_id) {
+		$this->Study->dropSite($site_id, $study_id);
+		$this->redirect("/studies/view/{$redirect_id}");
+	}
 	
 	/******************************************************************
 	 * AJAX
@@ -209,6 +224,22 @@ class StudiesController extends AppController {
 		$returnString = array();
 		foreach ($results as $r) {
 			array_push($returnString, "{$r['people']['givenname']} {$r['people']['surname']}|{$r['people']['dmcc_id']}");
+		}
+
+		echo json_encode($returnString);
+		die();
+	}
+
+	function getSitesList() {
+		$search = "";
+		if ($_GET['term'] != "") {
+			$search = $_GET['term'];
+		}
+
+		$results = $this->Study->query("SELECT `site_id`, `name` FROM `sites` WHERE `name` LIKE '%{$search}%' ORDER BY `name`");
+		$returnString = array();
+		foreach ($results as $r) {
+			array_push($returnString, "{$r['sites']['name']} | {$r['sites']['site_id']}");
 		}
 
 		echo json_encode($returnString);

@@ -92,6 +92,10 @@
 				</ul>
 			
 			<?php endif; /* end if isPanel= 1 */?>
+			<hr style="margin:20px 0 20px 0;"/>
+			<span id="curatorNotes" class="editable textarea object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:curatorNotes">
+				<?php Biomarker::printor($biomarker['Biomarker']['curatorNotes'],'Click here to add curation notes.');?>
+			</span>
 		</div>
 		<div id="rightcol" style="width:35%;">
 		<!-- BASIC ATTRIBUTES -->

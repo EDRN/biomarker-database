@@ -46,6 +46,16 @@
 			return($this->query($q));
 		}
 
+		function associateSite($site_id, $study_id) {
+			$q = "INSERT INTO `sites_studies` (study_id, site_id) VALUES({$study_id}, {$site_id})";
+			return($this->query($q));
+		}
+
+		function dropSite($site_id, $study_id) {
+			$q = "DELETE FROM `sites_studies` WHERE `site_id`={$site_id} AND `study_id`={$study_id}";
+			return($this->query($q));
+		}
+
                 function getMaxId() {
                         $q = "SELECT MAX(`FHCRC_ID`) FROM `studies`";
                         return($this->query($q));
