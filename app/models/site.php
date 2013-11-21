@@ -7,5 +7,9 @@ class Site extends AppModel {
 	public function getemall() {
 		return $this->query("SELECT * FROM `sites` WHERE 1");
 	}
+
+	public function getAllSites() {
+		return $this->query("SELECT * FROM `sites`");
+	}
 }
 ?>
