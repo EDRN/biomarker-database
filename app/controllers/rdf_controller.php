@@ -83,7 +83,21 @@ __END;
 		
 		$this->printRdfStart();
 
-		$biomarkers = $this->Biomarker->query("SELECT * from biomarkers as Biomarker");
+		$biomarkers = null;
+
+		if (isset($_GET["qastate"])) {
+			$option = $_GET["qastate"];
+
+			// The only valid option is "all". If anything is put in then we should only returned
+			// accepted biomarkers
+			if ($option === "all") {
+				$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker");
+			} else {
+				$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker WHERE qastate='Accepted'");
+			}
+		} else {
+			$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker WHERE qastate='Accepted'");
+		}
 
 		foreach ($biomarkers as $b) {
 			// Grab the aliases and determine default and HGNC names

@@ -1,0 +1,12 @@
+/* Column attributes for the sites table columns */
+table#studyelements td.column-1 {
+	width: 10%;
+}
+
+table#studyelements td.column-2 {
+	width: 90%;
+}
+
+table#studyelements {
+	text-align: center;
+}

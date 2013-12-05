@@ -1,0 +1,105 @@
+/*
+ * Biomarker Panel Section
+ */
+
+#togglePanelTools {
+  top: -15px;
+  right: 0;
+}
+
+#selectionPanelHeader {
+  position: relative;
+  margin: 5px;
+  margin-bottom: 0px;
+  font-weight: bold;
+  color: #733;
+}
+
+#selectionPanelRightHeader {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+#panelBiomarkers {
+  float: right;
+}
+
+#panelSelectionButtons#moveright {
+  margin-left: auto;
+}
+
+#paenlBiomarkerList {
+  margin-top: 5px;
+  list-style-type: square;
+  color: #888;
+}
+
+#panelBiomarkerListItem {
+  margin: 15px;
+}
+
+/*
+ * Curation Notes Section
+ */
+#curatorNotesDivider {
+  margin: 20px 0 20px 0;
+}
+
+/*
+ * Right Column Section
+ */
+
+/* Attributes */
+#attributesTable {
+  padding-bottom: 2px;
+}
+
+/* Alt Names */
+#altNamesTable {
+  padding-bottom: 2px;
+}
+
+#altNamesTable #header th {
+  text-align: left;
+  width: 20px;
+}
+
+#addAltName {
+  border-top: dotted 1px #999;
+  padding-top: 3px;
+}
+
+/* Panel Information */
+#panelToggle {
+  padding-bottom: 8px;
+}
+
+#panelMembershipHeader {
+  border-top: solid 2px #999;
+  padding-top: 3px;
+}
+
+#panelMembershipInfo td {
+  font-size: 120%;
+  padding-left: 8px;
+}
+
+#panelMembershipInfo td ul {
+  margin-top: 5px;
+  list-style-type: square;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+/*
+ * Misc. Helpers
+ */
+
+.clear {
+  clear: both;
+}
+
+.centerText {
+  text-align: center;
+}

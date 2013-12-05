@@ -4,7 +4,7 @@
 		<ul><li>Home</li></ul>
 	</div><!-- End Breadcrumbs -->
 </div>
-<div style="position:relative;min-height:335px;">
+<div style="position:relative;min-height:430px;">
 	<div style="background-color:#fff;position:absolute;left:0px;height:100%;width:40%;">
 		<div style="padding-left:5px;padding-right:5px;">
 			<h2 style="margin-top:15px;color:#993231;border-bottom:dotted 1px #456;padding-bottom:2px;padding-top:5px;">Welcome!</h2>
@@ -58,6 +58,12 @@
 			  <li><a href="/<?php echo PROJROOT;?>/terms/">Browse Terms</a></li>
 			  <li><a href="/<?php echo PROJROOT;?>/terms/define">Define a Term</a></li>
 			</ul>
+			<h4>Sites</h4>
+			<ul style="list-style-type:square;color:#500003;">
+			  <li><a href="/<?php echo PROJROOT;?>/sites/">Browse Sites</a></li>
+			  <li><a href="/<?php echo PROJROOT;?>/sites/create">Define non-EDRN Site</a></li>
+			</ul>
+			
 		</div>
 		<div class="clr"><!--  --></div>
 	</div>

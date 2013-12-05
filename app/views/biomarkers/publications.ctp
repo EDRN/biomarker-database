@@ -64,12 +64,14 @@
 <ul style="margin-left:20px;margin-top:10px;font-size:90%;">
 <?php foreach ($biomarker['Publication'] as $publication):?>
 	<li><div class="studypubsnippet">
-			<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removePublication/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
+			<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> <br/>
 			<span style="color:#555;font-size:90%;">Author:
-			<?php echo $publication['author']?>. &nbsp; Published in
-			<?php echo $publication['journal']?>, &nbsp;
-			<?php echo $publication['published']?>, &nbsp;
-                        Id: <a href="http://www.ncbi.nlm.nih.gov/pubmed/<?php echo $publication['pubmed_id']?>"><?php echo $publication['pubmed_id']?></a></span>
+			    <?php echo $publication['author']?>. &nbsp; Published in
+			    <?php echo $publication['journal']?>, &nbsp;
+			    <?php echo $publication['published']?>, &nbsp;
+                            Id: <a href="http://www.ncbi.nlm.nih.gov/pubmed/<?php echo $publication['pubmed_id']?>"><?php echo $publication['pubmed_id']?></a>, &nbsp;
+                            <a style="color:#d55" href="/<?php echo PROJROOT;?>/biomarkers/removePublication/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $publication['id']?>">x Remove this association</a>
+                        </span>
 		</div>
 	</li>
 <?php endforeach;?>

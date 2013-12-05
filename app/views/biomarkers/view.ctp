@@ -2,6 +2,7 @@
 	// Include required CSS and JavaScript 
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
+	echo $html->css('biomarkers');
 	echo $javascript->link('mootools-release-1.11');
 	echo $javascript->link('eip');
 ?>
@@ -48,14 +49,14 @@
 			<?php if ($biomarker['Biomarker']['isPanel']):?>
 				<h2>Panel Details:</h2>
 				<div style="position:relative;">
-					<div id="togglePanelTools" class="editlink" style="top:-15px;right:0">
+					<div id="togglePanelTools" class="editlink">
 						<span class="fakelink toggle:panelSelection">+ Show/Hide Selector</span>
 					</div>
 				</div>
 				<div id="panelSelection" style="display:none;">
-					<div style="position:relative;margin:5px;margin-bottom:0px;font-weight:bold;color:#733;">
+					<div id="selectionPanelHeader">
 						Available Biomarkers
-						<div style="position:absolute;right:0px;top:0px;">
+						<div id="selectionPanelRightHeader">
 							Panel Biomarkers
 						</div>
 					</div>
@@ -68,22 +69,22 @@
 						<?php endforeach;?>
 						
 						</select>
-						<select id="panelBiomarkers" name="panelBiomarkers" size="20" multiple="MULTIPLE" style="float:right;">
+						<select id="panelBiomarkers" name="panelBiomarkers" size="20" multiple="MULTIPLE">
 						<?php foreach ($panelMarkers as $b): ?>
 							<option id="opt-<?php echo $b['id']?>" value="<?php echo $b['id']?>"><?php echo $b['defaultName']?></option>
 						<?php endforeach;?>
 						</select>
-						<div style="clear:both;"><!-- clear --></div>
+						<div class="clear"></div>
 						<div id="panelSelectionButtons">
-						  <input id="moveright" type="button" value="Move Selected Right" style="margin-left:auto;"/>&nbsp;
+						  <input id="moveright" type="button" value="Move Selected Right" />&nbsp;
 						  <input id="save"      type="submit" value="Save Changes"/>&nbsp;
-						  <input id="moveleft"  type="button" value="Move Selected Left" style="margin-ight:auto;"/>
+						  <input id="moveleft"  type="button" value="Move Selected Left" />
 						</div> 
 					</form>
 				</div> 
-				<ul style="margin-top:5px;list-style-type:square;color:#888;">
+				<ul id="panelBiomarkerList">
 				  <?php foreach($panelMarkers as $b):?>
-				  	<li style="margin:15px;">
+				  	<li id="panelBiomarkerListItem">
 				  		<a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $b['id']?>">
 				  			<?php echo $b['defaultName']?>
 				  		</a>
@@ -92,7 +93,7 @@
 				</ul>
 			
 			<?php endif; /* end if isPanel= 1 */?>
-			<hr style="margin:20px 0 20px 0;"/>
+			<hr id="curatorNotesDivider" />
 			<span id="curatorNotes" class="editable textarea object:biomarker id:<?php echo $biomarker['Biomarker']['id']?> attr:curatorNotes">
 				<?php Biomarker::printor($biomarker['Biomarker']['curatorNotes'],'Click here to add curation notes.');?>
 			</span>
@@ -100,7 +101,7 @@
 		<div id="rightcol" style="width:35%;">
 		<!-- BASIC ATTRIBUTES -->
 		<h4>Attributes:</h4>
-		<table cellspacing="0" cellpadding="3" style="padding-bottom:2px;">
+		<table id="attributesTable" cellspacing="0" cellpadding="3">
 			<tr>
 				<td class="label">Security:</td>
 				<td><em>
@@ -134,18 +135,18 @@
 			</tr>
 		</table>
 		<h4>Alternative Names</h4>
-		<table cellspacing="0" cellpadding="3" style="padding-bottom:2px;">
-			<tr>
-			  <th style="text-align:left;width:20px;">HGNC</th>
-			  <th style="text-align:left;width:20px;">Default</th>
-			  <th style="text-align:left;width:30px;">Name</th>
+		<table id="altNamesTable" cellspacing="0" cellpadding="3">
+			<tr id="header">
+			  <th>HGNC</th>
+			  <th>Default</th>
+			  <th>Name</th>
 			</tr>
 			<?php foreach ($biomarker['BiomarkerName'] as $alias):?>
 			<tr>
-			  <td style="text-align:center;">
+			  <td class="centerText">
 				<input name="hgnc" value="<?php echo $alias['id']?>" class="hgnc" type="radio" <?php if($alias['isHgnc'] == 1) { echo 'checked="checked"';}?>/>
 			  </td>
-			  <td style="text-align:center;">
+			  <td class="centerText">
 				<input name="alias" value="<?php echo $alias['id']?>" class="alias" type="radio" <?php if($alias['isPrimary'] == 1) { echo 'checked="checked"';}?>/>
 			  </td>
 			  <td>
@@ -157,7 +158,7 @@
 			</tr>
 			<?php endforeach;?>
 			<tr>
-			  <td colspan="3" style="border-top:dotted 1px #999;padding-top:3px;">Add Alternative Name:</td>
+			  <td id="addAltName" colspan="3">Add Alternative Name:</td>
 			</tr>
 			<tr>
 			  <td colspan="3">
@@ -172,7 +173,7 @@
 		<h4>Panel Attributes</h4>
 		<table cellspacing="0" cellpadding="0">
 			<tr>
-			  <td style="padding-bottom:8px;">
+			  <td id="panelToggle">
 			  	<form action="/<?php echo PROJROOT?>/biomarkers/addAlias" method="POST">
 			  		<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 			  		<input id="ispanel" type="checkbox" <?php echo (($biomarker['Biomarker']['isPanel'] == 1) ? 'checked="checked" ' : '');?> name="<?php echo $biomarker['Biomarker']['id']?>"/> This Biomarker is a Panel
@@ -180,11 +181,11 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td style="border-top:solid 2px #999;padding-top:3px;">Belongs to Panel(s):</td>
+			  <td id="panelMembershipHeader">Belongs to Panel(s):</td>
 			</tr>
-			<tr>
-			  <td style="font-size:120%;padding-left:8px;">
-			    <ul style="margin-top:5px;list-style-type:square;color:#888;margin-bottom:8px;">
+			<tr id="panelMembershipInfo">
+			  <td>
+			    <ul>
 			      <?php foreach ($panelMembership as $p):?>
 			      <li><a href="/<?php echo PROJROOT;?>/biomarkers/view/<?php echo $p['id']?>"><?php echo $p['name']?></a></li>
 			      <?php endforeach;?>
@@ -207,7 +208,7 @@
 </div>
 <br/>
 <div class="box">
-<h3 class="title" style="">Curation Actions</h3>
+<h3 class="title">Curation Actions</h3>
 	<ul>
 	    <li><a href="/<?php echo PROJROOT;?>/acls/edit/biomarker/<?php echo $biomarker['Biomarker']['id']?>">Set Security</a></li>
 	    <li><a href="/<?php echo PROJROOT;?>/biomarkers/data/<?php echo $biomarker['Biomarker']['id']?>">Associate Datasets</a></li>
