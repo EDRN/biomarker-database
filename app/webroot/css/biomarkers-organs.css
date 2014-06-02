@@ -1,0 +1,247 @@
+.biomarkerLightRed {
+	color: #d55;
+}
+
+.biomarkerDarkGray {
+	color: #333;
+}
+
+.subsectionHeader {
+	position: relative;
+	margin-left: 0px;
+}
+
+.subsectionTitle {
+	margin-bottom: 5px;
+	margin-left: 1px;
+}
+
+ul.displayList {
+	font-size: 90%;
+}
+
+ul.displayList li {
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+.resourceDetailsLabel {
+	float: left;
+	width: 130px;
+	color: #555;
+}
+
+.publicationDetails {
+	color: #555;
+	font-size: 90%;
+}
+
+.resourceDetailsDescription {
+	float: left;
+	width: 50%;
+}
+.organSubsectionHeader {
+	position: relative;
+	margin-left: 0px;
+}
+
+.organSubsectionActivationLink {
+	margin-bottom: 5px;
+	margin-left: 1px;
+}
+
+.hint {
+	float: left;
+	margin-top: 3px;
+}
+
+.cancelButton {
+	float: right;
+	padding: 2px;
+	margin: 6px;
+	margin-right: -4px;
+}
+
+.submitButton {
+	float: right;
+	padding: 2px;
+	margin: 6px;
+	margin-right: 0px;
+}
+
+.definitionTermRemove {
+	color: #d55;
+	font-size: 90%;
+}
+
+div#main_section h4.studyTitle {
+	background-color: transparent;
+	margin-bottom: 0px;
+	border-bottom: solid 1px #ccc;
+	padding-left: 0px;
+}
+
+.studyAssociationContainer {
+	position: relative;
+	margin-left: 30px;
+	background-color: #eee;
+	margin-top: 0px;
+	padding-left: 15px;
+}
+
+.studyAssociationRemove {
+	position: absolute;
+	top: -16px;
+	right: 0px;
+	font-size: 90%;
+	color: #d55;
+}
+
+.studyDataLeftColumn {
+	margin-right: 16px;
+}
+
+#studyDataParameters {
+	margin-left: 0px;
+	margin-top: 0;
+	border-left: solid 1px #ccc;
+	border-bottom: solid 1px #ccc;
+	padding-bottom: 5px;
+}
+
+div#main_section h4.studyDataParametersHeader {
+	border-bottom: dotted 1px #888;
+	background-color: #ddd;
+}
+
+.studyDataParametersTable {
+	background-color: #eee;
+}
+
+.studyDefinitionLink {
+	text-decoration: underline;
+	font-size: 90%;
+	padding-left: 5px;
+}
+
+.studySubsectionFold {
+	position: relative;
+	border-bottom: solid 1px #999;
+}
+
+div.studySubsectionFoldToggle {
+	font-size: 100%;
+	margin-top: -8px;
+}
+
+.detailsEditHeader {
+	margin-bottom: 5px;
+	margin-left: 1px;
+}
+
+.studyDetailsEditForm {
+	color: #555;
+}
+
+.studyDetailsEditTextArea {
+	width: 80%;
+	border: solid 1px #ccc;
+	padding: 2px;
+	color: #222;
+}
+
+.studyDetailsDisplay {
+	padding-left: 0px;
+	font-size: 90%;
+}
+
+ul.studyPublicationList {
+	font-size: 90%;
+}
+
+ul.studyPublicationList li {
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+.studyPublicationDetails {
+	color: #555;
+	font-size: 90%;
+}
+
+.studyResourceDetailsLabel {
+	float: left;
+	width: 130px;
+	color: #555;
+}
+
+.studyResourceDetailsDescription {
+	float: left;
+	width: 50%;
+}
+
+ul.studyResourceList {
+	font-size: 90%;
+}
+
+ul.studyResourceList li {
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+.studyResourceDetails {
+	color: #555;
+	font-size: 90%;
+}
+
+// Forgive the naming inconsistencies.
+// Piggybacking an existing Id. 
+#addstudypub {
+	margin-left: 16px;
+	padding-top: 8px;
+}
+
+// Forgive the naming inconsistencies.
+// Piggybacking an existing Id. 
+#addstudyres {
+	margin-left: 16px;
+}
+
+#organDataContentHeader {
+	color: #555;
+	font-size: 90%;
+	padding-left: 5px;
+}
+
+#organDataBlockHeader {
+	background-color: transparent;
+	font-size: 18px;
+}
+
+#organAttributesHeader {
+	border-bottom: dotted 1px #888;
+	background-color: #ddd;
+}
+
+#organAttributesTable {
+	padding-top: 5px;
+	background-color: #eee;
+}
+
+#emptyOrganAssociationNotice {
+	margin-left: 20px;
+	margin-top: 10px;
+	color: #888;
+}
+
+#organAssociationSelect {
+	width: 100%;
+	background-color: #eee;
+	color: #333;
+	padding: 1px;
+}
+
+#organAssociationSubmit {
+	border: outset 1px #555;
+	padding: 2px;
+}

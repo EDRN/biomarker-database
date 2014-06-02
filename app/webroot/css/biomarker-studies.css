@@ -1,0 +1,54 @@
+div#main_section a.biomarkerLightRed {
+	color: #d55;
+}
+
+div#main_section h4.studyHeader {
+	margin-bottom: 0px;
+	margin-left: 20px;
+	background-color:  transparent;
+	font-size:  18px;
+}
+
+.hint {
+	float: left;
+	margin-top: 3px;
+}
+
+.cancelButton {
+	float: right;
+	padding: 2px;
+	margin: 6px;
+	margin-right: -4px;
+}
+
+.submitButton {
+	float: right;
+	padding: 2px;
+	margin: 6px;
+	margin-right: 0px;
+}
+
+h4.studyTitle {
+	margin: 0px;
+	margin-left: 60px;
+	margin-top: 15px;
+	padding-top: 5px;
+	border-left: solid 1px #ccc;
+	border-top: solid 1px #ccc;
+}
+
+#studyDetails {
+	margin-left: 0px;
+	margin-top: 0;
+	margin-right: -5px;
+}
+
+div#studyDetails h4 {
+	border-bottom: dotted 1px #888;
+	background-color: #ddd;
+}
+
+#studyDetailsDefinition {
+	text-decoration: underline;
+	font-size: 90%;
+}

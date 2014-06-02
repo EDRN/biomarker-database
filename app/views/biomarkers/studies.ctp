@@ -10,6 +10,7 @@
 	echo $javascript->link('jquery/jquery-1.8.2.min.js');
 	echo $javascript->link('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
 	echo $html->css('jquery-ui/jquery-ui-1.10.3.custom.min.css');
+	echo $html->css('biomarker-studies')
 ?>
 <div class="menu">
 	<!-- Breadcrumbs Area -->
@@ -38,7 +39,7 @@
 		</ul>
 		<div class="clr"><!--  --></div>
 </div>
-<h4 style="margin-bottom:0px;margin-left:20px;background-color: transparent;font-size: 18px;">Associated Study Data
+<h4 class="studyHeader">Associated Study Data
 <div class="editlink">
 <span class="fakelink toggle:addstudydata">+ Add a Study</span>
 </div>
@@ -48,9 +49,9 @@
 		<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 		<input type="hidden" id="study_id" name="study_id" value=""/>
 		<input type="text" id="study-search" value="" style="width:99%;"/>
-		<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of options will appear.</span>
-		<input type="button" class="cancelbutton toggle:addstudydata" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:-4px;"/>
-		<input type="submit" name="associate_study" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+		<span class="hint">Begin typing. A list of options will appear.</span>
+		<input type="button" class="cancelButton toggle:addstudydata" value="Cancel"/>
+		<input type="submit" class="studyButton" name="associate_study" value="Associate"/>
 		
 	</form>
 	<div class="clr"><!-- clear --></div>
@@ -80,18 +81,25 @@
 			}
 	
 	?>
-			<h4 style="margin:0px;margin-left:60px;margin-top:15px;padding-top:5px;border-left:solid 1px #ccc;border-top:solid 1px #ccc;"><?php echo $study['Study']['title']?>
+			<h4 class="studyTitle"><?php echo $study['Study']['title']?>
 				<div class="editlink">
-					<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['BiomarkerStudyData']['id']?>" style="color:#d55;">x Delete</a>	
+					<a class="biomarkerLightRed" href="/<?php echo PROJROOT;?>/biomarkers/removeStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $study['BiomarkerStudyData']['id']?>">
+						x Delete
+					</a>	
 				</div>	
 			</h4>
 			<div class="studydetail" style="margin-bottom:15px;">
 				<div class="lefttext" style="margin-right:16px;">
-					<span id="description" class="textarea"><?php Biomarker::printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
+					<span id="description" class="textarea">
+						<?php Biomarker::printor(substr($study['Study']['studyAbstract'],0,600) . '&nbsp;<a href="/' . 
+							PROJROOT . '/studies/view/' . $study['Study']['id'] . 
+							'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');
+						?>
+					</span>
 				</div>
 				<!-- RELEVANT STUDY DATA -->
-				<div class="rightcol" style="margin-left:0px;margin-top:0;margin-right:-5px;">
-					<h4 style="border-bottom:dotted 1px #888;background-color:#ddd;">Details:</h4>
+				<div class="rightcol" id="studyDetails">
+					<h4>Details:</h4>
 					<table cellpadding="3" cellspacing="0">
 						<tr>
 							<td class="label" style="width:70px;">Phase:</td>
@@ -99,7 +107,9 @@
 						</tr>
 					</table>
 					<br/>
-					<a style="text-decoration:underline;font-size:90%;" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
+					<a id="studyDetailsDefinition" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">
+						Go to this study's definition
+					</a>
 				</div>
 				<div class="clr"><!-- clear --></div>
 				<br/>
@@ -125,7 +135,7 @@
 							<br/>
 							Details: <br/><textarea name="sensspec_details" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
 							<input type="submit" value="Add" name="add_details" style="margin-bottom:3px;"/>
-							<input type="button" value="Cancel" style="margin-bottom:3px;" class="cancelbutton toggle:addsensspec<?php echo $study['BiomarkerStudyData']['id']?>"/>
+							<input type="button" value="Cancel" style="margin-bottom:3px;" class="cancelButton toggle:addsensspec<?php echo $study['BiomarkerStudyData']['id']?>"/>
 						</form>
 					</div>
 					<br/>
@@ -202,7 +212,7 @@
 						<div>
 							<span class="hint" style="float:left;margin-top:3px;">Begin typing a publication title. A list of options will appear.<br/>
 			Don't see the publication you want? <a href="/<?php echo PROJROOT;?>/publications/import">Import a new publication</a></span>
-							<input type="button" class="cancelbutton toggle:addstudypub<?php echo $study['BiomarkerStudyData']['id']?>" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+							<input type="button" class="cancelButton toggle:addstudypub<?php echo $study['BiomarkerStudyData']['id']?>" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
 							<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
 							<div class="clr"><!-- clear --></div>
 						</div>
@@ -240,7 +250,7 @@
 						<div style="float:left;width:130px;color:#555;">Description:</div>
 						<input type="text" name="desc" style="float:left;width:50%;"/>
 						<input type="submit" name="associate_res" value="Associate" style="float:left;padding:2px;margin-right:0px;margin-left:6px;"/>
-						<input type="button" class="cancelbutton toggle:addstudyres<?php echo $study['BiomarkerStudyData']['id']?>" value="Cancel" style="float:left;padding:2px;margin:0px;margin-right:0px;margin-left:6px;"/>
+						<input type="button" class="cancelButton toggle:addstudyres<?php echo $study['BiomarkerStudyData']['id']?>" value="Cancel" style="float:left;padding:2px;margin:0px;margin-right:0px;margin-left:6px;"/>
 						
 					</form>
 					<div class="clr"><!-- clear --></div>
@@ -316,7 +326,7 @@
 			});
 
 			// Activate all Cancel Buttons
-			$('.cancelbutton').each(function(index) {
+			$('.cancelButton').each(function(index) {
 				var classes = $(this).attr('class').split(/\s+/);
 				for (i=classes.length-1;i>=0;i--) {
 					if (classes[i].contains('toggle:')) {

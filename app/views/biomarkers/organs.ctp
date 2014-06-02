@@ -2,6 +2,7 @@
 	// Include required CSS and JavaScript
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
+	echo $html->css('biomarkers');
 	echo $javascript->link('mootools-release-1.11');
 	echo $javascript->link('eip');
 
@@ -10,6 +11,8 @@
 	echo $javascript->link('jquery/jquery-1.8.2.min.js');
 	echo $javascript->link('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
 	echo $html->css('jquery-ui/jquery-ui-1.10.3.custom.min.css');
+
+	echo $html->css('biomarkers-organs');
 ?>
 
 
@@ -44,14 +47,18 @@
 			
 			
 <?php if ($organData != false):?>
-<em style="color:#555;font-size:90%;padding-left:5px;">The following organs have data associated with this biomarker...</em>
+<em id="organDataContentHeader">The following organs have data associated with this biomarker...</em>
 <div id="organdatacontent">
 		
 <!-- SET UP PAGINATION FOR ORGANDATAS -->			
 <div id="smallEditlinks">
 	<ul>
 		<?php foreach($organdatas as $od): ?>
-		<li class="<?php echo (($od['Organ']['id'] == $organData['Organ']['id'])? "activeLink" : "");?>"><a href="/<?php echo PROJROOT;?>/biomarkers/organs/<?php echo $biomarker['Biomarker']['id'] . "/" . $od['OrganData']['id']?>"><?php echo $od['Organ']['name']?></a></li>
+			<li class="<?php echo (($od['Organ']['id'] == $organData['Organ']['id'])? "activeLink" : "");?>">
+			<a href="/<?php echo PROJROOT;?>/biomarkers/organs/<?php echo $biomarker['Biomarker']['id'] . "/" . $od['OrganData']['id']?>">
+				<?php echo $od['Organ']['name']?>
+			</a>
+			</li>
 		<?php endforeach;?>	
 	</ul>
 	<div class="clr"><!-- clear --></div>
@@ -59,10 +66,15 @@
 			
 			
 
-<h4 class="organdatablockheader" style="background-color:transparent;font-size:18px;">Associated 
+<h4 class="organDataBlockHeader">Associated 
 		<div class="editlink">
-			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>" style="color:#d55;">x Delete</a>&nbsp;| 
-			<a href="/<?php echo PROJROOT;?>/acls/edit/biomarkerorgan/<?php echo $organData['OrganData']['id']?>/<?php echo $biomarker['Biomarker']['id']?>">Set Security</a>
+			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>">
+				<span class="biomarkerLightRed">x Delete</span>
+			</a>
+			&nbsp;| 
+			<a href="/<?php echo PROJROOT;?>/acls/edit/biomarkerorgan/<?php echo $organData['OrganData']['id']?>/<?php echo $biomarker['Biomarker']['id']?>">
+				Set Security
+			</a>
 		</div>
 		<?php echo $organData['Organ']['name']?> Data:
 	</h4>
@@ -70,45 +82,71 @@
 		<div class="lefttext">
 			
 			<h5>Performance comment for this biomarker with respect to <?php echo $organData['Organ']['name']?></h5>
-			<span id="performance_comment" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:performance_comment"><?php Biomarker::printor($organData['OrganData']['performance_comment'],'No Performance Comment Provided Yet... Click Here to Add.');?></span>
+			<span id="performance_comment" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:performance_comment">
+				<?php Biomarker::printor($organData['OrganData']['performance_comment'],'No Performance Comment Provided Yet... Click Here to Add.');?>
+			</span>
 			
 			<h5>Description of this biomarker with respect to <?php echo $organData['Organ']['name']?></h5>
-			<span id="description" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:description"><?php Biomarker::printor($organData['OrganData']['description'],'No Description Provided Yet... Click Here to Add.');?></span>
+			<span id="description" class="editable textarea object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:description">
+				<?php Biomarker::printor($organData['OrganData']['description'],'No Description Provided Yet... Click Here to Add.');?>
+			</span>
 			
 		</div>
 		<div class="rightcol">
-			<h4 style="border-bottom:dotted 1px #888;background-color:#ddd;">Attributes:</h4>
-			<table cellspacing="0" cellpadding="3" style="padding-top:5px;background-color:#eee;">
+			<h4 id="organAttributesHeader">Attributes:</h4>
+			<table id="organAttributesTable" cellspacing="0" cellpadding="3">
 				<tr>
 					<td class="label">Phase:</td>
-					<td><em><span id="security" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php Biomarker::printor($organData['OrganData']['phase'],'click to select');?></span></em></td>
+					<td>
+						<em>
+							<span id="security" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:phase opts:One|Two|Three|Four|Five">
+								<?php Biomarker::printor($organData['OrganData']['phase'],'click to select');?>
+							</span>
+						</em>
+					</td>
 				</tr>
 				<tr>
 					<td class="label">QA State:</td>
-					<td><span id="qastate"><em><span id="qastate" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:qastate opts:New|Under_Review|Curated|Accepted|Rejected"><?php Biomarker::printor($organData['OrganData']['qastate'],'click to select');?></span></em></td>
+					<td>
+						<em>
+							<span id="qastate" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:qastate opts:New|Under_Review|Curated|Accepted|Rejected">
+								<?php Biomarker::printor($organData['OrganData']['qastate'],'click to select');?>
+							</span>
+						</em>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">Clinical Translation</td>
+					<td>
+						<em>
+							<span id="clinical_translation" class="editablelist object:organ_data id:<?php echo $organData['OrganData']['id']?> attr:clinical_translation opts:None|FDA|CLIA">
+								<?php Biomarker::printor($organData['OrganData']['clinical_translation'],'click to select');?>
+							</span>
+						</em>
+					</td>
 				</tr>
 			</table>
 		</div>
 		
 		<!-- DEFINITIONS -->
 		<div class="clr"><!-- clear --></div>
-		<h3 style="position:relative;margin-left:0px;">Definitions
+		<h3 class="organSubsectionHeader">Definitions
 			<div class="editlink">
 				<span class="fakelink toggle:adddefinition">+ Add Definition</span>
 			</div>
 		</h3>
 		<div id="adddefinition" class="addstudydata fadeOut">
-			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Definition:</h5>
+			<h5 class="organSubsectionActivationLink">Associate a Definition:</h5>
 			<div style="width:80%;">
 				<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganTermDefinition" method="POST">
 					<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 					<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 					<input type="hidden" id="term_id" name="term_id" value=""/>
 					<input type="text" id="term-search" value="" style="width:100%;"/>
-					<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of defined terms will appear.</span> &nbsp;
-					<span class="hint" style="float:left;margin-top:3px;">Can't find your term? <a href="/<?php echo PROJROOT?>/terms/define">Define It!</a></span><br/>
-					<input type="button" class="cancelbutton toggle:adddefinition" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:-4px;"/>
-					<input type="submit" name="associate_term" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+					<span class="hint">Begin typing. A list of defined terms will appear.</span> &nbsp;
+					<span class="hint">Can't find your term? <a href="/<?php echo PROJROOT?>/terms/define">Define It!</a></span><br/>
+					<input type="button" class="cancelButton toggle:adddefinition" value="Cancel"/>
+					<input type="submit" class="submitButton" name="associate_term" value="Associate"/>
 					
 				</form>
 				<div class="clr"><!-- clear --></div>
@@ -116,29 +154,33 @@
 		</div>
 		<dl>
 		<?php foreach ($organData['Term'] as $term):?>
-			<dt><?php echo $term['label']?> &nbsp;&nbsp;<a style="color:#d55;font-size:90%;" alt="Remove" href="/<?php echo PROJROOT?>/biomarkers/removeOrganTermDefinition/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $term['id']?>">x Remove Definition</a></dt>
+			<dt>
+				<?php echo $term['label']?> &nbsp;&nbsp;
+				<a class="definitionTermRemove" alt="Remove" href="/<?php echo PROJROOT?>/biomarkers/removeOrganTermDefinition/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $term['id']?>">
+					x Remove Definition
+				</a>
+			</dt>
 			<dd><?php echo $term['definition']?></dd>
 		<?php endforeach?>
 		</dl>
 		
 		<!-- SUPPORTING STUDY DATA -->
-		<h3 style="position:relative;margin-left:0px;">Supporting Study Data
+		<h3 class="organSubsectionHeader">Supporting Study Data
 			<div class="editlink">
 				<span class="fakelink toggle:addstudydata">+ Add Study</span>
 			</div>
 		</h3>
-		<!--<div id="addstudydata" class="addstudydata" style="display:none;">-->
 		<div id="addstudydata" class="addstudydata fadeOut">
-			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Study:</h5>
+			<h5 class="organSubsectionHeader">Associate a Study:</h5>
 			<div style="width:80%;">
 				<form action="/<?php echo PROJROOT;?>/biomarkers/addorganstudydata" method="POST">
 					<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 					<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 					<input type="hidden" id="study_id" name="study_id" value=""/>
 					<input type="text" id="study-search" value="" style="width:100%;"/>
-					<span class="hint" style="float:left;margin-top:3px;">Begin typing. A list of options will appear.</span><br/>
-					<input type="button" class="cancelbutton toggle:addstudydata" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:-4px;"/>
-					<input type="submit" name="associate_study" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+					<span class="hint">Begin typing. A list of options will appear.</span><br/>
+					<input type="button" class="cancelButton toggle:addstudydata" value="Cancel"/>
+					<input type="submit" class="submitButton" name="associate_study" value="Associate"/>
 					
 				</form>
 				<div class="clr"><!-- clear --></div>
@@ -147,42 +189,59 @@
 		<div class="spacer">
 		<?php foreach ($organData['StudyData'] as $study):?>
 		
-		<h4 style="background-color:transparent;margin-bottom:0px;border-bottom:solid 1px #ccc;padding-left:0px;"><?php echo $study['Study']['title']?></h4>
-		<div style="position:relative;margin-left:30px;background-color:#eee;margin-top:0px;padding-left:15px;">
-		<div style="position:absolute;top:-16px;right:0px;font-size:90%;">
-			<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" style="color:#d55;" onclick="return confirm('This action can not be undone. Continue?')">x Remove Association</a>
+		<h4 class="studyTitle"><?php echo $study['Study']['title']?></h4>
+		<div class="studyAssociationContainer">
+		<div>
+			<a class="studyAssociationRemove" href="/<?php echo PROJROOT;?>/biomarkers/removeOrganStudyData/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>" onclick="return confirm('This action can not be undone. Continue?')">
+				x Remove Association
+			</a>
 		</div>
 		<!-- start study  -->
-					<div class="lefttext" style="margin-right:16px;">
-						<span id="description" class="textarea"><?php Biomarker::printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?></span>
+					<div class="lefttext studyDataLeftColumn">
+						<span id="description" class="textarea">
+							<?php Biomarker::printor(substr($study['Study']['studyAbstract'],0,600).'&nbsp;<a href="/'.PROJROOT.'/studies/view/'.$study['Study']['id'].'" style="text-decoration:underline;font-size:90%;"><em>Click here to read more about this study</em></a>','<em>No Description Provided Yet.</em>');?>
+						</span>
 					</div>
 					<!-- RELEVANT STUDY DATA -->
-					<div class="rightcol" style="margin-left:0px;margin-top:0;border-left:solid 1px #ccc;border-bottom:solid 1px #ccc;padding-bottom:5px;">
-						<h4 style="border-bottom:dotted 1px #888;background-color:#ddd;">Study Parameters:</h4>
-						<table cellspacing="0" cellpadding="3" style="padding-top:5px;background-color:#eee;">
+					<div class="rightcol" id="studyDataParameters">
+						<h4 class="studyDataParametersHeader">Study Parameters:</h4>
+						<table class="studyDataParametersTable" cellspacing="0" cellpadding="3">
 							<tr>
-							<td class="label">Phase:</td>
-							<td><em><span id="phase<?php echo $study['id']?>" class="editablelist object:organ_study_data id:<?php echo $study['id']?> attr:phase opts:One|Two|Three|Four|Five"><?php Biomarker::printor($study['phase'],'click to select');?></span></em></td>
+								<td class="label">Phase:</td>
+								<td>
+									<em>
+										<span id="phase<?php echo $study['id']?>" class="editablelist object:organ_study_data id:<?php echo $study['id']?> attr:phase opts:One|Two|Three|Four|Five">
+											<?php Biomarker::printor($study['phase'],'click to select');?>
+										</span>
+									</em>
+								</td>
 							</tr>
 							<tr>
-							<td class="label">Prevalence: (0.0 - 1.0)</td>
-							<td><em><span id="prevalence<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:prevalence"><?php echo $study['prevalence']?></span></em></td>
+								<td class="label">Prevalence: (0.0 - 1.0)</td>
+								<td>
+									<em>
+										<span id="prevalence<?php echo $study['id']?>" class="editable object:organ_study_data id:<?php echo $study['id']?> attr:prevalence">
+											<?php echo $study['prevalence']?>
+										</span>
+									</em>
+								</td>
 							</tr>
 						</table>
 						<br/>
-						<a style="text-decoration:underline;font-size:90%;padding-left:5px;" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">Go to this study's definition</a>
+						<a class="studyDefinitionLink" href="/<?php echo PROJROOT;?>/studies/view/<?php echo $study['Study']['id']?>">
+							Go to this study's definition
+						</a>
 					</div>
 					<div class="clr"><!-- clear --></div>
 					<br/>
-					<h5 style="position:relative;border-bottom:solid 1px #999;">Biomarker Characteristics Summary
-						<div class="editlink" style="font-size:100%;margin-top:-8px;">
+					<h5 class="studySubsectionFold">Biomarker Characteristics Summary
+						<div class="editlink studySubsectionFoldToggle">
 							<span class="fakelink toggle:addsensspec<?php echo $study['id']?>">+ Add Details</span>
 						</div>
 					</h5>
-					<!--<div id="addsensspec<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">-->
 					<div id="addsensspec<?php echo $study['id']?>" class="addstudypub fadeOut" style="margin-left:14px;">
-						<h5 style="margin-bottom:5px;margin-left:1px;">Add Biomarker Characteristics Details:</h5>
-						<form style="color:#555;" action="/<?php echo PROJROOT;?>/biomarkers/addsensspec" method="POST">
+						<h5 class="detailsEditHeader">Add Biomarker Characteristics Details:</h5>
+						<form class="studyDetailsEditForm" action="/<?php echo PROJROOT;?>/biomarkers/addsensspec" method="POST">
 							<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 							<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 							<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
@@ -192,15 +251,15 @@
 							Prevalence  (0 - 1.0):  <input type="text" name="prevalence"  style="width:50px;"/>&nbsp;
 							<br/>
 							Specific Assay Type: <br/>
-							<textarea name="specificAssayType" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
+							<textarea class="studyDetailsEditTextArea" name="specificAssayType"></textarea>
 							<br/>
-							Notes: <br/><textarea name="sensspec_details" style="width:80%;border:solid 1px #ccc;padding:2px;color:#222;"></textarea>
+							Notes: <br/><textarea class="studyDetailsEditTextArea" name="sensspec_details"></textarea>
 							<input type="submit" value="Add" name="add_details" style="margin-bottom:3px;"/>
-							<input type="button" value="Cancel" style="margin-bottom:3px;" class="cancelbutton toggle:addsensspec<?php echo $study['id']?>"/>
+							<input type="button" value="Cancel" style="margin-bottom:3px;" class="cancelButton toggle:addsensspec<?php echo $study['id']?>"/>
 						</form>
 					</div>
 					<br/>
-					<div style="padding-left:0px;font-size:90%;">
+					<div class="studyDetailsDisplay">
 						<!-- display sens/spec details here -->
 						<?php if (count($study['Sensitivity']) > 0):?>
 						<table class="associatedstudies" style="width:100%;">
@@ -264,18 +323,19 @@
 						<?php endif;?>
 					</div>
 					<br/>
-					<h5 style="position:relative;border-bottom:solid 1px #999;">Decision Rule</h5>
-					<span id="performance_comment" class="editable textarea object:organ_study_data id:<?php echo $study['id']?> attr:decision_rule"><?php Biomarker::printor($study['decision_rule'],'No Decision Rule Detail Provided Yet... Click Here to Add.');?></span>
+					<h5 class="studySubsectionFold">Decision Rule</h5>
+					<span id="performance_comment" class="editable textarea object:organ_study_data id:<?php echo $study['id']?> attr:decision_rule">
+						<?php Biomarker::printor($study['decision_rule'],'No Decision Rule Detail Provided Yet... Click Here to Add.');?>
+					</span>
 			
 					<br/>
-					<h5 style="position:relative;border-bottom:solid 1px #999;">Related Publications
-						<div class="editlink" style="font-size:100%;margin-top:-8px;">
+					<h5 class="studySubsectionFold">Related Publications
+						<div class="editlink studySubsectionFoldToggle">
 							<span class="fakelink toggle:addstudypub<?php echo $study['id']?>">+ Add Publication</span>
 						</div>
 					</h5>
-					<!--<div id="addstudypub<?php echo $study['id']?>" class="addstudypub" style="margin-left:14px;display:none;">-->
 					<div id="addstudypub<?php echo $study['id']?>" class="addstudypub fadeOut" style="margin-left:14px;">
-						<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
+						<h5 class="detailsEditHeader">Associate a Publication:</h5>
 						<form action="/<?php echo PROJROOT;?>/biomarkers/addstudydatapub" method="POST">
 							<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 							<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
@@ -283,10 +343,15 @@
 							<input type="hidden" id="publication<?php echo $study['id']?>_id" name="pub_id" value=""/>
 							<input type="text" class="pubsearch id:<?php echo $study['id']?>" id="publication<?php echo $study['id']?>search" value="" style="width:90%;"/><br/>
 							<div>
-								<span class="hint" style="float:left;margin-top:3px;">Begin typing a publication title. A list of options will appear.<br/>
-				Don't see the publication you want? <a href="/<?php echo PROJROOT;?>/publications/import">Import a new publication</a></span>
-								<input type="button" class="cancelbutton toggle:addstudypub<?php echo $study['id']?>" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
-								<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+								<span class="hint">
+									Begin typing a publication title. A list of options will appear.<br/>
+									Don't see the publication you want? 
+									<a href="/<?php echo PROJROOT;?>/publications/import">
+										Import a new publication
+									</a>
+								</span>
+								<input type="button" class="cancelButton toggle:addstudypub<?php echo $study['id']?>" value="Cancel"/>
+								<input type="submit" class="submitButton" name="associate_pub" value="Associate"/>
 								<div class="clr"><!-- clear --></div>
 							</div>
 							
@@ -294,48 +359,62 @@
 						<div class="clr"><!-- clear --></div>
 					</div>
 	
-					<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
-					<?php foreach ($study['Publication'] as $publication):?>
-						<li><div class="studypubsnippet">
-								<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
-								<span style="color:#555;font-size:90%;">Author:
-								<?php echo $publication['author']?>. &nbsp; Published in
-								<?php echo $publication['journal']?>, &nbsp;
-								<?php echo $publication['published']?></span>
-							</div>
-						</li>
-					<?php endforeach;?>
+					<ul class="studyPublicationList">
+						<?php foreach ($study['Publication'] as $publication):?>
+							<li>
+								<div class="studypubsnippet">
+									<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>">
+										<?php echo $publication['title']?>
+									</a> 
+									&nbsp;[
+									<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $publication['id']?>">
+										Remove this association
+									</a>]<br/>
+									<span class="studyPublicationDetails">
+										Author:
+										<?php echo $publication['author']?>. &nbsp; Published in
+										<?php echo $publication['journal']?>, &nbsp;
+										<?php echo $publication['published']?>
+									</span>
+								</div>
+							</li>
+						<?php endforeach;?>
 					</ul>
 					
 					<br/>
-					<h5 style="position:relative;border-bottom:solid 1px #999;">Related Resources
-						<div class="editlink" style="font-size:100%;margin-top:-8px;">
+					<h5 class="studySubsectionFold">Related Resources
+						<div class="editlink studySubsectionFoldToggle">
 							<span class="fakelink toggle:addstudyres<?php echo $study['id']?>">+ Add Resource</span>
 						</div>
 					</h5>
-					<!--<div id="addstudyres<?php echo $study['id']?>" class="addstudyres" style="margin-left:14px;display:none;">-->
 					<div id="addstudyres<?php echo $study['id']?>" class="addstudyres fadeOut" style="margin-left:14px;">
-						<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
+						<h5 class="detailsEditHeader">Add an External Resource:</h5>
 						<form action="/<?php echo PROJROOT;?>/biomarkers/addStudyDataResource" method="POST" style="margin-top:5px;">
 							<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 							<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 							<input type="hidden" name="study_data_id" value="<?php echo $study['id']?>"/>
-							<div style="float:left;width:130px;color:#555;">URL:</div>
-							<input type="text" style="width:70%;" name="url" value="http://"/><br/><br/>
-							<div style="float:left;width:130px;color:#555;">Description:</div>
-							<input type="text" name="desc" style="float:left;width:50%;"/>
-							<input type="submit" name="associate_res" value="Associate" style="float:left;padding:2px;margin-right:0px;margin-left:6px;"/>
-							<input type="button" class="cancelbutton toggle:addstudyres<?php echo $study['id']?>" value="Cancel" style="float:left;padding:2px;margin:0px;margin-right:0px;margin-left:6px;"/>
-							
+							<div class="studyResourceDetailsLabel">URL:</div>
+							<input type="text" style="width:70%;" name="url" value="http://"/>
+							<br/><br/>
+							<div class="studyResourceDetailsLabel">Description:</div>
+							<input type="text" class="studyResourceDetailsDescription" name="desc"/>
+							<input type="button" class="cancelButton toggle:addstudyres<?php echo $study['id']?>" value="Cancel">
+							<input type="submit" class="submitButton" name="associate_res" value="Associate">
 						</form>
 						<div class="clr"><!-- clear --></div>
 					</div>
 					
-					<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
+					<ul class="studyResourceList">
 					<?php foreach ($study['StudyDataResource'] as $resource):?>
 						<li><div class="studyressnippet">
-								<a href="<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
-								<span style="color:#555;font-size:90%;">
+								<a href="<?php echo $resource['URL']?>">
+									<?php echo $resource['URL']?>
+								</a>
+								&nbsp;&nbsp;[
+								<a href="/<?php echo PROJROOT;?>/biomarkers/removeStudyDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $study['id']?>/<?php echo $resource['id']?>">
+									Remove this association
+								</a>]<br/>
+								<span class="studyResourceDetails">
 								<?php echo $resource['description']?>
 								</span>
 							</div>
@@ -352,69 +431,89 @@
 		<?php if (count($organData['StudyData']) > 0): ?> <?php endif;?>
 		<br/>
 		</div><!-- end spacer -->
-		<h3 style="position:relative;margin-bottom:0px;">Supporting Publication Data &nbsp;(Biomarker-Organ level)
+		<h3 class="subsectionHeader">Supporting Publication Data &nbsp;(Biomarker-Organ level)
 			<div class="editlink">
 				<span class="fakelink toggle:addstudypub">+ Add a Publication</a>
 			</div>
 		</h3>
-		<!--<div id="addstudypub" class="addstudypub" style="margin-left:16px;padding-top:8px;display:none;">-->
-		<div id="addstudypub" class="addstudypub fadeOut" style="margin-left:16px;padding-top:8px;">
-			<h5 style="margin-bottom:5px;margin-left:1px;">Associate a Publication:</h5>
+		<div id="addstudypub" class="addstudypub fadeOut">
+			<h5 class="subsectionTitle">Associate a Publication:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataPub" method="POST">
 				<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 				<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
 				<input type="hidden" id="organpublication_id" name="pub_id" value=""/>
 				<input type="text" id="organpublicationsearch" value="" style="width:90%;"/><br/>
 				<div>
-					<span class="hint" style="float:left;margin-top:3px;">Begin typing a publication title. A list of options will appear.<br/>
-			Don't see the publication you want? <a href="/<?php echo PROJROOT;?>/publications/import">Import a new publication</a></span>
-					<input type="button" class="cancelbutton toggle:addstudypub" value="Cancel" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
-					<input type="submit" name="associate_pub" value="Associate" style="float:right;padding:2px;margin:6px;margin-right:0px;"/>
+					<span class="hint">
+						Begin typing a publication title. A list of options will appear.
+						<br/>
+						Don't see the publication you want? 
+						<a href="/<?php echo PROJROOT;?>/publications/import">
+							Import a new publication
+						</a>
+					</span>
+					<input type="button" class="cancelButton toggle:addstudypub" value="Cancel"/>
+					<input type="submit" class="submitButton" name="associate_pub" value="Associate"/>
 					<div class="clr"><!-- clear --></div>
 				</div>
 			</form>
 			<div class="clr"><!-- clear --></div>
 		</div>
-		<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
-		<?php foreach ($organData['Publication'] as $publication):?>
-			<li><div class="studypubsnippet">
-					<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>"><?php echo $publication['title']?></a> &nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $publication['id']?>">Remove this association</a>]<br/>
-					<span style="color:#555;font-size:90%;">Author:
-					<?php echo $publication['author']?>. &nbsp; Published in
-					<?php echo $publication['journal']?>, &nbsp;
-					<?php echo $publication['published']?></span>
-				</div>
-			</li>
-		<?php endforeach;?>
+		<ul class="displayList">
+			<?php foreach ($organData['Publication'] as $publication):?>
+				<li>
+					<div class="studypubsnippet">
+						<a href="/<?php echo PROJROOT?>/publications/view/<?php echo $publication['id']?>">
+							<?php echo $publication['title']?>
+						</a> 
+						&nbsp;[
+						<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataPub/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $publication['id']?>">
+							Remove this association
+						</a>
+						]<br/>
+						<span style="color:#555;font-size:90%;">Author:
+						<?php echo $publication['author']?>. &nbsp; Published in
+						<?php echo $publication['journal']?>, &nbsp;
+						<?php echo $publication['published']?></span>
+					</div>
+				</li>
+			<?php endforeach;?>
 		</ul>
 		
-		<h3 style="position:relative;margin-bottom:0px;">Supporting Resource Data &nbsp;(Biomarker-Organ level)
+		<h3 class="subsectionHeader">Supporting Resource Data &nbsp;(Biomarker-Organ level)
 			<div class="editlink">
 				<span class="fakelink toggle:addstudyres">+ Add a Resource</span>
 			</div>
 		</h3>
-		<div id="addstudyres" class="addstudyres fadeOut" style="margin-left:16px;">
-			<h5 style="margin-bottom:5px;margin-left:1px;">Add an External Resource:</h5>
+		<div id="addstudyres" class="addstudyres fadeOut">
+			<h5 class="subsectionTitle">Add an External Resource:</h5>
 			<form action="/<?php echo PROJROOT;?>/biomarkers/addOrganDataResource" method="POST" style="margin-top:5px;">
 				<input type="hidden" name="biomarker_id"  value="<?php echo $biomarker['Biomarker']['id']?>"/>
 				<input type="hidden" name="organ_data_id" value="<?php echo $organData['OrganData']['id']?>"/>
-				<div style="float:left;width:130px;color:#555;">URL: </div>
+				<div class="resourceDetailsLabel">URL: </div>
 				<input type="text" style="width:70%;" name="url" value="http://"/><br/><br/>
-				<div style="float:left;width:130px;color:#555;">Description:</div>
-				<input type="text" name="desc" style="float:left;width:50%;"/>
-				<input type="submit" name="associate_res" value="Associate" style="float:left;padding:2px;margin-right:0px;margin-left:6px;"/>
-				<input type="button" class="cancelbutton toggle:addstudyres" value="Cancel" style="float:left;padding:2px;margin:0px;margin-right:0px;margin-left:6px;"/>
+				<div class="resourceDetailsLabel">Description:</div>
+				<input type="text" class="resourceDetailsDescription" name="desc"/>
+				<input type="button" class="cancelButton toggle:addstudyres" value="Cancel"/>
+				<input type="submit" class="submitButton" name="associate_res" value="Associate"/>
 				
 			</form>
 			<div class="clr"><!-- clear --></div>
 		</div>
-		<ul style="margin-left:20px;margin-top:10px;font-size:90%;">
+		<ul class="displayList">
 			<?php foreach ($organData['OrganDataResource'] as $resource):?>
 				<li><div class="studyressnippet">
-						<a href="<?php echo $resource['URL']?>"><?php echo $resource['URL']?></a>&nbsp;&nbsp;[<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $resource['id']?>">Remove this association</a>]<br/>
-						<span style="color:#555;font-size:90%;">
+					<a href="<?php echo $resource['URL']?>">
+						<?php echo $resource['URL']?>
+					</a>
+					&nbsp;&nbsp;[
+					<a href="/<?php echo PROJROOT;?>/biomarkers/removeOrganDataResource/<?php echo $biomarker['Biomarker']['id']?>/<?php echo $organData['OrganData']['id']?>/<?php echo $resource['id']?>">
+						Remove this association
+					</a>
+					]<br/>
+					<span class="publicationDetails">
 						<?php echo $resource['description']?>
-						</span>
+					</span>
 					</div>
 				</li>
 			<?php endforeach;?>
@@ -428,7 +527,7 @@
 </div><!-- end organdatacontent -->
 <?php endif;?>
 <?php if($organData == false): ?>
-<div style="margin-left:20px;margin-top:10px;color:#888;">
+<div id="emptyOrganAssociationNotice">
 <em>No organs have been associated with this Biomarker. Select from the 'Curation Actions' box on the right.</em>
 </div>
 <?php endif;?>
@@ -443,18 +542,18 @@
 </div>
 <br/>
 <div class="box">
-<h3 class="title" style="">Curation Actions</h3>
+<h3 class="title">Curation Actions</h3>
 <form method="POST" action="/<?php echo PROJROOT;?>/biomarkers/addOrganData">
 	<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 	<ul>
-		<li style="color:#333;">Associate an Organ:<br/><br/>
-		<select name="organ" style="width:100%;background-color:#eee;color:#333;padding:1px;">
+		<li class="biomarkerDarkGray">Associate an Organ:<br/><br/>
+		<select id="organAssociationSelect" name="organ">
 			<?php foreach ($organ as $o):?>
 				<option value="<?php echo $o['Organ']['id']?>"><?php echo $o['Organ']['name']?></option>
 			<? endforeach;?>
 		
 		</select><br/><br/>
-		<input type="submit" style="border:outset 1px #555;padding:2px;" value="Associate"/>
+		<input id="organAssociationSubmit" type="submit"/>
 		
 		
 		</li>
@@ -542,7 +641,7 @@
 		});
 
 		// Activate all Cancel Buttons
-		$('.cancelbutton').each(function(index) {
+		$('.cancelButton').each(function(index) {
 			var classes = $(this).attr('class').split(/\s+/);
 			for (i=classes.length-1;i>=0;i--) {
 				if (classes[i].contains('toggle:')) {

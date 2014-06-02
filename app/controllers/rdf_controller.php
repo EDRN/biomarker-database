@@ -84,6 +84,7 @@ __END;
 		$this->printRdfStart();
 
 		$biomarkers = null;
+		$option = null;
 
 		if (isset($_GET["qastate"])) {
 			$option = $_GET["qastate"];
@@ -93,10 +94,10 @@ __END;
 			if ($option === "all") {
 				$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker");
 			} else {
-				$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker WHERE qastate='Accepted'");
+				$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker WHERE qastate!='Under Review'");
 			}
 		} else {
-			$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker WHERE qastate='Accepted'");
+			$biomarkers = $this->Biomarker->query("SELECT * FROM biomarkers AS Biomarker WHERE qastate!='Under Review'");
 		}
 
 		foreach ($biomarkers as $b) {
@@ -193,56 +194,58 @@ __END;
 			}
 
 			
-			// Organs
-			if (count($organData) > 0) {
-				foreach ($organData as $bod) {
-					echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['OrganData']['id']}\"/>\r\n";
-				}
-			}
-			
-			// Studies
-			if (count($studiesData) > 0) {
-				echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
-				echo "      <rdf:Bag>\r\n";
-
-				foreach ($studiesData as $studyData) {
-					$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['biomarker_study_datas']['id']}";
-					echo "        <rdf:li>\r\n";
-					echo "          <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
-					echo "            <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['studies']['FHCRC_ID']}\"/>\r\n";
-					
-					// NOTE: Currently none of this information is being inserted. A more robust spec needs to be discussed to handle
-					// the various locations where this information can fall on a biomarker.
-					//
-					// Sensitivity/Specificity Information
-					/*
-					if (count($studyData['biomarker_study_datas']['Sensitivity']) > 0) {
-						echo "            <bmdb:SensitivityDatas>\r\n";
-						echo "              <rdf:Bag>\r\n";
-						foreach ($studyData['biomarker_study_datas']['Sensitivity'] as $ordinal => $s) {
-							$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
-							echo "                <rdf:li>\r\n";
-							echo "                  <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
-							echo "                    <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
-							echo "                    <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
-							echo "                    <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
-							echo "                    <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
-							echo "                    <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
-							echo "                    <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
-							echo "                  </bmdb:SensitivityData>\r\n";
-							echo "                </rdf:li>\r\n";
-						}
-						echo "              </rdf:Bag>\r\n";
-						echo "            </bmdb:SensitivityDatas>\r\n";
+			if ($b['Biomarker']['qastate'] == "Accepted" or $option == "all") {
+				// Organs
+				if (count($organData) > 0) {
+					foreach ($organData as $bod) {
+						echo "    <bmdb:indicatorForOrgan rdf:resource=\"http://{$this->getResourceBase()}/biomarkers/organs/{$b['Biomarker']['id']}/{$bod['OrganData']['id']}\"/>\r\n";
 					}
-					*/
-					echo "          </bmdb:BiomarkerStudyData>\r\n";
-					echo "        </rdf:li>\r\n";
 				}
-				echo "      </rdf:Bag>\r\n";
-				echo "    </bmdb:hasBiomarkerStudyDatas>\r\n";
 				
-			} 
+				// Studies
+				if (count($studiesData) > 0) {
+					echo "    <bmdb:hasBiomarkerStudyDatas>\r\n";
+					echo "      <rdf:Bag>\r\n";
+
+					foreach ($studiesData as $studyData) {
+						$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['biomarker_study_datas']['id']}";
+						echo "        <rdf:li>\r\n";
+						echo "          <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
+						echo "            <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['studies']['FHCRC_ID']}\"/>\r\n";
+						
+						// NOTE: Currently none of this information is being inserted. A more robust spec needs to be discussed to handle
+						// the various locations where this information can fall on a biomarker.
+						//
+						// Sensitivity/Specificity Information
+						/*
+						if (count($studyData['biomarker_study_datas']['Sensitivity']) > 0) {
+							echo "            <bmdb:SensitivityDatas>\r\n";
+							echo "              <rdf:Bag>\r\n";
+							foreach ($studyData['biomarker_study_datas']['Sensitivity'] as $ordinal => $s) {
+								$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
+								echo "                <rdf:li>\r\n";
+								echo "                  <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";
+								echo "                    <bmdb:SensSpecDetail>{$this->escapeEntities($s['notes'])}</bmdb:SensSpecDetail>\r\n";
+								echo "                    <bmdb:Sensitivity>{$s['sensitivity']}</bmdb:Sensitivity>\r\n";
+								echo "                    <bmdb:Specificity>{$s['specificity']}</bmdb:Specificity>\r\n";
+								echo "                    <bmdb:Prevalence>{$s['prevalence']}</bmdb:Prevalence>\r\n";
+								echo "                    <bmdb:NPV>{$pv['NPV']}</bmdb:NPV>\r\n";
+								echo "                    <bmdb:PPV>{$pv['PPV']}</bmdb:PPV>\r\n";
+								echo "                  </bmdb:SensitivityData>\r\n";
+								echo "                </rdf:li>\r\n";
+							}
+							echo "              </rdf:Bag>\r\n";
+							echo "            </bmdb:SensitivityDatas>\r\n";
+						}
+						*/
+						echo "          </bmdb:BiomarkerStudyData>\r\n";
+						echo "        </rdf:li>\r\n";
+					}
+					echo "      </rdf:Bag>\r\n";
+					echo "    </bmdb:hasBiomarkerStudyDatas>\r\n";
+					
+				} 
+			}
 			
 			// Publications
 			if (count($publicationData) > 0) {
@@ -349,6 +352,15 @@ __END;
 			echo "    <bmdb:Organ>{$bod['Organ']['name']}</bmdb:Organ>\r\n";
 			echo "    <bmdb:Phase>{$bod['OrganData']['phase']}</bmdb:Phase>\r\n";
 			echo "    <bmdb:QAState>{$bod['OrganData']['qastate']}</bmdb:QAState>\r\n";
+
+			$clinical_translation = $bod['OrganData']['clinical_translation'];
+			if ($clinical_translation == 'CLIA' || $clinical_translation == 'Both') {
+				echo "    <bmdb:certification rdf:resource=\"http://www.cms.gov/Regulations-and-Guidance/Legislation/CLIA/index.html\"/>\r\n";
+			}
+
+			if ($clinical_translation == 'FDA' || $clinical_translation == 'Both') {
+				echo "    <bmdb:certification rdf:resource=\"http://www.fda.gov/regulatoryinformation/guidances/ucm125335.htm\"/>\r\n";
+			}
 			
 			// Access Control / Security
 			// Display the LDAP groups that should have access to this data
