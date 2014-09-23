@@ -64,13 +64,13 @@
 						<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 						<input type="hidden" name="values" id="panel_biomarker_values" value=""/>
 						<select id="allBiomarkers" name="allBiomarkers" size="20"  multiple="MULTIPLE">
-						<?php foreach ($availableMarkers as $b): ?>
+						<?php foreach (sort($availableMarkers) as $b): ?>
 							<option id="opt-<?php echo $b['id'];?>" value="<?php echo $b['id'];?>"><?php echo $b['name'];?></option>
 						<?php endforeach;?>
 						
 						</select>
 						<select id="panelBiomarkers" name="panelBiomarkers" size="20" multiple="MULTIPLE">
-						<?php foreach ($panelMarkers as $b): ?>
+						<?php foreach (sort($panelMarkers) as $b): ?>
 							<option id="opt-<?php echo $b['id']?>" value="<?php echo $b['id']?>"><?php echo $b['defaultName']?></option>
 						<?php endforeach;?>
 						</select>
