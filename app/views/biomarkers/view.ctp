@@ -60,17 +60,52 @@
 							Panel Biomarkers
 						</div>
 					</div>
+
 					<form action="/<?php echo PROJROOT;?>/biomarkers/editPanel" method="POST">
 						<input type="hidden" name="biomarker_id" value="<?php echo $biomarker['Biomarker']['id']?>"/>
 						<input type="hidden" name="values" id="panel_biomarker_values" value=""/>
 						<select id="allBiomarkers" name="allBiomarkers" size="20"  multiple="MULTIPLE">
-						<?php foreach (sort($availableMarkers) as $b): ?>
-							<option id="opt-<?php echo $b['id'];?>" value="<?php echo $b['id'];?>"><?php echo $b['name'];?></option>
-						<?php endforeach;?>
-						
+
+
+<?php
+# 2014-09-25
+# Function Added by Ashish Mahabal to sort biomarker names in the panels
+# Issue: When biomarkers are moved to the right, they are appended rather
+# than automatically sorted
+# Later, if they are brough back to the left, they are appended there too.
+
+function array_sort($array, $on)
+{
+    $sortable_array = array();
+
+        print_r($array);
+        echo "<BR>",count($array),"<BR>";
+    if (count($array) > 0){
+        for($a = 0; $a < count($array); ++$a){
+                foreach ($array[$a] as $k => $v){
+                    if ($k == $on){
+                        $sortable_array[$v] = $array[$a];
+                        }       # endif;
+                        }       # endforeach
+        }       # endfor
+        }       # endif
+
+        ksort($sortable_array);
+    return $sortable_array;
+}
+
+$savailableMarkers = array_sort($availableMarkers, 'name');
+$spanelMarkers = array_sort($panelMarkers, 'defaultName');
+?>
+
+<?php
+foreach($savailableMarkers as $a => $b){
+	echo "<option id='opt-'",$b['id']," value=", $b['id'],">", $b['name'], "</option>";
+	}
+?>
 						</select>
 						<select id="panelBiomarkers" name="panelBiomarkers" size="20" multiple="MULTIPLE">
-						<?php foreach (sort($panelMarkers) as $b): ?>
+						<?php foreach ($spanelMarkers as $a => $b): ?>
 							<option id="opt-<?php echo $b['id']?>" value="<?php echo $b['id']?>"><?php echo $b['defaultName']?></option>
 						<?php endforeach;?>
 						</select>
