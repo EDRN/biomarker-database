@@ -78,8 +78,6 @@ function array_sort($array, $on)
 {
     $sortable_array = array();
 
-        print_r($array);
-        echo "<BR>",count($array),"<BR>";
     if (count($array) > 0){
         for($a = 0; $a < count($array); ++$a){
                 foreach ($array[$a] as $k => $v){
