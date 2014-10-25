@@ -5,6 +5,10 @@
 	echo $html->css('biomarkers');
 	echo $javascript->link('mootools-release-1.11');
 	echo $javascript->link('eip');
+	echo $javascript->link('jquery/jquery-1.8.2.min');
+	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+	echo $html->css('dataTables/dataTables.css');
+	echo $html->css('bmdb-browser');
 ?>
 
 <div class="menu">
@@ -376,13 +380,15 @@ foreach($savailableMarkers as $a => $b){
     
   });
 
+/*
 # Added by Ashish on 2014-10-24
 # In response to issue CA-1288
 # Marked in Jira as BMDB beta 0.9.11
-# The change involves replacing "</script>" with about 40 lines
+# The change involves replacing "< / script >" with about 40 lines
 # (currently everything to the end of file)
 # The change adds a search box on individual biomarker pages
 # so that one does not have to go back.
+*/
 
 $(document).ready(function() {
         $("#biomarkerelements").dataTable({
