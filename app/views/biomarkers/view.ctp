@@ -5,6 +5,10 @@
 	echo $html->css('biomarkers');
 	echo $javascript->link('mootools-release-1.11');
 	echo $javascript->link('eip');
+	echo $javascript->link('jquery/jquery-1.8.2.min');
+	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+	echo $html->css('dataTables/dataTables.css');
+	echo $html->css('bmdb-browser');
 ?>
 
 <div class="menu">
@@ -375,5 +379,56 @@ foreach($savailableMarkers as $a => $b){
     */
     
   });
+
+/*
+# Added by Ashish on 2014-10-24
+# In response to issue CA-1288
+# Marked in Jira as BMDB beta 0.9.11
+# The change involves replacing "< / script >" with about 40 lines
+# (currently everything to the end of file)
+# The change adds a search box on individual biomarker pages
+# so that one does not have to go back.
+*/
+
+$(document).ready(function() {
+        $("#biomarkerelements").dataTable({
+                "bProcessing": true,
+                "bServerSide": true,
+                "bDeferRender": true,                "sAjaxSource": "https://<?php echo $_SERVER['HTTP_HOST'];?>/bmdb/apis/biomarkers_search",    
+                "oLanguage": {
+                        "oPaginate": {
+                                "sNext": "", 
+                                "sPrevious": ""
+                        }
+                },
+                "aoColumns": [
+                        {"sWidth": "50%"},
+                        {"sWidth": "15%"},
+                        {"sWidth": "15%"},
+                        {"sWidth": "10%"},
+                        {"sWidth": "15%"},
+                ],
+                "aLengthMenu": [[10, 25, -1], [10, 25, "All"]],
+        });
+});
   
 </script>
+
+<h2>Biomarker Directory:</h2>
+<div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
+&nbsp;&nbsp;Browse the directory listing, or search any field using the search box on the right.
+</div>
+
+<br/>
+
+<table id="biomarkerelements" class="dataTable" cellspacing="0" cellpadding="0">
+<thead>
+        <tr><th>Name</th><th>QA State</th><th>Type</th><th>Panel</th><th>Associated Organs</th></tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+
+<p>&nbsp;</p>
+<p style="border-bottom:solid 2px #666;">&nbsp;</p>
