@@ -390,8 +390,14 @@ foreach($savailableMarkers as $a => $b){
 # so that one does not have to go back.
 */
 
-$(document).ready(function() {
-        $("#biomarkerelements").dataTable({
+/*
+Ashish - 2014-11-09
+# Removing the $ variable conflict by using the jQuery.noConflict() function
+*/
+
+var $j = jQuery.noConflict();
+$j(document).ready(function() {
+        $j("#biomarkerelements").dataTable({
                 "bProcessing": true,
                 "bServerSide": true,
                 "bDeferRender": true,                "sAjaxSource": "https://<?php echo $_SERVER['HTTP_HOST'];?>/bmdb/apis/biomarkers_search",    
