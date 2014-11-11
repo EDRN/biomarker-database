@@ -62,7 +62,8 @@ $(document).ready(function() {
 			{"sWidth": "10%"},
 			{"sWidth": "15%"},
 		],
-		"aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+		"aLengthMenu": [[-1, 10, 50], ["All", 10, 50]],
+		"iDisplayLength": -1,
 	});
 });
 </script>

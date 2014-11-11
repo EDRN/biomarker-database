@@ -414,7 +414,8 @@ $j(document).ready(function() {
                         {"sWidth": "10%"},
                         {"sWidth": "15%"},
                 ],
-                "aLengthMenu": [[10, 25, -1], [10, 25, "All"]],
+                "aLengthMenu": [[-1, 10, 50], ["All", 10, 50]],
+                "iDisplayLength": -1,
         });
 });
   
