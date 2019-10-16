@@ -39,6 +39,7 @@ echo '<p />';
 echo 'Creating server connection...<p />';
 
 $ds=ldap_connect($server);
+ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
 
 if ($ds)
 {

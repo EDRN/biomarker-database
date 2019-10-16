@@ -28,7 +28,7 @@ $(document).ready(function() {
 		"bProcessing": true,
 		"bServerSide": true,
 		"bDeferRender": true,
-		"sAjaxSource": "https://<?php echo $_SERVER['HTTP_HOST'];?>/bmdb/apis/sites_search",
+		"sAjaxSource": "/bmdb/apis/sites_search",
 		"oLanguage": {
 			"oPaginate": {
 				"sNext": "",

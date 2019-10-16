@@ -550,7 +550,7 @@
 		<select id="organAssociationSelect" name="organ">
 			<?php foreach ($organ as $o):?>
 				<option value="<?php echo $o['Organ']['id']?>"><?php echo $o['Organ']['name']?></option>
-			<? endforeach;?>
+			<?php endforeach;?>
 		
 		</select><br/><br/>
 		<input id="organAssociationSubmit" type="submit"/>

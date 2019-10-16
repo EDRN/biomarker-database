@@ -37,7 +37,7 @@
 
 <br/>
 
-<? echo $this->renderElement('pagination'); // Render the pagination element ?> 
+<?php echo $this->renderElement('pagination'); // Render the pagination element ?> 
 <table id="studyelements" cellspacing="0" cellpadding="0">
 <?php
 $pagination->setPaging($paging); // Initialize the pagination variables

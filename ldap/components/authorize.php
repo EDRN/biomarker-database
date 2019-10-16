@@ -54,6 +54,8 @@ if (strcmp($_SESSION['userdn'],PAGEGROUP) != 0)
    //---------------------------------------------------------------
 
    $ds = ldap_connect(MY_LDAP_SERVER);
+   ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+
 
    if (! $ds)
    {

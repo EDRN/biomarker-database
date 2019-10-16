@@ -6,9 +6,9 @@
 	echo $javascript->link('mootools-release-1.11');
 	echo $javascript->link('eip');
 	echo $javascript->link('jquery/jquery-1.8.2.min');
-	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
-	echo $html->css('dataTables/dataTables.css');
-	echo $html->css('bmdb-browser');
+        echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+        echo $html->css('dataTables/dataTables.css');
+        echo $html->css('bmdb-browser');
 ?>
 
 <div class="menu">
@@ -400,10 +400,11 @@ $j(document).ready(function() {
         $j("#biomarkerelements").dataTable({
                 "bProcessing": true,
                 "bServerSide": true,
-                "bDeferRender": true,                "sAjaxSource": "https://<?php echo $_SERVER['HTTP_HOST'];?>/bmdb/apis/biomarkers_search",    
+                "bDeferRender": true,
+                "sAjaxSource": "/bmdb/apis/biomarkers_search",
                 "oLanguage": {
                         "oPaginate": {
-                                "sNext": "", 
+                                "sNext": "",
                                 "sPrevious": ""
                         }
                 },
@@ -414,12 +415,13 @@ $j(document).ready(function() {
                         {"sWidth": "10%"},
                         {"sWidth": "15%"},
                 ],
-                "aLengthMenu": [[-1, 10, 50], ["All", 10, 50]],
+		"aLengthMenu": [[-1, 10, 50], ["All", 10, 50]],
                 "iDisplayLength": -1,
         });
 });
-  
+
 </script>
+
 
 <h2>Biomarker Directory:</h2>
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
@@ -439,3 +441,4 @@ $j(document).ready(function() {
 
 <p>&nbsp;</p>
 <p style="border-bottom:solid 2px #666;">&nbsp;</p>
+

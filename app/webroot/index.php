@@ -1,4 +1,8 @@
 <?php
+// HIYA: maybe keep these two for now? Don't comment out?
+//error_reporting(E_ALL);
+//ini_set('display_errors', 'on');
+
 /* SVN FILE: $Id: index.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
  * Short description for file.
