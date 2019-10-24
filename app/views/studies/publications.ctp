@@ -3,8 +3,8 @@
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
 
-	echo $javascript->link('jquery/jquery-1.8.2.min.js');
-	echo $javascript->link('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
+	echo $html->script('jquery/jquery-1.8.2.min.js');
+	echo $html->script('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
 	echo $html->css('jquery-ui/jquery-ui-1.10.3.custom.min.css');
 ?>
 <?php

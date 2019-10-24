@@ -1,43 +1,35 @@
 <?php
-/* SVN FILE: $Id: acl.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * AclComponentTest file
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs.controller.components
- * @since			CakePHP(tm) v 1.2.0.5435
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
+ * @since         CakePHP(tm) v 1.2.0.5435
+ * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
 }
-App::import(array('controller'.DS.'components'.DS.'acl', 'model'.DS.'db_acl'));
+App::import(array('controller' .DS . 'components' . DS . 'acl', 'model' . DS . 'db_acl'));
 
 /**
  * AclNodeTwoTestBase class
  *
- * @package		cake
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class AclNodeTwoTestBase extends AclNode {
+
 /**
  * useDbConfig property
  *
@@ -45,6 +37,7 @@ class AclNodeTwoTestBase extends AclNode {
  * @access public
  */
 	var $useDbConfig = 'test_suite';
+
 /**
  * cacheSources property
  *
@@ -53,13 +46,15 @@ class AclNodeTwoTestBase extends AclNode {
  */
 	var $cacheSources = false;
 }
+
 /**
  * AroTwoTest class
  *
- * @package		cake
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class AroTwoTest extends AclNodeTwoTestBase {
+
 /**
  * name property
  *
@@ -67,6 +62,7 @@ class AroTwoTest extends AclNodeTwoTestBase {
  * @access public
  */
 	var $name = 'AroTwoTest';
+
 /**
  * useTable property
  *
@@ -74,6 +70,7 @@ class AroTwoTest extends AclNodeTwoTestBase {
  * @access public
  */
 	var $useTable = 'aro_twos';
+
 /**
  * hasAndBelongsToMany property
  *
@@ -82,13 +79,15 @@ class AroTwoTest extends AclNodeTwoTestBase {
  */
 	var $hasAndBelongsToMany = array('AcoTwoTest' => array('with' => 'PermissionTwoTest'));
 }
+
 /**
  * AcoTwoTest class
  *
- * @package		cake
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class AcoTwoTest extends AclNodeTwoTestBase {
+
 /**
  * name property
  *
@@ -96,6 +95,7 @@ class AcoTwoTest extends AclNodeTwoTestBase {
  * @access public
  */
 	var $name = 'AcoTwoTest';
+
 /**
  * useTable property
  *
@@ -103,6 +103,7 @@ class AcoTwoTest extends AclNodeTwoTestBase {
  * @access public
  */
 	var $useTable = 'aco_twos';
+
 /**
  * hasAndBelongsToMany property
  *
@@ -111,13 +112,15 @@ class AcoTwoTest extends AclNodeTwoTestBase {
  */
 	var $hasAndBelongsToMany = array('AroTwoTest' => array('with' => 'PermissionTwoTest'));
 }
+
 /**
  * PermissionTwoTest class
  *
- * @package		cake
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class PermissionTwoTest extends CakeTestModel {
+
 /**
  * name property
  *
@@ -125,6 +128,7 @@ class PermissionTwoTest extends CakeTestModel {
  * @access public
  */
 	var $name = 'PermissionTwoTest';
+
 /**
  * useTable property
  *
@@ -132,6 +136,7 @@ class PermissionTwoTest extends CakeTestModel {
  * @access public
  */
 	var $useTable = 'aros_aco_twos';
+
 /**
  * cacheQueries property
  *
@@ -139,6 +144,7 @@ class PermissionTwoTest extends CakeTestModel {
  * @access public
  */
 	var $cacheQueries = false;
+
 /**
  * belongsTo property
  *
@@ -146,6 +152,7 @@ class PermissionTwoTest extends CakeTestModel {
  * @access public
  */
 	var $belongsTo = array('AroTwoTest' => array('foreignKey' => 'aro_id'), 'AcoTwoTest' => array('foreignKey' => 'aco_id'));
+
 /**
  * actsAs property
  *
@@ -154,13 +161,15 @@ class PermissionTwoTest extends CakeTestModel {
  */
 	var $actsAs = null;
 }
+
 /**
  * DbAclTwoTest class
  *
- * @package		cake
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class DbAclTwoTest extends DbAcl {
+
 /**
  * construct method
  *
@@ -174,23 +183,24 @@ class DbAclTwoTest extends DbAcl {
 		$this->Aro->Permission =& new PermissionTwoTest();
 	}
 }
+
 /**
  * IniAclTest class
  *
- * @package		cake
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class IniAclTest extends IniAcl {
-
 }
 
 /**
  * Short description for class.
  *
- * @package		cake.tests
- * @subpackage	cake.tests.cases.libs.controller.components
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.controller.components
  */
 class AclComponentTest extends CakeTestCase {
+
 /**
  * fixtures property
  *
@@ -198,6 +208,7 @@ class AclComponentTest extends CakeTestCase {
  * @access public
  */
 	var $fixtures = array('core.aro_two', 'core.aco_two', 'core.aros_aco_two');
+
 /**
  * startTest method
  *
@@ -207,6 +218,7 @@ class AclComponentTest extends CakeTestCase {
 	function startTest() {
 		$this->Acl =& new AclComponent();
 	}
+
 /**
  * before method
  *
@@ -219,6 +231,17 @@ class AclComponentTest extends CakeTestCase {
 		Configure::write('Acl.database', 'test_suite');
 		parent::before($method);
 	}
+
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Acl);
+	}
+
 /**
  * testAclCreate method
  *
@@ -246,6 +269,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->Acl->Aco->create(array('parent_id' => $parent, 'alias' => 'PiecesOfFlair'));
 		$this->assertTrue($this->Acl->Aco->save());
 	}
+
 /**
  * testAclCreateWithParent method
  *
@@ -265,6 +289,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->assertEqual($result['AroTwoTest']['lft'], 16);
 		$this->assertEqual($result['AroTwoTest']['rght'], 17);
 	}
+
 /**
  * testDbAclAllow method
  *
@@ -305,6 +330,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->expectError('DbAcl::allow() - Invalid node');
 		$this->assertFalse($this->Acl->allow('Homer', 'tpsReports', 'create'));
 	}
+
 /**
  * testDbAclCheck method
  *
@@ -323,8 +349,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->expectError("ACO permissions key foobar does not exist in DbAcl::check()");
 		$this->assertFalse($this->Acl->check('Lumbergh', 'smash', 'foobar'));
 
-		//The next assertion should generate an error but only returns false.
-		//$this->expectError("DbAcl::check() - Failed ARO/ACO node lookup in permissions check.  Node references:\nAro: users\nAco: NonExistant");
+		$this->expectError("DbAcl::check() - Failed ARO/ACO node lookup in permissions check.  Node references:\nAro: users\nAco: NonExistant");
 		$this->assertFalse($this->Acl->check('users', 'NonExistant', 'read'));
 
 		$this->assertFalse($this->Acl->check(null, 'printers', 'create'));
@@ -335,6 +360,7 @@ class AclComponentTest extends CakeTestCase {
 
 		$this->assertFalse($this->Acl->check('root/users/Milton', 'smash', 'delete'));
 	}
+
 /**
  * testDbAclCascadingDeny function
  *
@@ -352,6 +378,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->assertFalse($this->Acl->check('admin', 'tpsReports', 'delete'));
 		$this->assertFalse($this->Acl->check('Bobs', 'tpsReports', 'delete'));
 	}
+
 /**
  * testDbAclDeny method
  *
@@ -381,6 +408,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->expectError('DbAcl::allow() - Invalid node');
 		$this->assertFalse($this->Acl->deny('Lumbergh', 'ROOT/tpsReports/DoesNotExist', 'create'));
 	}
+
 /**
  * testAclNodeLookup method
  *
@@ -405,6 +433,7 @@ class AclComponentTest extends CakeTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testDbInherit method
  *
@@ -422,6 +451,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->Acl->inherit('Milton', 'smash', 'read');
 		$this->assertTrue($this->Acl->check('Milton', 'smash', 'read'));
 	}
+
 /**
  * testDbGrant method
  *
@@ -443,6 +473,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->expectError('DbAcl::allow() - Invalid node');
 		$this->assertFalse($this->Acl->grant('Peter', 'ROOT/tpsReports/DoesNotExist', 'create'));
 	}
+
 /**
  * testDbRevoke method
  *
@@ -463,6 +494,7 @@ class AclComponentTest extends CakeTestCase {
 		$this->expectError('DbAcl::allow() - Invalid node');
 		$this->assertFalse($this->Acl->deny('Bobs', 'ROOT/printers/DoesNotExist', 'create'));
 	}
+
 /**
  * testStartup method
  *
@@ -474,52 +506,12 @@ class AclComponentTest extends CakeTestCase {
 		$this->assertTrue($this->Acl->startup($controller));
 	}
 
-/*	The following tests and AclComponent methods are not fully implemented yet
 /**
- * testDbSetAro method
+ * testIniReadConfigFile
  *
  * @access public
  * @return void
  */
-	function testDbSetAro() {
-		//This method is not implemented in either IniAcl or DbAcl
-		//$result = $this->Acl->setAro('Samir');
-		//$this->assertEqual($result, $expected);
-	}
-/**
- * testDbSetAco method
- *
- * @access public
- * @return void
- */
-	function testDbSetAco() {
-		//This method is not implemented in either IniAcl or DbAcl
-		//$result = $this->Acl->getAco('printers');
-		//$this->assertEqual($result, $expected);
-	}
-/**
- * testDbGetAro method
- *
- * @access public
- * @return void
- */
-	function testDbGetAro() {
-		//This method is not implemented in either IniAcl or DbAcl
-		//$result = $this->Acl->getAro('Samir');
-		//$this->assertEqual($result, $expected);
-	}
-/**
- * testDbGetAco method
- *
- * @access public
- * @return void
- */
-	function testDbGetAco() {
-		//This method is not implemented in either IniAcl or DbAcl
-		//$result = $this->Acl->getAco('tpsReports');
-		//$this->assertEqual($result, $expected);
-	}
-
 	function testIniReadConfigFile() {
 		Configure::write('Acl.classname', 'IniAclTest');
 		unset($this->Acl);
@@ -562,6 +554,7 @@ class AclComponentTest extends CakeTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testIniCheck method
  *
@@ -587,15 +580,7 @@ class AclComponentTest extends CakeTestCase {
 
 		$this->assertFalse($this->Acl->check('nobody', 'comments'));
 	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		unset($this->Acl);
-	}
+
 /**
  * debug function - to help editing/creating test cases for the ACL component
  *
@@ -645,6 +630,7 @@ class AclComponentTest extends CakeTestCase {
 		}
 		debug (implode("\r\n", $permissions));
 	}
+
 /**
  * pad function
  * Used by debug to format strings used in the data dump

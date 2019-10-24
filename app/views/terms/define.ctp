@@ -2,12 +2,12 @@
 	// Include required CSS and JavaScript
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
-	echo $javascript->link('mootools-release-1.11');
-	echo $javascript->link('eip');
+	echo $html->script('mootools-release-1.11');
+	echo $html->script('eip');
 
 	echo $html->css('autocomplete');
-	echo $javascript->link('autocomplete/Observer');
-	echo $javascript->link('autocomplete/Autocompleter');
+	echo $html->script('autocomplete/Observer');
+	echo $html->script('autocomplete/Autocompleter');
 	echo $html->css('bmdb-browser');
 ?>
 <div class="menu">

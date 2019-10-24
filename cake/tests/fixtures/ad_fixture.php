@@ -1,45 +1,43 @@
-<?php 
-/* SVN FILE: $Id$ */
+<?php
 /**
  * Short description for ad_fixture.php
- * 
+ *
  * Long description for ad_fixture.php
- * 
+ *
  * PHP versions 4 and 5
- * 
- * CakePHP(tm) : Rapid Development Framework <http://www.cakephp.org/>
- * 
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
- * 
- * @filesource
- * @copyright            CakePHP(tm) : Rapid Development Framework <http://www.cakephp.org/>
- * @link                 http://www.cakephp.org
- * @package              cake
- * @subpackage           cake.tests.fixtures
- * @since                1.2
- * @version              $Revision$
- * @modifiedBy           $LastChangedBy$
- * @lastModified         $Date$
- * @license              http://www.opensource.org/licenses/mit-license.php The MIT License
+ *
+ * @copyright     CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * @link          http://www.cakephp.org
+ * @package       cake
+ * @subpackage    cake.tests.fixtures
+ * @since         1.2
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
  * AdFixture class
- * 
- * @package              cake
- * @subpackage           cake.tests.fixtures
+ *
+ * @package       cake
+ * @subpackage    cake.tests.fixtures
  */
 class AdFixture extends CakeTestFixture {
+
 /**
  * name property
- * 
+ *
  * @var string 'Ad'
  * @access public
  */
-	var $name = 'Ad';    
+	var $name = 'Ad';
+
 /**
  * fields property
- * 
+ *
  * @var array
  * @access public
  */
@@ -51,9 +49,10 @@ class AdFixture extends CakeTestFixture {
 		'rght' => array('type' => 'integer'),
 		'name' => array('type' => 'string', 'length' => 255, 'null' => false)
 	);
+
 /**
  * records property
- * 
+ *
  * @var array
  * @access public
  */
@@ -66,6 +65,6 @@ class AdFixture extends CakeTestFixture {
 		array('parent_id' => null, 'lft' => 10, 'rght' => 11, 'campaign_id' => 2, 'name' => 'Alborg'),
 		array('parent_id' => null, 'lft' => 13, 'rght' => 14, 'campaign_id' => 3, 'name' => 'New York')
 	);
-} 
+}
 
 ?>

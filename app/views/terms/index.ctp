@@ -2,12 +2,13 @@
 	// Include required CSS and JavaScript
 	echo $html->css('bmdb-objects');
 	
-	echo $javascript->link('jquery/jquery-1.3.2.min');
-	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+	echo $html->script('jquery/jquery-1.3.2.min');
+	echo $html->script('jquery/plugins/dataTables/jquery.dataTables.min');
 	
 	echo $html->css('dataTables/dataTables.css');
 	echo $html->css('bmdb-browser');
 ?>
+
 <div class="menu">
 	<!-- Breadcrumbs Area -->
 	<div id="breadcrumbs">

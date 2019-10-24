@@ -304,7 +304,7 @@ class BiomarkersController extends AppController {
 			$this->set('organdatas',$organdatas);
 		
 			// Get a list of all the Organs
-			$this->set('organ',$this->Organ->FindAll());
+			$this->set('organ',$this->Organ->find('all'));
 		
 			if ($organ_id == null && count($biomarker['OrganData']) > 0) {
 				$this->redirect("/biomarkers/organs/{$biomarker['Biomarker']['id']}/{$biomarker['OrganData'][0]['id']}");

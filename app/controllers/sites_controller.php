@@ -13,7 +13,7 @@ class SitesController extends AppController {
 		$this->Pagination->show = 15;
 		list($order, $limit, $page) = $this->Pagination->init($criteria);
 
-		$this->set('sites', $this->Site->findAll($criteria, NULL, $order, $limit, $page));
+		$this->set('sites', $this->Site->find('all', compact('criteria', 'order', 'limit', 'page')));
 
 		$sites = $this->Site->find("all", array('name', 'id'));
 		$sitesArray = array();

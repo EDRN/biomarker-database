@@ -1,38 +1,28 @@
 <?php
-/* SVN FILE: $Id: security.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
  * Short description for file.
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake.libs
- * @since			CakePHP(tm) v .0.10.0.1233
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs
+ * @since         CakePHP(tm) v .0.10.0.1233
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
- * Short description for file.
+ * Security Library contains utility methods related to security
  *
- * Long description for file
- *
- * @package		cake
- * @subpackage	cake.cake.libs
+ * @package       cake
+ * @subpackage    cake.cake.libs
  */
 class Security extends Object {
 
@@ -43,13 +33,14 @@ class Security extends Object {
  * @access public
  */
 	var $hashType = null;
+
 /**
-  * Singleton implementation to get object instance.
-  *
-  * @return object
-  * @access public
-  * @static
-  */
+ * Singleton implementation to get object instance.
+ *
+ * @return object
+ * @access public
+ * @static
+ */
 	function &getInstance() {
 		static $instance = array();
 		if (!$instance) {
@@ -57,16 +48,16 @@ class Security extends Object {
 		}
 		return $instance[0];
 	}
+
 /**
-  * Get allowed minutes of inactivity based on security level.
-  *
-  * @return integer Allowed inactivity in minutes
-  * @access public
-  * @static
-  */
+ * Get allowed minutes of inactivity based on security level.
+ *
+ * @return integer Allowed inactivity in minutes
+ * @access public
+ * @static
+ */
 	function inactiveMins() {
-		$_this =& Security::getInstance();
-		switch(Configure::read('Security.level')) {
+		switch (Configure::read('Security.level')) {
 			case 'high':
 				return 10;
 			break;
@@ -79,20 +70,21 @@ class Security extends Object {
 				break;
 		}
 	}
+
 /**
-  * Generate authorization hash.
-  *
-  * @return string Hash
-  * @access public
-  * @static
-  */
+ * Generate authorization hash.
+ *
+ * @return string Hash
+ * @access public
+ * @static
+ */
 	function generateAuthKey() {
-		$_this =& Security::getInstance();
-		if(!class_exists('String')) {
+		if (!class_exists('String')) {
 			App::import('Core', 'String');
 		}
-		return $_this->hash(String::uuid());
+		return Security::hash(String::uuid());
 	}
+
 /**
  * Validate authorization hash.
  *
@@ -100,18 +92,20 @@ class Security extends Object {
  * @return boolean Success
  * @access public
  * @static
+ * @todo Complete implementation
  */
 	function validateAuthKey($authKey) {
-		$_this =& Security::getInstance();
 		return true;
 	}
+
 /**
  * Create a hash from string using given method.
+ * Fallback on next available method.
  *
  * @param string $string String to hash
  * @param string $type Method to use (sha1/sha256/md5)
  * @param boolean $salt If true, automatically appends the application's salt
- * 				  value to $string (Security.salt)
+ *     value to $string (Security.salt)
  * @return string Hash
  * @access public
  * @static
@@ -120,8 +114,13 @@ class Security extends Object {
 		$_this =& Security::getInstance();
 
 		if ($salt) {
-			$string = Configure::read('Security.salt') . $string;
+			if (is_string($salt)) {
+				$string = $salt . $string;
+			} else {
+				$string = Configure::read('Security.salt') . $string;
+			}
 		}
+
 		if (empty($type)) {
 			$type = $_this->hashType;
 		}
@@ -131,31 +130,27 @@ class Security extends Object {
 			if (function_exists('sha1')) {
 				$return = sha1($string);
 				return $return;
-			} else {
-				$type = 'sha256';
 			}
+			$type = 'sha256';
 		}
 
-		if ($type == 'sha256') {
-			if (function_exists('mhash')) {
-				$return = bin2hex(mhash(MHASH_SHA256, $string));
-				return $return;
-			} else {
-				$type = 'md5';
-			}
+		if ($type == 'sha256' && function_exists('mhash')) {
+			return bin2hex(mhash(MHASH_SHA256, $string));
 		}
 
-		if ($type == 'md5') {
-			$return = md5($string);
-			return $return;
+		if (function_exists('hash')) {
+			return hash($type, $string);
 		}
+		return md5($string);
 	}
+
 /**
  * Sets the default hash method for the Security object.  This affects all objects using
  * Security::hash().
  *
  * @param string $hash Method to use (sha1/sha256/md5)
  * @access public
+ * @return void
  * @static
  * @see Security::hash()
  */
@@ -163,8 +158,9 @@ class Security extends Object {
 		$_this =& Security::getInstance();
 		$_this->hashType = $hash;
 	}
+
 /**
- * Encripts/Decrypts a text using the given key.
+ * Encrypts/Decrypts a text using the given key.
  *
  * @param string $text Encrypted string to decrypt, normal string to encrypt
  * @param string $key Key to use
@@ -178,21 +174,18 @@ class Security extends Object {
 			return '';
 		}
 
-		$_this =& Security::getInstance();
-		if (!defined('CIPHER_SEED')) {
-			//This is temporary will change later
-			define('CIPHER_SEED', '76859309657453542496749683645');
-		}
-		srand (CIPHER_SEED);
+		srand(Configure::read('Security.cipherSeed'));
 		$out = '';
-
-		for ($i = 0; $i < strlen($text); $i++) {
-			for ($j = 0; $j < ord(substr($key, $i % strlen($key), 1)); $j++) {
-				$toss = rand(0, 255);
+		$keyLength = strlen($key);
+		for ($i = 0, $textLength = strlen($text); $i < $textLength; $i++) {
+			$j = ord(substr($key, $i % $keyLength, 1));
+			while ($j--) {
+				rand(0, 255);
 			}
 			$mask = rand(0, 255);
 			$out .= chr(ord(substr($text, $i, 1)) ^ $mask);
 		}
+		srand();
 		return $out;
 	}
 }

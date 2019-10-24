@@ -1,43 +1,35 @@
 <?php
-/* SVN FILE: $Id: xml.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * XmlHelperTest file
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs.view.helpers
- * @since			CakePHP(tm) v 1.2.0.4206
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
+ * @since         CakePHP(tm) v 1.2.0.4206
+ * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
 }
+App::import('Helper', 'Xml');
 
-uses('view'.DS.'helpers'.DS.'app_helper', 'controller'.DS.'controller', 'model'.DS.'model', 'view'.DS.'helper', 'view'.DS.'helpers'.DS.'xml');
 /**
  * TestXml class
  *
- * @package              cake
- * @subpackage           cake.tests.cases.libs.view.helpers
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
  */
 class TestXml extends Object {
+
 /**
  * content property
  *
@@ -45,6 +37,7 @@ class TestXml extends Object {
  * @access public
  */
 	var $content = '';
+
 /**
  * construct method
  *
@@ -55,6 +48,7 @@ class TestXml extends Object {
 	function __construct($content) {
 		$this->content = $content;
 	}
+
 /**
  * toString method
  *
@@ -65,13 +59,15 @@ class TestXml extends Object {
 		return $this->content;
 	}
 }
+
 /**
- * Short description for class.
+ * XmlHelperTest class
  *
- * @package		cake.tests
- * @subpackage	cake.tests.cases.libs.view.helpers
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
  */
-class XmlHelperTest extends UnitTestCase {
+class XmlHelperTest extends CakeTestCase {
+
 /**
  * setUp method
  *
@@ -84,6 +80,17 @@ class XmlHelperTest extends UnitTestCase {
 		$manager =& XmlManager::getInstance();
 		$manager->namespaces = array();
 	}
+
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Xml);
+	}
+
 /**
  * testAddNamespace method
  *
@@ -97,6 +104,7 @@ class XmlHelperTest extends UnitTestCase {
 		$expected = array('custom' => 'http://example.com/dtd.xml');
 		$this->assertEqual($manager->namespaces, $expected);
 	}
+
 /**
  * testRemoveNamespace method
  *
@@ -115,6 +123,7 @@ class XmlHelperTest extends UnitTestCase {
 		$expected = array('custom2' => 'http://example.com/dtd2.xml');
 		$this->assertEqual($manager->namespaces, $expected);
 	}
+
 /**
  * testRenderZeroElement method
  *
@@ -125,7 +134,12 @@ class XmlHelperTest extends UnitTestCase {
 		$result = $this->Xml->elem('count', null, 0);
 		$expected = '<count>0</count>';
 		$this->assertEqual($result, $expected);
+
+		$result = $this->Xml->elem('count', null, array('cdata' => true, 'value' => null));
+		$expected = '<count />';
+		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testRenderElementWithNamespace method
  *
@@ -160,6 +174,7 @@ class XmlHelperTest extends UnitTestCase {
 		$expected = '<myNameSpace:count><![CDATA[content]]></myNameSpace:count>';
 		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testSerialize method
  *
@@ -172,7 +187,7 @@ class XmlHelperTest extends UnitTestCase {
 			'test2' => 'test with "double quotes"'
 		);
 		$result = $this->Xml->serialize($data);
-		$expected = '<std_class test1="test with no quotes" test2="test with \"double quotes\"" />';
+		$expected = '<std_class test1="test with no quotes" test2="test with &quot;double quotes&quot;" />';
 		$this->assertIdentical($result, $expected);
 
 		$data = array(
@@ -196,7 +211,41 @@ class XmlHelperTest extends UnitTestCase {
 		$result = $this->Xml->serialize($data, array('format' => 'tags'));
 		$expected = '<service_day><service_time><service_time_price><dollar>1</dollar><cents>2</cents></service_time_price></service_time></service_day>';
 		$this->assertIdentical($result, $expected);
+		
+		$data = array(
+			'Pages' => array('id' => 2, 'url' => 'http://www.url.com/rb/153/?id=bbbb&t=access')
+		);
+		$result = $this->Xml->serialize($data);
+		$expected = '<pages id="2" url="http://www.url.com/rb/153/?id=bbbb&amp;t=access" />';
+		$this->assertIdentical($result, $expected);
+
+		$test = array(
+			'Test' => array('test' => true)
+		);
+		$expected = '<test test="1" />';
+		$result = $this->Xml->serialize($test);
+		$this->assertidentical($expected, $result);
 	}
+
+/**
+ * testSerializeOnMultiDimensionalArray method
+ *
+ * @access public
+ * @return void
+ */
+	function testSerializeOnMultiDimensionalArray() {
+		$data = array(
+			'Statuses' => array(
+				array('Status' => array('id' => 1)),
+				array('Status' => array('id' => 2))
+			)
+		);
+		$result = $this->Xml->serialize($data, array('format' => 'tags'));
+		$expected = '<statuses><status><id>1</id></status><status><id>2</id></status></statuses>';
+		$this->assertIdentical($result, $expected);
+
+	}
+
 /**
  * testHeader method
  *
@@ -235,15 +284,5 @@ class XmlHelperTest extends UnitTestCase {
 		$expected = '<?xml encoding="UTF-8" someOther="value" ?>';
 		$this->assertIdentical($result, $expected);
 	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		unset($this->Xml);
-	}
 }
-
 ?>

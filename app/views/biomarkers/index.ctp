@@ -1,9 +1,12 @@
 <?php
 	// Include required CSS and JavaScript 
 	//echo $javascript->link('jquery/jquery-1.3.2.min');
-	echo $javascript->link('jquery/jquery-1.8.2.min');
-	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
-
+	// Deprecated in Cake 1.3:
+	//echo $javascript->link('jquery/jquery-1.8.2.min');
+	//echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+	// Use this instead
+	echo $html->script('jquery/jquery-1.8.2.min');
+	echo $html->script('jquery/plugins/dataTables/jquery.dataTables.min');
 	
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');

@@ -6,7 +6,7 @@ class PublicationsController extends AppController {
 	
 	public function index() {
 		$this->checkSession("/publications");
-		$this->set('publications', $this->Publication->findAll());		
+		$this->set('publications', $this->Publication->find('all'));
 	}
 	public function view($id=null) {
 		$this->checkSession("/publications/view/{$id}");

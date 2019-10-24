@@ -1,56 +1,58 @@
 <?php
-/* SVN FILE: $Id: time.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * TimeHelperTest file
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs.view.helpers
- * @since			CakePHP(tm) v 1.2.0.4206
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
+ * @since         CakePHP(tm) v 1.2.0.4206
+ * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
 }
-
-uses('view'.DS.'helpers'.DS.'app_helper', 'controller'.DS.'controller', 'model'.DS.'model', 'view'.DS.'helper', 'view'.DS.'helpers'.DS.'time');
+App::import('Helper', 'Time');
 
 /**
- * Short description for class.
+ * TimeHelperTest class
  *
- * @package		cake.tests
- * @subpackage	cake.tests.cases.libs.view.helpers
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
  */
-class TimeTest extends UnitTestCase {
+class TimeHelperTest extends CakeTestCase {
+
 /**
  * setUp method
- * 
+ *
  * @access public
  * @return void
  */
 	function setUp() {
 		$this->Time = new TimeHelper();
 	}
+
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Time);
+	}
+
 /**
  * testToQuarter method
- * 
+ *
  * @access public
  * @return void
  */
@@ -76,48 +78,49 @@ class TimeTest extends UnitTestCase {
 		$result = $this->Time->toQuarter('2007-12-25', true);
 		$this->assertEqual($result, array('2007-10-01', '2007-12-31'));
 	}
+
 /**
  * testTimeAgoInWords method
- * 
+ *
  * @access public
  * @return void
  */
 	function testTimeAgoInWords() {
-		$result = $this->Time->timeAgoInWords(strtotime('4 months, 2 weeks, 3 days'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+4 months +2 weeks +3 days'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '4 months, 2 weeks, 3 days');
 
-		$result = $this->Time->timeAgoInWords(strtotime('4 months, 2 weeks, 2 days'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+4 months +2 weeks +2 days'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '4 months, 2 weeks, 2 days');
 
-		$result = $this->Time->timeAgoInWords(strtotime('4 months, 2 weeks, 1 day'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+4 months +2 weeks +1 day'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '4 months, 2 weeks, 1 day');
-	
-		$result = $this->Time->timeAgoInWords(strtotime('3 months, 2 weeks, 1 day'), array('end' => '8 years'), true);
+
+		$result = $this->Time->timeAgoInWords(strtotime('+3 months +2 weeks +1 day'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '3 months, 2 weeks, 1 day');
 
-		$result = $this->Time->timeAgoInWords(strtotime('3 months, 2 weeks'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+3 months +2 weeks'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '3 months, 2 weeks');
 
-		$result = $this->Time->timeAgoInWords(strtotime('3 months, 1 week, 6 days'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+3 months +1 week +6 days'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '3 months, 1 week, 6 days');
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 2 weeks, 1 day'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +2 weeks +1 day'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '2 months, 2 weeks, 1 day');
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 2 weeks'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +2 weeks'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '2 months, 2 weeks');
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 1 week, 6 days'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +1 week +6 days'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '2 months, 1 week, 6 days');
 
-		$result = $this->Time->timeAgoInWords(strtotime('1 month, 1 week, 6 days'), array('end' => '8 years'), true);
+		$result = $this->Time->timeAgoInWords(strtotime('+1 month +1 week +6 days'), array('end' => '8 years'), true);
 		$this->assertEqual($result, '1 month, 1 week, 6 days');
 
 		for($i = 0; $i < 200; $i ++) {
-			$years = rand(0, 3);
-			$months = rand(0, 11);
-			$weeks = rand(0, 3);
-			$days = rand(0, 6);
+			$years = mt_rand(0, 3);
+			$months = mt_rand(0, 11);
+			$weeks = mt_rand(0, 3);
+			$days = mt_rand(0, 6);
 			$hours = 0;
 			$minutes = 0;
 			$seconds = 0;
@@ -127,8 +130,8 @@ class TimeTest extends UnitTestCase {
 				// years and months and days
 				$relative_date .= ($relative_date ? ', -' : '-') . $years . ' year' . ($years > 1 ? 's' : '');
 				$relative_date .= $months > 0 ? ($relative_date ? ', -' : '-') . $months . ' month' . ($months > 1 ? 's' : '') : '';
-				$relative_date .= $weeks > 0 ? ($relative_date ? ', -' : '-') . $weeks . ' week' . ($weeks > 1 ? 's' : '') : '';	
-				$relative_date .= $days > 0 ? ($relative_date ? ', -' : '-') . $days . ' day' . ($days > 1 ? 's' : '') : '';						
+				$relative_date .= $weeks > 0 ? ($relative_date ? ', -' : '-') . $weeks . ' week' . ($weeks > 1 ? 's' : '') : '';
+				$relative_date .= $days > 0 ? ($relative_date ? ', -' : '-') . $days . ' day' . ($days > 1 ? 's' : '') : '';
 			} elseif (abs($months) > 0) {
 				// months, weeks and days
 				$relative_date .= ($relative_date ? ', -' : '-') . $months . ' month' . ($months > 1 ? 's' : '');
@@ -154,8 +157,8 @@ class TimeTest extends UnitTestCase {
 				$relative_date .= ($relative_date ? ', -' : '-') . $seconds . ' second' . ($seconds != 1 ? 's' : '');
 			}
 
-			if (date('j/n/y', strtotime($relative_date)) != '1/1/70') {
-				$result = $this->Time->timeAgoInWords(strtotime($relative_date), array('end' => '8 years'), true);
+			if (date('j/n/y', strtotime(str_replace(',','',$relative_date))) != '1/1/70') {
+				$result = $this->Time->timeAgoInWords(strtotime(str_replace(',','',$relative_date)), array('end' => '8 years'), true);
 				if ($relative_date == '0 seconds') {
 					$relative_date = '0 seconds ago';
 				}
@@ -167,10 +170,10 @@ class TimeTest extends UnitTestCase {
 		}
 
 		for ($i = 0; $i < 200; $i ++) {
-			$years = rand(0, 3);
-			$months = rand(0, 11);
-			$weeks = rand(0, 3);
-			$days = rand(0, 6);
+			$years = mt_rand(0, 3);
+			$months = mt_rand(0, 11);
+			$weeks = mt_rand(0, 3);
+			$days = mt_rand(0, 6);
 			$hours = 0;
 			$minutes = 0;
 			$seconds = 0;
@@ -181,7 +184,7 @@ class TimeTest extends UnitTestCase {
 				// years and months and days
 				$relative_date .= ($relative_date ? ', ' : '') . $years . ' year' . ($years > 1 ? 's' : '');
 				$relative_date .= $months > 0 ? ($relative_date ? ', ' : '') . $months . ' month' . ($months > 1 ? 's' : '') : '';
-				$relative_date .= $weeks > 0 ? ($relative_date ? ', ' : '') . $weeks . ' week' . ($weeks > 1 ? 's' : '') : '';	
+				$relative_date .= $weeks > 0 ? ($relative_date ? ', ' : '') . $weeks . ' week' . ($weeks > 1 ? 's' : '') : '';
 				$relative_date .= $days > 0 ? ($relative_date ? ', ' : '') . $days . ' day' . ($days > 1 ? 's' : '') : '';
 			} elseif (abs($months) > 0) {
 				// months, weeks and days
@@ -208,9 +211,8 @@ class TimeTest extends UnitTestCase {
 				$relative_date .= ($relative_date ? ', ' : '') . $seconds . ' second' . ($seconds != 1 ? 's' : '');
 			}
 
-			if (date('j/n/y', strtotime($relative_date)) != '1/1/70') {
-				// echo $relative_date."<br />";
-				$result = $this->Time->timeAgoInWords(strtotime($relative_date), array('end' => '8 years'), true);
+			if (date('j/n/y', strtotime(str_replace(',','',$relative_date))) != '1/1/70') {
+				$result = $this->Time->timeAgoInWords(strtotime(str_replace(',','',$relative_date)), array('end' => '8 years'), true);
 				if ($relative_date == '0 seconds') {
 					$relative_date = '0 seconds ago';
 				}
@@ -219,8 +221,8 @@ class TimeTest extends UnitTestCase {
 				$this->assertEqual($result, $relative_date);
 			}
 		}
-		
-		$result = $this->Time->timeAgoInWords(strtotime('-2 years, -5 months, -2 days'), array('end' => '3 years'), true);
+
+		$result = $this->Time->timeAgoInWords(strtotime('-2 years -5 months -2 days'), array('end' => '3 years'), true);
 		$this->assertEqual($result, '2 years, 5 months, 2 days ago');
 
 		$result = $this->Time->timeAgoInWords('2007-9-25');
@@ -232,45 +234,67 @@ class TimeTest extends UnitTestCase {
 		$result = $this->Time->timeAgoInWords('2007-9-25', 'Y-m-d', true);
 		$this->assertEqual($result, 'on 2007-09-25');
 
-		$result = $this->Time->timeAgoInWords(strtotime('-2 weeks, -2 days'), 'Y-m-d', false);
+		$result = $this->Time->timeAgoInWords(strtotime('-2 weeks -2 days'), 'Y-m-d', false);
 		$this->assertEqual($result, '2 weeks, 2 days ago');
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 weeks, 2 days'), 'Y-m-d', true);
+		$result = $this->Time->timeAgoInWords(strtotime('+2 weeks +2 days'), 'Y-m-d', true);
 		$this->assertPattern('/^2 weeks, [1|2] day(s)?$/', $result);
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 2 days'), array('end' => '1 month'));
-		$this->assertEqual($result, 'on ' . date('j/n/y', strtotime('2 months, 2 days')));
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +2 days'), array('end' => '1 month'));
+		$this->assertEqual($result, 'on ' . date('j/n/y', strtotime('+2 months +2 days')));
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 2 days'), array('end' => '3 month'));
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +2 days'), array('end' => '3 month'));
 		$this->assertPattern('/2 months/', $result);
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 12 days'), array('end' => '3 month'));
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +12 days'), array('end' => '3 month'));
 		$this->assertPattern('/2 months, 1 week/', $result);
 
-		$result = $this->Time->timeAgoInWords(strtotime('3 months, 5 days'), array('end' => '4 month'));
+		$result = $this->Time->timeAgoInWords(strtotime('+3 months +5 days'), array('end' => '4 month'));
 		$this->assertEqual($result, '3 months, 5 days');
 
-		$result = $this->Time->timeAgoInWords(strtotime('-2 months, -2 days'), array('end' => '3 month'));
+		$result = $this->Time->timeAgoInWords(strtotime('-2 months -2 days'), array('end' => '3 month'));
 		$this->assertEqual($result, '2 months, 2 days ago');
 
-		$result = $this->Time->timeAgoInWords(strtotime('-2 months, -2 days'), array('end' => '3 month'));
+		$result = $this->Time->timeAgoInWords(strtotime('-2 months -2 days'), array('end' => '3 month'));
 		$this->assertEqual($result, '2 months, 2 days ago');
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 2 days'), array('end' => '3 month'));
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +2 days'), array('end' => '3 month'));
 		$this->assertPattern('/2 months/', $result);
 
-		$result = $this->Time->timeAgoInWords(strtotime('2 months, 2 days'), array('end' => '1 month', 'format' => 'Y-m-d'));
-		$this->assertEqual($result, 'on ' . date('Y-m-d', strtotime('2 months, 2 days')));
+		$result = $this->Time->timeAgoInWords(strtotime('+2 months +2 days'), array('end' => '1 month', 'format' => 'Y-m-d'));
+		$this->assertEqual($result, 'on ' . date('Y-m-d', strtotime('+2 months +2 days')));
 
-		$result = $this->Time->timeAgoInWords(strtotime('-2 months, -2 days'), array('end' => '1 month', 'format' => 'Y-m-d'));
-		$this->assertEqual($result, 'on ' . date('Y-m-d', strtotime('-2 months, -2 days')));
+		$result = $this->Time->timeAgoInWords(strtotime('-2 months -2 days'), array('end' => '1 month', 'format' => 'Y-m-d'));
+		$this->assertEqual($result, 'on ' . date('Y-m-d', strtotime('-2 months -2 days')));
 
-		$result = $this->Time->timeAgoInWords(strtotime('-13 months, -5 days'), array('end' => '2 years'));
+		$result = $this->Time->timeAgoInWords(strtotime('-13 months -5 days'), array('end' => '2 years'));
 		$this->assertEqual($result, '1 year, 1 month, 5 days ago');
+
+		$fourHours = $this->Time->timeAgoInWords(strtotime('-5 days -2 hours'), array('userOffset' => -4));
+		$result = $this->Time->timeAgoInWords(strtotime('-5 days -2 hours'), array('userOffset' => 4));
+		$this->assertEqual($fourHours, $result);
+
+		$result = $this->Time->timeAgoInWords(strtotime('-2 hours'));
+		$expected = '2 hours ago';
+		$this->assertEqual($expected, $result);
+
+		$result = $this->Time->timeAgoInWords(strtotime('-12 minutes'));
+		$expected = '12 minutes ago';
+		$this->assertEqual($expected, $result);
+
+		$result = $this->Time->timeAgoInWords(strtotime('-12 seconds'));
+		$expected = '12 seconds ago';
+		$this->assertEqual($expected, $result);
+
+		$time = strtotime('-3 years -12 months');
+		$result = $this->Time->timeAgoInWords($time);
+		$expected = 'on ' . date('j/n/y', $time);
+		$this->assertEqual($expected, $result);
 	}
+
 /**
  * testRelative method
- * 
+ *
  * @access public
  * @return void
  */
@@ -280,13 +304,14 @@ class TimeTest extends UnitTestCase {
 		$result = $this->Time->relativeTime('+1 week');
 		$this->assertEqual($result, '1 week');
 	}
+
 /**
- * testOfNice method
- * 
+ * testNice method
+ *
  * @access public
  * @return void
  */
-	function testOfNice() {
+	function testNice() {
 		$time = time() + 2 * DAY;
 		$this->assertEqual(date('D, M jS Y, H:i', $time), $this->Time->nice($time));
 
@@ -302,13 +327,14 @@ class TimeTest extends UnitTestCase {
 		$time = null;
 		$this->assertEqual(date('D, M jS Y, H:i', time()), $this->Time->nice($time));
 	}
-	/**
- * testOfNiceShort method
- * 
+
+/**
+ * testNiceShort method
+ *
  * @access public
  * @return void
  */
-	function testOfNiceShort() {
+	function testNiceShort() {
 		$time = time() + 2 * DAY;
 		if (date('Y', $time) == date('Y')) {
 			$this->assertEqual(date('M jS, H:i', $time), $this->Time->niceShort($time));
@@ -322,34 +348,37 @@ class TimeTest extends UnitTestCase {
 		$time = time() - DAY;
 		$this->assertEqual('Yesterday, '.date('H:i', $time), $this->Time->niceShort($time));
 	}
-	/**
- * testOfDaysAsSql method
- * 
+
+/**
+ * testDaysAsSql method
+ *
  * @access public
  * @return void
  */
-	function testOfDaysAsSql() {
+	function testDaysAsSql() {
 		$begin = time();
 		$end = time() + DAY;
 		$field = 'my_field';
 		$expected = '(my_field >= \''.date('Y-m-d', $begin).' 00:00:00\') AND (my_field <= \''.date('Y-m-d', $end).' 23:59:59\')';
 		$this->assertEqual($expected, $this->Time->daysAsSql($begin, $end, $field));
 	}
+
 /**
- * testOfDayAsSql method
- * 
+ * testDayAsSql method
+ *
  * @access public
  * @return void
  */
-	function testOfDayAsSql() {
+	function testDayAsSql() {
 		$time = time();
 		$field = 'my_field';
 		$expected = '(my_field >= \''.date('Y-m-d', $time).' 00:00:00\') AND (my_field <= \''.date('Y-m-d', $time).' 23:59:59\')';
 		$this->assertEqual($expected, $this->Time->dayAsSql($time, $field));
 	}
+
 /**
  * testToUnix method
- * 
+ *
  * @access public
  * @return void
  */
@@ -361,47 +390,51 @@ class TimeTest extends UnitTestCase {
 		$this->assertEqual(false, $this->Time->toUnix(''));
 		$this->assertEqual(false, $this->Time->toUnix(null));
 	}
+
 /**
- * testOfToAtom method
- * 
+ * testToAtom method
+ *
  * @access public
  * @return void
  */
-	function testOfToAtom() {
+	function testToAtom() {
 		$this->assertEqual(date('Y-m-d\TH:i:s\Z'), $this->Time->toAtom(time()));
 	}
+
 /**
- * testOfToRss method
- * 
+ * testToRss method
+ *
  * @access public
  * @return void
  */
-	function testOfToRss() {
+	function testToRss() {
 		$this->assertEqual(date('r'), $this->Time->toRss(time()));
 	}
+
 /**
- * testOfFormat method
- * 
+ * testFormat method
+ *
  * @access public
  * @return void
  */
-	function testOfFormat() {
+	function testFormat() {
 		$format = 'D-M-Y';
 		$arr = array(time(), strtotime('+1 days'), strtotime('+1 days'), strtotime('+0 days'));
 		foreach ($arr as $val) {
 			$this->assertEqual(date($format, $val), $this->Time->format($format, $val));
 		}
-		
+
 		$result = $this->Time->format('Y-m-d', null, 'never');
 		$this->assertEqual($result, 'never');
 	}
+
 /**
  * testOfGmt method
- * 
+ *
  * @access public
  * @return void
  */
-	function testOfGmt() {
+	function testGmt() {
 		$hour = 3;
 		$min = 4;
 		$sec = 2;
@@ -421,13 +454,14 @@ class TimeTest extends UnitTestCase {
 		$expected = gmmktime($hour, $min, $sec, $month, $day, $year);
 		$this->assertEqual($expected, $this->Time->gmt(null));
 	}
+
 /**
- * testOfIsToday method
- * 
+ * testIsToday method
+ *
  * @access public
  * @return void
  */
-	function testOfIsToday() {
+	function testIsToday() {
 		$result = $this->Time->isToday('+1 day');
 		$this->assertFalse($result);
 		$result = $this->Time->isToday('+1 days');
@@ -437,101 +471,66 @@ class TimeTest extends UnitTestCase {
 		$result = $this->Time->isToday('-1 day');
 		$this->assertFalse($result);
 	}
-	/**
- * testOfIsThisWeek method
- * 
+
+/**
+ * testIsThisWeek method
+ *
  * @access public
  * @return void
  */
-	function testOfIsThisWeek() {
-		switch (date('D')) {
-			case 'Mon' :
-				for ($i = 0; $i < 6; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+7 days"));
-				$this->assertFalse($this->Time->isThisWeek("-1 days"));
-				break;
-			case 'Tue' :
-				for ($i = -1; $i < 5; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+6 days"));
-				$this->assertFalse($this->Time->isThisWeek("-2 days"));
-				break;
-			case 'Wed' :
-				for ($i = -2; $i < 5; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+5 days"));
-				$this->assertFalse($this->Time->isThisWeek("-3 days"));
-				break;
-			case 'Thu' :
-				for ($i = -3; $i < 4; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+4 days"));
-				$this->assertFalse($this->Time->isThisWeek("-4 days"));
-				break;
-			case 'Fri' :
-				for ($i = -4; $i < 3; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+3 days"));
-				$this->assertFalse($this->Time->isThisWeek("-5 days"));
-				break;
-			case 'Sat' :
-				for ($i = -5; $i < 2; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+2 days"));
-				$this->assertFalse($this->Time->isThisWeek("-6 days"));
-				break;
-			case 'Sun' :
-				for ($i = -6; $i < 1; $i++) { 
-					$this->assertTrue($this->Time->isThisWeek("+$i days"));
-				}
-				$this->assertFalse($this->Time->isThisWeek("+1 days"));
-				$this->assertFalse($this->Time->isThisWeek("-7 days"));
-				break;
+	function testIsThisWeek() {
+		// A map of days which goes from -1 day of week to +1 day of week
+		$map = array(
+			'Mon' => array(-1, 7), 'Tue' => array(-2, 6), 'Wed' => array(-3, 5),
+			'Thu' => array(-4, 4), 'Fri' => array(-5, 3), 'Sat' => array(-6, 2),
+			'Sun' => array(-7, 1)
+		);
+		$days = $map[date('D')];
+
+		for ($day = $days[0] + 1; $day < $days[1]; $day++) {
+			$this->assertTrue($this->Time->isThisWeek(($day > 0 ? '+' : '') . $day . ' days'));
 		}
+		$this->assertFalse($this->Time->isThisWeek($days[0] . ' days'));
+		$this->assertFalse($this->Time->isThisWeek('+' . $days[1] . ' days'));
 	}
-	/**
- * testOfIsThisMonth method
- * 
+
+/**
+ * testIsThisMonth method
+ *
  * @access public
  * @return void
  */
-	function testOfIsThisMonth() {
+	function testIsThisMonth() {
 		$result = $this->Time->isThisMonth('+0 day');
 		$this->assertTrue($result);
-		$result = $this->Time->isThisMonth($time = mktime(0, 0, 0, date('m'), rand(1, 28), date('Y')));
+		$result = $this->Time->isThisMonth($time = mktime(0, 0, 0, date('m'), mt_rand(1, 28), date('Y')));
 		$this->assertTrue($result);
-		$result = $this->Time->isThisMonth(mktime(0, 0, 0, date('m'), rand(1, 28), date('Y')-rand(1, 12)));
+		$result = $this->Time->isThisMonth(mktime(0, 0, 0, date('m'), mt_rand(1, 28), date('Y') - mt_rand(1, 12)));
 		$this->assertFalse($result);
-		$result = $this->Time->isThisMonth(mktime(0, 0, 0, date('m'), rand(1, 28), date('Y')+rand(1, 12)));
+		$result = $this->Time->isThisMonth(mktime(0, 0, 0, date('m'), mt_rand(1, 28), date('Y') + mt_rand(1, 12)));
 		$this->assertFalse($result);
 
 	}
-	/**
- * testOfIsThisYear method
- * 
+
+/**
+ * testIsThisYear method
+ *
  * @access public
  * @return void
  */
-	function testOfIsThisYear() {
+	function testIsThisYear() {
 		$result = $this->Time->isThisYear('+0 day');
 		$this->assertTrue($result);
-		$result = $this->Time->isThisYear(mktime(0, 0, 0, rand(1, 12), rand(1, 28), date('Y')));
+		$result = $this->Time->isThisYear(mktime(0, 0, 0, mt_rand(1, 12), mt_rand(1, 28), date('Y')));
 		$this->assertTrue($result);
 	}
 	/**
- * testOfWasYesterday method
- * 
+ * testWasYesterday method
+ *
  * @access public
  * @return void
  */
-	function testOfWasYesterday() {
+	function testWasYesterday() {
 		$result = $this->Time->wasYesterday('+1 day');
 		$this->assertFalse($result);
 		$result = $this->Time->wasYesterday('+1 days');
@@ -546,12 +545,12 @@ class TimeTest extends UnitTestCase {
 		$this->assertFalse($result);
 	}
 	/**
- * testOfIsTomorrow method
- * 
+ * testIsTomorrow method
+ *
  * @access public
  * @return void
  */
-	function testOfIsTomorrow() {
+	function testIsTomorrow() {
 		$result = $this->Time->isTomorrow('+1 day');
 		$this->assertTrue($result);
 		$result = $this->Time->isTomorrow('+1 days');
@@ -561,13 +560,14 @@ class TimeTest extends UnitTestCase {
 		$result = $this->Time->isTomorrow('-1 day');
 		$this->assertFalse($result);
 	}
+
 /**
- * testOfWasWithinLast method
- * 
+ * testWasWithinLast method
+ *
  * @access public
  * @return void
  */
-	function testOfWasWithinLast() {
+	function testWasWithinLast() {
 		$this->assertTrue($this->Time->wasWithinLast('1 day', '-1 day'));
 		$this->assertTrue($this->Time->wasWithinLast('1 week', '-1 week'));
 		$this->assertTrue($this->Time->wasWithinLast('1 year', '-1 year'));
@@ -576,7 +576,7 @@ class TimeTest extends UnitTestCase {
 		$this->assertTrue($this->Time->wasWithinLast('1 year', '-1 year'));
 		$this->assertTrue($this->Time->wasWithinLast('1 month', '-1 month'));
 		$this->assertTrue($this->Time->wasWithinLast('1 day', '-1 day'));
-		
+
 		$this->assertTrue($this->Time->wasWithinLast('1 week', '-1 day'));
 		$this->assertTrue($this->Time->wasWithinLast('2 week', '-1 week'));
 		$this->assertFalse($this->Time->wasWithinLast('1 second', '-1 year'));
@@ -585,14 +585,14 @@ class TimeTest extends UnitTestCase {
 		$this->assertFalse($this->Time->wasWithinLast('0 year', '-1 year'));
 		$this->assertTrue($this->Time->wasWithinLast('13 month', '-1 month'));
 		$this->assertTrue($this->Time->wasWithinLast('2 days', '-1 day'));
-		
+
 		$this->assertFalse($this->Time->wasWithinLast('1 week', '-2 weeks'));
 		$this->assertFalse($this->Time->wasWithinLast('1 second', '-2 seconds'));
 		$this->assertFalse($this->Time->wasWithinLast('1 day', '-2 days'));
 		$this->assertFalse($this->Time->wasWithinLast('1 hour', '-2 hours'));
 		$this->assertFalse($this->Time->wasWithinLast('1 month', '-2 months'));
 		$this->assertFalse($this->Time->wasWithinLast('1 year', '-2 years'));
-		
+
 		$this->assertFalse($this->Time->wasWithinLast('1 day', '-2 weeks'));
 		$this->assertFalse($this->Time->wasWithinLast('1 day', '-2 days'));
 		$this->assertFalse($this->Time->wasWithinLast('0 days', '-2 days'));
@@ -608,27 +608,178 @@ class TimeTest extends UnitTestCase {
 	}
 	/**
  * testUserOffset method
- * 
+ *
  * @access public
  * @return void
  */
 	function testUserOffset() {
+		if ($this->skipIf(!class_exists('DateTimeZone'), '%s DateTimeZone class not available.')) {
+			return;
+		}
+
+
 		$timezoneServer = new DateTimeZone(date_default_timezone_get());
-		$timeServer = new DateTime('now', $timezoneServer); 	
+		$timeServer = new DateTime('now', $timezoneServer);
 		$yourTimezone = $timezoneServer->getOffset($timeServer) / HOUR;
-	
+
 		$expected = time();
 		$result = $this->Time->fromString(time(), $yourTimezone);
-		$this->assertEqual($result, $expected);		
+		$this->assertEqual($result, $expected);
 	}
+
 /**
- * tearDown method
- * 
+ * test fromString()
+ *
  * @access public
  * @return void
  */
-	function tearDown() {
-		unset($this->Time);
+	function testFromString() {
+		$result = $this->Time->fromString('');
+		$this->assertFalse($result);
+
+		$result = $this->Time->fromString(0, 0);
+		$this->assertFalse($result);
+
+		$result = $this->Time->fromString('+1 hour');
+		$expected = strtotime('+1 hour');
+		$this->assertEqual($result, $expected);
+
+		$timezone = date('Z', time());
+		$result = $this->Time->fromString('+1 hour', $timezone);
+		$expected = $this->Time->convert(strtotime('+1 hour'), $timezone);
+		$this->assertEqual($result, $expected);
+	}
+
+/**
+ * test converting time specifiers using a time definition localfe file
+ *
+ * @access public
+ * @return void
+ */
+	function testConvertSpecifiers() {
+		App::build(array(
+			'locales' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'locale' . DS)
+		), true);
+		Configure::write('Config.language', 'time_test');
+		$time = strtotime('Thu Jan 14 11:43:39 2010');
+
+		$result = $this->Time->convertSpecifiers('%a', $time);
+		$expected = 'jue';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%A', $time);
+		$expected = 'jueves';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%c', $time);
+		$expected = 'jue %d ene %Y %H:%M:%S %Z';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%C', $time);
+		$expected = '20';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%D', $time);
+		$expected = '%m/%d/%y';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%b', $time);
+		$expected = 'ene';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%h', $time);
+		$expected = 'ene';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%B', $time);
+		$expected = 'enero';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%n', $time);
+		$expected = "\n";
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%n', $time);
+		$expected = "\n";
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%p', $time);
+		$expected = 'AM';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%P', $time);
+		$expected = 'am';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%r', $time);
+		$expected = '%I:%M:%S AM';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%R', $time);
+		$expected = '11:43';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%t', $time);
+		$expected = "\t";
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%T', $time);
+		$expected = '%H:%M:%S';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%u', $time);
+		$expected = 4;
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%x', $time);
+		$expected = '%d/%m/%y';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->convertSpecifiers('%X', $time);
+		$expected = '%H:%M:%S';
+		$this->assertEqual($result, $expected);
+	}
+
+/**
+ * test formatting dates taking in account preferred i18n locale file
+ *
+ * @access public
+ * @return void
+ */
+	function testI18nFormat() {
+		App::build(array(
+			'locales' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'locale' . DS)
+		), true);
+		Configure::write('Config.language', 'time_test');
+		$time = strtotime('Thu Jan 14 13:59:28 2010');
+
+		$result = $this->Time->i18nFormat($time);
+		$expected = '14/01/10';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->i18nFormat($time, '%c');
+		$expected = 'jue 14 ene 2010 13:59:28 ' . strftime('%Z', $time);
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->i18nFormat($time, 'Time is %r, and date is %x');
+		$expected = 'Time is 01:59:28 PM, and date is 14/01/10';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Time->i18nFormat('invalid date', '%x', 'Date invalid');
+		$expected = 'Date invalid';
+		$this->assertEqual($result, $expected);
+	}
+
+/**
+ * test new format() syntax which inverts first and secod parameters
+ *
+ * @access public
+ * @return void
+ */
+	function testFormatNewSyntax() {
+		$time = time();
+		$this->assertEqual($this->Time->format($time), $this->Time->i18nFormat($time));
+		$this->assertEqual($this->Time->format($time, '%c'), $this->Time->i18nFormat($time, '%c'));
 	}
 }
 ?>

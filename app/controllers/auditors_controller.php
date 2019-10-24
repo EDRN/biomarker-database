@@ -99,7 +99,7 @@ class AuditorsController extends AppController {
 		/***
 		 * PUBLICATION METRICS
 		 *************************************************************/
-		$pubs = $this->Publication->findAll();
+		$pubs = $this->Publication->find('all');
 		$this->set('numPublications',count($pubs));
 		$this->set('latestPublications', array_splice($pubs,0,5));
 	}
@@ -140,7 +140,7 @@ class AuditorsController extends AppController {
 		}
 	
 		/** Publication metrics **/
-		$publications = $this->Publication->findAll();
+		$publications = $this->Publication->find('all');
 
 		$data['Publication'] = array(
 			'count' => count($publications),

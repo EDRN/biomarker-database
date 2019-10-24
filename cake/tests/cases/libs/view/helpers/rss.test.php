@@ -1,43 +1,32 @@
 <?php
-/* SVN FILE: $Id: rss.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * RssHelperTest file
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs.view.helpers
- * @since			CakePHP(tm) v 1.2.0.4206
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
+ * @since         CakePHP(tm) v 1.2.0.4206
+ * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
-if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
-	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
-}
 App::import('Helper', array('Rss', 'Time'));
 
 /**
- * Short description for class.
+ * RssHelperTest class
  *
- * @package		cake.tests
- * @subpackage	cake.tests.cases.libs.view.helpers
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs.view.helpers
  */
-class RssTest extends CakeTestCase {
+class RssHelperTest extends CakeTestCase {
+
 /**
  * setUp method
  *
@@ -48,7 +37,11 @@ class RssTest extends CakeTestCase {
 		$this->Rss =& new RssHelper();
 		$this->Rss->Time =& new TimeHelper();
 		$this->Rss->beforeRender();
+
+		$manager =& XmlManager::getInstance();
+		$manager->namespaces = array();
 	}
+
 /**
  * tearDown method
  *
@@ -58,6 +51,7 @@ class RssTest extends CakeTestCase {
 	function tearDown() {
 		unset($this->Rss);
 	}
+
 /**
  * testAddNamespace method
  *
@@ -74,11 +68,18 @@ class RssTest extends CakeTestCase {
 		$this->Rss->removeNs('custom');
 
 		$this->Rss->addNs('dummy', 'http://dummy.com/1.0/');
-		$res = $this->Rss->document();
-		$this->assertPattern('/^<rss xmlns:dummy="http:\/\/dummy\.com\/1.0\/" version="2.0" \/>$/', $res);
+		$result = $this->Rss->document();
+		$expected = array(
+			'rss' => array(
+				'xmlns:dummy' => 'http://dummy.com/1.0/',
+				'version' => '2.0'
+			)
+		);
+		$this->assertTags($result, $expected);
 
 		$this->Rss->removeNs('dummy');
 	}
+
 /**
  * testRemoveNamespace method
  *
@@ -104,20 +105,43 @@ class RssTest extends CakeTestCase {
  * @return void
  */
 	function testDocument() {
-		$res = $this->Rss->document();
-		$this->assertPattern('/^<rss version="2.0" \/>$/', $res);
+		$result = $this->Rss->document();
+		$expected = array(
+			'rss' => array(
+				'version' => '2.0'
+			)
+		);
+		$this->assertTags($result, $expected);
 
-		$res = $this->Rss->document(array('contrived' => 'parameter'));
-		$this->assertPattern('/^<rss version="2.0"><parameter \/><\/rss>$/', $res);
+		$result = $this->Rss->document(array('contrived' => 'parameter'));
+		$expected = array(
+			'rss' => array(
+				'version' => '2.0'
+			),
+			'<parameter'
+		);
+		$this->assertTags($result, $expected);
 
-		$res = $this->Rss->document(null, 'content');
-		$this->assertPattern('/^<rss version="2.0">content<\/rss>$/', $res);
+		$result = $this->Rss->document(null, 'content');
+		$expected = array(
+			'rss' => array(
+				'version' => '2.0'
+			),
+			'content'
+		);
+		$this->assertTags($result, $expected);
 
-		$res = $this->Rss->document(array('contrived' => 'parameter'), 'content');
-		$this->assertPattern('/^<rss[^<>]+version="2.0"[^<>]*>/', $res);
-		$this->assertPattern('/<rss[^<>]+contrived="parameter"[^<>]*>/', $res);
-		$this->assertNoPattern('/<rss[^<>]+[^version|contrived]=[^<>]*>/', $res);
+		$result = $this->Rss->document(array('contrived' => 'parameter'), 'content');
+		$expected = array(
+			'rss' => array(
+				'contrived' => 'parameter',
+				'version' => '2.0'
+			),
+			'content'
+		);
+		$this->assertTags($result, $expected);
 	}
+
 /**
  * testChannel method
  *
@@ -126,36 +150,118 @@ class RssTest extends CakeTestCase {
  */
 	function testChannel() {
 		$attrib = array('a' => '1', 'b' => '2');
-		$elements['title'] = 'title';
+		$elements = array('title' => 'title');
 		$content = 'content';
-		$res = $this->Rss->channel($attrib, $elements, $content);
-		$this->assertPattern('/^<channel[^<>]+a="1"[^<>]*>/', $res);
-		$this->assertPattern('/^<channel[^<>]+b="2"[^<>]*>/', $res);
-		$this->assertNoPattern('/^<channel[^<>]+[^a|b]=[^<>]*/', $res);
-		$this->assertPattern('/<title>title<\/title>/', $res);
-		$this->assertPattern('/<link>'.str_replace('/', '\/', RssHelper::url('/', true)).'<\/link>/', $res);
-		$this->assertPattern('/<description \/>/', $res);
-		$this->assertPattern('/content<\/channel>$/', $res);
+
+		$result = $this->Rss->channel($attrib, $elements, $content);
+		$expected = array(
+			'channel' => array(
+				'a' => '1',
+				'b' => '2'
+			),
+			'<title',
+			'title',
+			'/title',
+			'<link',
+			RssHelper::url('/', true),
+			'/link',
+			'<description',
+			'content',
+			'/channel'
+		);
+		$this->assertTags($result, $expected);
 	}
+
 /**
- * testChannelElementLevelAttrib method
+ * test correct creation of channel sub elements.
  *
  * @access public
  * @return void
  */
-	function testChannelElementLevelAttrib() {
+	function testChannelElements() {
 		$attrib = array();
-		$elements['title'] = 'title';
-		$elements['image'] = array('myImage', 'attrib' => array('href' => 'http://localhost'));
-		$content = 'content';
-		$res = $this->Rss->channel($attrib, $elements, $content);
-		$this->assertPattern('/^<channel>/', $res);
-		$this->assertPattern('/<title>title<\/title>/', $res);
-		$this->assertPattern('/<image[^<>]+href="http:\/\/localhost"><myImage \/><\/image>/', $res);
-		$this->assertPattern('/<link>'.str_replace('/', '\/', RssHelper::url('/', true)).'<\/link>/', $res);
-		$this->assertPattern('/<description \/>/', $res);
-		$this->assertPattern('/content<\/channel>$/', $res);
+		$elements = array(
+			'title' => 'Title of RSS Feed',
+			'link' => 'http://example.com',
+			'description' => 'Description of RSS Feed',
+			'image' => array(
+				'title' => 'Title of image',
+				'url' => 'http://example.com/example.png',
+				'link' => 'http://example.com'
+			),
+			'cloud' => array(
+				'domain' => "rpc.sys.com",
+				'port' => "80",
+				'path' =>"/RPC2",
+				'registerProcedure' => "myCloud.rssPleaseNotify",
+				'protocol' => "xml-rpc"
+			)
+		);
+		$content = 'content-here';
+		$result = $this->Rss->channel($attrib, $elements, $content);
+		$expected = array(
+			'<channel',
+				'<title', 'Title of RSS Feed', '/title',
+				'<link', 'http://example.com', '/link',
+				'<description', 'Description of RSS Feed', '/description',
+				'<image',
+					'<title', 'Title of image', '/title',
+					'<url', 'http://example.com/example.png', '/url',
+					'<link', 'http://example.com', '/link',
+				'/image',
+				'cloud' => array(
+					'domain' => "rpc.sys.com",
+					'port' => "80",
+					'path' =>"/RPC2",
+					'registerProcedure' => "myCloud.rssPleaseNotify",
+					'protocol' => "xml-rpc"
+				),
+			'content-here',
+			'/channel',
+		);
+		$this->assertTags($result, $expected);
 	}
+	function testChannelElementAttributes() {
+		$attrib = array();
+		$elements = array(
+			'title' => 'Title of RSS Feed',
+			'link' => 'http://example.com',
+			'description' => 'Description of RSS Feed',
+			'image' => array(
+				'title' => 'Title of image',
+				'url' => 'http://example.com/example.png',
+				'link' => 'http://example.com'
+			),
+			'atom:link' => array(
+				'attrib' => array(
+					'href' => 'http://www.example.com/rss.xml',
+					'rel' => 'self',
+					'type' => 'application/rss+xml')
+			)
+		);
+		$content = 'content-here';
+		$result = $this->Rss->channel($attrib, $elements, $content);
+		$expected = array(
+			'<channel',
+				'<title', 'Title of RSS Feed', '/title',
+				'<link', 'http://example.com', '/link',
+				'<description', 'Description of RSS Feed', '/description',
+				'<image',
+					'<title', 'Title of image', '/title',
+					'<url', 'http://example.com/example.png', '/url',
+					'<link', 'http://example.com', '/link',
+				'/image',
+				'atom:link' => array(
+					'href' => "http://www.example.com/rss.xml",
+					'rel' => "self",
+					'type' =>"application/rss+xml"
+				),
+			'content-here',
+			'/channel',
+		);
+		$this->assertTags($result, $expected);
+	}
+
 /**
  * testItems method
  *
@@ -170,23 +276,33 @@ class RssTest extends CakeTestCase {
 		);
 
 		$result = $this->Rss->items($items);
-		$this->assertPattern('/^<item>.*<\/item><item>.*<\/item><item>.*<\/item>$/', $result);
-		$this->assertPattern('/<item>.*<title>title1<\/title>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<guid>' . str_replace('/', '\/', 'http://www.example.com/guid1') . '<\/guid>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<link>' . str_replace('/', '\/', 'http://www.example.com/link1') . '<\/link>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<description>description1<\/description>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<title>title2<\/title>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<guid>' . str_replace('/', '\/', 'http://www.example.com/guid2') . '<\/guid>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<link>' . str_replace('/', '\/', 'http://www.example.com/link2') . '<\/link>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<description>description2<\/description>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<title>title3<\/title>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<guid>' . str_replace('/', '\/', 'http://www.example.com/guid3') . '<\/guid>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<link>' . str_replace('/', '\/', 'http://www.example.com/link3') . '<\/link>.*<\/item>/', $result);
-		$this->assertPattern('/<item>.*<description>description3<\/description>.*<\/item>/', $result);
+		$expected = array(
+			'<item',
+				'<title', 'title1', '/title',
+				'<guid', 'http://www.example.com/guid1', '/guid',
+				'<link', 'http://www.example.com/link1', '/link',
+				'<description', 'description1', '/description',
+			'/item',
+			'<item',
+				'<title', 'title2', '/title',
+				'<guid', 'http://www.example.com/guid2', '/guid',
+				'<link', 'http://www.example.com/link2', '/link',
+				'<description', 'description2', '/description',
+			'/item',
+			'<item',
+				'<title', 'title3', '/title',
+				'<guid', 'http://www.example.com/guid3', '/guid',
+				'<link', 'http://www.example.com/link3', '/link',
+				'<description', 'description3', '/description',
+			'/item'
+		);
+		$this->assertTags($result, $expected);
 
 		$result = $this->Rss->items(array());
-		$this->assertEqual($result, '');
+		$expected = '';
+		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testItem method
  *
@@ -194,9 +310,29 @@ class RssTest extends CakeTestCase {
  * @return void
  */
 	function testItem() {
-		$result = $this->Rss->item(null, array("title"=>"My title","description"=>"My description","link"=>"http://www.google.com/"));
-		$expecting = '<item><title>My title</title><description>My description</description><link>http://www.google.com/</link><guid>http://www.google.com/</guid></item>';
-		$this->assertEqual($result, $expecting);
+		$item = array(
+			'title' => 'My title',
+			'description' => 'My description',
+			'link' => 'http://www.google.com/'
+		);
+		$result = $this->Rss->item(null, $item);
+		$expected = array(
+			'<item',
+			'<title',
+			'My title',
+			'/title',
+			'<description',
+			'My description',
+			'/description',
+			'<link',
+			'http://www.google.com/',
+			'/link',
+			'<guid',
+			'http://www.google.com/',
+			'/guid',
+			'/item'
+		);
+		$this->assertTags($result, $expected);
 
 		$item = array(
 			'title' => array(
@@ -212,6 +348,7 @@ class RssTest extends CakeTestCase {
 			'guid' => 'http://www.example.com/1'
 		);
 		$result = $this->Rss->item(null, $item);
+
 		$expected = array(
 			'<item',
 			'<title',
@@ -224,7 +361,7 @@ class RssTest extends CakeTestCase {
 			'<![CDATA[descriptive words]]',
 			'/description',
 			'<pubDate',
-			'Sat, 31 May 2008 12:00:00 ' . date('O'),
+			date('r', strtotime('2008-05-31 12:00:00')),
 			'/pubDate',
 			'<guid',
 			'http://www.example.com/1',
@@ -281,7 +418,107 @@ class RssTest extends CakeTestCase {
 			'/item'
 		);
 		$this->assertTags($result, $expected);
+
+		$item = array(
+			'category' => array(
+				'value' => 'CakePHP',
+				'cdata' => true,
+				'domain' => 'http://www.cakephp.org'
+			)
+		);
+		$result = $this->Rss->item(null, $item);
+		$expected = array(
+			'<item',
+			'category' => array('domain' => 'http://www.cakephp.org'),
+			'<![CDATA[CakePHP]]',
+			'/category',
+			'/item'
+		);
+		$this->assertTags($result, $expected);
+
+		$item = array(
+			'category' => array(
+				array(
+					'value' => 'CakePHP',
+					'cdata' => true,
+					'domain' => 'http://www.cakephp.org'
+				),
+				array(
+					'value' => 'Bakery',
+					'cdata' => true
+				)
+			)
+		);
+		$result = $this->Rss->item(null, $item);
+		$expected = array(
+			'<item',
+			'category' => array('domain' => 'http://www.cakephp.org'),
+			'<![CDATA[CakePHP]]',
+			'/category',
+			'<category',
+			'<![CDATA[Bakery]]',
+			'/category',
+			'/item'
+		);
+		$this->assertTags($result, $expected);
+
+		$item = array(
+			'title' => array(
+				'value' => 'My Title',
+				'cdata' => true,
+			),
+			'link' => 'http://www.example.com/1',
+			'description' => array(
+				'value' => 'descriptive words',
+				'cdata' => true,
+			),
+			'enclosure' => array(
+				'url' => '/test.flv'
+			),
+			'pubDate' => '2008-05-31 12:00:00',
+			'guid' => 'http://www.example.com/1',
+			'category' => array(
+				array(
+					'value' => 'CakePHP',
+					'cdata' => true,
+					'domain' => 'http://www.cakephp.org'
+				),
+				array(
+					'value' => 'Bakery',
+					'cdata' => true
+				)
+			)
+		);
+		$result = $this->Rss->item(null, $item);
+		$expected = array(
+			'<item',
+			'<title',
+			'<![CDATA[My Title]]',
+			'/title',
+			'<link',
+			'http://www.example.com/1',
+			'/link',
+			'<description',
+			'<![CDATA[descriptive words]]',
+			'/description',
+			'enclosure' => array('url' => RssHelper::url('/test.flv', true)),
+			'<pubDate',
+			date('r', strtotime('2008-05-31 12:00:00')),
+			'/pubDate',
+			'<guid',
+			'http://www.example.com/1',
+			'/guid',
+			'category' => array('domain' => 'http://www.cakephp.org'),
+			'<![CDATA[CakePHP]]',
+			'/category',
+			'<category',
+			'<![CDATA[Bakery]]',
+			'/category',
+			'/item'
+		);
+		$this->assertTags($result, $expected);
 	}
+
 /**
  * testTime method
  *
@@ -290,6 +527,7 @@ class RssTest extends CakeTestCase {
  */
 	function testTime() {
 	}
+
 /**
  * testElementAttrNotInParent method
  *
@@ -297,13 +535,23 @@ class RssTest extends CakeTestCase {
  * @return void
  */
 	function testElementAttrNotInParent() {
-		$attributes = array('title' => 'Some Title', 'link' => 'http://link.com', 'description' => 'description');
+		$attributes = array(
+			'title' => 'Some Title',
+			'link' => 'http://link.com',
+			'description' => 'description'
+		);
 		$elements = array('enclosure' => array('url' => 'http://test.com'));
 
 		$result = $this->Rss->item($attributes, $elements);
 		$expected = array(
-			'item' => array('title' => 'Some Title', 'link' => 'http://link.com', 'description' => 'description'),
-			'enclosure' => array('url' => 'http://test.com'),
+			'item' => array(
+				'title' => 'Some Title',
+				'link' => 'http://link.com',
+				'description' => 'description'
+			),
+			'enclosure' => array(
+				'url' => 'http://test.com'
+			),
 			'/item'
 		);
 		$this->assertTags($result, $expected);

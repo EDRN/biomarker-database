@@ -1,74 +1,77 @@
 <?php
-/* SVN FILE: $Id: string.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * StringTest file
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
- *  Licensed under The Open Group Test Suite License
- *  Redistributions of files must retain the above copyright notice.
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs
- * @since			CakePHP(tm) v 1.2.0.5432
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
+ * @since         CakePHP(tm) v 1.2.0.5432
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Core', 'String');
+
 /**
- * Short description for class.
+ * StringTest class
  *
- * @package    cake.tests
- * @subpackage cake.tests.cases.libs
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
-class StringTest extends UnitTestCase {
+class StringTest extends CakeTestCase {
+
 /**
  * testUuidGeneration method
- * 
+ *
  * @access public
  * @return void
  */
 	function testUuidGeneration() {
 		$result = String::uuid();
-		$match = preg_match("/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/", $result);
+		$pattern = "/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/";
+		$match = preg_match($pattern, $result);
 		$this->assertTrue($match);
 	}
+
 /**
  * testMultipleUuidGeneration method
- * 
+ *
  * @access public
  * @return void
  */
 	function testMultipleUuidGeneration() {
 		$check = array();
-		$count = rand(10, 1000);
+		$count = mt_rand(10, 1000);
+		$pattern = "/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/";
+
 		for($i = 0; $i < $count; $i++) {
 			$result = String::uuid();
-			$match = preg_match("/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/", $result);
+			$match = preg_match($pattern, $result);
 			$this->assertTrue($match);
 			$this->assertFalse(in_array($result, $check));
 			$check[] = $result;
 		}
 	}
+
 /**
  * testInsert method
- * 
+ *
  * @access public
  * @return void
  */
 	function testInsert() {
+		$string = 'some string';
+		$expected = 'some string';
+		$result = String::insert($string, array());
+		$this->assertEqual($result, $expected);
+
 		$string = '2 + 2 = :sum. Cake is :adjective.';
 		$expected = '2 + 2 = 4. Cake is yummy.';
 		$result = String::insert($string, array('sum' => '4', 'adjective' => 'yummy'));
@@ -85,6 +88,11 @@ class StringTest extends UnitTestCase {
 		$string = '2 + 2 = 12sum21. Cake is 23adjective45.';
 		$expected = '2 + 2 = 4. Cake is 23adjective45.';
 		$result = String::insert($string, array('sum' => '4', 'adjective' => 'yummy'), array('format' => '/([\d])([\d])%s\\2\\1/'));
+		$this->assertEqual($result, $expected);
+
+		$string = ':web :web_site';
+		$expected = 'www http';
+		$result = String::insert($string, array('web' => 'www', 'web_site' => 'http'));
 		$this->assertEqual($result, $expected);
 
 		$string = '2 + 2 = <sum. Cake is <adjective>.';
@@ -160,10 +168,94 @@ class StringTest extends UnitTestCase {
 		$result = String::insert("this is a ? string", "test");
 		$expected = "this is a test string";
 		$this->assertEqual($result, $expected);
+
+		$result = String::insert("this is a ? string with a ? ? ?", array('long', 'few?', 'params', 'you know'));
+		$expected = "this is a long string with a few? params you know";
+		$this->assertEqual($result, $expected);
+
+		$result = String::insert('update saved_urls set url = :url where id = :id', array('url' => 'http://www.testurl.com/param1:url/param2:id','id' => 1));
+		$expected = "update saved_urls set url = http://www.testurl.com/param1:url/param2:id where id = 1";
+		$this->assertEqual($result, $expected);
+
+		$result = String::insert('update saved_urls set url = :url where id = :id', array('id' => 1, 'url' => 'http://www.testurl.com/param1:url/param2:id'));
+		$expected = "update saved_urls set url = http://www.testurl.com/param1:url/param2:id where id = 1";
+		$this->assertEqual($result, $expected);
+
+		$result = String::insert(':me cake. :subject :verb fantastic.', array('me' => 'I :verb', 'subject' => 'cake', 'verb' => 'is'));
+		$expected = "I :verb cake. cake is fantastic.";
+		$this->assertEqual($result, $expected);
+
+		$result = String::insert(':I.am: :not.yet: passing.', array('I.am' => 'We are'), array('before' => ':', 'after' => ':', 'clean' => array('replacement' => ' of course', 'method' => 'text')));
+		$expected = "We are of course passing.";
+		$this->assertEqual($result, $expected);
+
+		$result = String::insert(
+			':I.am: :not.yet: passing.',
+			array('I.am' => 'We are'),
+			array('before' => ':', 'after' => ':', 'clean' => true)
+		);
+		$expected = "We are passing.";
+		$this->assertEqual($result, $expected);
+
+		$result = String::insert('?-pended result', array('Pre'));
+		$expected = "Pre-pended result";
+		$this->assertEqual($result, $expected);
 	}
-	/**
+
+/**
+ * test Clean Insert
+ *
+ * @return void
+ */
+	function testCleanInsert() {
+		$result = String::cleanInsert(':incomplete', array(
+			'clean' => true, 'before' => ':', 'after' => ''
+		));
+		$this->assertEqual($result, '');
+
+		$result = String::cleanInsert(':incomplete', array(
+			'clean' => array('method' => 'text', 'replacement' => 'complete'),
+			'before' => ':', 'after' => '')
+		);
+		$this->assertEqual($result, 'complete');
+
+		$result = String::cleanInsert(':in.complete', array(
+			'clean' => true, 'before' => ':', 'after' => ''
+		));
+		$this->assertEqual($result, '');
+
+		$result = String::cleanInsert(':in.complete and', array(
+			'clean' => true, 'before' => ':', 'after' => '')
+		);
+		$this->assertEqual($result, '');
+
+		$result = String::cleanInsert(':in.complete or stuff', array(
+			'clean' => true, 'before' => ':', 'after' => ''
+		));
+		$this->assertEqual($result, 'stuff');
+
+		$result = String::cleanInsert(
+			'<p class=":missing" id=":missing">Text here</p>',
+			array('clean' => 'html', 'before' => ':', 'after' => '')
+		);
+		$this->assertEqual($result, '<p>Text here</p>');
+	}
+
+/**
+ * Tests that non-insertable variables (i.e. arrays) are skipped when used as values in
+ * String::insert().
+ *
+ * @return void
+ */
+	function testAutoIgnoreBadInsertData() {
+		$data = array('foo' => 'alpha', 'bar' => 'beta', 'fale' => array());
+		$result = String::insert('(:foo > :bar || :fale!)', $data, array('clean' => 'text'));
+		$this->assertEqual($result, '(alpha > beta || !)');
+	}
+
+/**
  * testTokenize method
- * 
+ *
  * @access public
  * @return void
  */
@@ -183,10 +275,18 @@ class StringTest extends UnitTestCase {
 		$result = String::tokenize('"single tag"', ' ', '"', '"');
 		$expected = array('"single tag"');
 		$this->assertEqual($expected, $result);
-		
+
 		$result = String::tokenize('tagA "single tag" tagB', ' ', '"', '"');
 		$expected = array('tagA', '"single tag"', 'tagB');
 		$this->assertEqual($expected, $result);
 	}
+	
+	function testReplaceWithQuestionMarkInString() {
+		$string = ':a, :b and :c?';
+		$expected = '2 and 3?';
+		$result = String::insert($string, array('b' => 2, 'c' => 3), array('clean' => true));
+		$this->assertEqual($expected, $result);
+	}
 }
+
 ?>

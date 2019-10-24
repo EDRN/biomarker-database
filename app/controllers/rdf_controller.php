@@ -336,7 +336,7 @@ __END;
 	function biomarkerorgans() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
-		$biomarkerorgandatas = $this->OrganData->findAll(null,null,null,null,1,2);
+		$biomarkerorgandatas = $this->OrganData->find('all');
 		$sensitivities = array();
 		foreach ($biomarkerorgandatas as $bod) {
 			
@@ -418,7 +418,7 @@ __END;
 	function studies() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
-		$studies = $this->Study->findAll();
+		$studies = $this->Study->find('all');
 		foreach ($studies as $s) {
 			//$aboutURL = "http://{$this->getResourceBase()}/studies/view/{$s['Study']['id']}";
 			$aboutURL = "http://edrn.nci.nih.gov/data/protocols/{$s['Study']['FHCRC_ID']}";
@@ -482,7 +482,7 @@ __END;
 	function publications() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
-		$publications = $this->Publication->findAll();
+		$publications = $this->Publication->find('all');
 		foreach ($publications as $p) {
 			$aboutURL = "http://{$this->getResourceBase()}/publications/view/{$p['Publication']['id']}";
 	
@@ -564,7 +564,7 @@ __END;
 	function terms() {
 		header("content-type:application/rdf+xml; charset=utf-8");
 		$this->printRdfStart();
-		$results = $this->Term->findAll();
+		$results = $this->Term->find('all');
 
 		foreach ($results as $t) {
 			$aboutURL = "http://{$this->getResourceBase()}/terms/view/{$t['Term']['id']}";

@@ -3,8 +3,12 @@
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
 	echo $html->css('biomarkers');
-	echo $javascript->link('mootools-release-1.11');
-	echo $javascript->link('eip');
+	// Deprecated in Cake 1.3
+	//echo $javascript->link('mootools-release-1.11');
+	//echo $javascript->link('eip');
+	// Use this instead:
+	echo $html->script('mootools-release-1.11');
+	echo $html->script('eip');
 
 	echo $html->css('autocomplete');
 

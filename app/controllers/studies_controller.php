@@ -21,7 +21,7 @@ class StudiesController extends AppController {
 		$this->Pagination->resultsPerPage = array();
 		$this->Pagination->show = 15;
 		list($order,$limit,$page) = $this->Pagination->init($criteria);
-		$this->set('studies', $this->Study->findAll($criteria,NULL,$order,$limit,$page));
+		$this->set('studies', $this->Study->find('all', compact('criteria', 'order', 'limit', 'page')));
 		
 		
 		// Get a list of all the studies for the ajax search

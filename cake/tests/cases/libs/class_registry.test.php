@@ -1,132 +1,154 @@
 <?php
-/* SVN FILE: $Id: class_registry.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * ClassRegistryTest file
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs
- * @since			CakePHP(tm) v 1.2.0.5432
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
+ * @since         CakePHP(tm) v 1.2.0.5432
+ * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 App::import('Core', 'ClassRegistry');
+
 /**
  * ClassRegisterModel class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
 class ClassRegisterModel extends CakeTestModel {
+
 /**
  * useTable property
- * 
+ *
  * @var bool false
  * @access public
  */
 	var $useTable = false;
 }
+
 /**
  * RegisterArticle class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
 class RegisterArticle extends ClassRegisterModel {
+
 /**
  * name property
- * 
+ *
  * @var string 'RegisterArticle'
  * @access public
  */
 	var $name = 'RegisterArticle';
 }
+
 /**
  * RegisterArticleFeatured class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
 class RegisterArticleFeatured extends ClassRegisterModel {
+
 /**
  * name property
- * 
- * @var string 'RegisterArticlFeatured'
+ *
+ * @var string 'RegisterArticleFeatured'
  * @access public
  */
-	var $name = 'RegisterArticlFeatured';
+	var $name = 'RegisterArticleFeatured';
 }
+
 /**
  * RegisterArticleTag class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
 class RegisterArticleTag extends ClassRegisterModel {
+
 /**
  * name property
- * 
- * @var string 'RegisterArticlTag'
+ *
+ * @var string 'RegisterArticleTag'
  * @access public
  */
-	var $name = 'RegisterArticlTag';
+	var $name = 'RegisterArticleTag';
 }
+
 /**
  * RegistryPluginAppModel class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
 class RegistryPluginAppModel extends ClassRegisterModel {
+
 /**
  * tablePrefix property
- * 
+ *
  * @var string 'something_'
  * @access public
  */
 	var $tablePrefix = 'something_';
 }
+
 /**
  * TestRegistryPluginModel class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
 class TestRegistryPluginModel extends RegistryPluginAppModel {
+
 /**
  * name property
- * 
+ *
  * @var string 'TestRegistryPluginModel'
  * @access public
  */
 	var $name = 'TestRegistryPluginModel';
 }
+
+/**
+ * RegisterCategory class
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
+ */
+class RegisterCategory extends ClassRegisterModel {
+
+/**
+ * name property
+ *
+ * @var string 'RegisterCategory'
+ * @access public
+ */
+	var $name = 'RegisterCategory';
+}
+
 /**
  * ClassRegistryTest class
- * 
- * @package              cake
- * @subpackage           cake.tests.cases.libs
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
  */
-class ClassRegistryTest extends UnitTestCase {
+class ClassRegistryTest extends CakeTestCase {
+
 /**
  * testAddModel method
- * 
+ *
  * @access public
  * @return void
  */
@@ -152,26 +174,73 @@ class ClassRegistryTest extends UnitTestCase {
 		$this->assertTrue(is_a($TagCopy, 'RegisterArticleTag'));
 		$this->assertIdentical($Tag, $TagCopy);
 
-		$NewTag = ClassRegistry::init(array('class' => 'RegisterArticleTag', 'alias' => 'NewTag'));
+		if (PHP5) {
+			$NewTag = ClassRegistry::init(array('class' => 'RegisterArticleTag', 'alias' => 'NewTag'));
+		} else {
+			$NewTag =& ClassRegistry::init(array('class' => 'RegisterArticleTag', 'alias' => 'NewTag'));
+		}
 		$this->assertTrue(is_a($Tag, 'RegisterArticleTag'));
 
+		if (PHP5) {
+			$NewTagCopy = ClassRegistry::init(array('class' => 'RegisterArticleTag', 'alias' => 'NewTag'));
+		} else {
+			$NewTagCopy =& ClassRegistry::init(array('class' => 'RegisterArticleTag', 'alias' => 'NewTag'));
+		}
+
 		$this->assertNotIdentical($Tag, $NewTag);
+		$this->assertIdentical($NewTag, $NewTagCopy);
 
 		$NewTag->name = 'SomeOtherName';
 		$this->assertNotIdentical($Tag, $NewTag);
+		$this->assertIdentical($NewTag, $NewTagCopy);
 
 		$Tag->name = 'SomeOtherName';
 		$this->assertNotIdentical($Tag, $NewTag);
 
 		$this->assertTrue($TagCopy->name === 'SomeOtherName');
+
+		if (PHP5) {
+			$User = ClassRegistry::init(array('class' => 'RegisterUser', 'alias' => 'User', 'table' => false));
+		} else {
+			$User =& ClassRegistry::init(array('class' => 'RegisterUser', 'alias' => 'User', 'table' => false));
+		}
+		$this->assertTrue(is_a($User, 'AppModel'));
+
+		if (PHP5) {
+			$UserCopy = ClassRegistry::init(array('class' => 'RegisterUser', 'alias' => 'User', 'table' => false));
+		} else {
+			$UserCopy =& ClassRegistry::init(array('class' => 'RegisterUser', 'alias' => 'User', 'table' => false));
+		}
+		$this->assertTrue(is_a($UserCopy, 'AppModel'));
+		$this->assertIdentical($User, $UserCopy);
+
+		if (PHP5) {
+			$Category = ClassRegistry::init(array('class' => 'RegisterCategory'));
+		} else {
+			$Category =& ClassRegistry::init(array('class' => 'RegisterCategory'));
+		}
+		$this->assertTrue(is_a($Category, 'RegisterCategory'));
+
+		if (PHP5) {
+			$ParentCategory = ClassRegistry::init(array('class' => 'RegisterCategory', 'alias' => 'ParentCategory'));
+		} else {
+			$ParentCategory =& ClassRegistry::init(array('class' => 'RegisterCategory', 'alias' => 'ParentCategory'));
+		}
+		$this->assertTrue(is_a($ParentCategory, 'RegisterCategory'));
+		$this->assertNotIdentical($Category, $ParentCategory);
+
+		$this->assertNotEqual($Category->alias, $ParentCategory->alias);
+		$this->assertEqual('RegisterCategory', $Category->alias);
+		$this->assertEqual('ParentCategory', $ParentCategory->alias);
 	}
+
 /**
  * testClassRegistryFlush method
- * 
+ *
  * @access public
  * @return void
  */
-	function testClassRegistryFlush () {
+	function testClassRegistryFlush() {
 		$ArticleTag = ClassRegistry::getObject('RegisterArticleTag');
 		$this->assertTrue(is_a($ArticleTag, 'RegisterArticleTag'));
 		ClassRegistry::flush();
@@ -180,13 +249,14 @@ class ClassRegistryTest extends UnitTestCase {
 		$this->assertFalse($NoArticleTag);
 		$this->assertTrue(is_a($ArticleTag, 'RegisterArticleTag'));
 	}
+
 /**
- * testAddMultiplModels method
- * 
+ * testAddMultipleModels method
+ *
  * @access public
  * @return void
  */
-	function testAddMultiplModels () {
+	function testAddMultipleModels() {
 		$Article = ClassRegistry::isKeySet('Article');
 		$this->assertFalse($Article);
 
@@ -221,9 +291,10 @@ class ClassRegistryTest extends UnitTestCase {
 		$Tag = ClassRegistry::getObject('Tag');
 		$this->assertTrue(is_a($Tag, 'RegisterArticleTag'));
 	}
+
 /**
  * testPluginAppModel method
- * 
+ *
  * @access public
  * @return void
  */
@@ -235,6 +306,21 @@ class ClassRegistryTest extends UnitTestCase {
 		$this->assertTrue(is_a($TestRegistryPluginModel, 'TestRegistryPluginModel'));
 
 		$this->assertEqual($TestRegistryPluginModel->tablePrefix, 'something_');
+
+		if (PHP5) {
+			$PluginUser = ClassRegistry::init(array('class' => 'RegistryPlugin.RegisterUser', 'alias' => 'RegistryPluginUser', 'table' => false));
+		} else {
+			$PluginUser =& ClassRegistry::init(array('class' => 'RegistryPlugin.RegisterUser', 'alias' => 'RegistryPluginUser', 'table' => false));
+		}
+		$this->assertTrue(is_a($PluginUser, 'RegistryPluginAppModel'));
+
+		if (PHP5) {
+			$PluginUserCopy = ClassRegistry::getObject('RegistryPluginUser');
+		} else {
+			$PluginUserCopy =& ClassRegistry::getObject('RegistryPluginUser');
+		}
+		$this->assertTrue(is_a($PluginUserCopy, 'RegistryPluginAppModel'));
+		$this->assertIdentical($PluginUser, $PluginUserCopy);
 	}
 }
 ?>

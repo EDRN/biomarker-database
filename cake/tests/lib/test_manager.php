@@ -1,105 +1,177 @@
 <?php
-/* SVN FILE: $Id: test_manager.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * TestManager for CakePHP Test suite.
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake
- * @subpackage		cake.cake.tests.lib
- * @since			CakePHP(tm) v 1.2.0.4433
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package       cake
+ * @subpackage    cake.cake.tests.lib
+ * @since         CakePHP(tm) v 1.2.0.4433
+ * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
-define ('CORE_TEST_CASES', dirname(dirname(__FILE__)) . DS . 'cases');
-define ('CORE_TEST_GROUPS', dirname(dirname(__FILE__)) . DS . 'groups');
-define ('APP_TEST_CASES', APP . 'tests' .DS. 'cases');
-define ('APP_TEST_GROUPS', APP . 'tests' .DS. 'groups');
+define('CORE_TEST_CASES', TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'cases');
+define('CORE_TEST_GROUPS', TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'groups');
+define('APP_TEST_CASES', TESTS . 'cases');
+define('APP_TEST_GROUPS', TESTS . 'groups');
+
 /**
- * Short description for class.
+ * TestManager is the base class that handles loading and initiating the running
+ * of TestCase and TestSuite classes that the user has selected.
  *
- * @package		cake
- * @subpackage	cake.cake.tests.lib
+ * @package       cake
+ * @subpackage    cake.cake.tests.lib
  */
 class TestManager {
+/**
+ * Extension suffix for test case files.
+ *
+ * @var string
+ */
 	var $_testExtension = '.test.php';
+
+/**
+ * Extension suffix for group test case files.
+ *
+ * @var string
+ */
 	var $_groupExtension = '.group.php';
+
+/**
+ * Is this test an AppTest?
+ *
+ * @var boolean
+ */
 	var $appTest = false;
+
+/**
+ * Is this test a plugin test?
+ *
+ * @var mixed boolean false or string name of the plugin being used.
+ */
 	var $pluginTest = false;
 
+/**
+ * Constructor for the TestManager class
+ *
+ * @return void
+ * @access public
+ */
 	function TestManager() {
 		$this->_installSimpleTest();
 		if (isset($_GET['app'])) {
 			$this->appTest = true;
 		}
 		if (isset($_GET['plugin'])) {
-			$this->pluginTest = $_GET['plugin'];
+			$this->pluginTest = htmlentities($_GET['plugin']);
 		}
 	}
 
+/**
+ * Includes the required simpletest files in order for the testsuite to run
+ *
+ * @return void
+ * @access public
+ */
 	function _installSimpleTest() {
-		App::import('Vendor', array('simpletest'.DS.'unit_tester', 'simpletest'.DS.'mock_objects', 'simpletest'.DS.'web_tester'));
+		App::import('Vendor', array(
+			'simpletest' . DS . 'unit_tester',
+			'simpletest' . DS . 'mock_objects',
+			'simpletest' . DS . 'web_tester'
+		));
 		require_once(CAKE_TESTS_LIB . 'cake_web_test_case.php');
 		require_once(CAKE_TESTS_LIB . 'cake_test_case.php');
 	}
 
-	function runAllTests(&$reporter) {
-		$manager =& new TestManager();
-
-		$testCases =& $manager->_getTestFileList($manager->_getTestsPath());
-
-		if ($manager->appTest) {
-			$test =& new GroupTest('All App Tests');
-		} else if ($manager->pluginTest) {
-			$test =& new GroupTest('All ' . Inflector::humanize($manager->pluginTest) . ' Plugin Tests');
+/**
+ * Runs all tests in the Application depending on the current appTest setting
+ *
+ * @param Object $reporter Reporter object for the tests being run.
+ * @param boolean $testing Are tests supposed to be auto run.  Set to true to return testcase list.
+ * @return mixed
+ * @access public
+ */
+	function runAllTests(&$reporter, $testing = false) {
+		$testCases =& $this->_getTestFileList($this->_getTestsPath());
+		if ($this->appTest) {
+			$test =& new TestSuite(__('All App Tests', true));
+		} else if ($this->pluginTest) {
+			$test =& new TestSuite(sprintf(__('All %s Plugin Tests', true), Inflector::humanize($this->pluginTest)));
 		} else {
-			$test =& new GroupTest('All Core Tests');
+			$test =& new TestSuite(__('All Core Tests', true));
+		}
+
+		if ($testing) {
+			return $testCases;
 		}
 
 		foreach ($testCases as $testCase) {
 			$test->addTestFile($testCase);
 		}
+
 		return $test->run($reporter);
 	}
 
-	function runTestCase($testCaseFile, &$reporter) {
-		$manager =& new TestManager();
+/**
+ * Runs a specific test case file
+ *
+ * @param string $testCaseFile Filename of the test to be run.
+ * @param Object $reporter Reporter instance to attach to the test case.
+ * @param boolean $testing Set to true if testing, otherwise test case will be run.
+ * @return mixed Result of test case being run.
+ * @access public
+ */
+	function runTestCase($testCaseFile, &$reporter, $testing = false) {
+		$testCaseFileWithPath = $this->_getTestsPath() . DS . $testCaseFile;
 
-		$testCaseFileWithPath = $manager->_getTestsPath() . DS . $testCaseFile;
-		if (! file_exists($testCaseFileWithPath)) {
-			trigger_error("Test case {$testCaseFile} cannot be found", E_USER_ERROR);
+		if (!file_exists($testCaseFileWithPath) || strpos($testCaseFileWithPath, '..')) {
+			trigger_error(
+				sprintf(__("Test case %s cannot be found", true), htmlentities($testCaseFile)),
+				E_USER_ERROR
+			);
+			return false;
 		}
-		$test =& new GroupTest("Individual test case: " . $testCaseFile);
+
+		if ($testing) {
+			return true;
+		}
+
+		$test =& new TestSuite(sprintf(__('Individual test case: %s', true), $testCaseFile));
 		$test->addTestFile($testCaseFileWithPath);
 		return $test->run($reporter);
 	}
 
+/**
+ * Runs a specific group test file
+ *
+ * @param string $groupTestName GroupTest that you want to run.
+ * @param Object $reporter Reporter instance to use with the group test being run.
+ * @return mixed Results of group test being run.
+ * @access public
+ */
 	function runGroupTest($groupTestName, &$reporter) {
-		$manager =& new TestManager();
-		$filePath = $manager->_getTestsPath('groups') . DS . strtolower($groupTestName) . $manager->_groupExtension;
+		$filePath = $this->_getTestsPath('groups') . DS . strtolower($groupTestName) . $this->_groupExtension;
 
-		if (! file_exists($filePath)) {
-			trigger_error("Group test {$groupTestName} cannot be found at {$filePath}", E_USER_ERROR);
+		if (!file_exists($filePath) || strpos($filePath, '..')) {
+			trigger_error(sprintf(
+					__("Group test %s cannot be found at %s", true), 
+					htmlentities($groupTestName), 
+					htmlentities($filePath)
+				),
+				E_USER_ERROR
+			);
 		}
 
 		require_once $filePath;
-		$test =& new GroupTest($groupTestName . ' group test');
-		foreach ($manager->_getGroupTestClassNames($filePath) as $groupTest) {
+		$test =& new TestSuite(sprintf(__('%s group test', true), $groupTestName));
+		foreach ($this->_getGroupTestClassNames($filePath) as $groupTest) {
 			$testCase = new $groupTest();
 			$test->addTestCase($testCase);
 			if (isset($testCase->label)) {
@@ -109,6 +181,15 @@ class TestManager {
 		return $test->run($reporter);
 	}
 
+/**
+ * Adds all testcases in a given directory to a given GroupTest object
+ *
+ * @param object $groupTest Instance of TestSuite/GroupTest that files are to be added to.
+ * @param string $directory The directory to add tests from.
+ * @return void
+ * @access public
+ * @static
+ */
 	function addTestCasesFromDirectory(&$groupTest, $directory = '.') {
 		$manager =& new TestManager();
 		$testCases =& $manager->_getTestFileList($directory);
@@ -117,23 +198,44 @@ class TestManager {
 		}
 	}
 
+/**
+ * Adds a specific test file and thereby all of its test cases and group tests to a given group test file
+ *
+ * @param object $groupTest Instance of TestSuite/GroupTest that a file should be added to.
+ * @param string $file The file name, minus the suffix to add.
+ * @return void
+ * @access public
+ * @static
+ */
 	function addTestFile(&$groupTest, $file) {
 		$manager =& new TestManager();
 
-		if (file_exists($file.'.test.php')) {
-			$file .= '.test.php';
-		} elseif (file_exists($file.'.group.php')) {
-			$file .= '.group.php';
+		if (file_exists($file . $manager->_testExtension)) {
+			$file .= $manager->_testExtension;
+		} elseif (file_exists($file . $manager->_groupExtension)) {
+			$file .= $manager->_groupExtension;
 		}
 		$groupTest->addTestFile($file);
 	}
 
+/**
+ * Returns a list of test cases found in the current valid test case path
+ *
+ * @access public
+ * @static
+ */
 	function &getTestCaseList() {
 		$manager =& new TestManager();
 		$return = $manager->_getTestCaseList($manager->_getTestsPath());
 		return $return;
 	}
 
+/**
+ * Builds the list of test cases from a given directory
+ *
+ * @param string $directory Directory to get test case list from.
+ * @access protected
+ */
 	function &_getTestCaseList($directory = '.') {
 		$fileList =& $this->_getTestFileList($directory);
 		$testCases = array();
@@ -143,22 +245,46 @@ class TestManager {
 		return $testCases;
 	}
 
+/**
+ * Returns a list of test files from a given directory
+ *
+ * @param string $directory Directory to get test case files from.
+ * @access protected
+ */
 	function &_getTestFileList($directory = '.') {
 		$return = $this->_getRecursiveFileList($directory, array(&$this, '_isTestCaseFile'));
 		return $return;
 	}
 
+/**
+ * Returns a list of group tests found in the current valid test case path
+ *
+ * @access public
+ * @static
+ */
 	function &getGroupTestList() {
 		$manager =& new TestManager();
 		$return = $manager->_getTestGroupList($manager->_getTestsPath('groups'));
 		return $return;
 	}
 
+/**
+ * Returns a list of group test files from a given directory
+ *
+ * @param string $directory The directory to get group test files from.
+ * @access protected
+ */
 	function &_getTestGroupFileList($directory = '.') {
 		$return = $this->_getRecursiveFileList($directory, array(&$this, '_isTestGroupFile'));
 		return $return;
 	}
 
+/**
+ * Returns a list of group test files from a given directory
+ *
+ * @param string $directory The directory to get group tests from.
+ * @access protected
+ */
 	function &_getTestGroupList($directory = '.') {
 		$fileList =& $this->_getTestGroupFileList($directory);
 		$groupTests = array();
@@ -170,56 +296,91 @@ class TestManager {
 		return $groupTests;
 	}
 
+/**
+ * Returns a list of class names from a group test file
+ *
+ * @param string $groupTestFile The groupTest file to scan for TestSuite classnames.
+ * @access protected
+ */
 	function &_getGroupTestClassNames($groupTestFile) {
 		$file = implode("\n", file($groupTestFile));
-		preg_match("~lass\s+?(.*)\s+?extends GroupTest~", $file, $matches);
-		if (! empty($matches)) {
+		preg_match("~lass\s+?(.*)\s+?extends TestSuite~", $file, $matches);
+		if (!empty($matches)) {
 			unset($matches[0]);
 			return $matches;
-		} else {
-			return array();
 		}
+		$matches = array();
+		return $matches;
 	}
 
+/**
+ * Gets a recursive list of files from a given directory and matches then against
+ * a given fileTestFunction, like isTestCaseFile()
+ *
+ * @param string $directory The directory to scan for files.
+ * @param mixed $fileTestFunction
+ * @access protected
+ */
 	function &_getRecursiveFileList($directory = '.', $fileTestFunction) {
 		$fileList = array();
 		if (!is_dir($directory)) {
 			return $fileList;
 		}
-		$dh = opendir($directory);
-		if (! is_resource($dh)) {
-			trigger_error("Couldn't open {$directory}", E_USER_ERROR);
-		}
 
-		while ($file = readdir($dh)) {
-			$filePath = $directory . DIRECTORY_SEPARATOR . $file;
-			if (0 === strpos($file, '.')) {
-				continue;
-			}
+		$files = glob($directory . DS . '*');
+		$files = $files ? $files : array();
 
-			if (is_dir($filePath)) {
-				$fileList = array_merge($fileList, $this->_getRecursiveFileList($filePath, $fileTestFunction));
-			}
-			if ($fileTestFunction[0]->$fileTestFunction[1]($file)) {
-				$fileList[] = $filePath;
+		foreach ($files as $file) {
+			if (is_dir($file)) {
+				$fileList = array_merge($fileList, $this->_getRecursiveFileList($file, $fileTestFunction));
+			} elseif ($fileTestFunction[0]->$fileTestFunction[1]($file)) {
+				$fileList[] = $file;
 			}
 		}
-		closedir($dh);
 		return $fileList;
 	}
 
+/**
+ * Tests if a file has the correct test case extension
+ *
+ * @param string $file
+ * @return boolean Whether $file is a test case.
+ * @access protected
+ */
 	function _isTestCaseFile($file) {
 		return $this->_hasExpectedExtension($file, $this->_testExtension);
 	}
 
+/**
+ * Tests if a file has the correct group test extension
+ *
+ * @param string $file
+ * @return boolean Whether $file is a group
+ * @access protected
+ */
 	function _isTestGroupFile($file) {
 		return $this->_hasExpectedExtension($file, $this->_groupExtension);
 	}
 
+/**
+ * Check if a file has a specific extension
+ *
+ * @param string $file
+ * @param string $extension
+ * @return void
+ * @access protected
+ */
 	function _hasExpectedExtension($file, $extension) {
 		return $extension == strtolower(substr($file, (0 - strlen($extension))));
 	}
 
+/**
+ * Returns the given path to the test files depending on a given type of tests (cases, group, ..)
+ *
+ * @param string $type either 'cases' or 'groups'
+ * @return string The path tests are located on
+ * @access protected
+ */
 	function _getTestsPath($type = 'cases') {
 		if (!empty($this->appTest)) {
 			if ($type == 'cases') {
@@ -229,6 +390,10 @@ class TestManager {
 			}
 		} else if (!empty($this->pluginTest)) {
 			$_pluginBasePath = APP . 'plugins' . DS . $this->pluginTest . DS . 'tests';
+			$pluginPath = App::pluginPath($this->pluginTest);
+			if (file_exists($pluginPath . DS . 'tests')) {
+				$_pluginBasePath = $pluginPath . DS . 'tests';
+			}
 			$result = $_pluginBasePath . DS . $type;
 		} else {
 			if ($type == 'cases') {
@@ -239,329 +404,20 @@ class TestManager {
 		}
 		return $result;
 	}
-}
+
 /**
- * Short description for class.
+ * Get the extension for either 'group' or 'test' types.
  *
- * @package		cake
- * @subpackage	cake.cake.tests.lib
+ * @param string $type Type of test to get, either 'test' or 'group'
+ * @return string Extension suffix for test.
+ * @access public
  */
-class CliTestManager extends TestManager {
-
-	function &getGroupTestList() {
-		$manager =& new CliTestManager();
-		$groupTests =& $manager->_getTestGroupList($manager->_getTestsPath('groups'));
-		$buffer = "Available Group Test:\n";
-
-		foreach ($groupTests as $groupTest) {
-			$buffer .= "  " . $groupTest . "\n";
+	function getExtension($type = 'test') {
+		if ($type == 'test' || $type == 'case') {
+			return $this->_testExtension;
 		}
-		return $buffer . "\n";
-	}
-
-	function &getTestCaseList() {
-		$manager =& new CliTestManager();
-		$testCases =& $manager->_getTestCaseList($manager->_getTestsPath());
-		$buffer = "Available Test Cases:\n";
-
-		foreach ($testCases as $testCaseFile => $testCase) {
-			$buffer .= "  " . $testCaseFile . "\n";
-		}
-		return $buffer . "\n";
+		return $this->_groupExtension;
 	}
 }
-/**
- * Short description for class.
- *
- * @package		cake
- * @subpackage	cake.cake.tests.lib
- */
-class TextTestManager extends TestManager {
-	var $_url;
 
-	function TextTestManager() {
-		parent::TestManager();
-		$this->_url = $_SERVER['PHP_SELF'];
-	}
-
-	function getBaseURL() {
-		return $this->_url;
-	}
-
-	function &getGroupTestList() {
-		$manager =& new TextTestManager();
-		$groupTests =& $manager->_getTestGroupList($manager->_getTestsPath('groups'));
-
-		$buffer = "Core Test Groups:\n";
-		$urlExtra = null;
-		if ($manager->appTest) {
-			$buffer = "App Test Groups:\n";
-			$urlExtra = '&app=true';
-		} else if ($manager->pluginTest) {
-			$buffer = Inflector::humanize($manager->pluginTest) . " Test Groups:\n";
-			$urlExtra = '&plugin=' . $manager->pluginTest;
-		}
-
-		$buffer .= "All tests\n" . $_SERVER['SERVER_NAME'] . $manager->getBaseURL() . "?group=all&output=txt{$urlExtra}\n";
-
-		foreach ((array)$groupTests as $groupTest) {
-			$buffer .= $_SERVER['SERVER_NAME']. $manager->getBaseURL()."?group=" . $groupTest . "&output=txt{$urlExtra}"."\n";
-		}
-
-		return $buffer;
-	}
-
-	function &getTestCaseList() {
-		$manager =& new TextTestManager();
-		$testCases =& $manager->_getTestCaseList($manager->_getTestsPath());
-
-		$buffer = "Core Test Cases:\n";
-		$urlExtra = null;
-		if ($manager->appTest) {
-			$buffer = "App Test Cases:\n";
-			$urlExtra = '&app=true';
-		} else if ($manager->pluginTest) {
-			$buffer = Inflector::humanize($manager->pluginTest) . " Test Cases:\n";
-			$urlExtra = '&plugin=' . $manager->pluginTest;
-		}
-
-		if (1 > count($testCases)) {
-			$buffer .= "EMPTY";
-			return $buffer;
-		}
-
-		foreach ($testCases as $testCaseFile => $testCase) {
-			$buffer .= $_SERVER['SERVER_NAME']. $manager->getBaseURL()."?case=" . $testCase . "&output=txt"."\n";
-		}
-
-		$buffer .= "\n";
-		return $buffer;
-	}
-}
-/**
- * Short description for class.
- *
- * @package		cake
- * @subpackage	cake.cake.tests.lib
- */
-class HtmlTestManager extends TestManager {
-	var $_url;
-
-	function HtmlTestManager() {
-		parent::TestManager();
-		$this->_url = $_SERVER['PHP_SELF'];
-	}
-
-	function getBaseURL() {
-		return $this->_url;
-	}
-
-	function &getGroupTestList() {
-		$urlExtra = '';
-		$manager =& new HtmlTestManager();
-		$groupTests =& $manager->_getTestGroupList($manager->_getTestsPath('groups'));
-
-		$buffer = "<h3>Core Test Groups:</h3>\n<ul>";
-		$urlExtra = null;
-		if ($manager->appTest) {
-			$buffer = "<h3>App Test Groups:</h3>\n<ul>";
-			$urlExtra = '&app=true';
-		} else if ($manager->pluginTest) {
-			$buffer = "<h3>" . Inflector::humanize($manager->pluginTest) . " Test Groups:</h3>\n<ul>";
-			$urlExtra = '&plugin=' . $manager->pluginTest;
-		}
-
-		$buffer .= "<li><a href='" . $manager->getBaseURL() . "?group=all$urlExtra'>All tests</a></li>\n";
-
-		foreach ((array)$groupTests as $groupTest) {
-			$buffer .= "<li><a href='" . $manager->getBaseURL() . "?group={$groupTest}" . "{$urlExtra}'>" . $groupTest . "</a></li>\n";
-		}
-		$buffer .= "</ul>\n";
-		return $buffer;
-	}
-
-	function &getTestCaseList() {
-		$urlExtra = '';
-		$manager =& new HtmlTestManager();
-		$testCases =& $manager->_getTestCaseList($manager->_getTestsPath());
-
-		$buffer = "<h3>Core Test Cases:</h3>\n<ul>";
-		$urlExtra = null;
-		if ($manager->appTest) {
-			$buffer = "<h3>App Test Cases:</h3>\n<ul>";
-			$urlExtra = '&app=true';
-		} else if ($manager->pluginTest) {
-			$buffer = "<h3>" . Inflector::humanize($manager->pluginTest) . " Test Cases:</h3>\n<ul>";
-			$urlExtra = '&plugin=' . $manager->pluginTest;
-		}
-
-		if (1 > count($testCases)) {
-			$buffer .= "<strong>EMPTY</strong>";
-			return $buffer;
-		}
-
-		foreach ($testCases as $testCaseFile => $testCase) {
-			$title = explode(strpos($testCase, '\\') ? '\\' : '/', str_replace('.test.php', '', $testCase));
-			$title[count($title) - 1] = Inflector::camelize($title[count($title) - 1]);
-			$title = join(' / ', $title);
-
-				$buffer .= "<li><a href='" . $manager->getBaseURL() . "?case=" . urlencode($testCase) . $urlExtra ."'>" . $title . "</a></li>\n";
-		}
-		$buffer .= "</ul>\n";
-		return $buffer;
-	}
-}
-if (function_exists('caketestsgetreporter')) {
-	echo "You need a new test.php. \n";
-	echo "Try this one: " . CONSOLE_LIBS . "templates" . DS . "skel" . DS . "webroot" . DS . "test.php";
-	exit();
-} else {
-	function &CakeTestsGetReporter() {
-		static $Reporter = NULL;
-		if (!$Reporter) {
-			switch (CAKE_TEST_OUTPUT) {
-				case CAKE_TEST_OUTPUT_HTML:
-					require_once CAKE_TESTS_LIB . 'cake_reporter.php';
-					$Reporter =& new CakeHtmlReporter();
-				break;
-				default:
-					$Reporter =& new TextReporter();
-				break;
-			}
-		}
-		return $Reporter;
-	}
-
-	function CakePHPTestRunMore() {
-		switch (CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				if (isset($_GET['group'])) {
-					if (isset($_GET['app'])) {
-						$show = '?show=groups&amp;app=true';
-					} else if (isset($_GET['plugin'])) {
-						$show = '?show=groups&amp;plugin=' . $_GET['plugin'];
-					} else {
-						$show = '?show=groups';
-					}
-					$query = '?group='.$_GET['group'];
-					if (isset($_GET['app'])) {
-						$query .= '&amp;app=true';
-					} elseif (isset($_GET['plugin'])) {
-						$query .= '&amp;plugin=' . $_GET['plugin'];
-					}
-				}
-				if (isset($_GET['case'])) {
-					if (isset($_GET['app'])) {
-						$show = '?show=cases&amp;app=true';
-					} else if (isset($_GET['plugin'])) {
-						$show = '?show=cases&amp;plugin=' . $_GET['plugin'];
-					} else {
-						$show = '?show=cases';
-					}
-					$query = '?case='.$_GET['case'];
-					if (isset($_GET['app'])) {
-						$query .= '&amp;app=true';
-					} elseif (isset($_GET['plugin'])) {
-						$query .= '&amp;plugin=' . $_GET['plugin'];
-					}
-				}
-				ob_start();
-				echo "<p><a href='" . RUN_TEST_LINK . $show . "'>Run more tests</a> | <a href='" . RUN_TEST_LINK . $query . "&show_passes=1'>Show Passes</a> | \n";
-			break;
-		}
-	}
-
-	function CakePHPTestAnalyzeCodeCoverage() {
-		switch (CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				if (isset($_GET['case'])) {
-					$query = '?case='.$_GET['case'];
-					if (isset($_GET['app'])) {
-						$query .= '&amp;app=true';
-					} elseif (isset($_GET['plugin'])) {
-						$query .= '&amp;plugin=' . $_GET['plugin'];
-					}
-				} else {
-					$query = '?group='.$_GET['group'];
-					if (isset($_GET['app'])) {
-						$query .= '&amp;app=true';
-					} elseif (isset($_GET['plugin'])) {
-						$query .= '&amp;plugin=' . $_GET['plugin'];
-					}
-				}
-				$query .= '&amp;code_coverage=true';
-				ob_start();
-				echo " <a href='" . RUN_TEST_LINK . $query . "'>Analyze Code Coverage</a></p>\n";
-			break;
-		}
-	}
-
-	function CakePHPTestCaseList() {
-		switch (CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				ob_start();
-				echo HtmlTestManager::getTestCaseList();
-			break;
-			case CAKE_TEST_OUTPUT_TEXT:
-			default:
-				echo TextTestManager::getTestCaseList();
-			break;
-		}
-	}
-
-	function CakePHPTestGroupTestList() {
-		switch (CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				echo HtmlTestManager::getGroupTestList();
-			break;
-			case CAKE_TEST_OUTPUT_TEXT:
-			default:
-				echo TextTestManager::getGroupTestList();
-				break;
-		}
-	}
-
-	function CakePHPTestHeader() {
-		switch (CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				ob_start();
-				if (!class_exists('dispatcher')) {
-					require CAKE . 'dispatcher.php';
-				}
-				$dispatch =& new Dispatcher();
-				$dispatch->baseUrl();
-				define('BASE', $dispatch->webroot);
-				$baseUrl = BASE;
-				$characterSet = 'charset=utf-8';
-				include CAKE_TESTS_LIB . 'header.php';
-			break;
-			case CAKE_TEST_OUTPUT_TEXT:
-			default:
-				header('content-type: text/plain');
-			break;
-		}
-	}
-
-	function CakePHPTestSuiteHeader() {
-		switch (CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				ob_start();
-				$groups = $_SERVER['PHP_SELF'].'?show=groups';
-				$cases = $_SERVER['PHP_SELF'].'?show=cases';
-				$plugins = Configure::listObjects('plugin');
-				include CAKE_TESTS_LIB . 'content.php';
-			break;
-		}
-	}
-
-	function CakePHPTestSuiteFooter() {
-		switch ( CAKE_TEST_OUTPUT) {
-			case CAKE_TEST_OUTPUT_HTML:
-				ob_start();
-				$baseUrl = BASE;
-				include CAKE_TESTS_LIB . 'footer.php';
-			break;
-		}
-	}
-}
 ?>

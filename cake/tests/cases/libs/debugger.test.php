@@ -1,41 +1,44 @@
 <?php
-/* SVN FILE: $Id: debugger.test.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
- * Short description for file.
- *
- * Long description for file
+ * DebuggerTest file
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
- *  Licensed under The Open Group Test Suite License
- *  Redistributions of files must retain the above copyright notice.
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package			cake.tests
- * @subpackage		cake.tests.cases.libs
- * @since			CakePHP(tm) v 1.2.0.5432
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP Project
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
+ * @since         CakePHP(tm) v 1.2.0.5432
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Core', 'Debugger');
-/**
- * Short description for class.
- *
- * @package    cake.tests
- * @subpackage cake.tests.cases.libs
- */
-class DebuggerTest extends UnitTestCase {
 
-//do not move code below or it change line numbers which are used in the tests
+/**
+ * DebugggerTestCaseDebuggger class
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
+ */
+class DebuggerTestCaseDebugger extends Debugger {
+}
+
+/**
+ * DebuggerTest class
+ *
+ * @package       cake
+ * @subpackage    cake.tests.cases.libs
+ */
+class DebuggerTest extends CakeTestCase {
+// !!!
+// !!! Be careful with changing code below as it may
+// !!! change line numbers which are used in the tests
+// !!!
 /**
  * setUp method
  *
@@ -52,6 +55,17 @@ class DebuggerTest extends UnitTestCase {
 			}
 		}
 	}
+
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		Configure::write('log', true);
+	}
+
 /**
  * testDocRef method
  *
@@ -64,6 +78,31 @@ class DebuggerTest extends UnitTestCase {
 		$debugger = new Debugger();
 		$this->assertEqual(ini_get('docref_root'), 'http://php.net/');
 	}
+
+/**
+ * test Excerpt writing
+ *
+ * @access public
+ * @return void
+ */
+	function testExcerpt() {
+		$result = Debugger::excerpt(__FILE__, __LINE__, 2);
+		$this->assertTrue(is_array($result));
+		$this->assertEqual(count($result), 5);
+		$this->assertPattern('/function(.+)testExcerpt/', $result[1]);
+
+		$result = Debugger::excerpt(__FILE__, 2, 2);
+		$this->assertTrue(is_array($result));
+		$this->assertEqual(count($result), 4);
+
+		$expected = '<code><span style="color: #000000">&lt;?php';
+		$expected .= '</span></code>';
+		$this->assertEqual($result[0], $expected);
+
+		$return = Debugger::excerpt('[internal]', 2, 2);
+		$this->assertTrue(empty($return));
+	}
+
 /**
  * testOutput method
  *
@@ -78,19 +117,19 @@ class DebuggerTest extends UnitTestCase {
 		$result = Debugger::output(true);
 
 		$this->assertEqual($result[0]['error'], 'Notice');
-		$this->assertEqual($result[0]['description'], 'Undefined variable: out');
-		$this->assertPattern('/DebuggerTest::testOutput/', $result[0]['trace']);
-		$this->assertPattern('/SimpleInvoker::invoke/', $result[0]['trace']);
+		$this->assertPattern('/Undefined variable\:\s+out/', $result[0]['description']);
+		$this->assertPattern('/DebuggerTest::testOutput/i', $result[0]['trace']);
+		$this->assertPattern('/SimpleInvoker::invoke/i', $result[0]['trace']);
 
 		ob_start();
 		Debugger::output('txt');
 		$other .= '';
 		$result = ob_get_clean();
 
-		$this->assertPattern('/Undefined variable: other/', $result);
+		$this->assertPattern('/Undefined variable:\s+other/', $result);
 		$this->assertPattern('/Context:/', $result);
-		$this->assertPattern('/DebuggerTest::testOutput/', $result);
-		$this->assertPattern('/SimpleInvoker::invoke/', $result);
+		$this->assertPattern('/DebuggerTest::testOutput/i', $result);
+		$this->assertPattern('/SimpleInvoker::invoke/i', $result);
 
 		ob_start();
 		Debugger::output('html');
@@ -98,19 +137,67 @@ class DebuggerTest extends UnitTestCase {
 		$result = ob_get_clean();
 		$this->assertPattern('/<pre class="cake-debug">.+<\/pre>/', $result);
 		$this->assertPattern('/<b>Notice<\/b>/', $result);
-		$this->assertPattern('/variable: wrong/', $result);
+		$this->assertPattern('/variable:\s+wrong/', $result);
 
 		ob_start();
 		Debugger::output('js');
 		$buzz .= '';
-		$result = ob_get_clean();
-		$this->assertPattern("/<a href\='javascript:void\(0\);' onclick\='/", $result);
-		$this->assertPattern('/<b>Notice<\/b>/', $result);
-		$this->assertPattern('/Undefined variable: buzz/', $result);
-		$this->assertPattern('/<a[^>]+>Code<\/a>/', $result);
-		$this->assertPattern('/<a[^>]+>Context<\/a>/', $result);
+		$result = explode('</a>', ob_get_clean());
+		$this->assertTags($result[0], array(
+			'pre' => array('class' => 'cake-debug'),
+			'a' => array(
+				'href' => "javascript:void(0);",
+				'onclick' => "document.getElementById('cakeErr4-trace').style.display = " .
+				             "(document.getElementById('cakeErr4-trace').style.display == 'none'" .
+				             " ? '' : 'none');"
+			),
+			'b' => array(), 'Notice', '/b', ' (8)',
+		));
+
+		$this->assertPattern('/Undefined variable:\s+buzz/', $result[1]);
+		$this->assertPattern('/<a[^>]+>Code/', $result[1]);
+		$this->assertPattern('/<a[^>]+>Context/', $result[2]);
 		set_error_handler('simpleTestErrorHandler');
 	}
+
+/**
+ * Tests that changes in output formats using Debugger::output() change the templates used.
+ *
+ * @return void
+ */
+	function testChangeOutputFormats() {
+		Debugger::invoke(Debugger::getInstance());
+		Debugger::output('js', array(
+			'traceLine' => '{:reference} - <a href="txmt://open?url=file://{:file}' .
+			               '&line={:line}">{:path}</a>, line {:line}'
+		));
+		$result = Debugger::trace();
+		$this->assertPattern('/' . preg_quote('txmt://open?url=file:///', '/') . '/', $result);
+
+		Debugger::output('xml', array(
+			'error' => '<error><code>{:code}</code><file>{:file}</file><line>{:line}</line>' .
+			           '{:description}</error>',
+			'context' => "<context>{:context}</context>",
+			'trace' => "<stack>{:trace}</stack>",
+		));
+		Debugger::output('xml');
+
+		ob_start();
+		$foo .= '';
+		$result = ob_get_clean();
+		set_error_handler('SimpleTestErrorHandler');
+
+		$data = array(
+			'error' => array(),
+			'code' => array(), '8', '/code',
+			'file' => array(), 'preg:/[^<]+/', '/file',
+			'line' => array(), '' . (intval(__LINE__) + -8), '/line',
+			'preg:/Undefined variable:\s+foo/',
+			'/error'
+		);
+		$this->assertTags($result, $data, true);
+	}
+
 /**
  * testTrimPath method
  *
@@ -121,6 +208,7 @@ class DebuggerTest extends UnitTestCase {
 		$this->assertEqual(Debugger::trimPath(APP), 'APP' . DS);
 		$this->assertEqual(Debugger::trimPath(CAKE_CORE_INCLUDE_PATH), 'CORE');
 	}
+
 /**
  * testExportVar method
  *
@@ -146,12 +234,11 @@ class DebuggerTest extends UnitTestCase {
 		View::$viewVars = array
 		View::$layout = "default"
 		View::$layoutPath = NULL
-		View::$pageTitle = false
 		View::$autoRender = true
 		View::$autoLayout = true
 		View::$ext = ".ctp"
 		View::$subDir = NULL
-		View::$themeWeb = NULL
+		View::$theme = NULL
 		View::$cacheAction = false
 		View::$validationErrors = array
 		View::$hasRendered = false
@@ -167,12 +254,12 @@ class DebuggerTest extends UnitTestCase {
 		View::$__passedVars = array
 		View::$__scripts = array
 		View::$__paths = array
-		View::$_log = NULL
 		View::$webroot = NULL';
-		$result = str_replace(array("\t", "\r\n", "\n"), "", $result);
-		$expected =  str_replace(array("\t", "\r\n", "\n"), "", $expected);
+		$result = str_replace(array("\t", "\r\n", "\n"), "", strtolower($result));
+		$expected =  str_replace(array("\t", "\r\n", "\n"), "", strtolower($expected));
 		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testLog method
  *
@@ -186,19 +273,20 @@ class DebuggerTest extends UnitTestCase {
 
 		Debugger::log('cool');
 		$result = file_get_contents(LOGS . 'debug.log');
-		$this->assertPattern('/DebuggerTest::testLog/', $result);
+		$this->assertPattern('/DebuggerTest\:\:testLog/i', $result);
 		$this->assertPattern('/"cool"/', $result);
 
 		unlink(TMP . 'logs' . DS . 'debug.log');
 
 		Debugger::log(array('whatever', 'here'));
 		$result = file_get_contents(TMP . 'logs' . DS . 'debug.log');
-
-		$this->assertPattern('/DebuggerTest::testLog/', $result);
+		$this->assertPattern('/DebuggerTest\:\:testLog/i', $result);
+		$this->assertPattern('/\[main\]/', $result);
 		$this->assertPattern('/array/', $result);
 		$this->assertPattern('/"whatever",/', $result);
 		$this->assertPattern('/"here"/', $result);
 	}
+
 /**
  * testDump method
  *
@@ -225,15 +313,25 @@ class DebuggerTest extends UnitTestCase {
 		$expected = "<pre>array(\n\t\"People\" => array()\n)</pre>";
 		$this->assertEqual($expected, $result);
 	}
+
 /**
- * tearDown method
+ * test getInstance.
  *
  * @access public
  * @return void
  */
-	function tearDown() {
-		Configure::write('log', true);
-	}
+	function testGetInstance() {
+		$result =& Debugger::getInstance();
+		$this->assertIsA($result, 'Debugger');
 
+		$result =& Debugger::getInstance('DebuggerTestCaseDebugger');
+		$this->assertIsA($result, 'DebuggerTestCaseDebugger');
+
+		$result =& Debugger::getInstance();
+		$this->assertIsA($result, 'DebuggerTestCaseDebugger');
+
+		$result =& Debugger::getInstance('Debugger');
+		$this->assertIsA($result, 'Debugger');
+	}
 }
 ?>

@@ -6,7 +6,7 @@ class TermsController extends AppController {
 	
 	function index() {
 		$this->checkSession('/terms');
-		$this->set('terms',$this->Term->findAll());
+		$this->set('terms',$this->Term->find('all'));
 	}
 	
 	function redirection() {

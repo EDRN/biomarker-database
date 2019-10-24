@@ -1,8 +1,27 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # KELLY EDRN 2019-10-17 ahart had these next two lines, overwritten by Cake 1.3
+    # Let's put them back?
     RewriteBase /bmdb
     RewriteRule /edrn-skin/(.+) edrn-skin/$1
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+    # In retrospect, this explains a lot about how this crap works.
+    # The Apache HTTP config's php.conf has:
+    #     Alias /bmdb "/usr/local/bmdb/app/webroot"
+    # so that requests for /bmdb use files in that directory, …/webroot
+    # The config also says:
+    #     <Directory "/usr/local/bmdb/app/webroot">
+    #         Order allow,deny
+    #         Allow from all
+    #         AllowOeverride all
+    #         DirectoryIndex index.php
+    #     </Directory>
+    # so that requests hit the index.php file here, and takes the request
+    # URI and makes it the "url" parameter passed into index.php
+    #
+    # Still not exactly sure why we strip the leading "/" off edrn-skin
+    # but whatever.
 </IfModule>

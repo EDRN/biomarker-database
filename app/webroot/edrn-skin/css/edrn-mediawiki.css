@@ -1,0 +1,83 @@
+/* 
+ * EDRN-specific styles for MediaWiki installations
+ *
+ * @author: ahart
+ *
+ */
+
+body {
+	font-size:100%;
+}
+
+#edrnlogo {
+	font-size:28px;
+}
+h1#firstHeading {
+	font-size:18px;
+	margin-top:60px;
+}
+#edrninformatics h2 {
+	border-bottom:none;
+}
+
+#content {
+	position:relative;
+	padding: 0 1em 1em 12.2em;
+	margin: 0;
+	border:none;
+}
+
+#toc {
+	float:right;
+	margin-left:5px;
+}
+
+#p-logo {
+	display:none; 			/* edrn has its own header */
+}
+
+#column-one {
+	padding-top:0px;
+	position:absolute;
+	top:50px;
+}
+
+#p-personal {
+	margin-top:-30px;		/* replace the edrn-skin login details*/
+	z-index:10;
+}
+#p-personal ul {
+	padding-right:0em;		/* align things with the page rhs */
+	padding-left:2em;
+}
+
+#p-search, #p-navigation, #p-tb  {
+	position:relative;
+	z-index:10;			/* show the portlets above the page */
+	top:0px;
+	left:0px;
+}
+
+#p-navigation {
+	padding-top:15px;
+}
+
+#p-cactions .pBody {
+	position:absolute;
+	left:0px;
+	top:10px;
+	z-index:10;
+	margin-top:0px;
+	font-size:90%;
+}
+
+#p-personal {
+	margin-left:40px;
+}
+
+#p-navigation {
+	margin-top:0px;
+}
+big {
+	font-size:115%;
+}

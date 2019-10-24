@@ -1,34 +1,30 @@
 <?php
-/* SVN FILE: $Id: home.ctp 7118 2008-06-04 20:49:29Z gwoo $ */
 /**
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake.libs.view.templates.pages
- * @since			CakePHP(tm) v 0.10.0.1076
- * @version			$Revision: 7118 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-04 13:49:29 -0700 (Wed, 04 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs.view.templates.pages
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+if (Configure::read() == 0):
+	$this->cakeError('error404');
+endif;
 ?>
 <h2><?php echo sprintf(__('Release Notes for CakePHP %s.', true), Configure::version()); ?></h2>
-<a href="https://trac.cakephp.org/wiki/notes/1.2.x.x"><?php __('Read the release notes and get the latest version'); ?> </a>
+<a href="http://cakephp.lighthouseapp.com/projects/42648/changelog-1-3-0"><?php __('Read the changelog'); ?> </a>
 <?php
-if(Configure::read() > 0):
-	Debugger::checkSessionKey();
+if (Configure::read() > 0):
+	Debugger::checkSecurityKeys();
 endif;
 ?>
 <p>
@@ -49,7 +45,7 @@ endif;
 		$settings = Cache::settings();
 		if (!empty($settings)):
 			echo '<span class="notice success">';
-					echo sprintf(__('The %s is being used for caching. To change the config edit APP/config/core.php ', true), '<em>'. $settings['engine'] . 'Engine</em>');
+					printf(__('The %s is being used for caching. To change the config edit APP/config/core.php ', true), '<em>'. $settings['engine'] . 'Engine</em>');
 			echo '</span>';
 		else:
 			echo '<span class="notice">';
@@ -77,9 +73,11 @@ endif;
 </p>
 <?php
 if (isset($filePresent)):
- 	uses('model' . DS . 'connection_manager');
+	if (!class_exists('ConnectionManager')) {
+		require LIBS . 'model' . DS . 'connection_manager.php';
+	}
 	$db = ConnectionManager::getInstance();
- 	$connected = $db->getDataSource('default');
+	@$connected = $db->getDataSource('default');
 ?>
 <p>
 	<?php
@@ -98,16 +96,32 @@ if (isset($filePresent)):
 <h3><?php __('Editing this Page'); ?></h3>
 <p>
 <?php
-__('To change the content of this page, edit: APP/views/pages/home.ctp.<br />
-To change its layout, edit: APP/views/layouts/default.ctp.<br />
+__('To change the content of this page, create: APP/views/pages/home.ctp.<br />
+To change its layout, create: APP/views/layouts/default.ctp.<br />
 You can also add some CSS styles for your pages at: APP/webroot/css.');
 ?>
 </p>
+
 <h3><?php __('Getting Started'); ?></h3>
 <p>
-	<a href="http://book.cakephp.org"><strong>new</strong> CakePHP 1.2 Docs</a>
-	<a href="http://book.cakephp.org/view/219/the-cakephp-blog-tutorial"><?php __('The 15 min Blog Tutorial'); ?></a><br />
+	<?php
+		echo $this->Html->link(
+			sprintf('<strong>%s</strong>%s', __('new', true ), __('CakePHP 1.2 Docs', true )),
+			'http://book.cakephp.org',
+			array('target' => '_blank', 'escape' => false)
+		);
+	?>
 </p>
+<p>
+	<?php
+		echo $this->Html->link(
+			__('The 15 min Blog Tutorial', true),
+			'http://book.cakephp.org/view/219/the-cakephp-blog-tutorial',
+			array('target' => '_blank', 'escape' => false)
+		);
+	?>
+</p>
+
 <h3><?php __('More about Cake'); ?></h3>
 <p>
 <?php __('CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC.'); ?>
@@ -115,30 +129,32 @@ You can also add some CSS styles for your pages at: APP/webroot/css.');
 <p>
 <?php __('Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.'); ?>
 </p>
-<br />
+
 <ul>
-	<li><a href="http://www.cakefoundation.org/"><?php __('Cake Software Foundation'); ?> </a>
+	<li><a href="http://cakefoundation.org/"><?php __('Cake Software Foundation'); ?> </a>
 	<ul><li><?php __('Promoting development related to CakePHP'); ?></li></ul></li>
-	<li><a href="http://live.cakephp.org"><?php __('The Show'); ?> </a>
-	<ul><li><?php __('The Show is a weekly live internet radio broadcast where we discuss CakePHP-related topics and answer questions live via IRC, Skype, and telephone.'); ?></li></ul></li>
-	<li><a href="http://bakery.cakephp.org"><?php __('The Bakery'); ?> </a>
-	<ul><li><?php __('Everything CakePHP'); ?></li></ul></li>
-	<li><a href="http://astore.amazon.com/cakesoftwaref-20/"><?php __('Book Store'); ?> </a>
-	<ul><li><?php __('Recommended Software Books'); ?></li></ul></li>
-	<li><a href="http://www.cafepress.com/cakefoundation"><?php __('CakeSchwag'); ?> </a>
-	<ul><li><?php __('Get your own CakePHP gear - Doughnate to Cake'); ?></li></ul></li>
 	<li><a href="http://www.cakephp.org"><?php __('CakePHP'); ?> </a>
 	<ul><li><?php __('The Rapid Development Framework'); ?></li></ul></li>
-	<li><a href="http://manual.cakephp.org"><?php __('CakePHP Manual'); ?> </a>
+	<li><a href="http://book.cakephp.org"><?php __('CakePHP Documentation'); ?> </a>
 	<ul><li><?php __('Your Rapid Development Cookbook'); ?></li></ul></li>
 	<li><a href="http://api.cakephp.org"><?php __('CakePHP API'); ?> </a>
-	<ul><li><?php __('Docblock Your Best Friend'); ?></li></ul></li>
-	<li><a href="http://www.cakeforge.org"><?php __('CakeForge'); ?> </a>
-	<ul><li><?php __('Open Development for CakePHP'); ?></li></ul></li>
-	<li><a href="https://trac.cakephp.org/"><?php __('CakePHP Trac'); ?> </a>
-	<ul><li><?php __('For the Development of CakePHP (Tickets, SVN browser, Roadmap, Changelogs)'); ?></li></ul></li>
-	<li><a href="http://groups-beta.google.com/group/cake-php"><?php __('CakePHP Google Group'); ?> </a>
+	<ul><li><?php __('Quick Reference'); ?></li></ul></li>
+	<li><a href="http://bakery.cakephp.org"><?php __('The Bakery'); ?> </a>
+	<ul><li><?php __('Everything CakePHP'); ?></li></ul></li>
+	<li><a href="http://live.cakephp.org"><?php __('The Show'); ?> </a>
+	<ul><li><?php __('The Show is a live and archived internet radio broadcast CakePHP-related topics and answer questions live via IRC, Skype, and telephone.'); ?></li></ul></li>
+	<li><a href="http://groups.google.com/group/cake-php"><?php __('CakePHP Google Group'); ?> </a>
 	<ul><li><?php __('Community mailing list'); ?></li></ul></li>
 	<li><a href="irc://irc.freenode.net/cakephp">irc.freenode.net #cakephp</a>
 	<ul><li><?php __('Live chat about CakePHP'); ?></li></ul></li>
+	<li><a href="http://github.com/cakephp/"><?php __('CakePHP Code'); ?> </a>
+	<ul><li><?php __('For the Development of CakePHP Git repository, Downloads'); ?></li></ul></li>
+	<li><a href="http://cakephp.lighthouseapp.com/"><?php __('CakePHP Lighthouse'); ?> </a>
+	<ul><li><?php __('CakePHP Tickets, Wiki pages, Roadmap'); ?></li></ul></li>
+	<li><a href="http://www.cakeforge.org"><?php __('CakeForge'); ?> </a>
+	<ul><li><?php __('Open Development for CakePHP'); ?></li></ul></li>
+	<li><a href="http://astore.amazon.com/cakesoftwaref-20/"><?php __('Book Store'); ?> </a>
+	<ul><li><?php __('Recommended Software Books'); ?></li></ul></li>
+	<li><a href="http://www.cafepress.com/cakefoundation"><?php __('CakePHP gear'); ?> </a>
+	<ul><li><?php __('Get your own CakePHP gear - Doughnate to Cake'); ?></li></ul></li>
 </ul>

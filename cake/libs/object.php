@@ -1,5 +1,4 @@
 <?php
-/* SVN FILE: $Id: object.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
  * Object class, allowing __construct and __destruct in PHP4.
  *
@@ -8,42 +7,31 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake.libs
- * @since			CakePHP(tm) v 0.2.9
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs
+ * @since         CakePHP(tm) v 0.2.9
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
  * Object class, allowing __construct and __destruct in PHP4.
  *
  * Also includes methods for logging and the special method RequestAction,
  * to call other Controllers' Actions from anywhere.
  *
- * @package		cake
- * @subpackage	cake.cake.libs
+ * @package cake
+ * @subpackage cake.cake.libs
  */
 class Object {
-/**
- * Log object
- *
- * @var object
- * @access protected
- */
-	var $_log = null;
+
 /**
  * A hack to support __construct() on PHP 4
  * Hint: descendant classes have no PHP4 class_name() constructors,
@@ -59,6 +47,7 @@ class Object {
 		}
 		call_user_func_array(array(&$this, '__construct'), $args);
 	}
+
 /**
  * Class constructor, overridden in descendant classes.
  */
@@ -76,12 +65,16 @@ class Object {
 		$class = get_class($this);
 		return $class;
 	}
+
 /**
- * Calls a controller's method from any location.
+ * Calls a controller's method from any location. Can be used to connect controllers together
+ * or tie plugins into a main application. requestAction can be used to return rendered views
+ * or fetch the return value from controller actions.
  *
- * @param string $url URL in the form of Cake URL ("/controller/method/parameter")
+ * @param mixed $url String or array-based url.
  * @param array $extra if array includes the key "return" it sets the AutoRender to true.
- * @return mixed Success (true/false) or contents if 'return' is set in $extra
+ * @return mixed Boolean true or false on success/failure, or contents
+ *    of rendered action if 'return' is set in $extra.
  * @access public
  */
 	function requestAction($url, $extra = array()) {
@@ -94,14 +87,17 @@ class Object {
 		if (in_array('return', $extra, true)) {
 			$extra = array_merge($extra, array('return' => 0, 'autoRender' => 1));
 		}
-		$params = am(array('autoRender' => 0, 'return' => 1, 'bare' => 1, 'requested' => 1), $extra);
+		if (is_array($url) && !isset($extra['url'])) {
+			$extra['url'] = array();
+		}
+		$params = array_merge(array('autoRender' => 0, 'return' => 1, 'bare' => 1, 'requested' => 1), $extra);
 		$dispatcher = new Dispatcher;
 		return $dispatcher->dispatch($url, $params);
 	}
+
 /**
  * Calls a method on this object with the given parameters. Provides an OO wrapper
- * for call_user_func_array, and improves performance by using straight method calls
- * in most cases.
+ * for `call_user_func_array`
  *
  * @param string $method  Name of the method to call
  * @param array $params  Parameter list to use when calling $method
@@ -127,8 +123,10 @@ class Object {
 			break;
 		}
 	}
+
 /**
- * Stop execution of the current script
+ * Stop execution of the current script.  Wraps exit() making 
+ * testing easier.
  *
  * @param $status see http://php.net/exit for values
  * @return void
@@ -137,29 +135,32 @@ class Object {
 	function _stop($status = 0) {
 		exit($status);
 	}
+
 /**
- * API for logging events.
+ * Convience method to write a message to CakeLog.  See CakeLog::write()
+ * for more information on writing to logs.
  *
  * @param string $msg Log message
  * @param integer $type Error type constant. Defined in app/config/core.php.
+ * @return boolean Success of log write
  * @access public
  */
 	function log($msg, $type = LOG_ERROR) {
 		if (!class_exists('CakeLog')) {
-			uses('cake_log');
-		}
-		if (is_null($this->_log)) {
-			$this->_log = new CakeLog();
+			require LIBS . 'cake_log.php';
 		}
 		if (!is_string($msg)) {
 			$msg = print_r($msg, true);
 		}
-		return $this->_log->write($type, $msg);
+		return CakeLog::write($type, $msg);
 	}
+
 /**
- * Allows setting of multiple properties of the object in a single line of code.
+ * Allows setting of multiple properties of the object in a single line of code.  Will only set 
+ * properties that are part of a class declaration.
  *
  * @param array $properties An associative array containing properties and corresponding values.
+ * @return void
  * @access protected
  */
 	function _set($properties = array()) {
@@ -172,9 +173,10 @@ class Object {
 			}
 		}
 	}
+
 /**
  * Used to report user friendly errors.
- * If there is a file app/error.php this file will be loaded
+ * If there is a file app/error.php or app/app_error.php this file will be loaded
  * error.php is the AppError class it should extend ErrorHandler class.
  *
  * @param string $method Method to be called in the error class (AppError or ErrorHandler classes)
@@ -200,6 +202,7 @@ class Object {
 		}
 		return $error;
 	}
+
 /**
  * Checks for a persistent class file, if found file is opened and true returned
  * If file is not found a file is created and false returned
@@ -230,6 +233,7 @@ class Object {
 			return true;
 		}
 	}
+
 /**
  * You should choose a unique name for the persistent file
  *
@@ -237,7 +241,7 @@ class Object {
  *
  * @param string $name name used for object to cache
  * @param object $object the object to persist
- * @return true on save, throws error if file can not be created
+ * @return boolean true on save, throws error if file can not be created
  * @access protected
  */
 	function _savePersistent($name, &$object) {
@@ -245,32 +249,40 @@ class Object {
 		$objectArray = array(&$object);
 		$data = str_replace('\\', '\\\\', serialize($objectArray));
 		$data = '<?php $' . $name . ' = \'' . str_replace('\'', '\\\'', $data) . '\' ?>';
-		cache($file, $data, '+1 day');
+		$duration = '+999 days';
+		if (Configure::read() >= 1) {
+			$duration = '+10 seconds';
+		}
+		cache($file, $data, $duration);
 	}
+
 /**
  * Open the persistent class file for reading
  * Used by Object::_persist()
  *
  * @param string $name Name of persisted class
  * @param string $type Type of persistance (e.g: registry)
+ * @return void
  * @access private
  */
 	function __openPersistent($name, $type = null) {
 		$file = CACHE . 'persistent' . DS . strtolower($name) . '.php';
 		include($file);
 
-		switch($type) {
+		switch ($type) {
 			case 'registry':
 				$vars = unserialize(${$name});
 				foreach ($vars['0'] as $key => $value) {
-					App::import('Model', Inflector::classify($key));
+					if (strpos($key, '_behavior') !== false) {
+						App::import('Behavior', Inflector::classify(substr($key, 0, -9)));
+					} else {
+						App::import('Model', Inflector::camelize($key));
+					}
+					unset ($value);
 				}
 				unset($vars);
 				$vars = unserialize(${$name});
 				foreach ($vars['0'] as $key => $value) {
-					foreach ($vars['0'][$key]->Behaviors->_attached as $behavior) {
-						App::import('Behavior', $behavior);
-					}
 					ClassRegistry::addObject($key, $value);
 					unset ($value);
 				}

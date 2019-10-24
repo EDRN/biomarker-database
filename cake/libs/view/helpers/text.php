@@ -1,6 +1,4 @@
 <?php
-/* SVN FILE: $Id: text.php 7296 2008-06-27 09:09:03Z gwoo $ */
-
 /**
  * Text Helper
  *
@@ -8,33 +6,29 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake.libs.view.helpers
- * @since			CakePHP(tm) v 0.10.0.1076
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs.view.helpers
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
  * Included libraries.
  *
  */
-
 if (!class_exists('HtmlHelper')) {
 	App::import('Helper', 'Html');
+}
+if (!class_exists('Multibyte')) {
+	App::import('Core', 'Multibyte');
 }
 
 /**
@@ -42,8 +36,9 @@ if (!class_exists('HtmlHelper')) {
  *
  * Text manipulations: Highlight, excerpt, truncate, strip of links, convert email addresses to mailto: links...
  *
- * @package		cake
- * @subpackage	cake.cake.libs.view.helpers
+ * @package       cake
+ * @subpackage    cake.cake.libs.view.helpers
+ * @link http://book.cakephp.org/view/1469/Text
  */
 class TextHelper extends AppHelper {
 
@@ -51,209 +46,231 @@ class TextHelper extends AppHelper {
  * Highlights a given phrase in a text. You can specify any expression in highlighter that
  * may include the \1 expression to include the $phrase found.
  *
+ * ### Options:
+ *
+ * - `format` The piece of html with that the phrase will be highlighted
+ * - `html` If true, will ignore any HTML tags, ensuring that only the correct text is highlighted
+ *
  * @param string $text Text to search the phrase in
  * @param string $phrase The phrase that will be searched
- * @param string $highlighter The piece of html with that the phrase will be highlighted
- * @param boolean $considerHtml If true, will ignore any HTML tags, ensuring that only the correct text is highlighted
+ * @param array $options An array of html attributes and options.
  * @return string The highlighted text
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#highlight-1622
  */
-	function highlight($text, $phrase, $highlighter = '<span class="highlight">\1</span>', $considerHtml = false) {
+	function highlight($text, $phrase, $options = array()) {
 		if (empty($phrase)) {
 			return $text;
 		}
+
+		$default = array(
+			'format' => '<span class="highlight">\1</span>',
+			'html' => false
+		);
+		$options = array_merge($default, $options);
+		extract($options);
 
 		if (is_array($phrase)) {
 			$replace = array();
 			$with = array();
 
-			foreach ($phrase as $key => $value) {
-				$key = $value;
-				$value = $highlighter;
-				$key = '(' . $key . ')';
-				if ($considerHtml) {
-					$key = '(?![^<]+>)' . $key . '(?![^<]+>)';
+			foreach ($phrase as $key => $segment) {
+				$segment = "($segment)";
+				if ($html) {
+					$segment = "(?![^<]+>)$segment(?![^<]+>)";
 				}
-				$replace[] = '|' . $key . '|iu';
-				$with[] = empty($value) ? $highlighter : $value;
+
+				$with[] = (is_array($format)) ? $format[$key] : $format;
+				$replace[] = "|$segment|iu";
 			}
-			
+
 			return preg_replace($replace, $with, $text);
 		} else {
-			$phrase = '(' . $phrase . ')';
-			if ($considerHtml) {
-				$phrase = '(?![^<]+>)' . $phrase . '(?![^<]+>)';
+			$phrase = "($phrase)";
+			if ($html) {
+				$phrase = "(?![^<]+>)$phrase(?![^<]+>)";
 			}
-			
-			return preg_replace('|'.$phrase.'|iu', $highlighter, $text);
+
+			return preg_replace("|$phrase|iu", $format, $text);
 		}
 	}
+
 /**
  * Strips given text of all links (<a href=....)
  *
  * @param string $text Text
  * @return string The text without links
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#stripLinks-1623
  */
 	function stripLinks($text) {
 		return preg_replace('|<a\s+[^>]+>|im', '', preg_replace('|<\/a>|im', '', $text));
 	}
+
 /**
  * Adds links (<a href=....) to a given text, by finding text that begins with
  * strings like http:// and ftp://.
  *
  * @param string $text Text to add links to
- * @param array $htmlOptions Array of HTML options.
+ * @param array $options Array of HTML options.
  * @return string The text with links
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#autoLinkUrls-1619
  */
 	function autoLinkUrls($text, $htmlOptions = array()) {
-		$options = 'array(';
-		foreach ($htmlOptions as $option => $value) {
-				$value = var_export($value, true);
-				$options .= "'$option' => $value, ";
-		}
-		$options .= ')';
-
-		$text = preg_replace_callback('#(?<!href="|">)((?:http|https|ftp|nntp)://[^ <]+)#i', create_function('$matches',
+		$options = var_export($htmlOptions, true);
+		$text = preg_replace_callback('#(?<!href="|">)((?:https?|ftp|nntp)://[^\s<>()]+)#i', create_function('$matches',
 			'$Html = new HtmlHelper(); $Html->tags = $Html->loadConfig(); return $Html->link($matches[0], $matches[0],' . $options . ');'), $text);
 
 		return preg_replace_callback('#(?<!href="|">)(?<!http://|https://|ftp://|nntp://)(www\.[^\n\%\ <]+[^<\n\%\,\.\ <])(?<!\))#i',
 			create_function('$matches', '$Html = new HtmlHelper(); $Html->tags = $Html->loadConfig(); return $Html->link($matches[0], "http://" . strtolower($matches[0]),' . $options . ');'), $text);
 	}
+
 /**
  * Adds email links (<a href="mailto:....) to a given text.
  *
  * @param string $text Text
- * @param array $htmlOptions Array of HTML options.
+ * @param array $options Array of HTML options.
  * @return string The text with links
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#autoLinkEmails-1618
  */
-	function autoLinkEmails($text, $htmlOptions = array()) {
-		$options = 'array(';
-
-		foreach ($htmlOptions as $option => $value) {
-			$options .= "'$option' => '$value', ";
+	function autoLinkEmails($text, $options = array()) {
+		$linkOptions = 'array(';
+		foreach ($options as $option => $value) {
+			$value = var_export($value, true);
+			$linkOptions .= "'$option' => $value, ";
 		}
-		$options .= ')';
+		$linkOptions .= ')';
 
 		return preg_replace_callback('#([_A-Za-z0-9+-]+(?:\.[_A-Za-z0-9+-]+)*@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)#',
-						create_function('$matches', '$Html = new HtmlHelper(); $Html->tags = $Html->loadConfig(); return $Html->link($matches[0], "mailto:" . $matches[0],' . $options . ');'), $text);
+						create_function('$matches', '$Html = new HtmlHelper(); $Html->tags = $Html->loadConfig(); return $Html->link($matches[0], "mailto:" . $matches[0],' . $linkOptions . ');'), $text);
 	}
+
 /**
  * Convert all links and email adresses to HTML links.
  *
  * @param string $text Text
- * @param array $htmlOptions Array of HTML options.
+ * @param array $options Array of HTML options.
  * @return string The text with links
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#autoLink-1620
  */
-	function autoLink($text, $htmlOptions = array()) {
-		return $this->autoLinkEmails($this->autoLinkUrls($text, $htmlOptions), $htmlOptions);
+	function autoLink($text, $options = array()) {
+		return $this->autoLinkEmails($this->autoLinkUrls($text, $options), $options);
 	}
+
 /**
  * Truncates text.
  *
  * Cuts a string to the length of $length and replaces the last characters
  * with the ending if the text is longer than length.
  *
+ * ### Options:
+ *
+ * - `ending` Will be used as Ending and appended to the trimmed string
+ * - `exact` If false, $text will not be cut mid-word
+ * - `html` If true, HTML tags would be handled correctly
+ *
  * @param string  $text String to truncate.
  * @param integer $length Length of returned string, including ellipsis.
- * @param mixed $ending If string, will be used as Ending and appended to the trimmed string. Can also be an associative array that can contain the last three params of this method.
- * @param boolean $exact If false, $text will not be cut mid-word
- * @param boolean $considerHtml If true, HTML tags would be handled correctly
+ * @param array $options An array of html attributes and options.
  * @return string Trimmed string.
+ * @access public
+ * @link http://book.cakephp.org/view/1469/Text#truncate-1625
  */
-	function truncate($text, $length = 100, $ending = '...', $exact = true, $considerHtml = false) {
-		if (is_array($ending)) {
-			extract($ending);
-		}
-		if ($considerHtml) {
-			if (strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
+	function truncate($text, $length = 100, $options = array()) {
+		$default = array(
+			'ending' => '...', 'exact' => true, 'html' => false
+		);
+		$options = array_merge($default, $options);
+		extract($options);
+
+		if ($html) {
+			if (mb_strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
 				return $text;
 			}
-
-			preg_match_all('/(<.+?>)?([^<>]*)/s', $text, $lines, PREG_SET_ORDER);
-			$total_length = strlen($ending);
-			$open_tags = array();
+			$totalLength = mb_strlen(strip_tags($ending));
+			$openTags = array();
 			$truncate = '';
 
-			foreach ($lines as $line_matchings) {
-				if (!empty($line_matchings[1])) {
-					if (preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $line_matchings[1])) {
-					} elseif (preg_match('/^<\s*\/([^\s]+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
-						$pos = array_search($tag_matchings[1], $open_tags);
+			preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
+			foreach ($tags as $tag) {
+				if (!preg_match('/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/s', $tag[2])) {
+					if (preg_match('/<[\w]+[^>]*>/s', $tag[0])) {
+						array_unshift($openTags, $tag[2]);
+					} else if (preg_match('/<\/([\w]+)[^>]*>/s', $tag[0], $closeTag)) {
+						$pos = array_search($closeTag[1], $openTags);
 						if ($pos !== false) {
-							unset($open_tags[$pos]);
+							array_splice($openTags, $pos, 1);
 						}
-					} elseif (preg_match('/^<\s*([^\s>!]+).*?>$/s', $line_matchings[1], $tag_matchings)) {
-						array_unshift($open_tags, strtolower($tag_matchings[1]));
 					}
-					$truncate .= $line_matchings[1];
 				}
+				$truncate .= $tag[1];
 
-				$content_length = strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
-				if ($total_length+$content_length > $length) {
-					$left = $length - $total_length;
-					$entities_length = 0;
-					if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', $line_matchings[2], $entities, PREG_OFFSET_CAPTURE)) {
+				$contentLength = mb_strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $tag[3]));
+				if ($contentLength + $totalLength > $length) {
+					$left = $length - $totalLength;
+					$entitiesLength = 0;
+					if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', $tag[3], $entities, PREG_OFFSET_CAPTURE)) {
 						foreach ($entities[0] as $entity) {
-							if ($entity[1]+1-$entities_length <= $left) {
+							if ($entity[1] + 1 - $entitiesLength <= $left) {
 								$left--;
-								$entities_length += strlen($entity[0]);
+								$entitiesLength += mb_strlen($entity[0]);
 							} else {
 								break;
 							}
 						}
 					}
-					$truncate .= substr($line_matchings[2], 0, $left+$entities_length);
+
+					$truncate .= mb_substr($tag[3], 0 , $left + $entitiesLength);
 					break;
 				} else {
-					$truncate .= $line_matchings[2];
-					$total_length += $content_length;
+					$truncate .= $tag[3];
+					$totalLength += $contentLength;
 				}
-
-				if ($total_length >= $length) {
+				if ($totalLength >= $length) {
 					break;
 				}
 			}
 		} else {
-			if (strlen($text) <= $length) {
+			if (mb_strlen($text) <= $length) {
 				return $text;
 			} else {
-				$truncate = substr($text, 0, $length - strlen($ending));
+				$truncate = mb_substr($text, 0, $length - mb_strlen($ending));
 			}
 		}
-
 		if (!$exact) {
-			$spacepos = strrpos($truncate, ' ');
+			$spacepos = mb_strrpos($truncate, ' ');
 			if (isset($spacepos)) {
-				$truncate = substr($truncate, 0, $spacepos);
+				if ($html) {
+					$bits = mb_substr($truncate, $spacepos);
+					preg_match_all('/<\/([a-z]+)>/', $bits, $droppedTags, PREG_SET_ORDER);
+					if (!empty($droppedTags)) {
+						foreach ($droppedTags as $closingTag) {
+							if (!in_array($closingTag[1], $openTags)) {
+								array_unshift($openTags, $closingTag[1]);
+							}
+						}
+					}
+				}
+				$truncate = mb_substr($truncate, 0, $spacepos);
 			}
 		}
-
 		$truncate .= $ending;
 
-		if ($considerHtml) {
-			foreach ($open_tags as $tag) {
-				$truncate .= '</' . $tag . '>';
+		if ($html) {
+			foreach ($openTags as $tag) {
+				$truncate .= '</'.$tag.'>';
 			}
 		}
 
 		return $truncate;
 	}
+
 /**
- * Alias for truncate().
- *
- * @see TextHelper::truncate()
- * @access public
- */
-	function trim() {
-		$args = func_get_args();
-		return call_user_func_array(array(&$this, 'truncate'), $args);
-	}
-/**
- * Extracts an excerpt from the text surrounding the phrase with a number of characters on each side determined by radius.
+ * Extracts an excerpt from the text surrounding the phrase with a number of characters on each side
+ * determined by radius.
  *
  * @param string $text String to search the phrase in
  * @param string $phrase Phrase that will be searched for
@@ -261,69 +278,60 @@ class TextHelper extends AppHelper {
  * @param string $ending Ending that will be appended
  * @return string Modified string
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#excerpt-1621
  */
-	function excerpt($text, $phrase, $radius = 100, $ending = "...") {
+	function excerpt($text, $phrase, $radius = 100, $ending = '...') {
 		if (empty($text) or empty($phrase)) {
-			return $this->truncate($text, $radius * 2, $ending);
+			return $this->truncate($text, $radius * 2, array('ending' => $ending));
 		}
 
-		if ($radius < strlen($phrase)) {
-			$radius = strlen($phrase);
+		$phraseLen = mb_strlen($phrase);
+		if ($radius < $phraseLen) {
+			$radius = $phraseLen;
 		}
 
-		$pos = strpos(strtolower($text), strtolower($phrase));
-		$startPos = ife($pos <= $radius, 0, $pos - $radius);
-		$endPos = ife($pos + strlen($phrase) + $radius >= strlen($text), strlen($text), $pos + strlen($phrase) + $radius);
-		$excerpt = substr($text, $startPos, $endPos - $startPos);
+		$pos = mb_strpos(mb_strtolower($text), mb_strtolower($phrase));
 
+		$startPos = 0;
+		if ($pos > $radius) {
+			$startPos = $pos - $radius;
+		}
+
+		$textLen = mb_strlen($text);
+
+		$endPos = $pos + $phraseLen + $radius;
+		if ($endPos >= $textLen) {
+			$endPos = $textLen;
+		}
+
+		$excerpt = mb_substr($text, $startPos, $endPos - $startPos);
 		if ($startPos != 0) {
-			$excerpt = substr_replace($excerpt, $ending, 0, strlen($phrase));
+			$excerpt = substr_replace($excerpt, $ending, 0, $phraseLen);
 		}
 
-		if ($endPos != strlen($text)) {
-			$excerpt = substr_replace($excerpt, $ending, -strlen($phrase));
+		if ($endPos != $textLen) {
+			$excerpt = substr_replace($excerpt, $ending, -$phraseLen);
 		}
 
 		return $excerpt;
 	}
+
 /**
  * Creates a comma separated list where the last two items are joined with 'and', forming natural English
  *
  * @param array $list The list to be joined
- * @return string
+ * @param string $and The word used to join the last and second last items together with. Defaults to 'and'
+ * @param string $separator The separator used to join all othe other items together. Defaults to ', '
+ * @return string The glued together string.
  * @access public
+ * @link http://book.cakephp.org/view/1469/Text#toList-1624
  */
-	function toList($list, $and = 'and') {
-		$r = '';
-		$c = count($list) - 1;
-		foreach ($list as $i => $item) {
-			$r .= $item;
-			if ($c > 0 && $i < $c)
-			{
-				$r .= ($i < $c - 1 ? ', ' : " {$and} ");
-			}
+	function toList($list, $and = 'and', $separator = ', ') {
+		if (count($list) > 1) {
+			return implode($separator, array_slice($list, null, -1)) . ' ' . $and . ' ' . array_pop($list);
+		} else {
+			return array_pop($list);
 		}
-		return $r;
 	}
-/**
- * Text-to-html parser, similar to Textile or RedCloth, only with a little different syntax.
- *
- * @param string $text String to "flay"
- * @param boolean $allowHtml Set to true if if html is allowed
- * @return string "Flayed" text
- * @access public
- * @todo Change this. We need a real Textile parser.
- * @codeCoverageIgnoreStart
- */
-	function flay($text, $allowHtml = false) {
-		trigger_error(__('(TextHelper::flay) Deprecated: the Flay library is no longer supported and will be removed in a future version.', true), E_USER_WARNING);
-		if (!class_exists('Flay')) {
-			uses('flay');
-		}
-		return Flay::toHtml($text, false, $allowHtml);
-	}
-/**
- * @codeCoverageIgnoreEnd
- */
 }
 ?>

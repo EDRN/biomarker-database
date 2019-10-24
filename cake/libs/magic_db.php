@@ -1,44 +1,42 @@
 <?php
-/* SVN FILE: $Id: magic_db.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
  * MagicDb parser and file analyzer
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link			http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake.libs
- * @since			CakePHP(tm) v 1.2.0
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs
+ * @since         CakePHP(tm) v 1.2.0
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-if (!class_exists('File')) {
-	uses ('object', 'file');
+if (!class_exists('Object')) {
+	require LIBS . 'object.php';
 }
+if (!class_exists('File')) {
+	require LIBS . 'file.php';
+}
+
 /**
  * A class to parse and use the MagicDb for file type analysis
  *
- * @package		cake.tests
- * @subpackage	cake.tests.cases.libs
+ * @package       cake.tests
+ * @subpackage    cake.tests.cases.libs
  */
 class MagicDb extends Object {
+
 /**
  * Holds the parsed MagicDb for this class instance
  *
  * @var array
- **/
+ */
 	var $db = array();
 
 /**
@@ -46,8 +44,8 @@ class MagicDb extends Object {
  *
  * @var $magicDb mixed Can be an array containing the db, a magic db as a string, or a filename pointing to a magic db in .db or magic.db.php format
  * @return boolean Returns false if reading / validation failed or true on success.
- * @author Felix
- **/
+ * @author        Felix
+ */
 	function read($magicDb = null) {
 		if (!is_string($magicDb) && !is_array($magicDb)) {
 			return false;
@@ -97,7 +95,7 @@ class MagicDb extends Object {
 		$lines = explode("\r\n", $data);
 		$db = array();
 
-		$validHeader = count($lines > 3)
+		$validHeader = count($lines) > 3
 					&& preg_match('/^# Date:([0-9]{4}-[0-9]{2}-[0-9]{2})$/', $lines[1], $date)
 					&& preg_match('/^# Source:(.+)$/', $lines[2], $source)
 					&& strlen($lines[3]) == 0;
@@ -177,10 +175,11 @@ class MagicDb extends Object {
 /**
  * undocumented class
  *
- * @package		cake.tests
- * @subpackage	cake.tests.cases.libs
+ * @package       cake.tests
+ * @subpackage    cake.tests.cases.libs
  */
 class MagicFileResource extends Object{
+
 /**
  * undocumented variable
  *
@@ -188,6 +187,7 @@ class MagicFileResource extends Object{
  * @access public
  */
 	var $resource = null;
+
 /**
  * undocumented variable
  *
@@ -195,6 +195,7 @@ class MagicFileResource extends Object{
  * @access public
  */
 	var $offset = 0;
+
 /**
  * undocumented function
  *
@@ -209,6 +210,7 @@ class MagicFileResource extends Object{
 			$this->resource = $file;
 		}
 	}
+
 /**
  * undocumented function
  *
@@ -236,6 +238,7 @@ class MagicFileResource extends Object{
 		$val = $this->extract($offset, $type, $expected);
 		return $val == $expected;
 	}
+
 /**
  * undocumented function
  *
@@ -245,12 +248,12 @@ class MagicFileResource extends Object{
  * @access public
  */
 	function read($length = null) {
-		if (!is_object($this->resource)){
+		if (!is_object($this->resource)) {
 			return substr($this->resource, $this->offset, $length);
-		} else {
-			return $this->resource->read($length);
 		}
+		return $this->resource->read($length);
 	}
+
 /**
  * undocumented function
  *
@@ -270,6 +273,7 @@ class MagicFileResource extends Object{
 				break;
 		}
 	}
+
 /**
  * undocumented function
  *

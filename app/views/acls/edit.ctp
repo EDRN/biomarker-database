@@ -2,7 +2,10 @@
 	// Include required CSS and JavaScript 
 	echo $html->css('bmdb-objects');
 	echo $html->css('eip');
-	echo $javascript->link('mootools-release-1.11');
+    // Deprecated in Cake 1.3:
+	//echo $javascript->link('mootools-release-1.11');
+    // Instead use:
+    echo $html->script('mootools-release-1.11');
 ?>
 <div style="margin-top:40px;padding-left:5px;">
 <h2>Access Control / Security</h2>

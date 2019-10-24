@@ -1,5 +1,4 @@
 <?php
-/* SVN FILE: $Id: basics.php 7296 2008-06-27 09:09:03Z gwoo $ */
 /**
  * Basic Cake functionality.
  *
@@ -7,40 +6,36 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake
- * @since			CakePHP(tm) v 0.2.9
- * @version			$Revision: 7296 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-27 02:09:03 -0700 (Fri, 27 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake
+ * @since         CakePHP(tm) v 0.2.9
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
  * Basic defines for timing functions.
  */
 	define('SECOND', 1);
-	define('MINUTE', 60 * SECOND);
-	define('HOUR', 60 * MINUTE);
-	define('DAY', 24 * HOUR);
-	define('WEEK', 7 * DAY);
-	define('MONTH', 30 * DAY);
-	define('YEAR', 365 * DAY);
+	define('MINUTE', 60);
+	define('HOUR', 3600);
+	define('DAY', 86400);
+	define('WEEK', 604800);
+	define('MONTH', 2592000);
+	define('YEAR', 31536000);
+
 /**
  * Patch for PHP < 5.0
  */
 if (!function_exists('clone')) {
-	if (version_compare(phpversion(), '5.0') < 0) {
+	if (version_compare(PHP_VERSION, '5.0') < 0) {
 		eval ('
 		function clone($object)
 		{
@@ -48,20 +43,21 @@ if (!function_exists('clone')) {
 		}');
 	}
 }
+
 /**
  * Loads configuration files. Receives a set of configuration files
  * to load.
  * Example:
- * <code>
- * config('config1', 'config2');
- * </code>
+ *
+ * `config('config1', 'config2');`
  *
  * @return boolean Success
+ * @link http://book.cakephp.org/view/1125/config
  */
 	function config() {
 		$args = func_get_args();
 		foreach ($args as $arg) {
-			if (('database' == $arg) && file_exists(CONFIGS . $arg . '.php')) {
+			if ($arg === 'database' && file_exists(CONFIGS . 'database.php')) {
 				include_once(CONFIGS . $arg . '.php');
 			} elseif (file_exists(CONFIGS . $arg . '.php')) {
 				include_once(CONFIGS . $arg . '.php');
@@ -77,15 +73,17 @@ if (!function_exists('clone')) {
 		}
 		return true;
 	}
+
 /**
  * Loads component/components from LIBS. Takes optional number of parameters.
  *
  * Example:
- * <code>
- * uses('flay', 'time');
- * </code>
+ *
+ * `uses('flay', 'time');`
  *
  * @param string $name Filename without the .php part
+ * @deprecated Will be removed in 2.0
+ * @link http://book.cakephp.org/view/1140/uses
  */
 	function uses() {
 		$args = func_get_args();
@@ -93,42 +91,48 @@ if (!function_exists('clone')) {
 			require_once(LIBS . strtolower($file) . '.php');
 		}
 	}
+
 /**
  * Prints out debug information about given variable.
  *
- * Only runs if debug level is non-zero.
+ * Only runs if debug level is greater than zero.
  *
  * @param boolean $var Variable to show debug information for.
  * @param boolean $showHtml If set to true, the method prints the debug data in a screen-friendly way.
  * @param boolean $showFrom If set to true, the method prints from where the function was called.
+ * @link http://book.cakephp.org/view/1190/Basic-Debugging
+ * @link http://book.cakephp.org/view/1128/debug
  */
 	function debug($var = false, $showHtml = false, $showFrom = true) {
 		if (Configure::read() > 0) {
 			if ($showFrom) {
 				$calledFrom = debug_backtrace();
-				print "<strong>".substr(r(ROOT, "", $calledFrom[0]['file']), 1)."</strong> (line <strong>".$calledFrom[0]['line']."</strong>)";
+				echo '<strong>' . substr(str_replace(ROOT, '', $calledFrom[0]['file']), 1) . '</strong>';
+				echo ' (line <strong>' . $calledFrom[0]['line'] . '</strong>)';
 			}
-			print "\n<pre class=\"cake-debug\">\n";
-			$var = print_r($var, true);
+			echo "\n<pre class=\"cake-debug\">\n";
 
+			$var = print_r($var, true);
 			if ($showHtml) {
 				$var = str_replace('<', '&lt;', str_replace('>', '&gt;', $var));
 			}
-			print "{$var}\n</pre>\n";
+			echo $var . "\n</pre>\n";
 		}
 	}
-	if (!function_exists('getMicrotime')) {
+if (!function_exists('getMicrotime')) {
+
 /**
  * Returns microtime for execution time checking
  *
  * @return float Microtime
  */
-		function getMicrotime() {
-			list($usec, $sec) = explode(" ", microtime());
-			return ((float)$usec + (float)$sec);
-		}
+	function getMicrotime() {
+		list($usec, $sec) = explode(' ', microtime());
+		return ((float)$usec + (float)$sec);
 	}
-	if (!function_exists('sortByKey')) {
+}
+if (!function_exists('sortByKey')) {
+
 /**
  * Sorts given $array by key $sortby.
  *
@@ -138,147 +142,192 @@ if (!function_exists('clone')) {
  * @param integer $type Type of sorting to perform
  * @return mixed Sorted array
  */
-		function sortByKey(&$array, $sortby, $order = 'asc', $type = SORT_NUMERIC) {
-			if (!is_array($array)) {
-				return null;
-			}
-
-			foreach ($array as $key => $val) {
-				$sa[$key] = $val[$sortby];
-			}
-
-			if ($order == 'asc') {
-				asort($sa, $type);
-			} else {
-				arsort($sa, $type);
-			}
-
-			foreach ($sa as $key => $val) {
-				$out[] = $array[$key];
-			}
-			return $out;
+	function sortByKey(&$array, $sortby, $order = 'asc', $type = SORT_NUMERIC) {
+		if (!is_array($array)) {
+			return null;
 		}
+
+		foreach ($array as $key => $val) {
+			$sa[$key] = $val[$sortby];
+		}
+
+		if ($order == 'asc') {
+			asort($sa, $type);
+		} else {
+			arsort($sa, $type);
+		}
+
+		foreach ($sa as $key => $val) {
+			$out[] = $array[$key];
+		}
+		return $out;
 	}
-	if (!function_exists('array_combine')) {
+}
+if (!function_exists('array_combine')) {
+
 /**
  * Combines given identical arrays by using the first array's values as keys,
- * and the second one's values as values. (Implemented for back-compatibility with PHP4)
+ * and the second one's values as values. (Implemented for backwards compatibility with PHP4)
  *
  * @param array $a1 Array to use for keys
  * @param array $a2 Array to use for values
  * @return mixed Outputs either combined array or false.
+ * @deprecated Will be removed in 2.0
  */
-		function array_combine($a1, $a2) {
-			$a1 = array_values($a1);
-			$a2 = array_values($a2);
-			$c1 = count($a1);
-			$c2 = count($a2);
+	function array_combine($a1, $a2) {
+		$a1 = array_values($a1);
+		$a2 = array_values($a2);
+		$c1 = count($a1);
+		$c2 = count($a2);
 
-			if ($c1 != $c2) {
-				return false;
-			}
-			if ($c1 <= 0) {
-				return false;
-			}
-
-			$output=array();
-			for ($i = 0; $i < $c1; $i++) {
-				$output[$a1[$i]] = $a2[$i];
-			}
-			return $output;
+		if ($c1 != $c2) {
+			return false;
 		}
+		if ($c1 <= 0) {
+			return false;
+		}
+		$output = array();
+
+		for ($i = 0; $i < $c1; $i++) {
+			$output[$a1[$i]] = $a2[$i];
+		}
+		return $output;
 	}
+}
+
 /**
  * Convenience method for htmlspecialchars.
  *
  * @param string $text Text to wrap through htmlspecialchars
  * @param string $charset Character set to use when escaping.  Defaults to config value in 'App.encoding' or 'UTF-8'
  * @return string Wrapped text
+ * @link http://book.cakephp.org/view/1132/h
  */
 	function h($text, $charset = null) {
 		if (is_array($text)) {
 			return array_map('h', $text);
 		}
-		if (empty($charset)) {
-			$charset = Configure::read('App.encoding');
+
+		static $defaultCharset = false;
+		if ($defaultCharset === false) {
+			$defaultCharset = Configure::read('App.encoding');
+			if ($defaultCharset === null) {
+				$defaultCharset = 'UTF-8';
+			}
 		}
-		if (empty($charset)) {
-			$charset = 'UTF-8';
+		if ($charset) {
+			return htmlspecialchars($text, ENT_QUOTES, $charset);
+		} else {
+			return htmlspecialchars($text, ENT_QUOTES, $defaultCharset);
 		}
-		return htmlspecialchars($text, ENT_QUOTES, $charset);
 	}
+
+/**
+ * Splits a dot syntax plugin name into its plugin and classname.
+ * If $name does not have a dot, then index 0 will be null.
+ *
+ * Commonly used like `list($plugin, $name) = pluginSplit($name);`
+ *
+ * @param string $name The name you want to plugin split.
+ * @param boolean $dotAppend Set to true if you want the plugin to have a '.' appended to it.
+ * @param string $plugin Optional default plugin to use if no plugin is found. Defaults to null.
+ * @return array Array with 2 indexes.  0 => plugin name, 1 => classname
+ */
+	function pluginSplit($name, $dotAppend = false, $plugin = null) {
+		if (strpos($name, '.') !== false) {
+			$parts = explode('.', $name, 2);
+			if ($dotAppend) {
+				$parts[0] .= '.';
+			}
+			return $parts;
+		}
+		return array($plugin, $name);
+	}
+
 /**
  * Returns an array of all the given parameters.
  *
  * Example:
- * <code>
- * a('a', 'b')
- * </code>
+ *
+ * `a('a', 'b')`
  *
  * Would return:
- * <code>
- * array('a', 'b')
- * </code>
+ *
+ * `array('a', 'b')`
  *
  * @return array Array of given parameters
+ * @link http://book.cakephp.org/view/1122/a
+ * @deprecated Will be removed in 2.0
  */
 	function a() {
 		$args = func_get_args();
 		return $args;
 	}
+
 /**
  * Constructs associative array from pairs of arguments.
  *
  * Example:
- * <code>
- * aa('a','b')
- * </code>
+ *
+ * `aa('a','b')`
  *
  * Would return:
- * <code>
- * array('a'=>'b')
- * </code>
+ *
+ * `array('a'=>'b')`
  *
  * @return array Associative array
+ * @link http://book.cakephp.org/view/1123/aa
+ * @deprecated Will be removed in 2.0
  */
 	function aa() {
 		$args = func_get_args();
-		for ($l = 0, $c = count($args); $l < $c; $l++) {
-			if ($l + 1 < count($args)) {
-				$a[$args[$l]] = $args[$l + 1];
+		$argc = count($args);
+		for ($i = 0; $i < $argc; $i++) {
+			if ($i + 1 < $argc) {
+				$a[$args[$i]] = $args[$i + 1];
 			} else {
-				$a[$args[$l]] = null;
+				$a[$args[$i]] = null;
 			}
-			$l++;
+			$i++;
 		}
 		return $a;
 	}
+
 /**
  * Convenience method for echo().
  *
  * @param string $text String to echo
+ * @link http://book.cakephp.org/view/1129/e
+ * @deprecated Will be removed in 2.0
  */
 	function e($text) {
 		echo $text;
 	}
+
 /**
  * Convenience method for strtolower().
  *
  * @param string $str String to lowercase
  * @return string Lowercased string
+ * @link http://book.cakephp.org/view/1134/low
+ * @deprecated Will be removed in 2.0
  */
 	function low($str) {
 		return strtolower($str);
 	}
+
 /**
  * Convenience method for strtoupper().
  *
  * @param string $str String to uppercase
  * @return string Uppercased string
+ * @link http://book.cakephp.org/view/1139/up
+ * @deprecated Will be removed in 2.0
  */
 	function up($str) {
 		return strtoupper($str);
 	}
+
 /**
  * Convenience method for str_replace().
  *
@@ -286,42 +335,46 @@ if (!function_exists('clone')) {
  * @param string $replace String to insert
  * @param string $subject String to search
  * @return string Replaced string
+ * @link http://book.cakephp.org/view/1137/r
+ * @deprecated Will be removed in 2.0
  */
 	function r($search, $replace, $subject) {
 		return str_replace($search, $replace, $subject);
 	}
+
 /**
  * Print_r convenience function, which prints out <PRE> tags around
  * the output of given array. Similar to debug().
  *
  * @see	debug()
  * @param array $var Variable to print out
- * @param boolean $showFrom If set to true, the method prints from where the function was called
+ * @link http://book.cakephp.org/view/1136/pr
  */
 	function pr($var) {
 		if (Configure::read() > 0) {
-			echo "<pre>";
+			echo '<pre>';
 			print_r($var);
-			echo "</pre>";
+			echo '</pre>';
 		}
 	}
+
 /**
- * Display parameter
+ * Display parameters.
  *
  * @param mixed $p Parameter as string or array
  * @return string
+ * @deprecated Will be removed in 2.0
  */
 	function params($p) {
 		if (!is_array($p) || count($p) == 0) {
 			return null;
-		} else {
-			if (is_array($p[0]) && count($p) == 1) {
-				return $p[0];
-			} else {
-				return $p;
-			}
 		}
+		if (is_array($p[0]) && count($p) == 1) {
+			return $p[0];
+		}
+		return $p;
 	}
+
 /**
  * Merge a group of arrays
  *
@@ -330,10 +383,12 @@ if (!function_exists('clone')) {
  * @param array Third array
  * @param array Etc...
  * @return array All array parameters merged into one
+ * @link http://book.cakephp.org/view/1124/am
  */
 	function am() {
 		$r = array();
-		foreach (func_get_args()as $a) {
+		$args = func_get_args();
+		foreach ($args as $a) {
 			if (!is_array($a)) {
 				$a = array($a);
 			}
@@ -341,22 +396,23 @@ if (!function_exists('clone')) {
 		}
 		return $r;
 	}
+
 /**
  * Gets an environment variable from available sources, and provides emulation
- * for unsupported or inconsisten environment variables (i.e. DOCUMENT_ROOT on
+ * for unsupported or inconsistent environment variables (i.e. DOCUMENT_ROOT on
  * IIS, or SCRIPT_NAME in CGI mode).  Also exposes some additional custom
  * environment information.
  *
  * @param  string $key Environment variable name.
  * @return string Environment variable setting.
+ * @link http://book.cakephp.org/view/1130/env
  */
 	function env($key) {
 		if ($key == 'HTTPS') {
-			if (isset($_SERVER) && !empty($_SERVER)) {
-				return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on');
-			} else {
-				return (strpos(env('SCRIPT_URI'), 'https://') === 0);
+			if (isset($_SERVER['HTTPS'])) {
+				return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
 			}
+			return (strpos(env('SCRIPT_URI'), 'https://') === 0);
 		}
 
 		if ($key == 'SCRIPT_NAME') {
@@ -374,9 +430,9 @@ if (!function_exists('clone')) {
 			$val = getenv($key);
 		}
 
-		if ($key == 'REMOTE_ADDR' && $val == env('SERVER_ADDR')) {
+		if ($key === 'REMOTE_ADDR' && $val === env('SERVER_ADDR')) {
 			$addr = env('HTTP_PC_REMOTE_ADDR');
-			if ($addr != null) {
+			if ($addr !== null) {
 				$val = $addr;
 			}
 		}
@@ -387,56 +443,66 @@ if (!function_exists('clone')) {
 
 		switch ($key) {
 			case 'SCRIPT_FILENAME':
-				if (defined('SERVER_IIS') && SERVER_IIS === true){
-					return str_replace('\\\\', '\\', env('PATH_TRANSLATED') );
+				if (defined('SERVER_IIS') && SERVER_IIS === true) {
+					return str_replace('\\\\', '\\', env('PATH_TRANSLATED'));
 				}
 			break;
 			case 'DOCUMENT_ROOT':
+				$name = env('SCRIPT_NAME');
+				$filename = env('SCRIPT_FILENAME');
 				$offset = 0;
-				if (!strpos(env('SCRIPT_NAME'), '.php')) {
+				if (!strpos($name, '.php')) {
 					$offset = 4;
 				}
-				return substr(env('SCRIPT_FILENAME'), 0, strlen(env('SCRIPT_FILENAME')) - (strlen(env('SCRIPT_NAME')) + $offset));
+				return substr($filename, 0, strlen($filename) - (strlen($name) + $offset));
 			break;
 			case 'PHP_SELF':
-				return r(env('DOCUMENT_ROOT'), '', env('SCRIPT_FILENAME'));
+				return str_replace(env('DOCUMENT_ROOT'), '', env('SCRIPT_FILENAME'));
 			break;
 			case 'CGI_MODE':
-				return (substr(php_sapi_name(), 0, 3) == 'cgi');
+				return (PHP_SAPI === 'cgi');
 			break;
 			case 'HTTP_BASE':
-				return preg_replace ('/^([^.])*/i', null, env('HTTP_HOST'));
+				$host = env('HTTP_HOST');
+				if (substr_count($host, '.') !== 1) {
+					return preg_replace('/^([^.])*/i', null, env('HTTP_HOST'));
+				}
+			return '.' . $host;
 			break;
 		}
 		return null;
 	}
-	if (!function_exists('file_put_contents')) {
+if (!function_exists('file_put_contents')) {
+
 /**
  * Writes data into file.
  *
- * If file exists, it will be overwritten. If data is an array, it will be join()ed with an empty string.
+ * If file exists, it will be overwritten. If data is an array, it will be implode()ed with an empty string.
  *
  * @param string $fileName File name.
  * @param mixed  $data String or array.
  * @return boolean Success
+ * @deprecated Will be removed in 2.0
  */
-		function file_put_contents($fileName, $data) {
-			if (is_array($data)) {
-				$data = join('', $data);
-			}
-			$res = @fopen($fileName, 'w+b');
-			if ($res) {
-				$write = @fwrite($res, $data);
-				if ($write === false) {
-					return false;
-				} else {
-					@fclose($res);
-					return $write;
-				}
-			}
-			return false;
+	function file_put_contents($fileName, $data) {
+		if (is_array($data)) {
+			$data = implode('', $data);
 		}
+		$res = @fopen($fileName, 'w+b');
+
+		if ($res) {
+			$write = @fwrite($res, $data);
+			if ($write === false) {
+				return false;
+			} else {
+				@fclose($res);
+				return $write;
+			}
+		}
+		return false;
 	}
+}
+
 /**
  * Reads/writes temporary data to cache files or session.
  *
@@ -457,7 +523,7 @@ if (!function_exists('clone')) {
 			$expires = strtotime($expires, $now);
 		}
 
-		switch(low($target)) {
+		switch (strtolower($target)) {
 			case 'cache':
 				$filename = CACHE . $path;
 			break;
@@ -488,13 +554,13 @@ if (!function_exists('clone')) {
 		}
 		return $data;
 	}
+
 /**
  * Used to delete files in the cache directories, or clear contents of cache directories
  *
- * @param mixed $params As String name to be searched for deletion, if name is a directory all files in directory will be deleted.
- *              If array, names to be searched for deletion.
- *              If clearCache() without params, all files in app/tmp/cache/views will be deleted
- *
+ * @param mixed $params As String name to be searched for deletion, if name is a directory all files in
+ *   directory will be deleted. If array, names to be searched for deletion. If clearCache() without params,
+ *   all files in app/tmp/cache/views will be deleted
  * @param string $type Directory in tmp/cache defaults to view directory
  * @param string $ext The file extension you are deleting
  * @return true if files found and deleted false otherwise
@@ -508,65 +574,74 @@ if (!function_exists('clone')) {
 				@unlink($cache . $ext);
 				return true;
 			} elseif (is_dir($cache)) {
-				$files = glob("$cache*");
+				$files = glob($cache . '*');
 
 				if ($files === false) {
 					return false;
 				}
 
 				foreach ($files as $file) {
-					if (is_file($file)) {
+					if (is_file($file) && strrpos($file, DS . 'empty') !== strlen($file) - 6) {
 						@unlink($file);
 					}
 				}
 				return true;
 			} else {
-				$cache = CACHE . $type . DS . '*' . $params . $ext;
-				$files = glob($cache);
-
-				$cache = CACHE . $type . DS . '*' . $params . '_*' . $ext;
-				$files = array_merge($files, glob($cache));
-
-				if ($files === false) {
+				$cache = array(
+					CACHE . $type . DS . '*' . $params . $ext,
+					CACHE . $type . DS . '*' . $params . '_*' . $ext
+				);
+				$files = array();
+				while ($search = array_shift($cache)) {
+					$results = glob($search);
+					if ($results !== false) {
+						$files = array_merge($files, $results);
+					}
+				}
+				if (empty($files)) {
 					return false;
 				}
-
 				foreach ($files as $file) {
-					if (is_file($file)) {
+					if (is_file($file) && strrpos($file, DS . 'empty') !== strlen($file) - 6) {
 						@unlink($file);
 					}
 				}
 				return true;
 			}
 		} elseif (is_array($params)) {
-			foreach ($params as $key => $file) {
+			foreach ($params as $file) {
 				clearCache($file, $type, $ext);
 			}
 			return true;
 		}
 		return false;
 	}
+
 /**
  * Recursively strips slashes from all values in an array
  *
- * @param array $value Array of values to strip slashes
+ * @param array $values Array of values to strip slashes
  * @return mixed What is returned from calling stripslashes
+ * @link http://book.cakephp.org/view/1138/stripslashes_deep
  */
-	function stripslashes_deep($value) {
-		if (is_array($value)) {
-			$return = array_map('stripslashes_deep', $value);
-			return $return;
+	function stripslashes_deep($values) {
+		if (is_array($values)) {
+			foreach ($values as $key => $value) {
+				$values[$key] = stripslashes_deep($value);
+			}
 		} else {
-			$return = stripslashes($value);
-			return $return ;
+			$values = stripslashes($values);
 		}
+		return $values;
 	}
+
 /**
- * Returns a translated string if one is found, or the submitted message if not found.
+ * Returns a translated string if one is found; Otherwise, the submitted message.
  *
  * @param string $singular Text to translate
  * @param boolean $return Set to true to return translated string, or false to echo
  * @return mixed translated string if $return is false string will be echoed
+ * @link http://book.cakephp.org/view/1121/__
  */
 	function __($singular, $return = false) {
 		if (!$singular) {
@@ -582,6 +657,7 @@ if (!function_exists('clone')) {
 			return I18n::translate($singular);
 		}
 	}
+
 /**
  * Returns correct plural form of message identified by $singular and $plural for count $count.
  * Some languages have more than one form for plural messages dependent on the count.
@@ -601,11 +677,12 @@ if (!function_exists('clone')) {
 		}
 
 		if ($return === false) {
-			echo I18n::translate($singular, $plural, null, 5, $count);
+			echo I18n::translate($singular, $plural, null, 6, $count);
 		} else {
-			return I18n::translate($singular, $plural, null, 5, $count);
+			return I18n::translate($singular, $plural, null, 6, $count);
 		}
 	}
+
 /**
  * Allows you to override the current domain for a single message lookup.
  *
@@ -628,10 +705,11 @@ if (!function_exists('clone')) {
 			return I18n::translate($msg, null, $domain);
 		}
 	}
+
 /**
- * Allows you to override the current domain for a single plural message lookup
+ * Allows you to override the current domain for a single plural message lookup.
  * Returns correct plural form of message identified by $singular and $plural for count $count
- * from domain $domain
+ * from domain $domain.
  *
  * @param string $domain Domain
  * @param string $singular Singular string to translate
@@ -649,11 +727,12 @@ if (!function_exists('clone')) {
 		}
 
 		if ($return === false) {
-			echo I18n::translate($singular, $plural, $domain, 5, $count);
+			echo I18n::translate($singular, $plural, $domain, 6, $count);
 		} else {
-			return I18n::translate($singular, $plural, $domain, 5, $count);
+			return I18n::translate($singular, $plural, $domain, 6, $count);
 		}
 	}
+
 /**
  * Allows you to override the current domain for a single message lookup.
  * It also allows you to specify a category.
@@ -662,13 +741,14 @@ if (!function_exists('clone')) {
  * Valid categories are: LC_CTYPE, LC_NUMERIC, LC_TIME, LC_COLLATE, LC_MONETARY, LC_MESSAGES and LC_ALL.
  *
  * Note that the category must be specified with a numeric value, instead of the constant name.  The values are:
- * LC_CTYPE     0
- * LC_NUMERIC   1
- * LC_TIME      2
- * LC_COLLATE   3
- * LC_MONETARY  4
- * LC_MESSAGES  5
- * LC_ALL       6
+ *
+ * - LC_ALL       0
+ * - LC_COLLATE   1
+ * - LC_CTYPE     2
+ * - LC_MONETARY  3
+ * - LC_NUMERIC   4
+ * - LC_TIME      5
+ * - LC_MESSAGES  6
  *
  * @param string $domain Domain
  * @param string $msg Message to translate
@@ -690,23 +770,25 @@ if (!function_exists('clone')) {
 			return I18n::translate($msg, null, $domain, $category);
 		}
 	}
+
 /**
  * Allows you to override the current domain for a single plural message lookup.
  * It also allows you to specify a category.
  * Returns correct plural form of message identified by $singular and $plural for count $count
- * from domain $domain
+ * from domain $domain.
  *
  * The category argument allows a specific category of the locale settings to be used for fetching a message.
  * Valid categories are: LC_CTYPE, LC_NUMERIC, LC_TIME, LC_COLLATE, LC_MONETARY, LC_MESSAGES and LC_ALL.
  *
  * Note that the category must be specified with a numeric value, instead of the constant name.  The values are:
- * LC_CTYPE     0
- * LC_NUMERIC   1
- * LC_TIME      2
- * LC_COLLATE   3
- * LC_MONETARY  4
- * LC_MESSAGES  5
- * LC_ALL       6
+ *
+ * - LC_ALL       0
+ * - LC_COLLATE   1
+ * - LC_CTYPE     2
+ * - LC_MONETARY  3
+ * - LC_NUMERIC   4
+ * - LC_TIME      5
+ * - LC_MESSAGES  6
  *
  * @param string $domain Domain
  * @param string $singular Singular string to translate
@@ -730,18 +812,20 @@ if (!function_exists('clone')) {
 			return I18n::translate($singular, $plural, $domain, $category, $count);
 		}
 	}
+
 /**
  * The category argument allows a specific category of the locale settings to be used for fetching a message.
  * Valid categories are: LC_CTYPE, LC_NUMERIC, LC_TIME, LC_COLLATE, LC_MONETARY, LC_MESSAGES and LC_ALL.
  *
  * Note that the category must be specified with a numeric value, instead of the constant name.  The values are:
- * LC_CTYPE     0
- * LC_NUMERIC   1
- * LC_TIME      2
- * LC_COLLATE   3
- * LC_MONETARY  4
- * LC_MESSAGES  5
- * LC_ALL       6
+ *
+ * - LC_ALL       0
+ * - LC_COLLATE   1
+ * - LC_CTYPE     2
+ * - LC_MONETARY  3
+ * - LC_NUMERIC   4
+ * - LC_TIME      5
+ * - LC_MESSAGES  6
  *
  * @param string $msg String to translate
  * @param integer $category Category
@@ -762,31 +846,34 @@ if (!function_exists('clone')) {
 			return I18n::translate($msg, null, null, $category);
 		}
 	}
+
 /**
- * Computes the difference of arrays using keys for comparison
+ * Computes the difference of arrays using keys for comparison.
  *
  * @param array First array
  * @param array Second array
  * @return array Array with different keys
+ * @deprecated Will be removed in 2.0
  */
 	if (!function_exists('array_diff_key')) {
 		function array_diff_key() {
 			$valuesDiff = array();
 
-			if (func_num_args() < 2) {
+			$argc = func_num_args();
+			if ($argc < 2) {
 				return false;
 			}
 
-			foreach (func_get_args() as $param) {
+			$args = func_get_args();
+			foreach ($args as $param) {
 				if (!is_array($param)) {
 					return false;
 				}
 			}
 
-			$args = func_get_args();
 			foreach ($args[0] as $valueKey => $valueData) {
-				for ($i = 1; $i < func_num_args(); $i++) {
-					if (isset($args[$i][$valueKey])) {
+				for ($i = 1; $i < $argc; $i++) {
+					if (array_key_exists($valueKey, $args[$i])) {
 						continue 2;
 					}
 				}
@@ -795,17 +882,19 @@ if (!function_exists('clone')) {
 			return $valuesDiff;
 		}
 	}
+
 /**
  * Computes the intersection of arrays using keys for comparison
  *
  * @param array First array
  * @param array Second array
  * @return array Array with interesected keys
+ * @deprecated Will be removed in 2.0
  */
 	if (!function_exists('array_intersect_key')) {
 		function array_intersect_key($arr1, $arr2) {
 			$res = array();
-			foreach ($arr1 as $key=>$value) {
+			foreach ($arr1 as $key => $value) {
 				if (array_key_exists($key, $arr2)) {
 					$res[$key] = $arr1[$key];
 				}
@@ -813,6 +902,7 @@ if (!function_exists('clone')) {
 			return $res;
 		}
 	}
+
 /**
  * Shortcut to Log::write.
  *
@@ -826,16 +916,18 @@ if (!function_exists('clone')) {
 		$good = ' ';
 		CakeLog::write('error', str_replace($bad, $good, $message));
 	}
+
 /**
- * Searches include path for files
+ * Searches include path for files.
  *
  * @param string $file File to look for
  * @return Full path to file if exists, otherwise false
+ * @link http://book.cakephp.org/view/1131/fileExistsInPath
  */
 	function fileExistsInPath($file) {
 		$paths = explode(PATH_SEPARATOR, ini_get('include_path'));
 		foreach ($paths as $path) {
-			$fullPath = $path . DIRECTORY_SEPARATOR . $file;
+			$fullPath = $path . DS . $file;
 
 			if (file_exists($fullPath)) {
 				return $fullPath;
@@ -845,18 +937,21 @@ if (!function_exists('clone')) {
 		}
 		return false;
 	}
+
 /**
  * Convert forward slashes to underscores and removes first and last underscores in a string
  *
  * @param string String to convert
  * @return string with underscore remove from start and end of string
+ * @link http://book.cakephp.org/view/1126/convertSlash
  */
 	function convertSlash($string) {
-		$string = trim($string,"/");
+		$string = trim($string, '/');
 		$string = preg_replace('/\/\//', '/', $string);
 		$string = str_replace('/', '_', $string);
 		return $string;
 	}
+
 /**
  * Implements http_build_query for PHP4.
  *
@@ -866,6 +961,7 @@ if (!function_exists('clone')) {
  * @param string $baseKey Base key
  * @return string URL encoded query string
  * @see http://php.net/http_build_query
+ * @deprecated Will be removed in 2.0
  */
 	if (!function_exists('http_build_query')) {
 		function http_build_query($data, $prefix = null, $argSep = null, $baseKey = null) {
@@ -896,270 +992,25 @@ if (!function_exists('clone')) {
 			return implode($argSep, $out);
 		}
 	}
+
 /**
  * Wraps ternary operations. If $condition is a non-empty value, $val1 is returned, otherwise $val2.
  * Don't use for isset() conditions, or wrap your variable with @ operator:
  * Example:
- * <code>
- * ife(isset($variable), @$variable, 'default');
- * </code>
+ *
+ * `ife(isset($variable), @$variable, 'default');`
  *
  * @param mixed $condition Conditional expression
  * @param mixed $val1 Value to return in case condition matches
  * @param mixed $val2 Value to return if condition doesn't match
  * @return mixed $val1 or $val2, depending on whether $condition evaluates to a non-empty expression.
+ * @link http://book.cakephp.org/view/1133/ife
+ * @deprecated Will be removed in 2.0
  */
 	function ife($condition, $val1 = null, $val2 = null) {
 		if (!empty($condition)) {
 			return $val1;
 		}
 		return $val2;
-	}
-/**
- * @deprecated
- * @see App::import('View', 'ViewName');
- */
-	function loadView($name) {
-		trigger_error('loadView is deprecated see App::import(\'View\', \'ViewName\');', E_USER_WARNING);
-		return App::import('View', $name);
-	}
-/**
- * @deprecated
- * @see App::import('Model', 'ModelName');
- */
-	function loadModel($name = null) {
-		trigger_error('loadModel is deprecated see App::import(\'Model\', \'ModelName\');', E_USER_WARNING);
-		return App::import('Model', $name);
-	}
-/**
- * @deprecated
- * @see App::import('Controller', 'ControllerName');
- */
-	function loadController($name) {
-		trigger_error('loadController is deprecated see App::import(\'Controller\', \'ControllerName\');', E_USER_WARNING);
-		return App::import('Controller', $name);
-	}
-/**
- * @deprecated
- * @see App::import('Helper', 'HelperName');
- */
-	function loadHelper($name) {
-		trigger_error('loadHelper is deprecated see App::import(\'Helper\', \'PluginName.HelperName\');', E_USER_WARNING);
-		return App::import('Helper', $name);
-	}
-/**
- * @deprecated
- * @see App::import('Helper', 'PluginName.HelperName');
- */
-	function loadPluginHelper($plugin, $helper) {
-		trigger_error('loadPluginHelper is deprecated see App::import(\'Helper\', \'PluginName.HelperName\');', E_USER_WARNING);
-		return App::import('Helper', $plugin . '.' . $helper);
-	}
-/**
- * @deprecated
- * @see App::import('Component', 'ComponentName');
- */
-	function loadComponent($name) {
-		trigger_error('loadComponent is deprecated see App::import(\'Component\', \'ComponentName\');', E_USER_WARNING);
-		return App::import('Component', $name);
-	}
-/**
- * @deprecated
- * @see App::import('Component', 'PluginName.ComponentName');
- */
-	function loadPluginComponent($plugin, $component) {
-		trigger_error('loadPluginComponent is deprecated see App::import(\'Component\', \'PluginName.ComponentName\');', E_USER_WARNING);
-		return App::import('Component', $plugin . '.' . $component);
-	}
-/**
- * @deprecated
- * @see App::import('Behavior', 'BehaviorrName');
- */
-	function loadBehavior($name) {
-		trigger_error('loadBehavior is deprecated see App::import(\'Behavior\', $name);', E_USER_WARNING);
-		return App::import('Behavior', $name);
-	}
-/**
- * @deprecated
- * @see $model = Configure::listObjects('model'); and App::import('Model', $models);
- *      or App::import('Model', array(List of Models));
- */
-	function loadModels() {
-		$loadModels = array();
-		if (func_num_args() > 0) {
-			$args = func_get_args();
-			foreach($args as $arg) {
-				if (is_array($arg)) {
-					$loadModels = am($loadModels, $arg);
-				} else {
-					$loadModels[] = $arg;
-				}
-			}
-		}
-
-		if (empty($loadModels)) {
-			$loadModels = Configure::listObjects('model');
-		}
-		App::import('Model', $loadModels);
-		trigger_error('loadModels is deprecated see $model = Configure::listObjects(\'model\'); and App::import(\'Model\', $models);', E_USER_WARNING);
-		return $loadModels;
-	}
-/**
- * @deprecated
- * @see App::import('Model', 'PluginName.PluginModel');
- */
-	function loadPluginModels($plugin) {
-		if (!class_exists('AppModel')) {
-			loadModel();
-		}
-		$plugin = Inflector::underscore($plugin);
-		$pluginAppModel = Inflector::camelize($plugin . '_app_model');
-		$pluginAppModelFile = APP . 'plugins' . DS . $plugin . DS . $plugin . '_app_model.php';
-
-		if (!class_exists($pluginAppModel)) {
-			if (file_exists($pluginAppModelFile)) {
-				require($pluginAppModelFile);
-				Overloadable::overload($pluginAppModel);
-			}
-		}
-
-		$pluginModelDir = APP . 'plugins' . DS . $plugin . DS . 'models' . DS;
-		if (is_dir($pluginModelDir)) {
-			foreach (listClasses($pluginModelDir)as $modelFileName) {
-				list($name) = explode('.', $modelFileName);
-				$className = Inflector::camelize($name);
-
-				if (!class_exists($className)) {
-					require($pluginModelDir . $modelFileName);
-					Overloadable::overload($className);
-				}
-			}
-		}
-		trigger_error('loadPluginModels is deprecated see App::import(\'Model\', \'PluginName.PluginModel\');', E_USER_WARNING);
-	}
-/**
- * @deprecated
- * @see $controllers = Configure::listObjects('controller'); and App::import('Controller', $controllers);
- *      or App::import('Controller', array(List of Controllers);
- */
-	function loadControllers() {
-		$loadControllers = array();
-		if (func_num_args() > 0) {
-			$args = func_get_args();
-			foreach($args as $arg) {
-				if (is_array($arg)) {
-					$loadControllers = am($loadControllers, $arg);
-				} else {
-					$loadControllers[] = $arg;
-				}
-			}
-		}
-
-		if (empty($loadControllers)) {
-			$loadControllers = Configure::listObjects('controller');
-		}
-		App::import('Controller', $loadControllers);
-		trigger_error('loadControllers is deprecated see $controllers = Configure::listObjects(\'controller\'); and App::import(\'Controller\', $controllers);', E_USER_WARNING);
-		return $loadControllers;
-	}
-/**
- * @deprecated
- * @see Configure::listObjects('file', $path);
- */
-	function listClasses($path ) {
-		trigger_error('listClasses is deprecated see Configure::listObjects(\'file\', $path);', E_USER_WARNING);
-		return Configure::listObjects('file', $path);
-	}
-/**
- * @deprecated
- * @see Configure::corePaths();
- */
-	function paths() {
-		$directories = Configure::getInstance();
-		$paths = array();
-
-		foreach ($directories->modelPaths as $path) {
-			$paths['Models'][] = $path;
-		}
-		foreach ($directories->behaviorPaths as $path) {
-			$paths['Behaviors'][] = $path;
-		}
-		foreach ($directories->controllerPaths as $path) {
-			$paths['Controllers'][] = $path;
-		}
-		foreach ($directories->componentPaths as $path) {
-			$paths['Components'][] = $path;
-		}
-		foreach ($directories->helperPaths as $path) {
-			$paths['Helpers'][] = $path;
-		}
-
-		if (!class_exists('Folder')) {
-			App::import('Core', 'Folder');
-		}
-
-		$folder =& new Folder(APP.'plugins'.DS);
-		$plugins = $folder->ls();
-		$classPaths = array('models', 'models'.DS.'behaviors',  'controllers', 'controllers'.DS.'components', 'views'.DS.'helpers');
-
-		foreach ($plugins[0] as $plugin) {
-			foreach ($classPaths as $path) {
-				if (strpos($path, DS) !== false) {
-					$key = explode(DS, $path);
-					$key = $key[1];
-				} else {
-					$key = $path;
-				}
-				$folder->path = APP.'plugins'.DS.$plugin.DS.$path;
-				$paths[Inflector::camelize($plugin)][Inflector::camelize($key)][] = $folder->path;
-			}
-		}
-		return $paths;
-	}
-/**
- * @deprecated
- */
-	function vendor() {
-		trigger_error('(vendor) Deprecated, see App::import(\'Vendor\', \'...\');', E_USER_WARNING);
-		$args = func_get_args();
-		$c = func_num_args();
-
-		for ($i = 0; $i < $c; $i++) {
-			$arg = $args[$i];
-
-			if (strpos($arg, '.') !== false) {
-				$file = explode('.', $arg);
-				$plugin = Inflector::underscore($file[0]);
-				unset($file[0]);
-				$file = implode('.', $file);
-				if (file_exists(APP . 'plugins' . DS . $plugin . DS . 'vendors' . DS . $file . '.php')) {
-					require_once(APP . 'plugins' . DS . $plugin . DS . 'vendors' . DS . $file . '.php');
-					continue;
-				}
-			}
-
-			if (file_exists(APP . 'vendors' . DS . $arg . '.php')) {
-				require_once(APP . 'vendors' . DS . $arg . '.php');
-			} elseif (file_exists(VENDORS . $arg . '.php')) {
-				require_once(VENDORS . $arg . '.php');
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-/**
- * @deprecated
- * @see Dispatcher::uri();
- */
-	function setUri() {
-		return null;
-	}
-/**
- * @deprecated
- * @see Dispatcher::getUrl();
- */
-	function setUrl() {
-		return null;
 	}
 ?>

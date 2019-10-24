@@ -1,36 +1,29 @@
 <?php
-/* SVN FILE: $Id: console.php 7118 2008-06-04 20:49:29Z gwoo $ */
 /**
  * Short description for file.
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2008, Cake Software Foundation, Inc.
- *								1785 E. Sahara Avenue, Suite 490-204
- *								Las Vegas, Nevada 89104
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
- * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package			cake
- * @subpackage		cake.cake.console.libs
- * @since			CakePHP(tm) v 1.2.0.5012
- * @version			$Revision: 7118 $
- * @modifiedby		$LastChangedBy: gwoo $
- * @lastmodified	$Date: 2008-06-04 13:49:29 -0700 (Wed, 04 Jun 2008) $
- * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.console.libs
+ * @since         CakePHP(tm) v 1.2.0.5012
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
- * @package		cake
- * @subpackage	cake.cake.console.libs
+ * @package       cake
+ * @subpackage    cake.cake.console.libs
  */
 class ConsoleShell extends Shell {
+
 /**
  * Available binding types
  *
@@ -38,6 +31,7 @@ class ConsoleShell extends Shell {
  * @access public
  */
 	var $associations = array('hasOne', 'hasMany', 'belongsTo', 'hasAndBelongsToMany');
+
 /**
  * Chars that describe invalid commands
  *
@@ -45,6 +39,7 @@ class ConsoleShell extends Shell {
  * @access public
  */
 	var $badCommandChars = array('$', ';');
+
 /**
  * Available models
  *
@@ -52,6 +47,7 @@ class ConsoleShell extends Shell {
  * @access public
  */
 	var $models = array();
+
 /**
  * Override intialize of the Shell
  *
@@ -60,11 +56,11 @@ class ConsoleShell extends Shell {
 	function initialize() {
 		require_once CAKE . 'dispatcher.php';
 		$this->Dispatcher = new Dispatcher();
-		$this->models = Configure::listObjects('model');
+		$this->models = App::objects('model');
 		App::import('Model', $this->models);
 
 		foreach ($this->models as $model) {
-			$class = Inflector::camelize(r('.php', '', $model));
+			$class = Inflector::camelize(str_replace('.php', '', $model));
 			$this->models[$model] = $class;
 			$this->{$class} =& new $class();
 		}
@@ -74,15 +70,72 @@ class ConsoleShell extends Shell {
 		foreach ($this->models as $model) {
 			$this->out(" - {$model}");
 		}
+		$this->_loadRoutes();
 	}
+
 /**
  * Prints the help message
  *
  * @access public
  */
 	function help() {
-		$this->main('help');
+		$out  = 'Console help:';
+		$out .= '-------------';
+		$out .= 'The interactive console is a tool for testing parts of your app before you';
+		$out .= 'write code.';
+		$out .= "\n";
+		$out .= 'Model testing:';
+		$out .= 'To test model results, use the name of your model without a leading $';
+		$out .= 'e.g. Foo->find("all")';
+		$out .= "\n";
+		$out .= 'To dynamically set associations, you can do the following:';
+		$out .= "\tModelA bind <association> ModelB";
+		$out .= "where the supported assocations are hasOne, hasMany, belongsTo, hasAndBelongsToMany";
+		$out .= "\n";
+		$out .= 'To dynamically remove associations, you can do the following:';
+		$out .= "\t ModelA unbind <association> ModelB";
+		$out .= "where the supported associations are the same as above";
+		$out .= "\n";
+		$out .= "To save a new field in a model, you can do the following:";
+		$out .= "\tModelA->save(array('foo' => 'bar', 'baz' => 0))";
+		$out .= "where you are passing a hash of data to be saved in the format";
+		$out .= "of field => value pairs";
+		$out .= "\n";
+		$out .= "To get column information for a model, use the following:";
+		$out .= "\tModelA columns";
+		$out .= "which returns a list of columns and their type";
+		$out .= "\n";
+		$out .= "\n";
+		$out .= 'Route testing:';
+		$out .= "\n";
+		$out .= 'To test URLs against your app\'s route configuration, type:';
+		$out .= "\n";
+		$out .= "\tRoute <url>";
+		$out .= "\n";
+		$out .= "where url is the path to your your action plus any query parameters,";
+		$out .= "minus the application's base path.  For example:";
+		$out .= "\n";
+		$out .= "\tRoute /posts/view/1";
+		$out .= "\n";
+		$out .= "will return something like the following:";
+		$out .= "\n";
+		$out .= "\tarray (";
+		$out .= "\t  [...]";
+		$out .= "\t  'controller' => 'posts',";
+		$out .= "\t  'action' => 'view',";
+		$out .= "\t  [...]";
+		$out .= "\t)";
+		$out .= "\n";
+		$out .= 'Alternatively, you can use simple array syntax to test reverse';
+		$out .= 'To reload your routes config (config/routes.php), do the following:';
+		$out .= "\n";
+		$out .= "\tRoutes reload";
+		$out .= "\n";
+		$out .= 'To show all connected routes, do the following:';
+		$out .= "\tRoutes show";
+		$this->out($out);
 	}
+
 /**
  * Override main() to handle action
  *
@@ -94,42 +147,9 @@ class ConsoleShell extends Shell {
 				$command = trim($this->in(''));
 			}
 
-			switch($command) {
+			switch ($command) {
 				case 'help':
-					$this->out('Console help:');
-					$this->out('-------------');
-					$this->out('The interactive console is a tool for testing parts of your app before you commit code');
-					$this->out('');
-					$this->out('Model testing:');
-					$this->out('To test model results, use the name of your model without a leading $');
-					$this->out('e.g. Foo->find("all")');
-					$this->out('');
-					$this->out('To dynamically set associations, you can do the following:');
-					$this->out("\tModelA bind <association> ModelB");
-					$this->out("where the supported assocations are hasOne, hasMany, belongsTo, hasAndBelongsToMany");
-					$this->out('');
-					$this->out('To dynamically remove associations, you can do the following:');
-					$this->out("\t ModelA unbind <association> ModelB");
-					$this->out("where the supported associations are the same as above");
-					$this->out('');
-					$this->out("To save a new field in a model, you can do the following:");
-					$this->out("\tModelA->save(array('foo' => 'bar', 'baz' => 0))");
-					$this->out("where you are passing a hash of data to be saved in the format");
-					$this->out("of field => value pairs");
-					$this->out('');
-					$this->out("To get column information for a model, use the following:");
-					$this->out("\tModelA columns");
-					$this->out("which returns a list of columns and their type");
-					$this->out('');
-					$this->out('Route testing:');
-					$this->out('To test URLs against your app\'s route configuration, type:');
-					$this->out("\tRoute <url>");
-					$this->out("where url is the path to your your action plus any query parameters, minus the");
-					$this->out("application's base path");
-					$this->out('');
-					$this->out('To reload your routes config (config/routes.php), do the following:');
-					$this->out("\tRoute reload");
-					$this->out('');
+					$this->help();
 				break;
 				case 'quit':
 				case 'exit':
@@ -152,7 +172,7 @@ class ConsoleShell extends Shell {
 					$association = $tmp[2];
 					$modelB = $tmp[3];
 
-					if ($this->__isValidModel($modelA) && $this->__isValidModel($modelB) && in_array($association, $this->associations)) {
+					if ($this->_isValidModel($modelA) && $this->_isValidModel($modelB) && in_array($association, $this->associations)) {
 						$this->{$modelA}->bindModel(array($association => array($modelB => array('className' => $modelB))), false);
 						$this->out("Created $association association between $modelA and $modelB");
 					} else {
@@ -179,7 +199,7 @@ class ConsoleShell extends Shell {
 						}
 					}
 
-					if ($this->__isValidModel($modelA) && $this->__isValidModel($modelB) && in_array($association, $this->associations) && $validCurrentAssociation) {
+					if ($this->_isValidModel($modelA) && $this->_isValidModel($modelB) && in_array($association, $this->associations) && $validCurrentAssociation) {
 						$this->{$modelA}->unbindModel(array($association => array($modelB)));
 						$this->out("Removed $association association between $modelA and $modelB");
 					} else {
@@ -194,7 +214,7 @@ class ConsoleShell extends Shell {
 					// Do we have a valid model?
 					list($modelToCheck, $tmp) = explode('->', $command);
 
-					if ($this->__isValidModel($modelToCheck)) {
+					if ($this->_isValidModel($modelToCheck)) {
 						$findCommand = "\$data = \$this->$command;";
 						@eval($findCommand);
 
@@ -210,7 +230,7 @@ class ConsoleShell extends Shell {
 													$this->out("\t$field2: $value2");
 												}
 
-												$this->out("");
+												$this->out();
 											} else {
 												$this->out("\t$field: $value");
 											}
@@ -225,7 +245,7 @@ class ConsoleShell extends Shell {
 												$this->out("\t$field2: $value2");
 											}
 
-											$this->out("");
+											$this->out();
 										} else {
 											$this->out("\t$field: $value");
 										}
@@ -246,21 +266,19 @@ class ConsoleShell extends Shell {
 					$command = str_replace($this->badCommandChars, "", $command);
 					list($modelToSave, $tmp) = explode("->", $command);
 
-					if ($this->__isValidModel($modelToSave)) {
+					if ($this->_isValidModel($modelToSave)) {
 						// Extract the array of data we are trying to build
 						list($foo, $data) = explode("->save", $command);
-						$badChars = array("(", ")");
-						$data = str_replace($badChars, "", $data);
+						$data = preg_replace('/^\(*(array)?\(*(.+?)\)*$/i', '\\2', $data);
 						$saveCommand = "\$this->{$modelToSave}->save(array('{$modelToSave}' => array({$data})));";
 						@eval($saveCommand);
 						$this->out('Saved record for ' . $modelToSave);
 					}
-
 				break;
 				case (preg_match("/^(\w+) columns/", $command, $tmp) == true):
 					$modelToCheck = strip_tags(str_replace($this->badCommandChars, "", $tmp[1]));
 
-					if ($this->__isValidModel($modelToCheck)) {
+					if ($this->_isValidModel($modelToCheck)) {
 						// Get the column info for this model
 						$fieldsCommand = "\$data = \$this->{$modelToCheck}->getColumnTypes();";
 						@eval($fieldsCommand);
@@ -276,13 +294,24 @@ class ConsoleShell extends Shell {
 				break;
 				case (preg_match("/^routes\s+reload/i", $command, $tmp) == true):
 					$router =& Router::getInstance();
-					$router->reload();
-					if (config('routes') && $router->parse('/')) {
-						$this->out("Routes configuration reloaded, " . count($router->routes) . " routes connected");
+					if (!$this->_loadRoutes()) {
+						$this->out("There was an error loading the routes config.  Please check that the file");
+						$this->out("exists and is free of parse errors.");
+						break;
+					}
+					$this->out("Routes configuration reloaded, " . count($router->routes) . " routes connected");
+				break;
+				case (preg_match("/^routes\s+show/i", $command, $tmp) == true):
+					$router =& Router::getInstance();
+					$this->out(implode("\n", Set::extract($router->routes, '{n}.0')));
+				break;
+				case (preg_match("/^route\s+(\(.*\))$/i", $command, $tmp) == true):
+					if ($url = eval('return array' . $tmp[1] . ';')) {
+						$this->out(Router::url($url));
 					}
 				break;
 				case (preg_match("/^route\s+(.*)/i", $command, $tmp) == true):
-					$this->out(Debugger::exportVar(Router::parse($tmp[1])));
+					$this->out(var_export(Router::parse($tmp[1]), true));
 				break;
 				default:
 					$this->out("Invalid command\n");
@@ -291,15 +320,43 @@ class ConsoleShell extends Shell {
 			$command = '';
 		}
 	}
+
 /**
  * Tells if the specified model is included in the list of available models
  *
  * @param string $modelToCheck
  * @return boolean true if is an available model, false otherwise
- * @access private
+ * @access protected
  */
-	function __isValidModel($modelToCheck) {
+	function _isValidModel($modelToCheck) {
 		return in_array($modelToCheck, $this->models);
+	}
+
+/**
+ * Reloads the routes configuration from config/routes.php, and compiles
+ * all routes found
+ *
+ * @return boolean True if config reload was a success, otherwise false
+ * @access protected
+ */
+	function _loadRoutes() {
+		$router =& Router::getInstance();
+
+		$router->reload();
+		extract($router->getNamedExpressions());
+
+		if (!@include(CONFIGS . 'routes.php')) {
+			return false;
+		}
+		$router->parse('/');
+
+		foreach (array_keys($router->getNamedExpressions()) as $var) {
+			unset(${$var});
+		}
+		for ($i = 0, $len = count($router->routes); $i < $len; $i++) {
+			$router->routes[$i]->compile();
+		}
+		return true;
 	}
 }
 ?>

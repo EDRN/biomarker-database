@@ -209,7 +209,7 @@ class PaginationComponent extends Object
         }
         else
         {
-            $count = $this->controller->{$this->modelClass}->findCount($criteria,0);    
+            $count = $this->controller->{$this->modelClass}->find('count',$criteria,0);    
         }
         $this->checkPage($count);
         $this->paging['total'] = $count;

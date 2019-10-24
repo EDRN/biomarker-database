@@ -6,9 +6,9 @@
 	echo $html->css('bmdb-browser');
 	echo $html->css('bmdb-sites');
 
-	echo $javascript->link('jquery/jquery-1.8.2.min.js');
-	echo $javascript->link('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
-	echo $javascript->link('jquery/plugins/dataTables/jquery.dataTables.min');
+	echo $html->script('jquery/jquery-1.8.2.min.js');
+	echo $html->script('jquery/jquery-ui/jquery-ui-1.10.3.custom.js');
+	echo $html->script('jquery/plugins/dataTables/jquery.dataTables.min');
 	echo $html->css('jquery-ui/jquery-ui-1.10.3.custom.min.css');
 ?>
 <div class="menu">
