@@ -6,12 +6,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.cache
@@ -136,13 +136,27 @@ class FileEngine extends CacheEngine {
 			}
 		}
 
-		if ($this->settings['lock']) {
-			$this->_File->lock = true;
-		}
 		$expires = time() + $duration;
 		$contents = $expires . $lineBreak . $data . $lineBreak;
-		$success = $this->_File->write($contents);
-		$this->_File->close();
+		$old = umask(0);
+		$handle = fopen($this->_File->path, 'a');
+		umask($old);
+
+		if (!$handle) {
+			return false;
+		}
+
+		if ($this->settings['lock']) {
+		    flock($handle, LOCK_EX);
+		}
+
+		$success = ftruncate($handle, 0) && fwrite($handle, $contents) && fflush($handle);
+
+		if ($this->settings['lock']) {
+		    flock($handle, LOCK_UN);
+		}
+
+		fclose($handle);
 		return $success;
 	}
 
@@ -209,7 +223,11 @@ class FileEngine extends CacheEngine {
 			$now = time();
 			$threshold = $now - $this->settings['duration'];
 		}
+		$prefixLength = strlen($this->settings['prefix']);
 		while (($entry = $dir->read()) !== false) {
+			if (substr($entry, 0, $prefixLength) !== $this->settings['prefix']) {
+				continue;
+			}
 			if ($this->_setKey($entry) === false) {
 				continue;
 			}
@@ -261,8 +279,8 @@ class FileEngine extends CacheEngine {
 		if ($this->_init && !is_writable($this->settings['path'])) {
 			$this->_init = false;
 			trigger_error(sprintf(__('%s is not writable', true), $this->settings['path']), E_USER_WARNING);
+			return false;
 		}
 		return true;
 	}
 }
-?>

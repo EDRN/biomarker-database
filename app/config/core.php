@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.app.config
@@ -24,6 +24,7 @@
  * Added by ahart on 29.07.2008 to support installations in subdirectories
  */
 define('PROJROOT','bmdb');
+
 
 /**
  * CakePHP Debug Level:
@@ -126,7 +127,7 @@ define('PROJROOT','bmdb');
  * Set the value of 'Session.save' to <name> to utilize it in CakePHP.
  *
  * To use database sessions, run the app/config/schema/sessions.php schema using
- * the cake shell command: cake schema run create Sessions
+ * the cake shell command: cake schema create Sessions
  *
  */
 	Configure::write('Session.save', 'php');
@@ -163,6 +164,11 @@ define('PROJROOT','bmdb');
 
 /**
  * The name of CakePHP's session cookie.
+ *
+ * Note the guidelines for Session names states: "The session name references
+ * the session id in cookies and URLs. It should contain only alphanumeric
+ * characters."
+ * @link http://php.net/session_name
  */
 	Configure::write('Session.cookie', 'CAKEPHP');
 
@@ -179,7 +185,8 @@ define('PROJROOT','bmdb');
 
 /**
  * When set to false, HTTP_USER_AGENT will not be checked
- * in the session
+ * in the session. You might want to set the value to false, when dealing with
+ * older versions of IE, Chrome Frame or certain web-browsing devices and AJAX
  */
 	Configure::write('Session.checkAgent', true);
 
@@ -188,9 +195,9 @@ define('PROJROOT','bmdb');
  * in 'Session.timeout' is multiplied according to the settings here.
  * Valid values:
  *
- * 'high'	Session timeout in 'Session.timeout' x 10
- * 'medium'	Session timeout in 'Session.timeout' x 100
- * 'low'		Session timeout in 'Session.timeout' x 300
+ * 'high'   Session timeout in 'Session.timeout' x 10
+ * 'medium' Session timeout in 'Session.timeout' x 100
+ * 'low'    Session timeout in 'Session.timeout' x 300
  *
  * CakePHP session IDs are also regenerated between requests if
  * 'Security.level' is set to 'high'.
@@ -200,22 +207,22 @@ define('PROJROOT','bmdb');
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'DYhG93b0qy1246JfIxfs2guVoUubWwvniR2G0FgaC9mi');
+	Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '768593096512467453542496749683645');
+	Configure::write('Security.cipherSeed', '76859309657453542496749683645');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
  * Will append a querystring parameter containing the time the file was modified. This is
  * useful for invalidating browser caches.
  *
- * Set to `true` to apply timestamps, when debug = 0, or set to 'force' to always enable
- * timestamping.
+ * Set to `true` to apply timestamps when debug > 0. Set to 'force' to always enable
+ * timestamping regardless of debug value.
  */
-	//Configure::write('Asset.timestamp', true);
+	//Configure::write('Asset.timestamp', true);?
 /**
  * Compress CSS output by removing comments, whitespace, repeating tags, etc.
  * This requires a/var/cache directory to be writable by the web server for caching.
@@ -296,8 +303,8 @@ date_default_timezone_set('UTC');
  * 			'127.0.0.1:11211' // localhost, default port 11211
  * 		), //[optional]
  * 		'compress' => false, // [optional] compress data in Memcache (slower, but uses less memory)
+ * 		'persistent' => true, // [optional] set this to false for non-persistent connections
  *	));
  *
  */
 	Cache::config('default', array('engine' => 'File'));
-?>

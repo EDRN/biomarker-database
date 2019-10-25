@@ -5,12 +5,12 @@
  * Generates pagination links
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
@@ -88,6 +88,7 @@ class PaginatorHelper extends AppHelper {
  * @return void
  */
 	function __construct($config = array()) {
+		parent::__construct($config);
 		$ajaxProvider = isset($config['ajax']) ? $config['ajax'] : 'Js';
 		$this->helpers[] = $ajaxProvider;
 		$this->_ajaxHelperClass = $ajaxProvider;
@@ -194,18 +195,10 @@ class PaginatorHelper extends AppHelper {
 		}
 
 		if (isset($options['sort']) && !empty($options['sort'])) {
-			if (preg_match('/(?:\w+\.)?(\w+)/', $options['sort'], $result) && isset($result[1])) {
-				if ($result[0] == $this->defaultModel()) {
-					return $result[1];
-				}
-			}
 			return $options['sort'];
 		} elseif (isset($options['order']) && is_array($options['order'])) {
 			return key($options['order']);
 		} elseif (isset($options['order']) && is_string($options['order'])) {
-			if (preg_match('/(?:\w+\.)?(\w+)/', $options['order'], $result) && isset($result[1])) {
-				return $result[1];
-			}
 			return $options['order'];
 		}
 		return null;
@@ -310,13 +303,18 @@ class PaginatorHelper extends AppHelper {
 		unset($options['direction']);
 
 		$sortKey = $this->sortKey($options['model']);
-		$isSorted = ($sortKey === $key || $sortKey === $this->defaultModel() . '.' . $key);
+		$defaultModel = $this->defaultModel();
+		$isSorted = (
+			$sortKey === $key || 
+			$sortKey === $defaultModel . '.' . $key ||
+			$key === $defaultModel . '.' . $sortKey
+		);
 
 		if ($isSorted) {
 			$dir = $this->sortDir($options['model']) === 'asc' ? 'desc' : 'asc';
 			$class = $dir === 'asc' ? 'desc' : 'asc';
 			if (!empty($options['class'])) {
-				$options['class'] .= $class;
+				$options['class'] .= ' ' . $class;
 			} else {
 				$options['class'] = $class;
 			}
@@ -709,7 +707,7 @@ class PaginatorHelper extends AppHelper {
  * ### Options:
  *
  * - `tag` The tag wrapping tag you want to use, defaults to 'span'
- * - `before` Content to insert before the link/tag
+ * - `after` Content to insert after the link/tag
  * - `model` The model to use defaults to PaginatorHelper::defaultModel()
  * - `separator` Content between the generated links, defaults to ' | '
  *
@@ -814,4 +812,3 @@ class PaginatorHelper extends AppHelper {
 		return $out;
 	}
 }
-?>

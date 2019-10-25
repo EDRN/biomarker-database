@@ -4,14 +4,14 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       cake
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -104,6 +104,9 @@ class FileTest extends CakeTestCase {
  * @return void
  */
 	function testRead() {
+		$file = __FILE__;
+		$this->File =& new File($file);
+
 		$result = $this->File->read();
 		$expecting = file_get_contents(__FILE__);
 		$this->assertEqual($result, $expecting);
@@ -112,7 +115,7 @@ class FileTest extends CakeTestCase {
 		$this->File->lock = true;
 		$result = $this->File->read();
 		$expecting = file_get_contents(__FILE__);
-		$this->assertEqual($result, $expecting);
+		$this->assertEqual($result, trim($expecting));
 		$this->File->lock = null;
 
 		$data = $expecting;
@@ -392,7 +395,7 @@ class FileTest extends CakeTestCase {
 	function testDelete() {
 		if (!$tmpFile = $this->_getTmpFile()) {
 			return false;
-		};
+		}
 
 		if (!file_exists($tmpFile)) {
 			touch($tmpFile);
@@ -406,6 +409,24 @@ class FileTest extends CakeTestCase {
 		$TmpFile =& new File('/this/does/not/exist');
 		$result = $TmpFile->delete();
 		$this->assertFalse($result);
+	}
+
+/**
+ * Windows has issues unlinking files if there are
+ * active filehandles open.
+ *
+ * @return void
+ */
+	function testDeleteAfterRead() {
+		if (!$tmpFile = $this->_getTmpFile()) {
+			return false;
+		}
+		if (!file_exists($tmpFile)) {
+			touch($tmpFile);
+		}
+		$file =& new File($tmpFile);
+		$file->read();
+		$this->assertTrue($file->delete());
 	}
 
 /**
@@ -445,7 +466,7 @@ class FileTest extends CakeTestCase {
  * @return void
  */
 	function _getTmpFile($paintSkip = true) {
-		$tmpFile = TMP.'tests'.DS.'cakephp.file.test.tmp';
+		$tmpFile = TMP . 'tests' . DS . 'cakephp.file.test.tmp';
 		if (is_writable(dirname($tmpFile)) && (!file_exists($tmpFile) || is_writable($tmpFile))) {
 			return $tmpFile;
 		};
@@ -454,17 +475,16 @@ class FileTest extends CakeTestCase {
 			$caller = 'test';
 			if (function_exists('debug_backtrace')) {
 				$trace = debug_backtrace();
-				$caller = $trace[1]['function'].'()';
+				$caller = $trace[1]['function'] . '()';
 			}
 			$assertLine = new SimpleStackTrace(array(__FUNCTION__));
 			$assertLine = $assertLine->traceMethod();
 			$shortPath = substr($tmpFile, strlen(ROOT));
 
 			$message = '[FileTest] Skipping %s because "%s" not writeable!';
-			$message = sprintf(__($message, true), $caller, $shortPath).$assertLine;
+			$message = sprintf(__($message, true), $caller, $shortPath) . $assertLine;
 			$this->_reporter->paintSkip($message);
 		}
 		return false;
 	}
 }
-?>

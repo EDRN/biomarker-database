@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -91,7 +91,7 @@ class CakeLog {
  *
  * For an explaination of these parameters, see CakeLog::write()
  *
- * @param string $key The keyname for this logger, used to revmoe the logger later.
+ * @param string $key The keyname for this logger, used to remove the logger later.
  * @param array $config Array of configuration information for the logger
  * @return boolean success of configuration.
  * @static
@@ -253,7 +253,7 @@ class CakeLog {
  * @return void
  */
 	function handleError($code, $description, $file = null, $line = null, $context = null) {
-		if ($code === 2048 || $code === 8192) {
+		if ($code === 2048 || $code === 8192 || error_reporting() === 0) {
 			return;
 		}
 		switch ($code) {
@@ -287,6 +287,10 @@ class CakeLog {
 }
 
 if (!defined('DISABLE_DEFAULT_ERROR_HANDLING')) {
-	set_error_handler(array('CakeLog', 'handleError'));
+	$cakeLog =& CakeLog::getInstance();
+	if (PHP5) {
+		set_error_handler(array($cakeLog, 'handleError'), error_reporting());
+	} else {
+		set_error_handler(array($cakeLog, 'handleError'));
+	}
 }
-?>

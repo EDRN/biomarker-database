@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
@@ -48,7 +48,7 @@ class NumberHelper extends AppHelper {
 			'decimals' => '.', 'negative' => '()','escape' => false
 		),
 		'EUR' => array(
-			'before'=>'&#8364;', 'after' => 'c', 'zero' => 0, 'places' => 2, 'thousands' => '.',
+			'before'=>'&#8364;', 'after' => false, 'zero' => 0, 'places' => 2, 'thousands' => '.',
 			'decimals' => ',', 'negative' => '()', 'escape' => false
 		)
 	);
@@ -60,7 +60,7 @@ class NumberHelper extends AppHelper {
  * @access protected
  */
 	var $_currencyDefaults = array(
-		'before'=>'', 'after' => '', 'zero' => '0', 'places' => 2, 'thousands' => ',',
+		'before'=>'', 'after' => false, 'zero' => '0', 'places' => 2, 'thousands' => ',',
 		'decimals' => '.','negative' => '()', 'escape' => true
 	);
 
@@ -69,7 +69,7 @@ class NumberHelper extends AppHelper {
  *
  * @param float $number	A floating point number.
  * @param integer $precision The precision of the returned number.
- * @return float Enter description here...
+ * @return float Formatted float.
  * @access public
  * @link http://book.cakephp.org/view/1454/precision
  */
@@ -255,4 +255,3 @@ class NumberHelper extends AppHelper {
 	}
 
 }
-?>

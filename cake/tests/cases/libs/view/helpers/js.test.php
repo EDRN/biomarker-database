@@ -6,14 +6,14 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       cake
  * @subpackage    cake.tests.cases.libs.view.helpers
  * @since         CakePHP(tm) v 1.3
@@ -309,7 +309,7 @@ class JsHelperTestCase extends CakeTestCase {
 			'request', array('/posts/view/1', $options)
 		));
 		$this->Js->TestJsEngine->expectAt(2, 'dispatchMethod', array(
-			'event', array('click', 'ajax code', $options)
+			'event', array('click', 'ajax code', $options + array('buffer' => null))
 		));
 
 		$result = $this->Js->link('test link', '/posts/view/1', $options);
@@ -362,7 +362,9 @@ CODE;
  */
 	function testLinkWithNoBuffering() {
 		$this->_useMock();
-		$this->Js->TestJsEngine->setReturnValue('dispatchMethod', 'ajax code', array('request', '*'));
+		$this->Js->TestJsEngine->setReturnValue('dispatchMethod', 'ajax code', array(
+			'request', array('/posts/view/1', array('update' => '#content'))
+		));
 		$this->Js->TestJsEngine->setReturnValue('dispatchMethod', '-event handler-', array('event', '*'));
 
 		$options = array('update' => '#content', 'buffer' => false);
@@ -400,7 +402,7 @@ CODE;
 	function testSubmitWithMock() {
 		$this->_useMock();
 
-		$options = array('update' => '#content', 'id' => 'test-submit');
+		$options = array('update' => '#content', 'id' => 'test-submit', 'style' => 'margin: 0');
 		$this->Js->TestJsEngine->setReturnValue('dispatchMethod', 'serialize-code', array('serializeform', '*'));
 		$this->Js->TestJsEngine->setReturnValue('dispatchMethod', 'serialize-code', array('serializeForm', '*'));
 		$this->Js->TestJsEngine->setReturnValue('dispatchMethod', 'ajax-code', array('request', '*'));
@@ -411,7 +413,7 @@ CODE;
 
 		$params = array(
 			'update' => $options['update'], 'data' => 'serialize-code',
-			'method' => 'post', 'dataExpression' => true
+			'method' => 'post', 'dataExpression' => true, 'buffer' => null
 		);
 		$this->Js->TestJsEngine->expectAt(3, 'dispatchMethod', array(
 			'event', array('click', "ajax-code", $params)
@@ -420,7 +422,7 @@ CODE;
 		$result = $this->Js->submit('Save', $options);
 		$expected = array(
 			'div' => array('class' => 'submit'),
-			'input' => array('type' => 'submit', 'id' => $options['id'], 'value' => 'Save'),
+			'input' => array('type' => 'submit', 'id' => $options['id'], 'value' => 'Save', 'style' => 'margin: 0'),
 			'/div'
 		);
 		$this->assertTags($result, $expected);
@@ -440,7 +442,7 @@ CODE;
 
 		$params = array(
 			'update' => '#content', 'data' => 'serialize-code',
-			'method' => 'post', 'dataExpression' => true
+			'method' => 'post', 'dataExpression' => true, 'buffer' => null
 		);
 		$this->Js->TestJsEngine->expectAt(7, 'dispatchMethod', array(
 			'event', array('click', "ajax-code", $params)
@@ -471,11 +473,13 @@ CODE;
 
 		$this->Js->TestJsEngine->expectAt(0, 'dispatchMethod', array('get', '*'));
 		$this->Js->TestJsEngine->expectAt(1, 'dispatchMethod', array(new PatternExpectation('/serializeForm/i'), '*'));
-		$this->Js->TestJsEngine->expectAt(2, 'dispatchMethod', array('request', '*'));
+		$this->Js->TestJsEngine->expectAt(2, 'dispatchMethod', array('request', array(
+			'', array('update' => $options['update'], 'data' => 'serialize-code', 'method' => 'post', 'dataExpression' => true)
+		)));
 
 		$params = array(
-			'update' => $options['update'], 'buffer' => false, 'safe' => false, 'data' => 'serialize-code',
-			'method' => 'post', 'dataExpression' => true
+			'update' => $options['update'], 'data' => 'serialize-code',
+			'method' => 'post', 'dataExpression' => true, 'buffer' => false
 		);
 		$this->Js->TestJsEngine->expectAt(3, 'dispatchMethod', array(
 			'event', array('click', "ajax-code", $params)
@@ -827,4 +831,3 @@ class JsBaseEngineTestCase extends CakeTestCase {
 	}
 
 }
-?>

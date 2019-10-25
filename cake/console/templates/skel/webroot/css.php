@@ -1,16 +1,16 @@
 <?php
 /**
- * Short description for file.
+ * CSS Functions
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.app.webroot
@@ -23,14 +23,14 @@ if (!defined('CAKE_CORE_INCLUDE_PATH')) {
 }
 
 /**
- * Enter description here...
+ * Ensure required files are included
  */
 if (!class_exists('File')) {
 	require LIBS . 'file.php';
 }
 
 /**
- * Enter description here...
+ * Make clean CSS
  *
  * @param unknown_type $path
  * @param unknown_type $name
@@ -47,7 +47,7 @@ if (!class_exists('File')) {
 	}
 
 /**
- * Enter description here...
+ * Write CSS cache
  *
  * @param unknown_type $path
  * @param unknown_type $content
@@ -95,4 +95,3 @@ if (!class_exists('File')) {
 	header("Cache-Control: max-age=86400, must-revalidate"); // HTTP/1.1
 	header("Pragma: cache");        // HTTP/1.0
 	print $output;
-?>

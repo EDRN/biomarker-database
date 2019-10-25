@@ -1,16 +1,16 @@
 <?php
 /**
- * Short description for file.
+ * Localization
  *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -19,7 +19,7 @@
  */
 
 /**
- * Short description for file.
+ * Localization
  *
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -103,6 +103,7 @@ class L10n extends Object {
 								/* Arabic */ 'ara' => 'ar',
 								/* Armenian - Armenia */ 'hye' => 'hy',
 								/* Basque */ 'baq' => 'eu',
+								/* Tibetan */ 'bod' => 'bo',
 								/* Bosnian */ 'bos' => 'bs',
 								/* Bulgarian */ 'bul' => 'bg',
 								/* Byelorussian */ 'bel' => 'be',
@@ -172,6 +173,7 @@ class L10n extends Object {
 								/* Urdu */ 'urd' => 'ur',
 								/* Venda */ 'ven' => 've',
 								/* Vietnamese */ 'vie' => 'vi',
+								/* Welsh */ 'cym' => 'cy',
 								/* Xhosa */ 'xho' => 'xh',
 								/* Yiddish */ 'yid' => 'yi',
 								/* Zulu */ 'zul' => 'zu');
@@ -204,6 +206,9 @@ class L10n extends Object {
 										'ar-ye' => array('language' => 'Arabic (Yemen)', 'locale' => 'ar_ye', 'localeFallback' => 'ara', 'charset' => 'utf-8', 'direction' => 'rtl'),
 										'be' => array('language' => 'Byelorussian', 'locale' => 'bel', 'localeFallback' => 'bel', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'bg' => array('language' => 'Bulgarian', 'locale' => 'bul', 'localeFallback' => 'bul', 'charset' => 'utf-8', 'direction' => 'ltr'),
+										'bo' => array('language' => 'Tibetan', 'locale' => 'bod', 'localeFallback' => 'bod', 'charset' => 'utf-8', 'direction' => 'ltr'),
+										'bo-cn' => array('language' => 'Tibetan (China)', 'locale' => 'bo_cn', 'localeFallback' => 'bod', 'charset' => 'utf-8', 'direction' => 'ltr'),
+										'bo-in' => array('language' => 'Tibetan (India)', 'locale' => 'bo_in', 'localeFallback' => 'bod', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'bs' => array('language' => 'Bosnian', 'locale' => 'bos', 'localeFallback' => 'bos', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'ca' => array('language' => 'Catalan', 'locale' => 'cat', 'localeFallback' => 'cat', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'cs' => array('language' => 'Czech', 'locale' => 'cze', 'localeFallback' => 'cze', 'charset' => 'utf-8', 'direction' => 'ltr'),
@@ -315,6 +320,7 @@ class L10n extends Object {
 										'ur' => array('language' => 'Urdu', 'locale' => 'urd', 'localeFallback' => 'urd', 'charset' => 'utf-8', 'direction' => 'rtl'),
 										've' => array('language' => 'Venda', 'locale' => 'ven', 'localeFallback' => 'ven', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'vi' => array('language' => 'Vietnamese', 'locale' => 'vie', 'localeFallback' => 'vie', 'charset' => 'utf-8', 'direction' => 'ltr'),
+										'cy' => array('language' => 'Welsh', 'locale' => 'cym', 'localeFallback' => 'cym', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'xh' => array('language' => 'Xhosa', 'locale' => 'xho', 'localeFallback' => 'xho', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'yi' => array('language' => 'Yiddish', 'locale' => 'yid', 'localeFallback' => 'yid', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'zh' => array('language' => 'Chinese', 'locale' => 'chi', 'localeFallback' => 'chi', 'charset' => 'utf-8', 'direction' => 'ltr'),
@@ -484,4 +490,3 @@ class L10n extends Object {
 		return $this->__l10nCatalog;
 	}
 }
-?>
