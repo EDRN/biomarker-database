@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Cache.Engine
  * @since         CakePHP(tm) v 1.2.0.4947
@@ -45,14 +45,17 @@ class XcacheEngine extends CacheEngine {
  * @return boolean True if the engine has been successfully initialized, false if not
  */
 	public function init($settings = array()) {
-		parent::init(array_merge(array(
-			'engine' => 'Xcache',
-			'prefix' => Inflector::slug(APP_DIR) . '_',
-			'PHP_AUTH_USER' => 'user',
-			'PHP_AUTH_PW' => 'password'
-			), $settings)
-		);
-		return function_exists('xcache_info');
+		if ( php_sapi_name() !== 'cli' ){
+			parent::init(array_merge(array(
+				'engine' => 'Xcache',
+				'prefix' => Inflector::slug(APP_DIR) . '_',
+				'PHP_AUTH_USER' => 'user',
+				'PHP_AUTH_PW' => 'password'
+				), $settings)
+			);
+			return function_exists('xcache_info');
+		}
+		return false;
 	}
 
 /**
@@ -165,7 +168,7 @@ class XcacheEngine extends CacheEngine {
 				}
 				if (!empty($this->settings[$setting])) {
 					$_SERVER[$key] = $this->settings[$setting];
-				} else if (!empty($this->settings[$key])) {
+				} elseif (!empty($this->settings[$key])) {
 					$_SERVER[$key] = $this->settings[$key];
 				} else {
 					$_SERVER[$key] = $value;
@@ -173,4 +176,5 @@ class XcacheEngine extends CacheEngine {
 			}
 		}
 	}
+
 }

@@ -26,7 +26,7 @@ class ExtendAssociationsBehavior extends ModelBehavior {
      * @param unknown_type $model
      * @param unknown_type $config
      */
-    public function setup($model, $config = array()) {
+    public function setup(Model $model, $config = array()) {
         // no special setup required
         $this->config[$model->name] = $config;
     }

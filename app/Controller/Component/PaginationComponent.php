@@ -153,7 +153,7 @@ class PaginationComponent extends Component
  *
  * @param controller
  */
-    public function startup($controller)
+    public function startup(Controller $controller)
     {
         $this->controller =& $controller;        
     }

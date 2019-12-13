@@ -176,7 +176,10 @@ class Biomarker extends AppModel
 	}
 	
 	public function god($biomarker_id) {
-		return ($this->OrganData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2)));
+		$rc = $this->OrganData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2));
+//$log = $this->OrganData->getDataSource()->getLog(false, false);
+//debug($log);
+		return $rc;
 	}
 	public function getStudyDatasFor($biomarker_id){ 
 		return ($this->BiomarkerStudyData->find('all',array('conditions'=>array('biomarker_id'=>$biomarker_id),'recursive'=>2)));	

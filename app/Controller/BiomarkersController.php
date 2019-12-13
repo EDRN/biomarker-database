@@ -293,6 +293,7 @@ class BiomarkersController extends AppController {
 			$this->set('biomarker',$biomarker);
 			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 			$organdatas = $this->Biomarker->god($biomarker['Biomarker']['id']);
+//debug($organdatas);
 		
 			// Try to load the current OrganData object
 			$this->set('organData',false);

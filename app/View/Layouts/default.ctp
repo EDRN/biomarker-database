@@ -34,7 +34,7 @@
 		}?>
 	</div>
 	<h2 class="app-title" style="margin-top:146px;">EDRN Biomarker Database</h2>
-	<?php echo $content_for_layout;?>
+	<?php echo $this->fetch('content');?>
 </div>
 <div id="footer">
 	A Service of the National Cancer Institute<br/><br/>

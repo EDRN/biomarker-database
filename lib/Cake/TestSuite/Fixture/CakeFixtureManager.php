@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.TestSuite.Fixture
  * @since         CakePHP(tm) v 2.0
@@ -62,6 +62,9 @@ class CakeFixtureManager {
  * @return void
  */
 	public function fixturize($test) {
+		if (!$this->_initialized) {
+			ClassRegistry::config(array('ds' => 'test', 'testing' => true));
+		}
 		if (empty($test->fixtures) || !empty($this->_processed[get_class($test)])) {
 			$test->db = $this->_db;
 			return;
@@ -90,7 +93,6 @@ class CakeFixtureManager {
 		$db = ConnectionManager::getDataSource('test');
 		$db->cacheSources = false;
 		$this->_db = $db;
-		ClassRegistry::config(array('ds' => 'test'));
 		$this->_initialized = true;
 	}
 
@@ -127,7 +129,7 @@ class CakeFixtureManager {
 			} else {
 				$fixturePaths = array(
 					TESTS . 'Fixture',
-					CAKE  . 'Test' . DS . 'Fixture'
+					CAKE . 'Test' . DS . 'Fixture'
 				);
 			}
 
@@ -135,9 +137,9 @@ class CakeFixtureManager {
 				$className = Inflector::camelize($fixture);
 				if (is_readable($path . DS . $className . 'Fixture.php')) {
 					$fixtureFile = $path . DS . $className . 'Fixture.php';
-					require_once($fixtureFile);
+					require_once $fixtureFile;
 					$fixtureClass = $className . 'Fixture';
-					$this->_loaded[$fixtureIndex] = new $fixtureClass($this->_db);
+					$this->_loaded[$fixtureIndex] = new $fixtureClass();
 					$this->_fixtureMap[$fixtureClass] = $this->_loaded[$fixtureIndex];
 					break;
 				}
@@ -155,27 +157,32 @@ class CakeFixtureManager {
  */
 	protected function _setupTable($fixture, $db = null, $drop = true) {
 		if (!$db) {
-			$db = $this->_db;
+			if (!empty($fixture->useDbConfig)) {
+				$db = ClassRegistry::getDataSource($fixture->useDbConfig);
+			} else {
+				$db = $this->_db;
+			}
 		}
-		if (!empty($fixture->created) && $fixture->created == $db->configKeyName) {
+		if (!empty($fixture->created) && in_array($db->configKeyName, $fixture->created)) {
 			return;
 		}
 
 		$sources = $db->listSources();
 		$table = $db->config['prefix'] . $fixture->table;
+		$exists = in_array($table, $sources);
 
-		if ($drop && in_array($table, $sources)) {
+		if ($drop && $exists) {
 			$fixture->drop($db);
 			$fixture->create($db);
-			$fixture->created = $db->configKeyName;
-		} elseif (!in_array($table, $sources)) {
+		} elseif (!$exists) {
 			$fixture->create($db);
-			$fixture->created = $db->configKeyName;
+		} else {
+			$fixture->created[] = $db->configKeyName;
 		}
 	}
 
 /**
- * Crates the fixtures tables and inserts data on them
+ * Creates the fixtures tables and inserts data on them.
  *
  * @param CakeTestCase $test the test to inspect for fixture loading
  * @return void
@@ -193,8 +200,9 @@ class CakeFixtureManager {
 		foreach ($fixtures as $f) {
 			if (!empty($this->_loaded[$f])) {
 				$fixture = $this->_loaded[$f];
-				$this->_setupTable($fixture, $test->db, $test->dropTables);
-				$fixture->insert($test->db);
+				$db = ConnectionManager::getDataSource($fixture->useDbConfig);
+				$this->_setupTable($fixture, $db, $test->dropTables);
+				$fixture->insert($db);
 			}
 		}
 		$test->db->commit();
@@ -212,26 +220,30 @@ class CakeFixtureManager {
 			if (isset($this->_loaded[$f])) {
 				$fixture = $this->_loaded[$f];
 				if (!empty($fixture->created)) {
-					$fixture->truncate($test->db);
+					foreach ($fixture->created as $ds) {
+						$db = ConnectionManager::getDataSource($ds);
+						$fixture->truncate($db);
+					}
 				}
 			}
 		}
 	}
 
 /**
- * Truncates the fixtures tables
+ * Creates a single fixture table and loads data into it.
  *
- * @param CakeTestCase $test the test to inspect for fixture unloading
+ * @param string $name of the fixture
+ * @param DataSource $db DataSource instance or leave null to get DataSource from the fixture
  * @return void
  * @throws UnexpectedValueException if $name is not a previously loaded class
  */
 	public function loadSingle($name, $db = null) {
 		$name .= 'Fixture';
 		if (isset($this->_fixtureMap[$name])) {
-			if (!$db) {
-				$db = $this->_db;
-			}
 			$fixture = $this->_fixtureMap[$name];
+			if (!$db) {
+				$db = ConnectionManager::getDataSource($fixture->useDbConfig);
+			}
 			$this->_setupTable($fixture, $db);
 			$fixture->truncate($db);
 			$fixture->insert($db);
@@ -248,8 +260,12 @@ class CakeFixtureManager {
 	public function shutDown() {
 		foreach ($this->_loaded as $fixture) {
 			if (!empty($fixture->created)) {
-				$fixture->drop($this->_db);
+				foreach ($fixture->created as $ds) {
+					$db = ConnectionManager::getDataSource($ds);
+					$fixture->drop($db);
+				}
 			}
 		}
 	}
+
 }
