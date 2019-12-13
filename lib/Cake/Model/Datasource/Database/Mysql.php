@@ -2,6 +2,8 @@
 /**
  * MySQL layer for DBO
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -128,15 +130,6 @@ class Mysql extends DboSource {
 /**
  * Connects to the database using options in the given configuration array.
  *
- * MySQL supports a few additional options that other drivers do not:
- *
- * - `unix_socket` Set to the path of the MySQL sock file. Can be used in place
- *   of host + port.
- * - `ssl_key` SSL key file for connecting via SSL. Must be combined with `ssl_cert`.
- * - `ssl_cert` The SSL certificate to use when connecting via SSL. Must be
- *   combined with `ssl_key`.
- * - `ssl_ca` The certificate authority for SSL connections.
- *
  * @return boolean True if the database could be connected, else false
  * @throws MissingConnectionException
  */
@@ -153,13 +146,7 @@ class Mysql extends DboSource {
 		if (!empty($config['encoding'])) {
 			$flags[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES ' . $config['encoding'];
 		}
-		if (!empty($config['ssl_key']) && !empty($config['ssl_cert'])) {
-			$flags[PDO::MYSQL_ATTR_SSL_KEY] = $config['ssl_key'];
-			$flags[PDO::MYSQL_ATTR_SSL_CERT] = $config['ssl_cert'];
-		}
-		if (!empty($config['ssl_ca'])) {
-			$flags[PDO::MYSQL_ATTR_SSL_CA] = $config['ssl_ca'];
-		}
+
 		if (empty($config['unix_socket'])) {
 			$dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['database']}";
 		} else {
@@ -174,11 +161,6 @@ class Mysql extends DboSource {
 				$flags
 			);
 			$this->connected = true;
-			if (!empty($config['settings'])) {
-				foreach ($config['settings'] as $key => $value) {
-					$this->_execute("SET $key=$value");
-				}
-			}
 		} catch (PDOException $e) {
 			throw new MissingConnectionException(array(
 				'class' => get_class($this),
@@ -387,7 +369,7 @@ class Mysql extends DboSource {
 
 		if (!empty($conditions)) {
 			$alias = $this->name($model->alias);
-			if ($model->name === $model->alias) {
+			if ($model->name == $model->alias) {
 				$joins = implode(' ', $this->_getJoins($model));
 			}
 		}
@@ -516,7 +498,7 @@ class Mysql extends DboSource {
 		$colList = array();
 		foreach ($compare as $curTable => $types) {
 			$indexes = $tableParameters = $colList = array();
-			if (!$table || $table === $curTable) {
+			if (!$table || $table == $curTable) {
 				$out .= 'ALTER TABLE ' . $this->fullTableName($curTable) . " \n";
 				foreach ($types as $type => $column) {
 					if (isset($column['indexes'])) {

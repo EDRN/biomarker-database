@@ -16,9 +16,7 @@
 
 App::uses('CakeLog', 'Log');
 App::uses('Dispatcher', 'Routing');
-App::uses('Router', 'Routing');
 App::uses('Set', 'Utility');
-App::uses('CakeLog', 'Log');
 
 /**
  * Object class provides a few generic methods used in several subclasses.
@@ -31,7 +29,7 @@ App::uses('CakeLog', 'Log');
 class Object {
 
 /**
- * Constructor, no-op
+ * constructor, no-op
  *
  */
 	public function __construct() {
@@ -88,8 +86,8 @@ class Object {
 		$data = isset($extra['data']) ? $extra['data'] : null;
 		unset($extra['data']);
 
-		if (is_string($url) && strpos($url, Router::fullBaseUrl()) === 0) {
-			$url = Router::normalize(str_replace(Router::fullBaseUrl(), '', $url));
+		if (is_string($url) && strpos($url, FULL_BASE_URL) === 0) {
+			$url = Router::normalize(str_replace(FULL_BASE_URL, '', $url));
 		}
 		if (is_string($url)) {
 			$request = new CakeRequest($url);
@@ -150,18 +148,17 @@ class Object {
  * Convenience method to write a message to CakeLog. See CakeLog::write()
  * for more information on writing to logs.
  *
- * @param string $msg Log message
- * @param integer $type Error type constant. Defined in app/Config/core.php.
- * @param null|string|array $scope The scope(s) a log message is being created in.
- *    See CakeLog::config() for more information on logging scopes.
- * @return boolean Success of log write
+ * @param string $msg Log message.
+ * @param integer|string $type Type of message being written. Either a valid
+ *    LOG_* constant or a string matching the recognized levels.
+ * @return boolean Success of log write.
+ * @see CakeLog::write()
  */
-	public function log($msg, $type = LOG_ERR, $scope = null) {
+	public function log($msg, $type = LOG_ERR) {
 		if (!is_string($msg)) {
 			$msg = print_r($msg, true);
 		}
-
-		return CakeLog::write($type, $msg, $scope);
+		return CakeLog::write($type, $msg);
 	}
 
 /**

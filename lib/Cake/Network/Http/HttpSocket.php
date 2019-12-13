@@ -2,6 +2,8 @@
 /**
  * HTTP Socket connection class.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -21,7 +23,7 @@ App::uses('Router', 'Routing');
 App::uses('Hash', 'Utility');
 
 /**
- * CakePHP network socket connection class.
+ * Cake network socket connection class.
  *
  * Core base class for HTTP network communication. HttpSocket can be used as an
  * Object Oriented replacement for cURL in many places.
@@ -76,7 +78,7 @@ class HttpSocket extends CakeSocket {
 	public $response = null;
 
 /**
- * Response class name
+ * Response classname
  *
  * @var string
  */
@@ -94,7 +96,6 @@ class HttpSocket extends CakeSocket {
 		'port' => 80,
 		'timeout' => 30,
 		'ssl_verify_peer' => true,
-		'ssl_allow_self_signed' => false,
 		'ssl_verify_depth' => 5,
 		'ssl_verify_host' => true,
 		'request' => array(
@@ -132,7 +133,7 @@ class HttpSocket extends CakeSocket {
 /**
  * Build an HTTP Socket using the specified configuration.
  *
- * You can use a URL string to set the URL and use default configurations for
+ * You can use an URL string to set the URL and use default configurations for
  * all other options:
  *
  * `$http = new HttpSocket('http://cakephp.org/');`
@@ -462,7 +463,7 @@ class HttpSocket extends CakeSocket {
 /**
  * Issues a POST request to the specified URI, query, and request.
  *
- * `post()` can be used to post simple data arrays to a URL:
+ * `post()` can be used to post simple data arrays to an URL:
  *
  * {{{
  * $response = $http->post('http://example.com', array(
@@ -472,7 +473,7 @@ class HttpSocket extends CakeSocket {
  * }}}
  *
  * @param string|array $uri URI to request. See HttpSocket::_parseUri()
- * @param array $data Array of request body data keys and values.
+ * @param array $data Array of POST data keys and values.
  * @param array $request An indexed array with indexes such as 'method' or uri
  * @return mixed Result of request, either false on failure or the response to the request.
  */
@@ -485,7 +486,7 @@ class HttpSocket extends CakeSocket {
  * Issues a PUT request to the specified URI, query, and request.
  *
  * @param string|array $uri URI to request, See HttpSocket::_parseUri()
- * @param array $data Array of request body data keys and values.
+ * @param array $data Array of PUT data keys and values.
  * @param array $request An indexed array with indexes such as 'method' or uri
  * @return mixed Result of request
  */
@@ -495,23 +496,10 @@ class HttpSocket extends CakeSocket {
 	}
 
 /**
- * Issues a PATCH request to the specified URI, query, and request.
- *
- * @param string|array $uri URI to request, See HttpSocket::_parseUri()
- * @param array $data Array of request body data keys and values.
- * @param array $request An indexed array with indexes such as 'method' or uri
- * @return mixed Result of request
- */
-	public function patch($uri = null, $data = array(), $request = array()) {
-		$request = Hash::merge(array('method' => 'PATCH', 'uri' => $uri, 'body' => $data), $request);
-		return $this->request($request);
-	}
-
-/**
  * Issues a DELETE request to the specified URI, query, and request.
  *
  * @param string|array $uri URI to request (see {@link _parseUri()})
- * @param array $data Array of request body data keys and values.
+ * @param array $data Query to append to URI
  * @param array $request An indexed array with indexes such as 'method' or uri
  * @return mixed Result of request
  */
@@ -543,7 +531,7 @@ class HttpSocket extends CakeSocket {
  *
  * Would return `/search?q=socket`.
  *
- * @param string|array Either a string or array of URL options to create a URL with.
+ * @param string|array Either a string or array of URL options to create an URL with.
  * @param string $uriTemplate A template string to use for URL formatting.
  * @return mixed Either false on failure or a string containing the composed URL.
  */
@@ -602,7 +590,7 @@ class HttpSocket extends CakeSocket {
 			throw new SocketException(__d('cake_dev', 'Unknown authentication method.'));
 		}
 		if (!method_exists($authClass, 'authentication')) {
-			throw new SocketException(__d('cake_dev', 'The %s does not support authentication.', $authClass));
+			throw new SocketException(sprintf(__d('cake_dev', 'The %s do not support authentication.'), $authClass));
 		}
 		call_user_func_array("$authClass::authentication", array($this, &$this->_auth[$method]));
 	}
@@ -631,7 +619,7 @@ class HttpSocket extends CakeSocket {
 			throw new SocketException(__d('cake_dev', 'Unknown authentication method for proxy.'));
 		}
 		if (!method_exists($authClass, 'proxyAuthentication')) {
-			throw new SocketException(__d('cake_dev', 'The %s does not support proxy authentication.', $authClass));
+			throw new SocketException(sprintf(__d('cake_dev', 'The %s do not support proxy authentication.'), $authClass));
 		}
 		call_user_func_array("$authClass::proxyAuthentication", array($this, &$this->_proxy));
 	}
@@ -684,13 +672,13 @@ class HttpSocket extends CakeSocket {
 			}
 			unset($this->config[$key]);
 		}
-		if (empty($this->config['context']['ssl']['cafile'])) {
+		if (empty($this->_context['ssl']['cafile'])) {
 			$this->config['context']['ssl']['cafile'] = CAKE . 'Config' . DS . 'cacert.pem';
 		}
 		if (!empty($this->config['context']['ssl']['verify_host'])) {
 			$this->config['context']['ssl']['CN_match'] = $host;
+			unset($this->config['context']['ssl']['verify_host']);
 		}
-		unset($this->config['context']['ssl']['verify_host']);
 	}
 
 /**
@@ -1012,7 +1000,7 @@ class HttpSocket extends CakeSocket {
  * Resets the state of this HttpSocket instance to it's initial state (before Object::__construct got executed) or does
  * the same thing partially for the request and the response property only.
  *
- * @param boolean $full If set to false only HttpSocket::response and HttpSocket::request are reset
+ * @param boolean $full If set to false only HttpSocket::response and HttpSocket::request are reseted
  * @return boolean True on success
  */
 	public function reset($full = true) {

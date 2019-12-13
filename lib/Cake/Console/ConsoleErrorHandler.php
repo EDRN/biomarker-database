@@ -2,6 +2,8 @@
 /**
  * ErrorHandler for Console Shells
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -93,7 +95,7 @@ class ConsoleErrorHandler {
 /**
  * Wrapper for exit(), used for testing.
  *
- * @param integer $code The exit code.
+ * @param int $code The exit code.
  * @return void
  */
 	protected function _stop($code = 0) {

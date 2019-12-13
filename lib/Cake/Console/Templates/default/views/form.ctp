@@ -1,6 +1,7 @@
 <?php
 /**
  *
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -23,7 +24,7 @@
 <?php
 		echo "\t<?php\n";
 		foreach ($fields as $field) {
-			if (strpos($action, 'add') !== false && $field === $primaryKey) {
+			if (strpos($action, 'add') !== false && $field == $primaryKey) {
 				continue;
 			} elseif (!in_array($field, array('created', 'modified', 'updated'))) {
 				echo "\t\techo \$this->Form->input('{$field}');\n";

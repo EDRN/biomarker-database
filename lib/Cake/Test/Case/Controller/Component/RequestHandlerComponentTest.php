@@ -2,6 +2,8 @@
 /**
  * RequestHandlerComponentTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -227,10 +229,7 @@ class RequestHandlerComponentTest extends CakeTestCase {
 	}
 
 /**
- * Test that ext is set to the first listed extension with multiple accepted
- * content types.
- * Having multiple types accepted with same weight, means the client lets the
- * server choose the returned content type.
+ * Test that ext is not set with multiple accepted content types.
  *
  * @return void
  */
@@ -240,27 +239,7 @@ class RequestHandlerComponentTest extends CakeTestCase {
 		Router::parseExtensions('xml', 'json');
 
 		$this->RequestHandler->initialize($this->Controller);
-		$this->assertEquals('xml', $this->RequestHandler->ext);
-
-		$this->RequestHandler->ext = null;
-		Router::setExtensions(array('json', 'xml'), false);
-
-		$this->RequestHandler->initialize($this->Controller);
-		$this->assertEquals('json', $this->RequestHandler->ext);
-	}
-
-/**
- * Test that ext is set to type with highest weight
- *
- * @return void
- */
-	public function testInitializeContentTypeWithMultipleAcceptedTypes() {
-		$_SERVER['HTTP_ACCEPT'] = 'text/csv;q=1.0, application/json;q=0.8, application/xml;q=0.7';
 		$this->assertNull($this->RequestHandler->ext);
-		Router::parseExtensions('xml', 'json');
-
-		$this->RequestHandler->initialize($this->Controller);
-		$this->assertEquals('json', $this->RequestHandler->ext);
 	}
 
 /**
@@ -272,19 +251,6 @@ class RequestHandlerComponentTest extends CakeTestCase {
 		$_SERVER['HTTP_ACCEPT'] = 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5';
 		$this->assertNull($this->RequestHandler->ext);
 		Router::parseExtensions('html', 'xml');
-
-		$this->RequestHandler->initialize($this->Controller);
-		$this->assertNull($this->RequestHandler->ext);
-	}
-
-/**
- * Test that the headers sent by firefox are not treated as XML requests.
- *
- * @return void
- */
-	public function testInititalizeFirefoxHeaderNotXml() {
-		$_SERVER['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;image/png,image/jpeg,image/*;q=0.9,*/*;q=0.8';
-		Router::parseExtensions('xml', 'json');
 
 		$this->RequestHandler->initialize($this->Controller);
 		$this->assertNull($this->RequestHandler->ext);
@@ -447,7 +413,7 @@ class RequestHandlerComponentTest extends CakeTestCase {
 	}
 
 /**
- * test that redirects with ajax and no URL don't do anything.
+ * test that redirects with ajax and no url don't do anything.
  *
  * @return void
  */
@@ -607,16 +573,6 @@ class RequestHandlerComponentTest extends CakeTestCase {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$_SERVER['CONTENT_TYPE'] = 'application/json';
 		$this->assertEquals('json', $this->RequestHandler->requestedWith());
-
-		$result = $this->RequestHandler->requestedWith(array('json', 'xml'));
-		$this->assertEquals('json', $result);
-
-		$result = $this->RequestHandler->requestedWith(array('rss', 'atom'));
-		$this->assertFalse($result);
-
-		$_SERVER['REQUEST_METHOD'] = 'POST';
-		unset($_SERVER['CONTENT_TYPE']);
-		$_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
 
 		$result = $this->RequestHandler->requestedWith(array('json', 'xml'));
 		$this->assertEquals('json', $result);

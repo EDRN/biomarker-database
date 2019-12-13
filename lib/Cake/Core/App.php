@@ -2,6 +2,8 @@
 /**
  * App class
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -66,28 +68,28 @@ class App {
 /**
  * Append paths
  *
- * @var string
+ * @constant APPEND
  */
 	const APPEND = 'append';
 
 /**
  * Prepend paths
  *
- * @var string
+ * @constant PREPEND
  */
 	const PREPEND = 'prepend';
 
 /**
  * Register package
  *
- * @var string
+ * @constant REGISTER
  */
 	const REGISTER = 'register';
 
 /**
  * Reset paths instead of merging
  *
- * @var boolean
+ * @constant RESET
  */
 	const RESET = true;
 
@@ -668,7 +670,7 @@ class App {
 			$type = 'Console';
 		} elseif (isset(self::$types[$originalType]['suffix'])) {
 			$suffix = self::$types[$originalType]['suffix'];
-			$name .= ($suffix === $name) ? '' : $suffix;
+			$name .= ($suffix == $name) ? '' : $suffix;
 		}
 		if ($parent && isset(self::$types[$originalType]['extends'])) {
 			$extends = self::$types[$originalType]['extends'];

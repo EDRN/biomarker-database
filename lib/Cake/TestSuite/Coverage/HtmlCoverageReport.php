@@ -105,7 +105,7 @@ HTML;
 	}
 
 /**
- * Guess the class name the test was for based on the test case filename.
+ * Guess the classname the test was for based on the test case filename.
  *
  * @param ReflectionClass $testReflection.
  * @return string Possible test subject name.
@@ -181,7 +181,7 @@ HTML;
  */
 	public function coverageHeader($filename, $percent) {
 		$filename = basename($filename);
-		list($file) = explode('.', $filename);
+		list($file, $ext) = explode('.', $filename);
 		$display = in_array($file, $this->_testNames) ? 'block' : 'none';
 		$primary = $display === 'block' ? 'primary' : '';
 		return <<<HTML

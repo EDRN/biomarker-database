@@ -32,7 +32,7 @@ class CakeTestFixture {
 	public $name = null;
 
 /**
- * CakePHP's DBO driver (e.g: DboMysql).
+ * Cake's DBO driver (e.g: DboMysql).
  *
  * @var object
  */
@@ -265,7 +265,6 @@ class CakeTestFixture {
  *
  * @param DboSource $db An instance of the database into which the records will be inserted
  * @return boolean on success or if there are no records to insert, or false on failure
- * @throws CakeException if counts of values and fields do not match.
  */
 	public function insert($db) {
 		if (!isset($this->_insert)) {
@@ -278,11 +277,7 @@ class CakeTestFixture {
 				$fields = array_unique($fields);
 				$default = array_fill_keys($fields, null);
 				foreach ($this->records as $record) {
-					$merge = array_values(array_merge($default, $record));
-					if (count($fields) !== count($merge)) {
-						throw new CakeException('Fixture invalid: Count of fields does not match count of values');
-					}
-					$values[] = $merge;
+					$values[] = array_values(array_merge($default, $record));
 				}
 				$nested = $db->useNestedTransactions;
 				$db->useNestedTransactions = false;

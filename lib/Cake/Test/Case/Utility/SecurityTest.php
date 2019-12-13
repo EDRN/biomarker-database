@@ -114,10 +114,10 @@ class SecurityTest extends CakeTestCase {
 		$key = 'someKey';
 		$hash = 'someHash';
 
-		$this->assertSame(40, strlen(Security::hash($key, null, false)));
-		$this->assertSame(40, strlen(Security::hash($key, 'sha1', false)));
-		$this->assertSame(40, strlen(Security::hash($key, null, true)));
-		$this->assertSame(40, strlen(Security::hash($key, 'sha1', true)));
+		$this->assertSame(strlen(Security::hash($key, null, false)), 40);
+		$this->assertSame(strlen(Security::hash($key, 'sha1', false)), 40);
+		$this->assertSame(strlen(Security::hash($key, null, true)), 40);
+		$this->assertSame(strlen(Security::hash($key, 'sha1', true)), 40);
 
 		$result = Security::hash($key, null, $hash);
 		$this->assertSame($result, 'e38fcb877dccb6a94729a81523851c931a46efb1');
@@ -127,25 +127,25 @@ class SecurityTest extends CakeTestCase {
 
 		$hashType = 'sha1';
 		Security::setHash($hashType);
-		$this->assertSame($hashType, Security::$hashType);
-		$this->assertSame(40, strlen(Security::hash($key, null, true)));
-		$this->assertSame(40, strlen(Security::hash($key, null, false)));
+		$this->assertSame(Security::$hashType, $hashType);
+		$this->assertSame(strlen(Security::hash($key, null, true)), 40);
+		$this->assertSame(strlen(Security::hash($key, null, false)), 40);
 
-		$this->assertSame(32, strlen(Security::hash($key, 'md5', false)));
-		$this->assertSame(32, strlen(Security::hash($key, 'md5', true)));
+		$this->assertSame(strlen(Security::hash($key, 'md5', false)), 32);
+		$this->assertSame(strlen(Security::hash($key, 'md5', true)), 32);
 
 		$hashType = 'md5';
 		Security::setHash($hashType);
-		$this->assertSame($hashType, Security::$hashType);
-		$this->assertSame(32, strlen(Security::hash($key, null, false)));
-		$this->assertSame(32, strlen(Security::hash($key, null, true)));
+		$this->assertSame(Security::$hashType, $hashType);
+		$this->assertSame(strlen(Security::hash($key, null, false)), 32);
+		$this->assertSame(strlen(Security::hash($key, null, true)), 32);
 
 		if (!function_exists('hash') && !function_exists('mhash')) {
-			$this->assertSame(32, strlen(Security::hash($key, 'sha256', false)));
-			$this->assertSame(32, strlen(Security::hash($key, 'sha256', true)));
+			$this->assertSame(strlen(Security::hash($key, 'sha256', false)), 32);
+			$this->assertSame(strlen(Security::hash($key, 'sha256', true)), 32);
 		} else {
-			$this->assertSame(64, strlen(Security::hash($key, 'sha256', false)));
-			$this->assertSame(64, strlen(Security::hash($key, 'sha256', true)));
+			$this->assertSame(strlen(Security::hash($key, 'sha256', false)), 64);
+			$this->assertSame(strlen(Security::hash($key, 'sha256', true)), 64);
 		}
 
 		Security::setHash($_hashType);
@@ -167,8 +167,8 @@ class SecurityTest extends CakeTestCase {
 		$hashType = 'blowfish';
 		Security::setHash($hashType);
 
-		$this->assertSame($hashType, Security::$hashType);
-		$this->assertSame(60, strlen(Security::hash($key, null, false)));
+		$this->assertSame(Security::$hashType, $hashType);
+		$this->assertSame(strlen(Security::hash($key, null, false)), 60);
 
 		$password = $submittedPassword = $key;
 		$storedPassword = Security::hash($password);

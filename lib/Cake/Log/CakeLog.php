@@ -4,6 +4,8 @@
  *
  * Log messages to text files.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -32,7 +34,7 @@ App::uses('LogEngineCollection', 'Log');
  * A sample configuration would look like:
  *
  * {{{
- * CakeLog::config('my_log', array('engine' => 'File'));
+ * CakeLog::config('my_log', array('engine' => 'FileLog'));
  * }}}
  *
  * See the documentation on CakeLog::config() for more detail.
@@ -131,7 +133,7 @@ class CakeLog {
  *
  * {{{
  * CakeLog::config('second_file', array(
- *     'engine' => 'File',
+ *     'engine' => 'FileLog',
  *     'path' => '/var/logs/my_app/'
  * ));
  * }}}
@@ -167,7 +169,6 @@ class CakeLog {
  * {{{
  * CakeLog::config('payments', array(
  *     'engine' => 'File',
- *     'types' => array('info', 'error', 'warning'),
  *     'scopes' => array('payment', 'order')
  * ));
  * }}}
@@ -190,7 +191,7 @@ class CakeLog {
 			throw new CakeLogException(__d('cake_dev', 'Invalid key name'));
 		}
 		if (empty($config['engine'])) {
-			throw new CakeLogException(__d('cake_dev', 'Missing logger class name'));
+			throw new CakeLogException(__d('cake_dev', 'Missing logger classname'));
 		}
 		if (empty(self::$_Collection)) {
 			self::_init();
@@ -377,7 +378,7 @@ class CakeLog {
  */
 	protected static function _autoConfig() {
 		self::$_Collection->load('default', array(
-			'engine' => 'File',
+			'engine' => 'FileLog',
 			'path' => LOGS,
 		));
 	}

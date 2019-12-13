@@ -2,6 +2,8 @@
 /**
  * Javascript Generator class file.
  *
+ * PHP 5
+ *
  * CakePHP :  Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -80,7 +82,7 @@ class JsHelper extends AppHelper {
  * Constructor - determines engine helper
  *
  * @param View $View the view object the helper is attached to.
- * @param string|array $settings Settings array contains name of engine helper.
+ * @param array $settings Settings array contains name of engine helper.
  */
 	public function __construct(View $View, $settings = array()) {
 		$className = 'Jquery';
@@ -209,9 +211,8 @@ class JsHelper extends AppHelper {
 
 		if ($options['cache'] && $options['inline']) {
 			$filename = md5($script);
-			$path = WWW_ROOT . Configure::read('App.jsBaseUrl');
-			if (file_exists($path . $filename . '.js')
-				|| cache(str_replace(WWW_ROOT, '', $path) . $filename . '.js', $script, '+999 days', 'public')
+			if (file_exists(JS . $filename . '.js')
+				|| cache(str_replace(WWW_ROOT, '', JS) . $filename . '.js', $script, '+999 days', 'public')
 				) {
 				return $this->Html->script($filename);
 			}

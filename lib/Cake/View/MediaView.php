@@ -2,6 +2,8 @@
 /**
  * Methods to display or download any type of file
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -62,7 +64,7 @@ class MediaView extends View {
  *
  * @param string $view Not used
  * @param string $layout Not used
- * @return void
+ * @return boolean
  */
 	public function render($view = null, $layout = null) {
 		$name = $download = $id = $modified = $path = $cache = $mimeType = $compress = null;
@@ -94,6 +96,7 @@ class MediaView extends View {
 			$this->response->compress();
 		}
 		$this->response->send();
+		return true;
 	}
 
 }

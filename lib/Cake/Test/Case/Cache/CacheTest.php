@@ -2,6 +2,8 @@
 /**
  * CacheTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -46,9 +48,6 @@ class CacheTest extends CakeTestCase {
  */
 	public function tearDown() {
 		parent::tearDown();
-		Cache::drop('latest');
-		Cache::drop('page');
-		Cache::drop('archive');
 		Configure::write('Cache.disable', $this->_cacheDisable);
 		Cache::config('default', $this->_defaultCacheConfig['settings']);
 	}
@@ -130,10 +129,6 @@ class CacheTest extends CakeTestCase {
  * @return void
  */
 	public function testInvalidConfig() {
-		// In debug mode it would auto create the folder.
-		$debug = Configure::read('debug');
-		Configure::write('debug', 0);
-
 		Cache::config('invalid', array(
 			'engine' => 'File',
 			'duration' => '+1 year',
@@ -143,8 +138,6 @@ class CacheTest extends CakeTestCase {
 			'random' => 'wii'
 		));
 		Cache::read('Test', 'invalid');
-
-		Configure::write('debug', $debug);
 	}
 
 /**
@@ -245,71 +238,6 @@ class CacheTest extends CakeTestCase {
 	}
 
 /**
- * testGroupConfigs method
- *
- * @return void
- */
-	public function testGroupConfigs() {
-		Cache::config('latest', array(
-			'duration' => 300,
-			'engine' => 'File',
-			'groups' => array(
-				'posts', 'comments',
-			),
-		));
-
-		$expected = array(
-			'posts' => array('latest'),
-			'comments' => array('latest'),
-		);
-		$result = Cache::groupConfigs();
-		$this->assertEquals($expected, $result);
-
-		$result = Cache::groupConfigs('posts');
-		$this->assertEquals(array('posts' => array('latest')), $result);
-
-		Cache::config('page', array(
-			'duration' => 86400,
-			'engine' => 'File',
-			'groups' => array(
-				'posts', 'archive'
-			),
-		));
-
-		$result = Cache::groupConfigs();
-		$expected = array(
-			'posts' => array('latest', 'page'),
-			'comments' => array('latest'),
-			'archive' => array('page'),
-		);
-		$this->assertEquals($expected, $result);
-
-		$result = Cache::groupConfigs('archive');
-		$this->assertEquals(array('archive' => array('page')), $result);
-
-		Cache::config('archive', array(
-			'duration' => 86400 * 30,
-			'engine' => 'File',
-			'groups' => array(
-				'posts', 'archive', 'comments',
-			),
-		));
-
-		$result = Cache::groupConfigs('archive');
-		$this->assertEquals(array('archive' => array('archive', 'page')), $result);
-	}
-
-/**
- * testGroupConfigsThrowsException method
- *
- * @expectedException CacheException
- * @return void
- */
-	public function testGroupConfigsThrowsException() {
-		Cache::groupConfigs('bogus');
-	}
-
-/**
  * test that configured returns an array of the currently configured cache
  * settings
  *
@@ -374,13 +302,13 @@ class CacheTest extends CakeTestCase {
  */
 	public function testWriteEmptyValues() {
 		Cache::write('App.falseTest', false);
-		$this->assertFalse(Cache::read('App.falseTest'));
+		$this->assertSame(Cache::read('App.falseTest'), false);
 
 		Cache::write('App.trueTest', true);
-		$this->assertTrue(Cache::read('App.trueTest'));
+		$this->assertSame(Cache::read('App.trueTest'), true);
 
 		Cache::write('App.nullTest', null);
-		$this->assertNull(Cache::read('App.nullTest'));
+		$this->assertSame(Cache::read('App.nullTest'), null);
 
 		Cache::write('App.zeroTest', 0);
 		$this->assertSame(Cache::read('App.zeroTest'), 0);

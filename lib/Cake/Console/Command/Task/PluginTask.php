@@ -2,6 +2,8 @@
 /**
  * The Plugin Task handles creating an empty plugin, ready to be used
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -191,11 +193,9 @@ class PluginTask extends AppShell {
 		$valid = false;
 		foreach ($pathOptions as $i => $path) {
 			if (!is_dir($path)) {
-				unset($pathOptions[$i]);
+				array_splice($pathOptions, $i, 1);
 			}
 		}
-		$pathOptions = array_values($pathOptions);
-
 		$max = count($pathOptions);
 		while (!$valid) {
 			foreach ($pathOptions as $i => $option) {

@@ -4,6 +4,8 @@
  *
  * Behavior to simplify manipulating a model's bindings when doing a find operation
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -188,7 +190,7 @@ class ContainableBehavior extends ModelBehavior {
 		foreach (array('hasOne', 'belongsTo') as $type) {
 			if (!empty($Model->{$type})) {
 				foreach ($Model->{$type} as $assoc => $data) {
-					if ($Model->useDbConfig === $Model->{$assoc}->useDbConfig && !empty($data['fields'])) {
+					if ($Model->useDbConfig == $Model->{$assoc}->useDbConfig && !empty($data['fields'])) {
 						foreach ((array)$data['fields'] as $field) {
 							$query['fields'][] = (strpos($field, '.') === false ? $assoc . '.' : '') . $field;
 						}
@@ -203,7 +205,7 @@ class ContainableBehavior extends ModelBehavior {
 					$field = $Model->primaryKey;
 				} elseif (preg_match('/^.+\.\-\-[^-]+\-\-$/', $field)) {
 					list($modelName, $field) = explode('.', $field);
-					if ($Model->useDbConfig === $Model->{$modelName}->useDbConfig) {
+					if ($Model->useDbConfig == $Model->{$modelName}->useDbConfig) {
 						$field = $modelName . '.' . (
 							($field === '--primaryKey--') ? $Model->$modelName->primaryKey : $field
 						);

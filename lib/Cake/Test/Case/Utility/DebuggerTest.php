@@ -274,8 +274,6 @@ class DebuggerTest extends CakeTestCase {
 
 /**
  * Test method for testing addFormat with callbacks.
- *
- * @return void
  */
 	public function customFormat($error, $strings) {
 		return $error['error'] . ': I eated an error ' . $error['file'];
@@ -336,8 +334,6 @@ object(View) {
 	response => object(CakeResponse) {}
 	elementCache => 'default'
 	elementCacheSettings => array()
-	Html => object(HtmlHelper) {}
-	Form => object(FormHelper) {}
 	int => (int) 2
 	float => (float) 1.333
 
@@ -362,6 +358,7 @@ TEXT;
 	)
 	[protected] _scripts => array()
 	[protected] _paths => array()
+	[protected] _helpersLoaded => false
 	[protected] _parents => array()
 	[protected] _current => null
 	[protected] _currentType => ''
@@ -453,7 +450,6 @@ TEXT;
 		if (file_exists(LOGS . 'debug.log')) {
 			unlink(LOGS . 'debug.log');
 		}
-		CakeLog::config('file', array('engine' => 'File', 'path' => TMP . 'logs' . DS));
 
 		Debugger::log('cool');
 		$result = file_get_contents(LOGS . 'debug.log');
@@ -492,11 +488,8 @@ TEXT;
 		ob_start();
 		Debugger::dump($var);
 		$result = ob_get_clean();
-
-		$open = php_sapi_name() === 'cli' ? "\n" : '<pre>';
-		$close = php_sapi_name() === 'cli' ? "\n" : '</pre>';
 		$expected = <<<TEXT
-{$open}array(
+<pre>array(
 	'People' => array(
 		(int) 0 => array(
 			'name' => 'joeseph',
@@ -509,7 +502,7 @@ TEXT;
 			'hair' => 'black'
 		)
 	)
-){$close}
+)</pre>
 TEXT;
 		$this->assertTextEquals($expected, $result);
 	}

@@ -1,8 +1,10 @@
 <?php
 /**
- * Basic CakePHP functionality.
+ * Basic Cake functionality.
  *
  * Core functions for including other source files, loading models and so forth.
+ *
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -63,7 +65,7 @@ if (!function_exists('debug')) {
  *
  * Only runs if debug level is greater than zero.
  *
- * @param mixed $var Variable to show debug information for.
+ * @param boolean $var Variable to show debug information for.
  * @param boolean $showHtml If set to true, the method prints the debug data in a browser-friendly way.
  * @param boolean $showFrom If set to true, the method prints from where the function was called.
  * @return void
@@ -94,7 +96,6 @@ HTML;
 ########## DEBUG ##########
 %s
 ###########################
-
 TEXT;
 			$template = $html;
 			if (php_sapi_name() === 'cli' || $showHtml === false) {
@@ -123,22 +124,22 @@ TEXT;
 if (!function_exists('sortByKey')) {
 
 /**
- * Sorts given $array by key $sortBy.
+ * Sorts given $array by key $sortby.
  *
  * @param array $array Array to sort
- * @param string $sortBy Sort by this key
+ * @param string $sortby Sort by this key
  * @param string $order Sort order asc/desc (ascending or descending).
  * @param integer $type Type of sorting to perform
  * @return mixed Sorted array
  * @link http://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#sortByKey
  */
-	function sortByKey(&$array, $sortBy, $order = 'asc', $type = SORT_NUMERIC) {
+	function sortByKey(&$array, $sortby, $order = 'asc', $type = SORT_NUMERIC) {
 		if (!is_array($array)) {
 			return null;
 		}
 
 		foreach ($array as $key => $val) {
-			$sa[$key] = $val[$sortBy];
+			$sa[$key] = $val[$sortby];
 		}
 
 		if ($order === 'asc') {
@@ -203,7 +204,7 @@ if (!function_exists('h')) {
 if (!function_exists('pluginSplit')) {
 
 /**
- * Splits a dot syntax plugin name into its plugin and class name.
+ * Splits a dot syntax plugin name into its plugin and classname.
  * If $name does not have a dot, then index 0 will be null.
  *
  * Commonly used like `list($plugin, $name) = pluginSplit($name);`
@@ -211,7 +212,7 @@ if (!function_exists('pluginSplit')) {
  * @param string $name The name you want to plugin split.
  * @param boolean $dotAppend Set to true if you want the plugin to have a '.' appended to it.
  * @param string $plugin Optional default plugin to use if no plugin is found. Defaults to null.
- * @return array Array with 2 indexes. 0 => plugin name, 1 => class name
+ * @return array Array with 2 indexes. 0 => plugin name, 1 => classname
  * @link http://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#pluginSplit
  */
 	function pluginSplit($name, $dotAppend = false, $plugin = null) {
@@ -230,20 +231,19 @@ if (!function_exists('pluginSplit')) {
 if (!function_exists('pr')) {
 
 /**
- * print_r() convenience function
- *
- * In terminals this will act the same as using print_r() directly, when not run on cli
- * print_r() will wrap <PRE> tags around the output of given array. Similar to debug().
+ * Print_r convenience function, which prints out <PRE> tags around
+ * the output of given array. Similar to debug().
  *
  * @see debug()
- * @param mixed $var Variable to print out
+ * @param array $var Variable to print out
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#pr
  */
 	function pr($var) {
 		if (Configure::read('debug') > 0) {
-			$template = php_sapi_name() !== 'cli' ? '<pre>%s</pre>' : "\n%s\n";
-			printf($template, print_r($var, true));
+			echo '<pre>';
+			print_r($var);
+			echo '</pre>';
 		}
 	}
 
@@ -259,7 +259,7 @@ if (!function_exists('am')) {
  * @param array Third array
  * @param array Etc...
  * @return array All array parameters merged into one
- * @link http://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#am
+ * @link http://book.cakephp.org/2.0/en/development/debugging.html#am
  */
 	function am() {
 		$r = array();
@@ -389,7 +389,7 @@ if (!function_exists('cache')) {
  * @param mixed $expires A valid strtotime string when the data expires.
  * @param string $target The target of the cached data; either 'cache' or 'public'.
  * @return mixed The contents of the temporary file.
- * @deprecated Will be removed in 3.0. Please use Cache::write() instead.
+ * @deprecated Please use Cache::write() instead
  */
 	function cache($path, $data = null, $expires = '+1 day', $target = 'cache') {
 		if (Configure::read('Cache.disable')) {

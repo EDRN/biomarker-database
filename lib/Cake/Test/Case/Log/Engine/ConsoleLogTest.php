@@ -2,6 +2,8 @@
 /**
  * ConsoleLogTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -50,12 +52,12 @@ class ConsoleLogTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		CakeLog::config('debug', array(
-			'engine' => 'File',
+			'engine' => 'FileLog',
 			'types' => array('notice', 'info', 'debug'),
 			'file' => 'debug',
 		));
 		CakeLog::config('error', array(
-			'engine' => 'File',
+			'engine' => 'FileLog',
 			'types' => array('error', 'warning'),
 			'file' => 'error',
 		));
@@ -73,12 +75,10 @@ class ConsoleLogTest extends CakeTestCase {
 
 /**
  * Test writing to ConsoleOutput
- *
- * @return void
  */
 	public function testConsoleOutputWrites() {
 		TestCakeLog::config('test_console_log', array(
-			'engine' => 'TestConsole',
+			'engine' => 'TestConsoleLog',
 			));
 
 		$mock = $this->getMock('TestConsoleLog', array('write'), array(
@@ -94,12 +94,10 @@ class ConsoleLogTest extends CakeTestCase {
 
 /**
  * Test logging to both ConsoleLog and FileLog
- *
- * @return void
  */
 	public function testCombinedLogWriting() {
 		TestCakeLog::config('test_console_log', array(
-			'engine' => 'TestConsole',
+			'engine' => 'TestConsoleLog',
 			));
 		$mock = $this->getMock('TestConsoleLog', array('write'), array(
 			array('types' => 'error'),
@@ -132,12 +130,10 @@ class ConsoleLogTest extends CakeTestCase {
 
 /**
  * test default value of stream 'outputAs'
- *
- * @return void
  */
 	public function testDefaultOutputAs() {
 		TestCakeLog::config('test_console_log', array(
-			'engine' => 'TestConsole',
+			'engine' => 'TestConsoleLog',
 			));
 		if (DS === '\\' && !(bool)env('ANSICON')) {
 			$expected = ConsoleOutput::PLAIN;

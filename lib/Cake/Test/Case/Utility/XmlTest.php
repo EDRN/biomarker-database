@@ -2,6 +2,8 @@
 /**
  * XmlTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -82,7 +84,7 @@ class XmlTest extends CakeTestCase {
 /**
  * autoFixtures property
  *
- * @var boolean
+ * @var bool false
  */
 	public $autoFixtures = false;
 
@@ -206,7 +208,7 @@ class XmlTest extends CakeTestCase {
 /**
  * test build with a single empty tag
  *
- * @return void
+ * return void
  */
 	public function testBuildEmptyTag() {
 		try {
@@ -426,87 +428,6 @@ XML;
 	}
 
 /**
- * testFromArrayPretty method
- *
- * @return void
- */
-	public function testFromArrayPretty() {
-		$xml = array(
-			'tags' => array(
-				'tag' => array(
-					array(
-						'id' => '1',
-						'name' => 'defect'
-					),
-					array(
-						'id' => '2',
-						'name' => 'enhancement'
-					)
-				)
-			)
-		);
-
-		$expected = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<tags><tag><id>1</id><name>defect</name></tag><tag><id>2</id><name>enhancement</name></tag></tags>
-
-XML;
-		$xmlResponse = Xml::fromArray($xml, array('pretty' => false));
-		$this->assertTextEquals($expected, $xmlResponse->asXML());
-
-		$expected = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<tags>
-  <tag>
-    <id>1</id>
-    <name>defect</name>
-  </tag>
-  <tag>
-    <id>2</id>
-    <name>enhancement</name>
-  </tag>
-</tags>
-
-XML;
-		$xmlResponse = Xml::fromArray($xml, array('pretty' => true));
-		$this->assertTextEquals($expected, $xmlResponse->asXML());
-
-				$xml = array(
-			'tags' => array(
-				'tag' => array(
-					array(
-						'id' => '1',
-						'name' => 'defect'
-					),
-					array(
-						'id' => '2',
-						'name' => 'enhancement'
-					)
-				)
-			)
-		);
-
-		$expected = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<tags><tag id="1" name="defect"/><tag id="2" name="enhancement"/></tags>
-
-XML;
-		$xmlResponse = Xml::fromArray($xml, array('pretty' => false, 'format' => 'attributes'));
-		$this->assertTextEquals($expected, $xmlResponse->asXML());
-
-		$expected = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<tags>
-  <tag id="1" name="defect"/>
-  <tag id="2" name="enhancement"/>
-</tags>
-
-XML;
-		$xmlResponse = Xml::fromArray($xml, array('pretty' => true, 'format' => 'attributes'));
-		$this->assertTextEquals($expected, $xmlResponse->asXML());
-	}
-
-/**
  * data provider for fromArray() failures
  *
  * @return array
@@ -553,7 +474,6 @@ XML;
  * testFromArrayFail method
  *
  * @dataProvider invalidArrayDataProvider
- * @return void
  */
 	public function testFromArrayFail($value) {
 		try {
@@ -1124,7 +1044,6 @@ XML;
  *
  * @dataProvider invalidToArrayDataProvider
  * @expectedException XmlException
- * @return void
  */
 	public function testToArrayFail($value) {
 		Xml::toArray($value);

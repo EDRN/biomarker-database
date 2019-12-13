@@ -2,6 +2,8 @@
 /**
  * ExceptionRendererTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -270,8 +272,6 @@ class ExceptionRendererTest extends CakeTestCase {
 
 /**
  * test that helpers in custom CakeErrorController are not lost
- *
- * @return void
  */
 	public function testCakeErrorHelpersNotLost() {
 		$testApp = CAKE . 'Test' . DS . 'test_app' . DS;
@@ -761,7 +761,7 @@ class ExceptionRendererTest extends CakeTestCase {
 		$ExceptionRenderer->render();
 		$this->assertEquals('', $ExceptionRenderer->controller->layoutPath);
 		$this->assertEquals('', $ExceptionRenderer->controller->subDir);
-		$this->assertEquals('Errors', $ExceptionRenderer->controller->viewPath);
+		$this->assertEquals('Errors/', $ExceptionRenderer->controller->viewPath);
 	}
 
 /**

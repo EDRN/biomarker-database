@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -14,7 +14,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-App::uses('BasicAuthenticate', 'Controller/Component/Auth');
+App::uses('BaseAuthenticate', 'Controller/Component/Auth');
 
 /**
  * Digest Authentication adapter for AuthComponent.
@@ -55,7 +55,7 @@ App::uses('BasicAuthenticate', 'Controller/Component/Auth');
  * @package       Cake.Controller.Component.Auth
  * @since 2.0
  */
-class DigestAuthenticate extends BasicAuthenticate {
+class DigestAuthenticate extends BaseAuthenticate {
 
 /**
  * Settings for this object.
@@ -86,8 +86,7 @@ class DigestAuthenticate extends BasicAuthenticate {
 		'realm' => '',
 		'qop' => 'auth',
 		'nonce' => '',
-		'opaque' => '',
-		'passwordHasher' => 'Simple',
+		'opaque' => ''
 	);
 
 /**
@@ -98,12 +97,35 @@ class DigestAuthenticate extends BasicAuthenticate {
  */
 	public function __construct(ComponentCollection $collection, $settings) {
 		parent::__construct($collection, $settings);
+		if (empty($this->settings['realm'])) {
+			$this->settings['realm'] = env('SERVER_NAME');
+		}
 		if (empty($this->settings['nonce'])) {
 			$this->settings['nonce'] = uniqid('');
 		}
 		if (empty($this->settings['opaque'])) {
 			$this->settings['opaque'] = md5($this->settings['realm']);
 		}
+	}
+
+/**
+ * Authenticate a user using Digest HTTP auth. Will use the configured User model and attempt a
+ * login using Digest HTTP auth.
+ *
+ * @param CakeRequest $request The request to authenticate with.
+ * @param CakeResponse $response The response to add headers to.
+ * @return mixed Either false on failure, or an array of user data on success.
+ */
+	public function authenticate(CakeRequest $request, CakeResponse $response) {
+		$user = $this->getUser($request);
+
+		if (empty($user)) {
+			$response->header($this->loginHeaders());
+			$response->statusCode(401);
+			$response->send();
+			return false;
+		}
+		return $user;
 	}
 
 /**
@@ -117,11 +139,7 @@ class DigestAuthenticate extends BasicAuthenticate {
 		if (empty($digest)) {
 			return false;
 		}
-
-		list(, $model) = pluginSplit($this->settings['userModel']);
-		$user = $this->_findUser(array(
-			$model . '.' . $this->settings['fields']['username'] => $digest['username']
-		));
+		$user = $this->_findUser($digest['username']);
 		if (empty($user)) {
 			return false;
 		}
@@ -131,6 +149,34 @@ class DigestAuthenticate extends BasicAuthenticate {
 			return $user;
 		}
 		return false;
+	}
+
+/**
+ * Find a user record using the standard options.
+ *
+ * @param string $username The username/identifier.
+ * @param string $password Unused password, digest doesn't require passwords.
+ * @return Mixed Either false on failure, or an array of user data.
+ */
+	protected function _findUser($username, $password = null) {
+		$userModel = $this->settings['userModel'];
+		list(, $model) = pluginSplit($userModel);
+		$fields = $this->settings['fields'];
+
+		$conditions = array(
+			$model . '.' . $fields['username'] => $username,
+		);
+		if (!empty($this->settings['scope'])) {
+			$conditions = array_merge($conditions, $this->settings['scope']);
+		}
+		$result = ClassRegistry::init($userModel)->find('first', array(
+			'conditions' => $conditions,
+			'recursive' => $this->settings['recursive']
+		));
+		if (empty($result) || empty($result[$model])) {
+			return false;
+		}
+		return $result[$model];
 	}
 
 /**

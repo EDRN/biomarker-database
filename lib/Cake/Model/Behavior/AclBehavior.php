@@ -4,6 +4,8 @@
  *
  * Enables objects to easily tie into an ACL system
  *
+ * PHP 5
+ *
  * CakePHP :  Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -63,7 +65,7 @@ class AclBehavior extends ModelBehavior {
 			$model->{$type} = ClassRegistry::init($type);
 		}
 		if (!method_exists($model, 'parentNode')) {
-			trigger_error(__d('cake_dev', 'Callback %s not defined in %s', 'parentNode()', $model->alias), E_USER_WARNING);
+			trigger_error(__d('cake_dev', 'Callback parentNode() not defined in %s', $model->alias), E_USER_WARNING);
 		}
 	}
 
@@ -95,10 +97,9 @@ class AclBehavior extends ModelBehavior {
  *
  * @param Model $model
  * @param boolean $created True if this is a new record
- * @param array $options Options passed from Model::save().
  * @return void
  */
-	public function afterSave(Model $model, $created, $options = array()) {
+	public function afterSave(Model $model, $created) {
 		$types = $this->_typeMaps[$this->settings[$model->name]['type']];
 		if (!is_array($types)) {
 			$types = array($types);

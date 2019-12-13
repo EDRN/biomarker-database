@@ -144,9 +144,6 @@ class RequestHandlerComponent extends Component {
  * Compares the accepted types and configured extensions.
  * If there is one common type, that is assigned as the ext/content type
  * for the response.
- * Type with the highest weight will be set. If the highest weight has more
- * then one type matching the extensions, the order in which extensions are specified
- * determines which type will be set.
  *
  * If html is one of the preferred types, no content type will be set, this
  * is to avoid issues with browsers that prefer html and several other content types.
@@ -158,19 +155,13 @@ class RequestHandlerComponent extends Component {
 		if (empty($accept)) {
 			return;
 		}
-
-		$accepts = $this->response->mapType($accept);
-		$preferedTypes = current($accepts);
-		if (array_intersect($preferedTypes, array('html', 'xhtml'))) {
-			return null;
-		}
-
 		$extensions = Router::extensions();
-		foreach ($accepts as $types) {
-			$ext = array_intersect($extensions, $types);
-			if ($ext) {
-				$this->ext = current($ext);
-				break;
+		$preferred = array_shift($accept);
+		$preferredTypes = $this->response->mapType($preferred);
+		if (!in_array('xhtml', $preferredTypes) && !in_array('html', $preferredTypes)) {
+			$similarTypes = array_intersect($extensions, $preferredTypes);
+			if (count($similarTypes) === 1) {
+				$this->ext = array_shift($similarTypes);
 			}
 		}
 	}
@@ -518,14 +509,11 @@ class RequestHandlerComponent extends Component {
 		}
 
 		list($contentType) = explode(';', env('CONTENT_TYPE'));
-		if ($contentType === '') {
-			list($contentType) = explode(';', CakeRequest::header('CONTENT_TYPE'));
-		}
 		if (!$type) {
 			return $this->mapType($contentType);
 		}
 		if (is_string($type)) {
-			return ($type === $this->mapType($contentType));
+			return ($type == $this->mapType($contentType));
 		}
 	}
 

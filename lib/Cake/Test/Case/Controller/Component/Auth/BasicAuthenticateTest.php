@@ -2,6 +2,8 @@
 /**
  * BasicAuthenticateTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -82,10 +84,11 @@ class BasicAuthenticateTest extends CakeTestCase {
 	public function testAuthenticateNoData() {
 		$request = new CakeRequest('posts/index', false);
 
-		$this->response->expects($this->never())
-			->method('header');
+		$this->response->expects($this->once())
+			->method('header')
+			->with('WWW-Authenticate: Basic realm="localhost"');
 
-		$this->assertFalse($this->auth->getUser($request));
+		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
 /**
@@ -96,6 +99,10 @@ class BasicAuthenticateTest extends CakeTestCase {
 	public function testAuthenticateNoUsername() {
 		$request = new CakeRequest('posts/index', false);
 		$_SERVER['PHP_AUTH_PW'] = 'foobar';
+
+		$this->response->expects($this->once())
+			->method('header')
+			->with('WWW-Authenticate: Basic realm="localhost"');
 
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
@@ -109,6 +116,10 @@ class BasicAuthenticateTest extends CakeTestCase {
 		$request = new CakeRequest('posts/index', false);
 		$_SERVER['PHP_AUTH_USER'] = 'mariano';
 		$_SERVER['PHP_AUTH_PW'] = null;
+
+		$this->response->expects($this->once())
+			->method('header')
+			->with('WWW-Authenticate: Basic realm="localhost"');
 
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
@@ -125,8 +136,6 @@ class BasicAuthenticateTest extends CakeTestCase {
 		$_SERVER['PHP_AUTH_USER'] = '> 1';
 		$_SERVER['PHP_AUTH_PW'] = "' OR 1 = 1";
 
-		$this->assertFalse($this->auth->getUser($request));
-
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
@@ -139,15 +148,15 @@ class BasicAuthenticateTest extends CakeTestCase {
 		$request = new CakeRequest('posts/index', false);
 		$request->addParams(array('pass' => array(), 'named' => array()));
 
-		try {
-			$this->auth->unauthenticated($request, $this->response);
-		} catch (UnauthorizedException $e) {
-		}
+		$this->response->expects($this->at(0))
+			->method('header')
+			->with('WWW-Authenticate: Basic realm="localhost"');
 
-		$this->assertNotEmpty($e);
+		$this->response->expects($this->at(1))
+			->method('send');
 
-		$expected = array('WWW-Authenticate: Basic realm="localhost"');
-		$this->assertEquals($expected, $e->responseHeader());
+		$result = $this->auth->authenticate($request, $this->response);
+		$this->assertFalse($result);
 	}
 
 /**
@@ -175,8 +184,6 @@ class BasicAuthenticateTest extends CakeTestCase {
 /**
  * test scope failure.
  *
- * @expectedException UnauthorizedException
- * @expectedExceptionCode 401
  * @return void
  */
 	public function testAuthenticateFailReChallenge() {
@@ -187,40 +194,18 @@ class BasicAuthenticateTest extends CakeTestCase {
 		$_SERVER['PHP_AUTH_USER'] = 'mariano';
 		$_SERVER['PHP_AUTH_PW'] = 'password';
 
-		$this->auth->unauthenticated($request, $this->response);
-	}
+		$this->response->expects($this->at(0))
+			->method('header')
+			->with('WWW-Authenticate: Basic realm="localhost"');
 
-/**
- * testAuthenticateWithBlowfish
- *
- * @return void
- */
-	public function testAuthenticateWithBlowfish() {
-		$hash = Security::hash('password', 'blowfish');
-		$this->skipIf(strpos($hash, '$2a$') === false, 'Skipping blowfish tests as hashing is not working');
+		$this->response->expects($this->at(1))
+			->method('statusCode')
+			->with(401);
 
-		$request = new CakeRequest('posts/index', false);
-		$request->addParams(array('pass' => array(), 'named' => array()));
+		$this->response->expects($this->at(2))
+			->method('send');
 
-		$_SERVER['PHP_AUTH_USER'] = 'mariano';
-		$_SERVER['PHP_AUTH_PW'] = 'password';
-
-		$User = ClassRegistry::init('User');
-		$User->updateAll(
-			array('password' => $User->getDataSource()->value($hash)),
-			array('User.user' => 'mariano')
-		);
-
-		$this->auth->settings['passwordHasher'] = 'Blowfish';
-
-		$result = $this->auth->authenticate($request, $this->response);
-		$expected = array(
-			'id' => 1,
-			'user' => 'mariano',
-			'created' => '2007-03-17 01:16:23',
-			'updated' => '2007-03-17 01:18:31'
-		);
-		$this->assertEquals($expected, $result);
+		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
 }

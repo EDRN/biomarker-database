@@ -2,6 +2,8 @@
 /**
  * Schema database management for CakePHP.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -230,7 +232,7 @@ class CakeSchema extends Object {
 				}
 
 				if (isset($this->plugin)) {
-					if ($model === $this->plugin . 'AppModel') {
+					if ($model == $this->plugin . 'AppModel') {
 						continue;
 					}
 					$importModel = $model;
@@ -474,7 +476,7 @@ class CakeSchema extends Object {
 				continue;
 			}
 			if (!array_key_exists($table, $old)) {
-				$tables[$table]['create'] = $fields;
+				$tables[$table]['add'] = $fields;
 			} else {
 				$diff = $this->_arrayDiffAssoc($fields, $old[$table]);
 				if (!empty($diff)) {
@@ -549,7 +551,7 @@ class CakeSchema extends Object {
 				continue;
 			}
 			$correspondingValue = $array2[$key];
-			if (($value === null) !== ($correspondingValue === null)) {
+			if (is_null($value) !== is_null($correspondingValue)) {
 				$difference[$key] = $value;
 				continue;
 			}
@@ -608,7 +610,7 @@ class CakeSchema extends Object {
 
 		$columns = array();
 		foreach ($fields as $name => $value) {
-			if ($Obj->primaryKey === $name) {
+			if ($Obj->primaryKey == $name) {
 				$value['key'] = 'primary';
 			}
 			if (!isset($db->columns[$value['type']])) {

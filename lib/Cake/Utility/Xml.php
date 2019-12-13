@@ -4,6 +4,8 @@
  *
  * The methods in these classes enable the datasources that use XML to work.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -21,7 +23,7 @@
 App::uses('HttpSocket', 'Network/Http');
 
 /**
- * XML handling for CakePHP.
+ * XML handling for Cake.
  *
  * The methods in these classes enable the datasources that use XML to work.
  *
@@ -79,7 +81,7 @@ class Xml {
  *   is disabled by default for security reasons.
  * - If using array as input, you can pass `options` from Xml::fromArray.
  *
- * @param string|array $input XML string, a path to a file, a URL or an array
+ * @param string|array $input XML string, a path to a file, an URL or an array
  * @param array $options The options to use
  * @return SimpleXMLElement|DOMDocument SimpleXMLElement or DOMDocument
  * @throws XmlException
@@ -157,7 +159,6 @@ class Xml {
  * ### Options
  *
  * - `format` If create childs ('tags') or attributes ('attribute').
- * - `pretty` Returns formatted Xml when set to `true`. Defaults to `false`
  * - `version` Version of XML document. Default is 1.0.
  * - `encoding` Encoding of XML document. If null remove from XML header. Default is the some of application.
  * - `return` If return object of SimpleXMLElement ('simplexml') or DOMDocument ('domdocument'). Default is SimpleXMLElement.
@@ -205,15 +206,11 @@ class Xml {
 			'format' => 'tags',
 			'version' => '1.0',
 			'encoding' => Configure::read('App.encoding'),
-			'return' => 'simplexml',
-			'pretty' => false
+			'return' => 'simplexml'
 		);
 		$options = array_merge($defaults, $options);
 
 		$dom = new DOMDocument($options['version'], $options['encoding']);
-		if ($options['pretty']) {
-			$dom->formatOutput = true;
-		}
 		self::_fromArray($dom, $dom, $input, $options['format']);
 
 		$options['return'] = strtolower($options['return']);

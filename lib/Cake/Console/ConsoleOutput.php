@@ -2,6 +2,8 @@
 /**
  * ConsoleOutput file.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -46,29 +48,21 @@ class ConsoleOutput {
 
 /**
  * Raw output constant - no modification of output text.
- *
- * @var integer
  */
 	const RAW = 0;
 
 /**
  * Plain output - tags will be stripped.
- *
- * @var integer
  */
 	const PLAIN = 1;
 
 /**
  * Color output - Convert known tags in to ANSI color escape codes.
- *
- * @var integer
  */
 	const COLOR = 2;
 
 /**
  * Constant for a newline.
- *
- * @var string
  */
 	const LF = PHP_EOL;
 
@@ -147,7 +141,6 @@ class ConsoleOutput {
 		'success' => array('text' => 'green'),
 		'comment' => array('text' => 'blue'),
 		'question' => array('text' => 'magenta'),
-		'notice' => array('text' => 'cyan')
 	);
 
 /**
@@ -292,12 +285,11 @@ class ConsoleOutput {
 	}
 
 /**
- * Clean up and close handles
+ * clean up and close handles
+ *
  */
 	public function __destruct() {
-		if (is_resource($this->_output)) {
-			fclose($this->_output);
-		}
+		fclose($this->_output);
 	}
 
 }

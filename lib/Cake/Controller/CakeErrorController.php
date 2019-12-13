@@ -4,6 +4,8 @@
  *
  * Controller used by ErrorHandler to render error views.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -30,6 +32,13 @@ App::uses('AppController', 'Controller');
 class CakeErrorController extends AppController {
 
 /**
+ * Controller name
+ *
+ * @var string
+ */
+	public $name = 'CakeError';
+
+/**
  * Uses Property
  *
  * @var array
@@ -37,7 +46,7 @@ class CakeErrorController extends AppController {
 	public $uses = array();
 
 /**
- * Constructor
+ * __construct
  *
  * @param CakeRequest $request
  * @param CakeResponse $response

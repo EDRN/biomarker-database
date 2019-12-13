@@ -1,6 +1,7 @@
 <?php
 /**
  *
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -31,7 +32,7 @@ class CakeEventManager {
 /**
  * The default priority queue value for new, attached listeners
  *
- * @var integer
+ * @var int
  */
 	public static $defaultPriority = 10;
 
@@ -72,7 +73,7 @@ class CakeEventManager {
 			self::$_generalManager = $manager;
 		}
 		if (empty(self::$_generalManager)) {
-			self::$_generalManager = new CakeEventManager();
+			self::$_generalManager = new CakeEventManager;
 		}
 
 		self::$_generalManager->_isGlobal = true;
@@ -122,7 +123,7 @@ class CakeEventManager {
  * @return void
  */
 	protected function _attachSubscriber(CakeEventListener $subscriber) {
-		foreach ((array)$subscriber->implementedEvents() as $eventKey => $function) {
+		foreach ($subscriber->implementedEvents() as $eventKey => $function) {
 			$options = array();
 			$method = $function;
 			if (is_array($function) && isset($function['callable'])) {
@@ -197,7 +198,7 @@ class CakeEventManager {
  * @return void
  */
 	protected function _detachSubscriber(CakeEventListener $subscriber, $eventKey = null) {
-		$events = (array)$subscriber->implementedEvents();
+		$events = $subscriber->implementedEvents();
 		if (!empty($eventKey) && empty($events[$eventKey])) {
 			return;
 		} elseif (!empty($eventKey)) {
@@ -252,6 +253,7 @@ class CakeEventManager {
 			if ($result !== null) {
 				$event->result = $result;
 			}
+			continue;
 		}
 	}
 

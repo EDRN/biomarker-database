@@ -67,12 +67,12 @@ class SchemaShell extends AppShell {
 			$name = $this->params['name'] = $splitName;
 		}
 
-		$defaultFile = 'schema.php';
-		if (empty($this->params['file'])) {
-			$this->params['file'] = $defaultFile;
-		}
-		if ($name && $this->params['file'] === $defaultFile) {
+		if ($name) {
 			$this->params['file'] = Inflector::underscore($name);
+		}
+
+		if (empty($this->params['file'])) {
+			$this->params['file'] = 'schema.php';
 		}
 		if (strpos($this->params['file'], '.php') === false) {
 			$this->params['file'] .= '.php';
@@ -153,13 +153,6 @@ class SchemaShell extends AppShell {
 
 		Configure::write('Cache.disable', $cacheDisable);
 
-		if (!empty($this->params['exclude']) && !empty($content)) {
-			$excluded = String::tokenize($this->params['exclude']);
-			foreach ($excluded as $table) {
-				unset($content['tables'][$table]);
-			}
-		}
-
 		if ($snapshot === true) {
 			$fileName = rtrim($this->params['file'], '.php');
 			$Folder = new Folder($this->Schema->path);
@@ -235,9 +228,10 @@ class SchemaShell extends AppShell {
 			if ($File->write($contents)) {
 				$this->out(__d('cake_console', 'SQL dump file created in %s', $File->pwd()));
 				return $this->_stop();
+			} else {
+				$this->err(__d('cake_console', 'SQL dump could not be created'));
+				return $this->_stop();
 			}
-			$this->err(__d('cake_console', 'SQL dump could not be created'));
-			return $this->_stop();
 		}
 		$this->out($contents);
 		return $contents;
@@ -282,11 +276,7 @@ class SchemaShell extends AppShell {
 			$this->out(__d('cake_console', 'Performing a dry run.'));
 		}
 
-		$options = array(
-			'name' => $name,
-			'plugin' => $plugin,
-			'connection' => $this->params['connection'],
-		);
+		$options = array('name' => $name, 'plugin' => $plugin);
 		if (!empty($this->params['snapshot'])) {
 			$fileName = rtrim($this->Schema->file, '.php');
 			$options['file'] = $fileName . '_' . $this->params['snapshot'] . '.php';
@@ -375,18 +365,10 @@ class SchemaShell extends AppShell {
 
 		if (empty($table)) {
 			foreach ($compare as $table => $changes) {
-				if (isset($compare[$table]['create'])) {
-					$contents[$table] = $db->createSchema($Schema, $table);
-				} else {
-					$contents[$table] = $db->alterSchema(array($table => $compare[$table]), $table);
-				}
+				$contents[$table] = $db->alterSchema(array($table => $changes), $table);
 			}
 		} elseif (isset($compare[$table])) {
-			if (isset($compare[$table]['create'])) {
-				$contents[$table] = $db->createSchema($Schema, $table);
-			} else {
-				$contents[$table] = $db->alterSchema(array($table => $compare[$table]), $table);
-			}
+			$contents[$table] = $db->alterSchema(array($table => $compare[$table]), $table);
 		}
 
 		if (empty($contents)) {
@@ -497,9 +479,6 @@ class SchemaShell extends AppShell {
 		$write = array(
 			'help' => __d('cake_console', 'Write the dumped SQL to a file.')
 		);
-		$exclude = array(
-			'help' => __d('cake_console', 'Tables to exclude as comma separated list.')
-		);
 
 		$parser = parent::getOptionParser();
 		$parser->description(
@@ -513,7 +492,7 @@ class SchemaShell extends AppShell {
 		))->addSubcommand('generate', array(
 			'help' => __d('cake_console', 'Reads from --connection and writes to --path. Generate snapshots with -s'),
 			'parser' => array(
-				'options' => compact('plugin', 'path', 'file', 'name', 'connection', 'snapshot', 'force', 'models', 'exclude'),
+				'options' => compact('plugin', 'path', 'file', 'name', 'connection', 'snapshot', 'force', 'models'),
 				'arguments' => array(
 					'snapshot' => array('help' => __d('cake_console', 'Generate a snapshot.'))
 				)

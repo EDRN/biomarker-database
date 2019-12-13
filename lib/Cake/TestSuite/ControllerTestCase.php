@@ -2,6 +2,8 @@
 /**
  * ControllerTestCase file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -94,7 +96,6 @@ class InterceptContentHelper extends Helper {
  * Intercepts and stores the contents of the view before the layout is rendered
  *
  * @param string $viewFile The view file
- * @return void
  */
 	public function afterRender($viewFile) {
 		$this->_View->assign('__view_no_layout__', $this->_View->fetch('content'));
@@ -293,7 +294,7 @@ abstract class ControllerTestCase extends CakeTestCase {
  * ### Mocks:
  *
  * - `methods` Methods to mock on the controller. `_stop()` is mocked by default
- * - `models` Models to mock. Models are added to the ClassRegistry so any
+ * - `models` Models to mock. Models are added to the ClassRegistry so they any
  *   time they are instantiated the mock will be created. Pass as key value pairs
  *   with the value being specific methods on the model to mock. If `true` or
  *   no value is passed, the entire model will be mocked.
@@ -363,8 +364,7 @@ abstract class ControllerTestCase extends CakeTestCase {
 					'class' => $componentClass
 				));
 			}
-			$config = isset($controllerObj->components[$component]) ? $controllerObj->components[$component] : array();
-			$componentObj = $this->getMock($componentClass, $methods, array($controllerObj->Components, $config));
+			$componentObj = $this->getMock($componentClass, $methods, array($controllerObj->Components));
 			$controllerObj->Components->set($name, $componentObj);
 			$controllerObj->Components->enable($name);
 		}

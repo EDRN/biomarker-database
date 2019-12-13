@@ -2,6 +2,8 @@
 /**
  * ObjectTest file
  *
+ * PHP 5
+ *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -453,9 +455,7 @@ class ObjectTest extends CakeTestCase {
 		$expected = 'This is a test';
 		$this->assertEquals($expected, $result);
 
-		$result = $this->object->requestAction(
-			Configure::read('App.fullBaseUrl') . '/request_action/test_request_action'
-		);
+		$result = $this->object->requestAction(FULL_BASE_URL . '/request_action/test_request_action');
 		$expected = 'This is a test';
 		$this->assertEquals($expected, $result);
 
