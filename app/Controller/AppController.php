@@ -5,8 +5,6 @@
  * This file is application-wide controller file. You can put all
  * application-wide controller-related methods here.
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -20,11 +18,11 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('Controller', 'Controller');
 
 // use new single sign on API
 require_once "Gov/Nasa/Jpl/Edrn/Security/EDRNAuth.php";
-
 
 /**
  * Application Controller
@@ -38,30 +36,30 @@ require_once "Gov/Nasa/Jpl/Edrn/Security/EDRNAuth.php";
 class AppController extends Controller {
     var $edrnAuth;
     public function beforeFilter() {
-           // Create an instance of the EDRN Authentication object
-           $this->edrnAuth = new Gov_Nasa_Jpl_Edrn_security_EDRNAuthentication();
-           // obtain the username of the current user
-           $username = @$this->edrnAuth->getCurrentUsername();
-           if ($username) {
-                   // If a user found, add username to the session
-                   $this->Session->write('username',$username);
-           } else {
-                   // If no user, remove any username from the session
-                   $this->Session->delete('username');
-           }
+        // Create an instance of the EDRN Authentication object
+        $this->edrnAuth = new Gov_Nasa_Jpl_Edrn_security_EDRNAuthentication();
+        // obtain the username of the current user
+        $username = @$this->edrnAuth->getCurrentUsername();
+        if ($username) {
+            // If a user found, add username to the session
+            $this->Session->write('username',$username);
+        } else {
+            // If no user, remove any username from the session
+            $this->Session->delete('username');
+        }
     }
     function checkSession($afterlogin='/') {
-           // First check for the magic cookie
-           if (@$this->edrnAuth->isLoggedIn()) {
-                   // Store the details for the templates to use
-                   $this->Session->write('username',@$this->edrnAuth->getCurrentUsername());
-                   $this->set('LdapUser',@$this->edrnAuth->getCurrentUsername());
-                   // We have a valid user, so just return
-                   return;
-           } else {
-                   // No magic cookie, no party. send them to the login page
-                   $this->Session->write('afterlogin',$afterlogin);
-                   $this->redirect('/users/login/');
-           }
+        // First check for the magic cookie
+        if (@$this->edrnAuth->isLoggedIn()) {
+            // Store the details for the templates to use
+            $this->Session->write('username',@$this->edrnAuth->getCurrentUsername());
+            $this->set('LdapUser',@$this->edrnAuth->getCurrentUsername());
+            // We have a valid user, so just return
+            return;
+        } else {
+            // No magic cookie, no party. send them to the login page
+            $this->Session->write('afterlogin',$afterlogin);
+            $this->redirect('/users/login/');
+        }
     }
 }

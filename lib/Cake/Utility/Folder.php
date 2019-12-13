@@ -26,7 +26,7 @@ class Folder {
  * Default scheme for Folder::copy
  * Recursively merges subfolders with the same name
  *
- * @constant MERGE
+ * @var string
  */
 	const MERGE = 'merge';
 
@@ -34,7 +34,7 @@ class Folder {
  * Overwrite scheme for Folder::copy
  * subfolders with the same name will be replaced
  *
- * @constant OVERWRITE
+ * @var string
  */
 	const OVERWRITE = 'overwrite';
 
@@ -42,7 +42,7 @@ class Folder {
  * Skip scheme for Folder::copy
  * if a subfolder with the same name exists it will be skipped
  *
- * @constant SKIP
+ * @var string
  */
 	const SKIP = 'skip';
 
@@ -681,7 +681,7 @@ class Folder {
 						}
 					}
 
-					if (is_dir($from) && file_exists($to) && $options['scheme'] == Folder::OVERWRITE) {
+					if (is_dir($from) && file_exists($to) && $options['scheme'] === Folder::OVERWRITE) {
 						$this->delete($to);
 					}
 
@@ -698,7 +698,7 @@ class Folder {
 						} else {
 							$this->_errors[] = __d('cake_dev', '%s not created', $to);
 						}
-					} elseif (is_dir($from) && $options['scheme'] == Folder::MERGE) {
+					} elseif (is_dir($from) && $options['scheme'] === Folder::MERGE) {
 						$options = array_merge($options, array('to' => $to, 'from' => $from));
 						$this->copy($options);
 					}

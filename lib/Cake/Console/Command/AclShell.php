@@ -2,8 +2,6 @@
 /**
  * Acl Shell provides Acl access in the CLI environment
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -76,7 +74,7 @@ class AclShell extends AppShell {
 		App::uses($class, $plugin . 'Controller/Component/Acl');
 		if (!in_array($class, array('DbAcl', 'DB_ACL')) && !is_subclass_of($class, 'DbAcl')) {
 			$out = "--------------------------------------------------\n";
-			$out .= __d('cake_console', 'Error: Your current Cake configuration is set to an ACL implementation other than DB.') . "\n";
+			$out .= __d('cake_console', 'Error: Your current CakePHP configuration is set to an ACL implementation other than DB.') . "\n";
 			$out .= __d('cake_console', 'Please change your core config to reflect your decision to use DbAcl before attempting to use this script') . "\n";
 			$out .= "--------------------------------------------------\n";
 			$out .= __d('cake_console', 'Current ACL Classname: %s', $class) . "\n";
@@ -91,7 +89,7 @@ class AclShell extends AppShell {
 				$this->args = null;
 				return $this->DbConfig->execute();
 			}
-			require_once (APP . 'Config' . DS . 'database.php');
+			require_once APP . 'Config' . DS . 'database.php';
 
 			if (!in_array($this->command, array('initdb'))) {
 				$collection = new ComponentCollection();
@@ -145,7 +143,8 @@ class AclShell extends AppShell {
 	}
 
 /**
- * Delete an ARO/ACO node.
+ * Delete an ARO/ACO node. Note there may be (as a result of poor configuration)
+ * multiple records with the same logical identifier. All are deleted.
  *
  * @return void
  */
@@ -153,12 +152,18 @@ class AclShell extends AppShell {
 		extract($this->_dataVars());
 
 		$identifier = $this->parseIdentifier($this->args[1]);
-		$nodeId = $this->_getNodeId($class, $identifier);
-
-		if (!$this->Acl->{$class}->delete($nodeId)) {
-			$this->error(__d('cake_console', 'Node Not Deleted') . __d('cake_console', 'There was an error deleting the %s. Check that the node exists.', $class) . "\n");
+		if (is_string($identifier)) {
+			$identifier = array('alias' => $identifier);
 		}
-		$this->out(__d('cake_console', '<success>%s deleted.</success>', $class), 2);
+
+		if ($this->Acl->{$class}->find('all', array('conditions' => $identifier))) {
+			if (!$this->Acl->{$class}->deleteAll($identifier)) {
+				$this->error(__d('cake_console', 'Node Not Deleted. ') . __d('cake_console', 'There was an error deleting the %s.', $class) . "\n");
+			}
+			$this->out(__d('cake_console', '<success>%s deleted.</success>', $class), 2);
+		} else {
+			$this->error(__d('cake_console', 'Node Not Deleted. ') . __d('cake_console', 'There was an error deleting the %s. Node does not exist.', $class) . "\n");
+		}
 	}
 
 /**

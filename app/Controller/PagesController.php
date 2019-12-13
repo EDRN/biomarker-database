@@ -4,8 +4,6 @@
  *
  * This file will render views from views/pages/
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -19,6 +17,7 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('AppController', 'Controller');
 
 /**
@@ -32,11 +31,11 @@ App::uses('AppController', 'Controller');
 class PagesController extends AppController {
 
 /**
- * Controller name
+ * This controller does not use a model
  *
- * @var string
+ * @var array
  */
-	public $name = 'Pages';
+	public $uses = array();
 
 /**
  * Default helper
@@ -46,17 +45,12 @@ class PagesController extends AppController {
        public $helpers = array('Html', 'Session');
 
 /**
- * This controller does not use a model
- *
- * @var array
- */
-	public $uses = array();
-
-/**
  * Displays a view
  *
  * @param mixed What page to display
  * @return void
+ * @throws NotFoundException When the view file could not be found
+ *	or MissingViewException in debug mode.
  */
 	public function display() {
 		$path = func_get_args();
@@ -77,6 +71,14 @@ class PagesController extends AppController {
 			$title_for_layout = Inflector::humanize($path[$count - 1]);
 		}
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
-		$this->render(implode('/', $path));
+
+		try {
+			$this->render(implode('/', $path));
+		} catch (MissingViewException $e) {
+			if (Configure::read('debug')) {
+				throw $e;
+			}
+			throw new NotFoundException();
+		}
 	}
 }
