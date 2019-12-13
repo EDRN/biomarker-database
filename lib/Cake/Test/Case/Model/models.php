@@ -4,8 +4,6 @@
  *
  * Mock classes for use in Model and related test cases
  *
- * PHP 5
- *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -68,7 +66,7 @@ class Test extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -105,7 +103,7 @@ class TestAlias extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -141,7 +139,7 @@ class TestValidate extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -215,7 +213,7 @@ class User extends CakeTestModel {
 /**
  * beforeFind() callback used to run ContainableBehaviorTest::testLazyLoad()
  *
- * @return bool
+ * @return boolean
  * @throws Exception
  */
 	public function beforeFind($queryData) {
@@ -278,7 +276,7 @@ class Article extends CakeTestModel {
 /**
  * beforeSaveReturn property
  *
- * @var bool true
+ * @var boolean
  */
 	public $beforeSaveReturn = true;
 
@@ -931,6 +929,10 @@ class Post extends CakeTestModel {
  */
 	public $belongsTo = array('Author');
 
+/**
+ * @param array $queryData
+ * @return boolean true
+ */
 	public function beforeFind($queryData) {
 		if (isset($queryData['connection'])) {
 			$this->useDbConfig = $queryData['connection'];
@@ -938,6 +940,11 @@ class Post extends CakeTestModel {
 		return true;
 	}
 
+/**
+ * @param array $results
+ * @param boolean $primary
+ * @return array $results
+ */
 	public function afterFind($results, $primary = false) {
 		$this->useDbConfig = 'test';
 		return $results;
@@ -2039,7 +2046,9 @@ class CallbackPostTestModel extends CakeTestModel {
 /**
  * beforeValidate callback
  *
- * @return boolean
+ * @param array $options Options passed from Model::save().
+ * @return boolean True if validate operation should continue, false to abort
+ * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
 		return $this->beforeValidateReturn;
@@ -2103,7 +2112,7 @@ class TheVoid extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 }
@@ -2125,7 +2134,7 @@ class ValidationTest1 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -2211,7 +2220,7 @@ class ValidationTest2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -2729,7 +2738,12 @@ class AfterTree extends NumberTree {
  */
 	public $actsAs = array('Tree');
 
-	public function afterSave($created) {
+/**
+ * @param boolean $created
+ * @param array $options
+ * @return void
+ */
+	public function afterSave($created, $options = array()) {
 		if ($created && isset($this->data['AfterTree'])) {
 			$this->data['AfterTree']['name'] = 'Six and One Half Changed in AfterTree::afterSave() but not in database';
 		}
@@ -3077,7 +3091,7 @@ class TranslatedItem extends CakeTestModel {
 /**
  * cacheQueries property
  *
- * @var bool false
+ * @var boolean
  */
 	public $cacheQueries = false;
 
@@ -3114,7 +3128,7 @@ class TranslatedItem2 extends CakeTestModel {
 /**
  * cacheQueries property
  *
- * @var bool false
+ * @var boolean
  */
 	public $cacheQueries = false;
 
@@ -3158,7 +3172,7 @@ class TranslatedItemWithTable extends CakeTestModel {
 /**
  * cacheQueries property
  *
- * @var bool false
+ * @var boolean
  */
 	public $cacheQueries = false;
 
@@ -3232,7 +3246,7 @@ class TranslatedArticle extends CakeTestModel {
 /**
  * cacheQueries property
  *
- * @var bool false
+ * @var boolean
  */
 	public $cacheQueries = false;
 
@@ -3258,7 +3272,7 @@ class TranslatedArticle extends CakeTestModel {
 	public $belongsTo = array('User');
 
 /**
- * belongsTo property
+ * hasMany property
  *
  * @var array
  */
@@ -3471,7 +3485,7 @@ class TransactionTestModel extends CakeTestModel {
 
 	public $useTable = 'samples';
 
-	public function afterSave($created) {
+	public function afterSave($created, $options = array()) {
 		$data = array(
 			array('apple_id' => 1, 'name' => 'sample6'),
 		);
@@ -3486,7 +3500,7 @@ class TransactionManyTestModel extends CakeTestModel {
 
 	public $useTable = 'samples';
 
-	public function afterSave($created) {
+	public function afterSave($created, $options = array()) {
 		$data = array(
 			array('apple_id' => 1, 'name' => 'sample6'),
 		);
@@ -3534,7 +3548,7 @@ class TestModel extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -3609,7 +3623,7 @@ class TestModel2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 }
@@ -3631,7 +3645,7 @@ class TestModel3 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 }
@@ -3660,7 +3674,7 @@ class TestModel4 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -3744,7 +3758,7 @@ class TestModel4TestModel7 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -3789,7 +3803,7 @@ class TestModel5 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -3857,7 +3871,7 @@ class TestModel6 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -3917,7 +3931,7 @@ class TestModel7 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -3964,7 +3978,7 @@ class TestModel8 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4025,7 +4039,7 @@ class TestModel9 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4086,7 +4100,7 @@ class Level extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4145,7 +4159,7 @@ class Group extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4205,7 +4219,7 @@ class User2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4277,7 +4291,7 @@ class Category2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4360,7 +4374,7 @@ class Article2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4432,7 +4446,7 @@ class CategoryFeatured2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4480,7 +4494,7 @@ class Featured2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4545,7 +4559,7 @@ class Comment2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4592,7 +4606,7 @@ class ArticleFeatured2 extends CakeTestModel {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4665,7 +4679,7 @@ class MysqlTestModel extends Model {
 /**
  * useTable property
  *
- * @var bool false
+ * @var boolean
  */
 	public $useTable = false;
 
@@ -4980,7 +4994,9 @@ class CustomArticle extends AppModel {
 /**
  * Alters title data
  *
- * @return void
+ * @param array $options Options passed from Model::save().
+ * @return boolean True if validate operation should continue, false to abort
+ * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
 		$this->data[$this->alias]['title'] = 'foo';

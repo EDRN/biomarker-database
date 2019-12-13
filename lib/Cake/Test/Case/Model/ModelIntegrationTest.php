@@ -2,8 +2,6 @@
 /**
  * ModelIntegrationTest file
  *
- * PHP 5
- *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -19,6 +17,7 @@
  */
 
 require_once dirname(__FILE__) . DS . 'ModelTestBase.php';
+
 App::uses('DboSource', 'Model/Datasource');
 App::uses('DboMock', 'Model/Datasource');
 
@@ -30,6 +29,8 @@ class DboMock extends DboSource {
 
 /**
  * Returns the $field without modifications
+ *
+ * @return string
  */
 	public function name($field) {
 		return $field;
@@ -37,6 +38,8 @@ class DboMock extends DboSource {
 
 /**
  * Returns true to fake a database connection
+ *
+ * @return boolean true
  */
 	public function connect() {
 		return true;
@@ -157,17 +160,17 @@ class ModelIntegrationTest extends BaseModelTest {
 	}
 
 /**
- * Tests that $cacheSources can only be disabled in the db using model settings, not enabled
+ * Tests that $cacheSources is restored despite the settings on the model.
  *
  * @return void
  */
-	public function testCacheSourcesDisabling() {
+	public function testCacheSourcesRestored() {
 		$this->loadFixtures('JoinA', 'JoinB', 'JoinAB', 'JoinC', 'JoinAC');
 		$this->db->cacheSources = true;
 		$TestModel = new JoinA();
 		$TestModel->cacheSources = false;
 		$TestModel->setSource('join_as');
-		$this->assertFalse($this->db->cacheSources);
+		$this->assertTrue($this->db->cacheSources);
 
 		$this->db->cacheSources = false;
 		$TestModel = new JoinA();
@@ -212,7 +215,7 @@ class ModelIntegrationTest extends BaseModelTest {
 		$TestModel = new Apple();
 		$this->assertEquals(array(), $TestModel->Behaviors->loaded());
 
-		$TestModel->Behaviors->attach('Tree', array('left' => 'left_field', 'right' => 'right_field'));
+		$TestModel->Behaviors->load('Tree', array('left' => 'left_field', 'right' => 'right_field'));
 		$this->assertTrue(is_object($TestModel->Behaviors->Tree));
 		$this->assertEquals(array('Tree'), $TestModel->Behaviors->loaded());
 
@@ -227,11 +230,11 @@ class ModelIntegrationTest extends BaseModelTest {
 		);
 		$this->assertEquals($expected, $TestModel->Behaviors->Tree->settings['Apple']);
 
-		$TestModel->Behaviors->attach('Tree', array('enabled' => false));
+		$TestModel->Behaviors->load('Tree', array('enabled' => false));
 		$this->assertEquals($expected, $TestModel->Behaviors->Tree->settings['Apple']);
 		$this->assertEquals(array('Tree'), $TestModel->Behaviors->loaded());
 
-		$TestModel->Behaviors->detach('Tree');
+		$TestModel->Behaviors->unload('Tree');
 		$this->assertEquals(array(), $TestModel->Behaviors->loaded());
 		$this->assertFalse(isset($TestModel->Behaviors->Tree));
 	}
@@ -278,6 +281,8 @@ class ModelIntegrationTest extends BaseModelTest {
  * Tests cross database joins. Requires $test and $test2 to both be set in DATABASE_CONFIG
  * NOTE: When testing on MySQL, you must set 'persistent' => false on *both* database connections,
  * or one connection will step on the other.
+ *
+ * @return void
  */
 	public function testCrossDatabaseJoins() {
 		$config = ConnectionManager::enumConnectionObjects();

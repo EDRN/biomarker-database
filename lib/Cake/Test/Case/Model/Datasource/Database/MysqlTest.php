@@ -2,8 +2,6 @@
 /**
  * DboMysqlTest file
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -35,7 +33,7 @@ class MysqlTest extends CakeTestCase {
 /**
  * autoFixtures property
  *
- * @var bool false
+ * @var boolean
  */
 	public $autoFixtures = false;
 
@@ -60,6 +58,7 @@ class MysqlTest extends CakeTestCase {
 /**
  * Sets up a Dbo class instance for testing
  *
+ * @return void
  */
 	public function setUp() {
 		parent::setUp();
@@ -75,6 +74,7 @@ class MysqlTest extends CakeTestCase {
 /**
  * Sets up a Dbo class instance for testing
  *
+ * @return void
  */
 	public function tearDown() {
 		parent::tearDown();
@@ -87,6 +87,7 @@ class MysqlTest extends CakeTestCase {
  * Test Dbo value method
  *
  * @group quoting
+ * @return void
  */
 	public function testQuoting() {
 		$result = $this->Dbo->fields($this->model);
@@ -213,19 +214,19 @@ class MysqlTest extends CakeTestCase {
 
 		$this->assertTrue((bool)$this->model->save(array('bool' => 5, 'small_int' => 5)));
 		$result = $this->model->find('first');
-		$this->assertSame($result['Tinyint']['bool'], true);
+		$this->assertTrue($result['Tinyint']['bool']);
 		$this->assertSame($result['Tinyint']['small_int'], '5');
 		$this->model->deleteAll(true);
 
 		$this->assertTrue((bool)$this->model->save(array('bool' => 0, 'small_int' => 100)));
 		$result = $this->model->find('first');
-		$this->assertSame($result['Tinyint']['bool'], false);
+		$this->assertFalse($result['Tinyint']['bool']);
 		$this->assertSame($result['Tinyint']['small_int'], '100');
 		$this->model->deleteAll(true);
 
 		$this->assertTrue((bool)$this->model->save(array('bool' => true, 'small_int' => 0)));
 		$result = $this->model->find('first');
-		$this->assertSame($result['Tinyint']['bool'], true);
+		$this->assertTrue($result['Tinyint']['bool']);
 		$this->assertSame($result['Tinyint']['small_int'], '0');
 		$this->model->deleteAll(true);
 
@@ -1135,11 +1136,11 @@ class MysqlTest extends CakeTestCase {
 				$linkModel = $this->Model->Category2->{$assoc};
 				$external = isset($assocData['external']);
 
-				if ($this->Model->Category2->alias == $linkModel->alias && $type !== 'hasAndBelongsToMany' && $type !== 'hasMany') {
+				if ($this->Model->Category2->alias === $linkModel->alias && $type !== 'hasAndBelongsToMany' && $type !== 'hasMany') {
 					$result = $this->Dbo->generateAssociationQuery($this->Model->Category2, $linkModel, $type, $assoc, $assocData, $queryData, $external, $null);
 					$this->assertFalse(empty($result));
 				} else {
-					if ($this->Model->Category2->useDbConfig == $linkModel->useDbConfig) {
+					if ($this->Model->Category2->useDbConfig === $linkModel->useDbConfig) {
 						$result = $this->Dbo->generateAssociationQuery($this->Model->Category2, $linkModel, $type, $assoc, $assocData, $queryData, $external, $null);
 						$this->assertFalse(empty($result));
 					}
@@ -1198,7 +1199,7 @@ class MysqlTest extends CakeTestCase {
 		$this->assertRegExp('/^SELECT\s+`TestModel4`\.`id`, `TestModel4`\.`name`, `TestModel4`\.`created`, `TestModel4`\.`updated`, `TestModel4Parent`\.`id`, `TestModel4Parent`\.`name`, `TestModel4Parent`\.`created`, `TestModel4Parent`\.`updated`\s+/', $result);
 		$this->assertRegExp('/FROM\s+\S+`test_model4` AS `TestModel4`\s+LEFT JOIN\s+\S+`test_model4` AS `TestModel4Parent`/', $result);
 		$this->assertRegExp('/\s+ON\s+\(`TestModel4`.`parent_id` = `TestModel4Parent`.`id`\)\s+WHERE/', $result);
-		$this->assertRegExp('/\s+WHERE\s+1 = 1\s+$/', $result);
+		$this->assertRegExp('/\s+WHERE\s+1 = 1$/', $result);
 
 		$params['assocData']['type'] = 'INNER';
 		$this->Model->belongsTo['TestModel4Parent']['type'] = 'INNER';
@@ -2505,6 +2506,25 @@ class MysqlTest extends CakeTestCase {
 			'? BETWEEN Model.field1 AND Model.field2' => '2009-03-04'
 		)));
 		$expected = " WHERE '2009-03-04' BETWEEN Model.field1 AND Model.field2";
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test conditions() with replacements.
+ *
+ * @return void
+ */
+	public function testConditionsWithReplacements() {
+		$result = $this->Dbo->conditions(array(
+			'score BETWEEN :0 AND :1' => array(90.1, 95.7)
+		));
+		$expected = " WHERE `score` BETWEEN 90.1 AND 95.7";
+		$this->assertEquals($expected, $result);
+
+		$result = $this->Dbo->conditions(array(
+			'score BETWEEN ? AND ?' => array(90.1, 95.7)
+		));
+		$expected = " WHERE `score` BETWEEN 90.1 AND 95.7";
 		$this->assertEquals($expected, $result);
 	}
 

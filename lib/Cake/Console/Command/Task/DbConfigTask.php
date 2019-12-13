@@ -2,8 +2,6 @@
 /**
  * The DbConfig Task handles creating and updating the database.php
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -298,7 +296,7 @@ class DbConfigTask extends AppShell {
 
 		foreach ($oldConfigs as $key => $oldConfig) {
 			foreach ($configs as $config) {
-				if ($oldConfig['name'] == $config['name']) {
+				if ($oldConfig['name'] === $config['name']) {
 					unset($oldConfigs[$key]);
 				}
 			}

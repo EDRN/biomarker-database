@@ -4,19 +4,18 @@
  *
  * InflectorTest is used to test cases on the Inflector class
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
- * Licensed under The Open Group Test Suite License
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/2.0/en/development/testing.html
  * @package       Cake.Test.Case.Utility
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       http://www.opensource.org/licenses/opengroup.php Open Group Test Suite License
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -93,6 +92,8 @@ class InflectorTest extends CakeTestCase {
 		$this->assertEquals(Inflector::singularize('faxes'), 'fax');
 		$this->assertEquals(Inflector::singularize('waxes'), 'wax');
 		$this->assertEquals(Inflector::singularize('niches'), 'niche');
+		$this->assertEquals(Inflector::singularize('caves'), 'cave');
+		$this->assertEquals(Inflector::singularize('graves'), 'grave');
 		$this->assertEquals(Inflector::singularize('waves'), 'wave');
 		$this->assertEquals(Inflector::singularize('bureaus'), 'bureau');
 		$this->assertEquals(Inflector::singularize('genetic_analyses'), 'genetic_analysis');
@@ -117,7 +118,13 @@ class InflectorTest extends CakeTestCase {
 		$this->assertEquals(Inflector::singularize('teeth'), 'tooth');
 		$this->assertEquals(Inflector::singularize('geese'), 'goose');
 		$this->assertEquals(Inflector::singularize('feet'), 'foot');
-
+		$this->assertEquals(Inflector::singularize('objectives'), 'objective');
+		$this->assertEquals(Inflector::singularize('archives'), 'archive');
+		$this->assertEquals(Inflector::singularize('briefs'), 'brief');
+		$this->assertEquals(Inflector::singularize('quotas'), 'quota');
+		$this->assertEquals(Inflector::singularize('curves'), 'curve');
+		$this->assertEquals(Inflector::singularize('body_curves'), 'body_curve');
+		$this->assertEquals(Inflector::singularize('metadata'), 'metadata');
 		$this->assertEquals(Inflector::singularize(''), '');
 	}
 
@@ -177,6 +184,12 @@ class InflectorTest extends CakeTestCase {
 		$this->assertEquals(Inflector::pluralize('tooth'), 'teeth');
 		$this->assertEquals(Inflector::pluralize('goose'), 'geese');
 		$this->assertEquals(Inflector::pluralize('foot'), 'feet');
+		$this->assertEquals(Inflector::pluralize('objective'), 'objectives');
+		$this->assertEquals(Inflector::pluralize('brief'), 'briefs');
+		$this->assertEquals(Inflector::pluralize('quota'), 'quotas');
+		$this->assertEquals(Inflector::pluralize('curve'), 'curves');
+		$this->assertEquals(Inflector::pluralize('body_curve'), 'body_curves');
+		$this->assertEquals(Inflector::pluralize('metadata'), 'metadata');
 		$this->assertEquals(Inflector::pluralize(''), '');
 	}
 
@@ -241,6 +254,9 @@ class InflectorTest extends CakeTestCase {
 		$result = Inflector::slug('posts/view/한국어/page:1/sort:asc');
 		$expected = 'posts_view_한국어_page_1_sort_asc';
 		$this->assertEquals($expected, $result);
+
+		$result = Inflector::slug("non\xc2\xa0breaking\xc2\xa0space");
+		$this->assertEquals('non_breaking_space', $result);
 	}
 
 /**

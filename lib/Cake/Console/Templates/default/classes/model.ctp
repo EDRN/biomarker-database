@@ -4,8 +4,6 @@
  *
  * Used by bake to create new Model files.
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -71,6 +69,16 @@ if ($displayField): ?>
  * @var string
  */
 	public $displayField = '<?php echo $displayField; ?>';
+
+<?php endif;
+
+if (!empty($actsAs)): ?>
+/**
+ * Behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(<?php echo "\n\t"; foreach ($actsAs as $behavior): echo "\t"; var_export($behavior); echo ",\n\t"; endforeach; ?>);
 
 <?php endif;
 
