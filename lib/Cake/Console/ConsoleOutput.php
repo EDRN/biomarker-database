@@ -154,7 +154,7 @@ class ConsoleOutput {
  * Construct the output object.
  *
  * Checks for a pretty console environment. Ansicon allows pretty consoles
- * on windows, and is supported.
+ * on Windows, and is supported.
  *
  * @param string $stream The identifier of the stream to write output to.
  */
@@ -162,6 +162,7 @@ class ConsoleOutput {
 		$this->_output = fopen($stream, 'w');
 
 		if ((DS === '\\' && !(bool)env('ANSICON')) ||
+			$stream === 'php://output' ||
 			(function_exists('posix_isatty') && !posix_isatty($this->_output))
 		) {
 			$this->_outputAs = self::PLAIN;

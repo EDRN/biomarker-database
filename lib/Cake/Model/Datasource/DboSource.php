@@ -181,7 +181,7 @@ class DboSource extends DataSource {
  *
  * @var array
  */
-	protected $_sqlOps = array('like', 'ilike', 'or', 'not', 'in', 'between', 'regexp', 'similar to');
+	protected $_sqlOps = array('like', 'ilike', 'rlike', 'or', 'not', 'in', 'between', 'regexp', 'similar to');
 
 /**
  * Indicates the level of nested transactions
@@ -354,8 +354,10 @@ class DboSource extends DataSource {
 					return str_replace(',', '.', strval($data));
 				}
 				if ((is_int($data) || $data === '0') || (
-					is_numeric($data) && strpos($data, ',') === false &&
-					$data[0] != '0' && strpos($data, 'e') === false)
+					is_numeric($data) &&
+					strpos($data, ',') === false &&
+					$data[0] != '0' &&
+					strpos($data, 'e') === false)
 				) {
 					return $data;
 				}
@@ -400,7 +402,7 @@ class DboSource extends DataSource {
  */
 	public function rawQuery($sql, $params = array()) {
 		$this->took = $this->numRows = false;
-		return $this->execute($sql, $params);
+		return $this->execute($sql, array(), $params);
 	}
 
 /**
@@ -1199,6 +1201,30 @@ class DboSource extends DataSource {
 	}
 
 /**
+ * Passes association results through afterFind filters of the corresponding model.
+ *
+ * Similar to DboSource::_filterResults(), but this filters only specified models.
+ * The primary model can not be specified, because this call DboSource::_filterResults() internally.
+ *
+ * @param array &$resultSet Reference of resultset to be filtered.
+ * @param Model $Model Instance of model to operate against.
+ * @param array $toBeFiltered List of classes to be filtered.
+ * @return array Array of results that have been filtered through $Model->afterFind.
+ */
+	protected function _filterResultsInclusive(&$resultSet, Model $Model, $toBeFiltered = array()) {
+		$exclude = array();
+
+		if (is_array($resultSet)) {
+			$current = reset($resultSet);
+			if (is_array($current)) {
+				$exclude = array_diff(array_keys($current), $toBeFiltered);
+			}
+		}
+
+		return $this->_filterResults($resultSet, $Model, $exclude);
+	}
+
+/**
  * Queries associations.
  *
  * Used to fetch results on recursive models.
@@ -1269,7 +1295,7 @@ class DboSource extends DataSource {
 
 			// Filter
 			if ($queryData['callbacks'] === true || $queryData['callbacks'] === 'after') {
-				$this->_filterResults($assocResultSet, $Model);
+				$this->_filterResultsInclusive($assocResultSet, $Model, array($association));
 			}
 
 			// Merge
@@ -1298,7 +1324,7 @@ class DboSource extends DataSource {
 
 			// Filter
 			if ($queryData['callbacks'] === true || $queryData['callbacks'] === 'after') {
-				$this->_filterResults($assocResultSet, $Model);
+				$this->_filterResultsInclusive($assocResultSet, $Model, array($association, $with));
 			}
 		}
 
@@ -1366,10 +1392,15 @@ class DboSource extends DataSource {
 						$this->_mergeAssociation($row, $merge, $association, $type);
 					}
 				} else {
+					if (!$prefetched && $LinkModel->useConsistentAfterFind) {
+						if ($queryData['callbacks'] === true || $queryData['callbacks'] === 'after') {
+							$this->_filterResultsInclusive($assocResultSet, $Model, array($association));
+						}
+					}
 					$this->_mergeAssociation($row, $assocResultSet, $association, $type, $selfJoin);
 				}
 
-				if ($type !== 'hasAndBelongsToMany' && isset($row[$association]) && !$prefetched) {
+				if ($type !== 'hasAndBelongsToMany' && isset($row[$association]) && !$prefetched && !$LinkModel->useConsistentAfterFind) {
 					$row[$association] = $LinkModel->afterFind($row[$association], false);
 				}
 
@@ -2838,10 +2869,17 @@ class DboSource extends DataSource {
 		if (!empty($this->endQuote)) {
 			$end = preg_quote($this->endQuote);
 		}
+		// Remove quotes and requote all the Model.field names.
 		$conditions = str_replace(array($start, $end), '', $conditions);
 		$conditions = preg_replace_callback(
 			'/(?:[\'\"][^\'\"\\\]*(?:\\\.[^\'\"\\\]*)*[\'\"])|([a-z0-9_][a-z0-9\\-_]*\\.[a-z0-9_][a-z0-9_\\-]*)/i',
 			array(&$this, '_quoteMatchedField'),
+			$conditions
+		);
+		// Quote `table_name AS Alias`
+		$conditions = preg_replace(
+			'/(\s[a-z0-9\\-_.' . $start . $end . ']*' . $end . ')\s+AS\s+([a-z0-9\\-_]+)/i',
+			'\1 AS ' . $this->startQuote . '\2' . $this->endQuote,
 			$conditions
 		);
 		if ($conditions !== null) {
@@ -3532,6 +3570,7 @@ class DboSource extends DataSource {
 		if ($this->_methodCacheChange) {
 			Cache::write('method_cache', self::$methodCache, '_cake_core_');
 		}
+		parent::__destruct();
 	}
 
 }

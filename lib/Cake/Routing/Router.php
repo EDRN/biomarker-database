@@ -289,13 +289,13 @@ class Router {
  *
  * The above shows the use of route parameter defaults, and providing routing parameters for a static route.
  *
- * {{{
+ * ```
  * Router::connect(
  *   '/:lang/:controller/:action/:id',
  *   array(),
  *   array('id' => '[0-9]+', 'lang' => '[a-z]{3}')
  * );
- * }}}
+ * ```
  *
  * Shows connecting a route with custom route parameters as well as providing patterns for those parameters.
  * Patterns for routing parameters do not need capturing groups, as one will be added for each route params.
@@ -354,9 +354,8 @@ class Router {
 				break;
 			}
 		}
-		if (isset($defaults['prefix'])) {
+		if (isset($defaults['prefix']) && !in_array($defaults['prefix'], self::$_prefixes)) {
 			self::$_prefixes[] = $defaults['prefix'];
-			self::$_prefixes = array_keys(array_flip(self::$_prefixes));
 		}
 		$defaults += array('plugin' => null);
 		if (empty($options['action'])) {
@@ -427,37 +426,37 @@ class Router {
  *
  * Do not parse any named parameters:
  *
- * {{{ Router::connectNamed(false); }}}
+ * ``` Router::connectNamed(false); ```
  *
  * Parse only default parameters used for CakePHP's pagination:
  *
- * {{{ Router::connectNamed(false, array('default' => true)); }}}
+ * ``` Router::connectNamed(false, array('default' => true)); ```
  *
  * Parse only the page parameter if its value is a number:
  *
- * {{{ Router::connectNamed(array('page' => '[\d]+'), array('default' => false, 'greedy' => false)); }}}
+ * ``` Router::connectNamed(array('page' => '[\d]+'), array('default' => false, 'greedy' => false)); ```
  *
  * Parse only the page parameter no matter what.
  *
- * {{{ Router::connectNamed(array('page'), array('default' => false, 'greedy' => false)); }}}
+ * ``` Router::connectNamed(array('page'), array('default' => false, 'greedy' => false)); ```
  *
  * Parse only the page parameter if the current action is 'index'.
  *
- * {{{
+ * ```
  * Router::connectNamed(
  *    array('page' => array('action' => 'index')),
  *    array('default' => false, 'greedy' => false)
  * );
- * }}}
+ * ```
  *
  * Parse only the page parameter if the current action is 'index' and the controller is 'pages'.
  *
- * {{{
+ * ```
  * Router::connectNamed(
  *    array('page' => array('action' => 'index', 'controller' => 'pages')),
  *    array('default' => false, 'greedy' => false)
  * );
- * }}}
+ * ```
  *
  * ### Options
  *
@@ -609,11 +608,9 @@ class Router {
 
 		extract(self::_parseExtension($url));
 
-		for ($i = 0, $len = count(self::$routes); $i < $len; $i++) {
-			$route =& self::$routes[$i];
-
+		foreach (self::$routes as $route) {
 			if (($r = $route->parse($url)) !== false) {
-				self::$_currentRoute[] =& $route;
+				self::$_currentRoute[] = $route;
 				$out = $r;
 				break;
 			}
@@ -733,7 +730,7 @@ class Router {
  *
  * @param string $name Parameter name
  * @param bool $current Current parameter, useful when using requestAction
- * @return string Parameter value
+ * @return string|null Parameter value
  */
 	public static function getParam($name = 'controller', $current = false) {
 		$params = Router::getParams($current);
@@ -905,12 +902,12 @@ class Router {
 
 			$match = false;
 
-			for ($i = 0, $len = count(self::$routes); $i < $len; $i++) {
+			foreach (self::$routes as $route) {
 				$originalUrl = $url;
 
-				$url = self::$routes[$i]->persistParams($url, $params);
+				$url = $route->persistParams($url, $params);
 
-				if ($match = self::$routes[$i]->match($url)) {
+				if ($match = $route->match($url)) {
 					$output = trim($match, '/');
 					break;
 				}
@@ -994,12 +991,10 @@ class Router {
 		);
 
 		$keys = array_values(array_diff(array_keys($url), $skip));
-		$count = count($keys);
 
 		// Remove this once parsed URL parameters can be inserted into 'pass'
-		for ($i = 0; $i < $count; $i++) {
-			$key = $keys[$i];
-			if (is_numeric($keys[$i])) {
+		foreach ($keys as $key) {
+			if (is_numeric($key)) {
 				$args[] = $url[$key];
 			} else {
 				$named[$key] = $url[$key];

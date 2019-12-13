@@ -442,7 +442,9 @@ class CakeSession {
 			self::_startSession();
 		}
 
-		session_destroy();
+		if (self::started()) {
+			session_destroy();
+		}
 
 		$_SESSION = null;
 		self::$id = null;
@@ -494,7 +496,12 @@ class CakeSession {
 
 		if (!empty($sessionConfig['handler'])) {
 			$sessionConfig['ini']['session.save_handler'] = 'user';
+		} elseif (!empty($sessionConfig['session.save_path']) && Configure::read('debug')) {
+			if (!is_dir($sessionConfig['session.save_path'])) {
+				mkdir($sessionConfig['session.save_path'], 0775, true);
+			}
 		}
+
 		if (!isset($sessionConfig['ini']['session.gc_maxlifetime'])) {
 			$sessionConfig['ini']['session.gc_maxlifetime'] = $sessionConfig['timeout'] * 60;
 		}
@@ -714,7 +721,7 @@ class CakeSession {
  * @return void
  */
 	public static function renew() {
-		if (!session_id()) {
+		if (session_id() === '') {
 			return;
 		}
 		if (isset($_COOKIE[session_name()])) {
