@@ -62,7 +62,7 @@ class XmlViewTest extends CakeTestCase {
 		$View = new XmlView($Controller);
 		$output = $View->render(false);
 
-		$expected = Xml::build(array('response'=> array('users'=> $data)))->asXML();
+		$expected = Xml::build(array('response' => array('users' => $data)))->asXML();
 		$this->assertSame($expected, $output);
 	}
 
@@ -84,8 +84,8 @@ class XmlViewTest extends CakeTestCase {
 		$expected = array(
 			'response' => array('no' => $data['no'], 'user' => $data['user'])
 		);
-		$this->assertIdentical(Xml::build($expected)->asXML(), $output);
-		$this->assertIdentical('application/xml', $Response->type());
+		$this->assertSame(Xml::build($expected)->asXML(), $output);
+		$this->assertSame('application/xml', $Response->type());
 	}
 
 /**
@@ -119,7 +119,7 @@ class XmlViewTest extends CakeTestCase {
 		$output = $View->render('index');
 
 		$expected = array(
-			'users'=> array('user'=> array('user1', 'user2'))
+			'users' => array('user' => array('user1', 'user2'))
 		);
 		$expected = Xml::build($expected)->asXML();
 		$this->assertSame($expected, $output);

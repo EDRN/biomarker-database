@@ -34,20 +34,10 @@ class BasicsTest extends CakeTestCase {
  * @return void
  */
 	public function setUp() {
+		parent::setUp();
 		App::build(array(
 			'Locale' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Locale' . DS)
 		));
-		$this->_language = Configure::read('Config.language');
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		App::build();
-		Configure::write('Config.language', $this->_language);
 	}
 
 /**
@@ -77,7 +67,7 @@ class BasicsTest extends CakeTestCase {
 		$one = array('minYear' => null, 'maxYear' => null, 'separator' => '-', 'interval' => 1, 'monthNames' => true);
 		$two = array('minYear' => null, 'maxYear' => null, 'separator' => '-', 'interval' => 1, 'monthNames' => true);
 		$result = array_diff_key($one, $two);
-		$this->assertEquals(array(), $result);
+		$this->assertSame(array(), $result);
 	}
 
 /**
@@ -236,6 +226,15 @@ class BasicsTest extends CakeTestCase {
 		);
 		$this->assertEquals($expected, $result);
 
+		// Test that boolean values are not converted to strings
+		$result = h(false);
+		$this->assertFalse($result);
+
+		$arr = array('foo' => false, 'bar' => true);
+		$result = h($arr);
+		$this->assertFalse($result['foo']);
+		$this->assertTrue($result['bar']);
+
 		$obj = new stdClass();
 		$result = h($obj);
 		$this->assertEquals('(object)stdClass', $result);
@@ -283,7 +282,9 @@ class BasicsTest extends CakeTestCase {
 
 		$result = cache('basics_test');
 		$this->assertEquals('simple cache write', $result);
-		@unlink(CACHE . 'basics_test');
+		if (file_exists(CACHE . 'basics_test')) {
+			unlink(CACHE . 'basics_test');
+		}
 
 		cache('basics_test', 'expired', '+1 second');
 		sleep(2);
@@ -604,10 +605,21 @@ class BasicsTest extends CakeTestCase {
  * @return void
  */
 	public function testLogError() {
-		@unlink(LOGS . 'error.log');
+		if (file_exists(LOGS . 'error.log')) {
+			unlink(LOGS . 'error.log');
+		}
+
+		// disable stderr output for this test
+		if (CakeLog::stream('stderr')) {
+			CakeLog::disable('stderr');
+		}
 
 		LogError('Testing LogError() basic function');
 		LogError("Testing with\nmulti-line\nstring");
+
+		if (CakeLog::stream('stderr')) {
+			CakeLog::enable('stderr');
+		}
 
 		$result = file_get_contents(LOGS . 'error.log');
 		$this->assertRegExp('/Error: Testing LogError\(\) basic function/', $result);
