@@ -79,7 +79,7 @@ class TextHelperTest extends CakeTestCase {
  */
 	public function testTextHelperProxyMethodCalls() {
 		$methods = array(
-			'highlight', 'stripLinks', 'truncate', 'excerpt', 'toList',
+			'highlight', 'stripLinks', 'truncate', 'tail', 'excerpt', 'toList',
 			);
 		$String = $this->getMock('StringMock', $methods);
 		$Text = new TextHelperTestObject($this->View, array('engine' => 'StringMock'));
@@ -314,6 +314,16 @@ class TextHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testAutoLinkUrlsEscape() {
+		$text = 'Text with a partial <a href="http://www.example.com">http://www.example.com</a> link';
+		$expected = 'Text with a partial <a href="http://www.example.com">http://www.example.com</a> link';
+		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
+		$this->assertEquals($expected, $result);
+
+		$text = 'Text with a partial <a href="http://www.example.com">www.example.com</a> link';
+		$expected = 'Text with a partial <a href="http://www.example.com">www.example.com</a> link';
+		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
+		$this->assertEquals($expected, $result);
+
 		$text = 'Text with a partial <a href="http://www.cakephp.org">link</a> link';
 		$expected = 'Text with a partial <a href="http://www.cakephp.org">link</a> link';
 		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
@@ -331,22 +341,22 @@ class TextHelperTest extends CakeTestCase {
 
 		$text = 'Text with a url <a href="http://www.not-working-www.com">www.not-working-www.com</a> and more';
 		$expected = 'Text with a url &lt;a href=&quot;http://www.not-working-www.com&quot;&gt;www.not-working-www.com&lt;/a&gt; and more';
-		$result = $this->Text->autoLinkUrls($text);
+		$result = $this->Text->autoLinkUrls($text, array('escape' => true));
 		$this->assertEquals($expected, $result);
 
 		$text = 'Text with a url www.not-working-www.com and more';
 		$expected = 'Text with a url <a href="http://www.not-working-www.com">www.not-working-www.com</a> and more';
-		$result = $this->Text->autoLinkUrls($text);
+		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
 		$this->assertEquals($expected, $result);
 
 		$text = 'Text with a url http://www.not-working-www.com and more';
 		$expected = 'Text with a url <a href="http://www.not-working-www.com">http://www.not-working-www.com</a> and more';
-		$result = $this->Text->autoLinkUrls($text);
+		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
 		$this->assertEquals($expected, $result);
 
 		$text = 'Text with a url http://www.www.not-working-www.com and more';
 		$expected = 'Text with a url <a href="http://www.www.not-working-www.com">http://www.www.not-working-www.com</a> and more';
-		$result = $this->Text->autoLinkUrls($text);
+		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
 		$this->assertEquals($expected, $result);
 	}
 
@@ -363,54 +373,82 @@ class TextHelperTest extends CakeTestCase {
 	}
 
 /**
- * testAutoLinkEmails method
+ * Data provider for autoLinkEmail.
  *
  * @return void
  */
-	public function testAutoLinkEmails() {
-		$text = 'This is a test text';
-		$expected = 'This is a test text';
-		$result = $this->Text->autoLinkUrls($text);
-		$this->assertEquals($expected, $result);
+	public function autoLinkEmailProvider() {
+		return array(
+			array(
+				'This is a test text',
+				'This is a test text',
+			),
 
-		$text = 'email@example.com address';
-		$expected = '<a href="mailto:email@example.com">email@example.com</a> address';
-		$result = $this->Text->autoLinkEmails($text);
-		$this->assertEquals($expected, $result);
+			array(
+				'email@example.com address',
+				'<a href="mailto:email@example.com">email@example.com</a> address',
+			),
 
-		$text = 'email@example.com address';
-		$expected = '<a href="mailto:email@example.com">email@example.com</a> address';
-		$result = $this->Text->autoLinkEmails($text);
-		$this->assertEquals($expected, $result);
+			array(
+				'email@example.com address',
+				'<a href="mailto:email@example.com">email@example.com</a> address',
+			),
 
-		$text = '(email@example.com) address';
-		$expected = '(<a href="mailto:email@example.com">email@example.com</a>) address';
-		$result = $this->Text->autoLinkEmails($text);
-		$this->assertEquals($expected, $result);
+			array(
+				'(email@example.com) address',
+				'(<a href="mailto:email@example.com">email@example.com</a>) address',
+			),
 
-		$text = 'Text with email@example.com address';
-		$expected = 'Text with <a href="mailto:email@example.com">email@example.com</a> address';
-		$result = $this->Text->autoLinkEmails($text);
-		$this->assertEquals($expected, $result);
+			array(
+				'Text with email@example.com address',
+				'Text with <a href="mailto:email@example.com">email@example.com</a> address',
+			),
 
-		$text = "Text with o'hare._-bob@example.com address";
-		$expected = 'Text with <a href="mailto:o&#039;hare._-bob@example.com">o&#039;hare._-bob@example.com</a> address';
-		$result = $this->Text->autoLinkEmails($text);
-		$this->assertEquals($expected, $result);
+			array(
+				"Text with o'hare._-bob@example.com address",
+				'Text with <a href="mailto:o&#039;hare._-bob@example.com">o&#039;hare._-bob@example.com</a> address',
+			),
 
-		$text = 'Text with email@example.com address';
-		$expected = 'Text with <a href="mailto:email@example.com" class="link">email@example.com</a> address';
-		$result = $this->Text->autoLinkEmails($text, array('class' => 'link'));
-		$this->assertEquals($expected, $result);
+			array(
+				'Text with düsentrieb@küchenschöhn-not-working.de address',
+				'Text with <a href="mailto:düsentrieb@küchenschöhn-not-working.de">düsentrieb@küchenschöhn-not-working.de</a> address',
+			),
 
-		$text = 'Text with düsentrieb@küchenschöhn-not-working.de address';
-		$expected = 'Text with <a href="mailto:düsentrieb@küchenschöhn-not-working.de">düsentrieb@küchenschöhn-not-working.de</a> address';
-		$result = $this->Text->autoLinkEmails($text);
-		$this->assertEquals($expected, $result);
+			array(
+				'Text with me@subdomain.küchenschöhn.de address',
+				'Text with <a href="mailto:me@subdomain.küchenschöhn.de">me@subdomain.küchenschöhn.de</a> address',
+			),
 
-		$text = 'Text with me@subdomain.küchenschöhn.de address';
-		$expected = 'Text with <a href="mailto:me@subdomain.küchenschöhn.de">me@subdomain.küchenschöhn.de</a> address';
-		$result = $this->Text->autoLinkEmails($text);
+			array(
+				'Text with email@example.com address',
+				'Text with <a href="mailto:email@example.com" class="link">email@example.com</a> address',
+				array('class' => 'link'),
+			),
+
+			array(
+				'<p>mark@example.com</p>',
+				'<p><a href="mailto:mark@example.com">mark@example.com</a></p>',
+				array('escape' => false)
+			),
+
+			array(
+				'Some&nbsp;mark@example.com&nbsp;Text',
+				'Some&nbsp;<a href="mailto:mark@example.com">mark@example.com</a>&nbsp;Text',
+				array('escape' => false)
+			),
+		);
+	}
+
+/**
+ * testAutoLinkEmails method
+ *
+ * @param string $text The text to link
+ * @param string $expected The expected results.
+ * @dataProvider autoLinkEmailProvider
+ * @return void
+ */
+	public function testAutoLinkEmails($text, $expected, $attrs = array()) {
+		$result = $this->Text->autoLinkEmails($text, $attrs);
 		$this->assertEquals($expected, $result);
 	}
 
