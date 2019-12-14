@@ -28,7 +28,7 @@ class CustomValidator {
 /**
  * Makes sure that a given $email address is valid and unique
  *
- * @param string $email
+ * @param string $check Email to check.
  * @return bool
  */
 	public static function customValidate($check) {
@@ -124,37 +124,37 @@ class ValidationTest extends CakeTestCase {
 	}
 
 /**
- * testNotEmpty method
+ * Test notBlank method
  *
  * @return void
  */
-	public function testNotEmpty() {
-		$this->assertTrue(Validation::notEmpty('abcdefg'));
-		$this->assertTrue(Validation::notEmpty('fasdf '));
-		$this->assertTrue(Validation::notEmpty('fooo' . chr(243) . 'blabla'));
-		$this->assertTrue(Validation::notEmpty('abçďĕʑʘπй'));
-		$this->assertTrue(Validation::notEmpty('José'));
-		$this->assertTrue(Validation::notEmpty('é'));
-		$this->assertTrue(Validation::notEmpty('π'));
-		$this->assertFalse(Validation::notEmpty("\t "));
-		$this->assertFalse(Validation::notEmpty(""));
+	public function testNotBlank() {
+		$this->assertTrue(Validation::notBlank('abcdefg'));
+		$this->assertTrue(Validation::notBlank('fasdf '));
+		$this->assertTrue(Validation::notBlank('fooo' . chr(243) . 'blabla'));
+		$this->assertTrue(Validation::notBlank('abçďĕʑʘπй'));
+		$this->assertTrue(Validation::notBlank('José'));
+		$this->assertTrue(Validation::notBlank('é'));
+		$this->assertTrue(Validation::notBlank('π'));
+		$this->assertFalse(Validation::notBlank("\t "));
+		$this->assertFalse(Validation::notBlank(""));
 	}
 
 /**
- * testNotEmptyISO88591Encoding method
+ * Test notBlank method with ISO88591 encoding
  *
  * @return void
  */
-	public function testNotEmptyISO88591AppEncoding() {
+	public function testNotBlankISO88591AppEncoding() {
 		Configure::write('App.encoding', 'ISO-8859-1');
-		$this->assertTrue(Validation::notEmpty('abcdefg'));
-		$this->assertTrue(Validation::notEmpty('fasdf '));
-		$this->assertTrue(Validation::notEmpty('fooo' . chr(243) . 'blabla'));
-		$this->assertTrue(Validation::notEmpty('abçďĕʑʘπй'));
-		$this->assertTrue(Validation::notEmpty('José'));
-		$this->assertTrue(Validation::notEmpty(utf8_decode('José')));
-		$this->assertFalse(Validation::notEmpty("\t "));
-		$this->assertFalse(Validation::notEmpty(""));
+		$this->assertTrue(Validation::notBlank('abcdefg'));
+		$this->assertTrue(Validation::notBlank('fasdf '));
+		$this->assertTrue(Validation::notBlank('fooo' . chr(243) . 'blabla'));
+		$this->assertTrue(Validation::notBlank('abçďĕʑʘπй'));
+		$this->assertTrue(Validation::notBlank('José'));
+		$this->assertTrue(Validation::notBlank(utf8_decode('José')));
+		$this->assertFalse(Validation::notBlank("\t "));
+		$this->assertFalse(Validation::notBlank(""));
 	}
 
 /**
@@ -184,25 +184,6 @@ class ValidationTest extends CakeTestCase {
 	}
 
 /**
- * testAlphaNumericPassedAsArray method
- *
- * @return void
- */
-	public function testAlphaNumericPassedAsArray() {
-		$this->assertTrue(Validation::alphaNumeric(array('check' => 'frferrf')));
-		$this->assertTrue(Validation::alphaNumeric(array('check' => '12234')));
-		$this->assertTrue(Validation::alphaNumeric(array('check' => '1w2e2r3t4y')));
-		$this->assertTrue(Validation::alphaNumeric(array('check' => '0')));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => '12 234')));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => 'dfd 234')));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => "\n")));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => "\t")));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => "\r")));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => ' ')));
-		$this->assertFalse(Validation::alphaNumeric(array('check' => '')));
-	}
-
-/**
  * testLengthBetween method
  *
  * @return void
@@ -229,21 +210,6 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::blank("\r"));
 		$this->assertFalse(Validation::blank('    Blank'));
 		$this->assertFalse(Validation::blank('Blank'));
-	}
-
-/**
- * testBlankAsArray method
- *
- * @return void
- */
-	public function testBlankAsArray() {
-		$this->assertTrue(Validation::blank(array('check' => '')));
-		$this->assertTrue(Validation::blank(array('check' => ' ')));
-		$this->assertTrue(Validation::blank(array('check' => "\n")));
-		$this->assertTrue(Validation::blank(array('check' => "\t")));
-		$this->assertTrue(Validation::blank(array('check' => "\r")));
-		$this->assertFalse(Validation::blank(array('check' => '    Blank')));
-		$this->assertFalse(Validation::blank(array('check' => 'Blank')));
 	}
 
 /**
@@ -952,42 +918,6 @@ class ValidationTest extends CakeTestCase {
 	}
 
 /**
- * testComparisonAsArray method
- *
- * @return void
- */
-	public function testComparisonAsArray() {
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => 'is greater', 'check2' => 6)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => '>', 'check2' => 6)));
-		$this->assertTrue(Validation::comparison(array('check1' => 6, 'operator' => 'is less', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 6, 'operator' => '<', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => 'greater or equal', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => '>=', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => 'greater or equal', 'check2' => 6)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => '>=', 'check2' => 6)));
-		$this->assertTrue(Validation::comparison(array('check1' => 6, 'operator' => 'less or equal', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 6, 'operator' => '<=', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => 'equal to', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => '==', 'check2' => 7)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => 'not equal', 'check2' => 6)));
-		$this->assertTrue(Validation::comparison(array('check1' => 7, 'operator' => '!=', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 6, 'operator' => 'is greater', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 6, 'operator' => '>', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => 'is less', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => '<', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 6, 'operator' => 'greater or equal', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 6, 'operator' => '>=', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 6, 'operator' => 'greater or equal', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 6, 'operator' => '>=', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => 'less or equal', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => '<=', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => 'equal to', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => '==', 'check2' => 6)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => 'not equal', 'check2' => 7)));
-		$this->assertFalse(Validation::comparison(array('check1' => 7, 'operator' => '!=', 'check2' => 7)));
-	}
-
-/**
  * testCustom method
  *
  * @return void
@@ -997,17 +927,6 @@ class ValidationTest extends CakeTestCase {
 		$this->assertFalse(Validation::custom('Text', '/(?<!\\S)\\d++(?!\\S)/'));
 		$this->assertFalse(Validation::custom('123.45', '/(?<!\\S)\\d++(?!\\S)/'));
 		$this->assertFalse(Validation::custom('missing regex'));
-	}
-
-/**
- * testCustomAsArray method
- *
- * @return void
- */
-	public function testCustomAsArray() {
-		$this->assertTrue(Validation::custom(array('check' => '12345', 'regex' => '/(?<!\\S)\\d++(?!\\S)/')));
-		$this->assertFalse(Validation::custom(array('check' => 'Text', 'regex' => '/(?<!\\S)\\d++(?!\\S)/')));
-		$this->assertFalse(Validation::custom(array('check' => '123.45', 'regex' => '/(?<!\\S)\\d++(?!\\S)/')));
 	}
 
 /**

@@ -653,7 +653,7 @@ class ControllerTest extends CakeTestCase {
 		$expected = $Controller->ControllerComment->validationErrors;
 
 		$Controller->viewPath = 'Posts';
-		$result = $Controller->render('index');
+		$Controller->render('index');
 		$View = $Controller->View;
 		$this->assertTrue(isset($View->validationErrors['ControllerComment']));
 		$this->assertEquals($expected, $View->validationErrors['ControllerComment']);
@@ -993,6 +993,7 @@ class ControllerTest extends CakeTestCase {
 		$Controller->constructClasses();
 
 		$this->assertFalse(isset($Controller->Session));
+		$this->assertFalse(isset($Controller->Flash));
 	}
 
 /**
@@ -1106,7 +1107,7 @@ class ControllerTest extends CakeTestCase {
 		$TestController = new TestController();
 
 		$Post = new ControllerPost();
-		$Post->validate = array('title' => 'notEmpty');
+		$Post->validate = array('title' => 'notBlank');
 		$Post->set('title', '');
 		$result = $TestController->validateErrors($Post);
 

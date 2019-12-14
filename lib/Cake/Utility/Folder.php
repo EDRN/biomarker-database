@@ -285,7 +285,7 @@ class Folder {
 		return $path[0] === '/' ||
 			preg_match('/^[A-Z]:\\\\/i', $path) ||
 			substr($path, 0, 2) === '\\\\' ||
-			self::isRegisteredStreamWrapper($path);
+			static::isRegisteredStreamWrapper($path);
 	}
 
 /**
@@ -525,8 +525,8 @@ class Folder {
 			return true;
 		}
 
-		if (!self::isAbsolute($pathname)) {
-			$pathname = self::addPathElement($this->pwd(), $pathname);
+		if (!static::isAbsolute($pathname)) {
+			$pathname = static::addPathElement($this->pwd(), $pathname);
 		}
 
 		if (!$mode) {
@@ -821,13 +821,13 @@ class Folder {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/file-folder.html#Folder::realpath
  */
 	public function realpath($path) {
-		$path = str_replace('/', DS, trim($path));
 		if (strpos($path, '..') === false) {
 			if (!Folder::isAbsolute($path)) {
 				$path = Folder::addPathElement($this->path, $path);
 			}
 			return $path;
 		}
+		$path = str_replace('/', DS, trim($path));
 		$parts = explode(DS, $path);
 		$newparts = array();
 		$newpath = '';

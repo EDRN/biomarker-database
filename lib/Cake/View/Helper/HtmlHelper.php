@@ -174,7 +174,7 @@ class HtmlHelper extends AppHelper {
  * @param string $name Text for link
  * @param string $link URL for link (if empty it won't be a link)
  * @param string|array $options Link attributes e.g. array('id' => 'selected')
- * @return $this
+ * @return self
  * @see HtmlHelper::link() for details on $options that can be used.
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#creating-breadcrumb-trails-with-htmlhelper
  */
@@ -446,7 +446,7 @@ class HtmlHelper extends AppHelper {
 			if (empty($options['block'])) {
 				return $out . "\n";
 			}
-			return;
+			return '';
 		}
 
 		if ($options['once'] && isset($this->_includedAssets[__METHOD__][$path])) {
@@ -901,9 +901,16 @@ class HtmlHelper extends AppHelper {
 				if (is_array($cell)) {
 					$cellOptions = $cell[1];
 					$cell = $cell[0];
-				} elseif ($useCount) {
-					$cellOptions['class'] = 'column-' . ++$i;
 				}
+
+				if ($useCount) {
+					if (isset($cellOptions['class'])) {
+						$cellOptions['class'] .= ' column-' . ++$i;
+					} else {
+						$cellOptions['class'] = 'column-' . ++$i;
+					}
+				}
+
 				$cellsOut[] = sprintf($this->_tags['tablecell'], $this->_parseAttributes($cellOptions), $cell);
 			}
 			$options = $this->_parseAttributes($count % 2 ? $oddTrOptions : $evenTrOptions);
