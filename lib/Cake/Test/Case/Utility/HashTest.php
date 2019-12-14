@@ -17,7 +17,7 @@
 App::uses('Hash', 'Utility');
 
 /**
- * Class HashTest
+ * HashTest
  *
  * @package       Cake.Utility
  */
@@ -1302,6 +1302,43 @@ class HashTest extends CakeTestCase {
 	}
 
 /**
+ * Test natural sorting ignoring case.
+ *
+ * @return void
+ */
+	public function testSortNaturalIgnoreCase() {
+		if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+			$this->markTestSkipped('SORT_NATURAL is available since PHP 5.4.');
+		}
+		$items = array(
+			array('Item' => array('image' => 'img1.jpg')),
+			array('Item' => array('image' => 'img99.jpg')),
+			array('Item' => array('image' => 'Img12.jpg')),
+			array('Item' => array('image' => 'Img10.jpg')),
+			array('Item' => array('image' => 'img2.jpg')),
+		);
+		$result = Hash::sort($items, '{n}.Item.image', 'desc', array('type' => 'natural', 'ignoreCase' => true));
+		$expected = array(
+			array('Item' => array('image' => 'img99.jpg')),
+			array('Item' => array('image' => 'Img12.jpg')),
+			array('Item' => array('image' => 'Img10.jpg')),
+			array('Item' => array('image' => 'img2.jpg')),
+			array('Item' => array('image' => 'img1.jpg')),
+		);
+		$this->assertEquals($expected, $result);
+
+		$result = Hash::sort($items, '{n}.Item.image', 'asc', array('type' => 'natural', 'ignoreCase' => true));
+		$expected = array(
+			array('Item' => array('image' => 'img1.jpg')),
+			array('Item' => array('image' => 'img2.jpg')),
+			array('Item' => array('image' => 'Img10.jpg')),
+			array('Item' => array('image' => 'Img12.jpg')),
+			array('Item' => array('image' => 'img99.jpg')),
+		);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
  * Test that sort() with 'natural' type will fallback to 'regular' as SORT_NATURAL is introduced in PHP 5.4
  *
  * @return void
@@ -1321,6 +1358,38 @@ class HashTest extends CakeTestCase {
 		);
 		$sorted = Hash::sort($a, '{n}.Person.name', 'asc', 'natural');
 		$this->assertEquals($sorted, $b);
+	}
+
+/**
+ * Test sort() with locale option.
+ *
+ * @return void
+ */
+	public function testSortLocale() {
+		// get the current locale
+		$oldLocale = setlocale(LC_COLLATE, '0');
+
+		$updated = setlocale(LC_COLLATE, 'de_DE.utf8');
+		$this->skipIf($updated === false, 'Could not set locale to de_DE.utf8, skipping test.');
+
+		$items = array(
+			array('Item' => array('entry' => 'Übergabe')),
+			array('Item' => array('entry' => 'Ostfriesland')),
+			array('Item' => array('entry' => 'Äpfel')),
+			array('Item' => array('entry' => 'Apfel')),
+		);
+
+		$result = Hash::sort($items, '{n}.Item.entry', 'asc', 'locale');
+		$expected = array(
+			array('Item' => array('entry' => 'Apfel')),
+			array('Item' => array('entry' => 'Äpfel')),
+			array('Item' => array('entry' => 'Ostfriesland')),
+			array('Item' => array('entry' => 'Übergabe')),
+		);
+		$this->assertEquals($expected, $result);
+
+		// change to the original locale
+		setlocale(LC_COLLATE, $oldLocale);
 	}
 
 /**
@@ -1355,7 +1424,7 @@ class HashTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testSortString() {
+	public function testSortStringKeys() {
 		$toSort = array(
 			'four' => array('number' => 4, 'some' => 'foursome'),
 			'six' => array('number' => 6, 'some' => 'sixsome'),
@@ -1385,6 +1454,50 @@ class HashTest extends CakeTestCase {
 		);
 		$result = Hash::sort($menus, '{s}.weight', 'ASC');
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test sorting with string ignoring case.
+ *
+ * @return void
+ */
+	public function testSortStringIgnoreCase() {
+		$toSort = array(
+			array('Item' => array('name' => 'bar')),
+			array('Item' => array('name' => 'Baby')),
+			array('Item' => array('name' => 'Baz')),
+			array('Item' => array('name' => 'bat')),
+		);
+		$sorted = Hash::sort($toSort, '{n}.Item.name', 'asc', array('type' => 'string', 'ignoreCase' => true));
+		$expected = array(
+			array('Item' => array('name' => 'Baby')),
+			array('Item' => array('name' => 'bar')),
+			array('Item' => array('name' => 'bat')),
+			array('Item' => array('name' => 'Baz')),
+		);
+		$this->assertEquals($expected, $sorted);
+	}
+
+/**
+ * test regular sorting ignoring case.
+ *
+ * @return void
+ */
+	public function testSortRegularIgnoreCase() {
+		$toSort = array(
+			array('Item' => array('name' => 'bar')),
+			array('Item' => array('name' => 'Baby')),
+			array('Item' => array('name' => 'Baz')),
+			array('Item' => array('name' => 'bat')),
+		);
+		$sorted = Hash::sort($toSort, '{n}.Item.name', 'asc', array('type' => 'regular', 'ignoreCase' => true));
+		$expected = array(
+			array('Item' => array('name' => 'Baby')),
+			array('Item' => array('name' => 'bar')),
+			array('Item' => array('name' => 'bat')),
+			array('Item' => array('name' => 'Baz')),
+		);
+		$this->assertEquals($expected, $sorted);
 	}
 
 /**

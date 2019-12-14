@@ -21,7 +21,7 @@ App::uses('DatabaseSession', 'Model/Datasource/Session');
 App::uses('CacheSession', 'Model/Datasource/Session');
 
 /**
- * Class TestCakeSession
+ * TestCakeSession
  *
  * @package       Cake.Test.Case.Model.Datasource
  */
@@ -38,7 +38,7 @@ class TestCakeSession extends CakeSession {
 }
 
 /**
- * Class TestCacheSession
+ * TestCacheSession
  *
  * @package       Cake.Test.Case.Model.Datasource
  */
@@ -51,7 +51,7 @@ class TestCacheSession extends CacheSession {
 }
 
 /**
- * Class TestDatabaseSession
+ * TestDatabaseSession
  *
  * @package       Cake.Test.Case.Model.Datasource
  */
@@ -512,6 +512,22 @@ class CakeSessionTest extends CakeTestCase {
 
 		TestCakeSession::write('SessionTestCase', null);
 		$this->assertEquals(null, TestCakeSession::read('SessionTestCase'));
+	}
+
+/**
+ * Test te cacheLimiter settings.
+ *
+ * @return void
+ */
+	public function testCacheLimiter() {
+		Configure::write('Session.cacheLimiter', 'public');
+		TestCakeSession::start();
+		$this->assertSame('public', session_cache_limiter());
+
+		Configure::write('Session.cacheLimiter', 'private');
+		TestCakeSession::destroy();
+		TestCakeSession::start();
+		$this->assertSame('private', session_cache_limiter());
 	}
 
 /**

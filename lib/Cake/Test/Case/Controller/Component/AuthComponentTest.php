@@ -1621,8 +1621,6 @@ class AuthComponentTest extends CakeTestCase {
 /**
  * test that the returned URL doesn't contain the base URL.
  *
- * @see https://cakephp.lighthouseapp.com/projects/42648/tickets/3922-authcomponentredirecturl-prepends-appbaseurl
- *
  * @return void This test method doesn't return anything.
  */
 	public function testRedirectUrlWithBaseSet() {
@@ -1721,6 +1719,27 @@ class AuthComponentTest extends CakeTestCase {
 		$this->Controller->request['action'] = 'admin_add';
 
 		$this->Auth->startup($this->Controller);
+	}
+
+/**
+ * testStatelessLoginSetUserNoSessionStart method
+ *
+ * @return void
+ */
+	public function testStatelessLoginSetUserNoSessionStart() {
+		$user = array(
+			'id' => 1,
+			'username' => 'mark'
+		);
+
+		AuthComponent::$sessionKey = false;
+		$result = $this->Auth->login($user);
+		$this->assertTrue($result);
+
+		$this->assertTrue($this->Auth->loggedIn());
+		$this->assertEquals($user, $this->Auth->user());
+
+		$this->assertFalse($this->Auth->Session->started());
 	}
 
 /**

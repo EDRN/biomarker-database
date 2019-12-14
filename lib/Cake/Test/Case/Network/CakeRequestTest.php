@@ -21,7 +21,7 @@ App::uses('Xml', 'Utility');
 App::uses('CakeRequest', 'Network');
 
 /**
- * Class TestCakeRequest
+ * TestCakeRequest
  *
  * @package       Cake.Test.Case.Network
  */
@@ -55,7 +55,7 @@ class TestCakeRequest extends CakeRequest {
 }
 
 /**
- * Class CakeRequestTest
+ * CakeRequestTest
  */
 class CakeRequestTest extends CakeTestCase {
 
@@ -144,6 +144,21 @@ class CakeRequestTest extends CakeTestCase {
 		);
 		$request = new CakeRequest(null, false);
 		$this->assertFalse(isset($request->query['one']));
+	}
+
+/**
+ * Test the content type method.
+ *
+ * @return void
+ */
+	public function testContentType() {
+		$_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
+		$request = new CakeRequest('/', false);
+		$this->assertEquals('application/json', $request->contentType());
+
+		$_SERVER['CONTENT_TYPE'] = 'application/xml';
+		$request = new CakeRequest('/', false);
+		$this->assertEquals('application/xml', $request->contentType(), 'prefer non http header.');
 	}
 
 /**
@@ -727,6 +742,10 @@ class CakeRequestTest extends CakeTestCase {
 		$result = $request->referer();
 		$this->assertSame($result, '/');
 
+		$_SERVER['HTTP_REFERER'] = Configure::read('App.fullBaseUrl') . '/';
+		$result = $request->referer(true);
+		$this->assertSame($result, '/');
+
 		$_SERVER['HTTP_REFERER'] = Configure::read('App.fullBaseUrl') . '/some/path';
 		$result = $request->referer(true);
 		$this->assertSame($result, '/some/path');
@@ -1128,11 +1147,14 @@ class CakeRequestTest extends CakeTestCase {
 		$_SERVER['HTTP_X_THING'] = '';
 		$_SERVER['HTTP_HOST'] = 'localhost';
 		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-ca) AppleWebKit/534.8+ (KHTML, like Gecko) Version/5.0 Safari/533.16';
+		$_SERVER['Authorization'] = 'foobar';
 		$request = new CakeRequest('/', false);
 
 		$this->assertEquals($_SERVER['HTTP_HOST'], $request->header('host'));
 		$this->assertEquals($_SERVER['HTTP_USER_AGENT'], $request->header('User-Agent'));
 		$this->assertSame('', $request->header('X-thing'));
+		$this->assertEquals($_SERVER['Authorization'], $request->header('Authorization'));
+		$this->assertFalse($request->header('authorization'));
 	}
 
 /**
@@ -1362,7 +1384,6 @@ class CakeRequestTest extends CakeTestCase {
  * - index.php/apples/
  * - index.php/bananas/eat/tasty_banana
  *
- * @link https://cakephp.lighthouseapp.com/projects/42648-cakephp/tickets/3318
  * @return void
  */
 	public function testBaseUrlWithModRewriteAndIndexPhp() {

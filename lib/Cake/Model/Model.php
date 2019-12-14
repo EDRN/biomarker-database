@@ -473,9 +473,16 @@ class Model extends Object implements CakeEventListener {
 
 /**
  * List of behaviors to load when the model object is initialized. Settings can be
- * passed to behaviors by using the behavior name as index. Eg:
+ * passed to behaviors by using the behavior name as index.
  *
- * public $actsAs = array('Translate', 'MyBehavior' => array('setting1' => 'value1'))
+ * For example:
+ *
+ * ```
+ * public $actsAs = array(
+ *     'Translate',
+ *     'MyBehavior' => array('setting1' => 'value1')
+ * );
+ * ```
  *
  * @var array
  * @link http://book.cakephp.org/2.0/en/models/behaviors.html#using-behaviors
@@ -1035,13 +1042,13 @@ class Model extends Object implements CakeEventListener {
 						unset($association[$assoc]);
 						$assoc = $value;
 						$value = array();
+						$association[$assoc] = $value;
+					}
 
-						if (strpos($assoc, '.') !== false) {
-							list($plugin, $assoc) = pluginSplit($assoc, true);
-							$association[$assoc] = array('className' => $plugin . $assoc);
-						} else {
-							$association[$assoc] = $value;
-						}
+					if (!isset($value['className']) && strpos($assoc, '.') !== false) {
+						unset($association[$assoc]);
+						list($plugin, $assoc) = pluginSplit($assoc, true);
+						$association[$assoc] = array('className' => $plugin . $assoc) + $value;
 					}
 
 					$this->_generateAssociation($type, $assoc);
@@ -1982,7 +1989,7 @@ class Model extends Object implements CakeEventListener {
  */
 	protected function _isUUIDField($field) {
 		$field = $this->schema($field);
-		return $field['length'] == 36 && in_array($field['type'], array('string', 'binary'));
+		return $field['length'] == 36 && in_array($field['type'], array('string', 'binary', 'uuid'));
 	}
 
 /**
@@ -2937,7 +2944,7 @@ class Model extends Object implements CakeEventListener {
  *   'conditions' => array('name' => 'Thomas Anderson'),
  *   'fields' => array('name', 'email'),
  *   'order' => 'field3 DESC',
- *   'recursive' => 2,
+ *   'recursive' => 1,
  *   'group' => 'type',
  *   'callbacks' => false,
  * ));
@@ -3011,15 +3018,15 @@ class Model extends Object implements CakeEventListener {
  *
  * ```
  * protected function _readDataSource($type, $query) {
- * 		$cacheName = md5(json_encode($query));
- * 		$cache = Cache::read($cacheName, 'cache-config-name');
- * 		if ($cache !== false) {
- * 			return $cache;
- * 		}
+ *     $cacheName = md5(json_encode($query) . json_encode($this->hasOne) . json_encode($this->belongsTo));
+ *     $cache = Cache::read($cacheName, 'cache-config-name');
+ *     if ($cache !== false) {
+ *         return $cache;
+ *     }
  *
- * 		$results = parent::_readDataSource($type, $query);
- * 		Cache::write($cacheName, $results, 'cache-config-name');
- * 		return $results;
+ *     $results = parent::_readDataSource($type, $query);
+ *     Cache::write($cacheName, $results, 'cache-config-name');
+ *     return $results;
  * }
  * ```
  *
@@ -3076,7 +3083,7 @@ class Model extends Object implements CakeEventListener {
 			$query['order'] = $this->order;
 		}
 
-		$query['order'] = array($query['order']);
+		$query['order'] = (array)$query['order'];
 
 		if ($query['callbacks'] === true || $query['callbacks'] === 'before') {
 			$event = new CakeEvent('Model.beforeFind', $this, array($query));
