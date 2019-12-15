@@ -24,7 +24,6 @@ App::uses('Controller', 'Controller');
 // use new single sign on API
 require_once "Gov/Nasa/Jpl/Edrn/Security/EDRNAuth.php";
 
-
 /**
  * Application Controller
  *

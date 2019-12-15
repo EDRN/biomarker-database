@@ -16,7 +16,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-
 // PHP7 finally dropped mysql_real_escape_string, but if we're really going tojust rewrite this
 // crap in some non-crappy-PHP, then let's just reproduce that monstrosity
 
@@ -98,7 +97,7 @@ if (!defined('WWW_ROOT')) {
 
 // For the built-in server
 if (PHP_SAPI === 'cli-server') {
-	if ($_SERVER['REQUEST_URI'] !== '/' && file_exists(WWW_ROOT . $_SERVER['PHP_SELF'])) {
+	if ($_SERVER['PHP_SELF'] !== '/' . basename(__FILE__) && file_exists(WWW_ROOT . $_SERVER['PHP_SELF'])) {
 		return false;
 	}
 	$_SERVER['PHP_SELF'] = '/' . basename(__FILE__);
