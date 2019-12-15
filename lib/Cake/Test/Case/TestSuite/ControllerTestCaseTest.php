@@ -4,18 +4,18 @@
  *
  * Test Case for ControllerTestCase class
  *
- * CakePHP : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP Project
  * @package       Cake.Test.Case.TestSuite
  * @since         CakePHP v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Controller', 'Controller');
@@ -79,6 +79,12 @@ if (!class_exists('PostsController')) {
 		public $components = array(
 			'RequestHandler',
 			'Email',
+			'AliasedEmail' => array(
+				'className' => 'Email',
+			),
+			'AliasedPluginEmail' => array(
+				'className' => 'TestPlugin.TestPluginEmail',
+			),
 			'Auth'
 		);
 	}
@@ -271,6 +277,44 @@ class ControllerTestCaseTest extends CakeTestCase {
 	}
 
 /**
+ * Tests ControllerTestCase::generate() using aliased component
+ *
+ * @return void
+ */
+	public function testGenerateWithMockedAliasedComponent() {
+		$Posts = $this->Case->generate('Posts', array(
+			'components' => array(
+				'AliasedEmail' => array('send')
+			)
+		));
+		$Posts->AliasedEmail->expects($this->once())
+			->method('send')
+			->will($this->returnValue(true));
+
+		$this->assertInstanceOf('EmailComponent', $Posts->AliasedEmail);
+		$this->assertTrue($Posts->AliasedEmail->send());
+	}
+
+/**
+ * Tests ControllerTestCase::generate() using aliased plugin component
+ *
+ * @return void
+ */
+	public function testGenerateWithMockedAliasedPluginComponent() {
+		$Posts = $this->Case->generate('Posts', array(
+			'components' => array(
+				'AliasedPluginEmail' => array('send')
+			)
+		));
+		$Posts->AliasedPluginEmail->expects($this->once())
+			->method('send')
+			->will($this->returnValue(true));
+
+		$this->assertInstanceOf('TestPluginEmailComponent', $Posts->AliasedPluginEmail);
+		$this->assertTrue($Posts->AliasedPluginEmail->send());
+	}
+
+/**
  * Tests testAction
  *
  * @return void
@@ -294,7 +338,7 @@ class ControllerTestCaseTest extends CakeTestCase {
 		$this->Case->testAction('/tests_apps/redirect_to');
 		$results = $this->Case->headers;
 		$expected = array(
-			'Location' => 'http://cakephp.org'
+			'Location' => 'https://cakephp.org'
 		);
 		$this->assertEquals($expected, $results);
 		$this->assertSame(302, $Controller->response->statusCode());

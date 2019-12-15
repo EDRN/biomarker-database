@@ -2,18 +2,18 @@
 /**
  * Test for Schema database management
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Model
  * @since         CakePHP(tm) v 1.2.0.5550
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeSchema', 'Model');
@@ -64,6 +64,13 @@ class MyAppSchema extends CakeSchema {
 		'published' => array('type' => 'string', 'null' => true, 'default' => 'Y', 'length' => 1),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'updated' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'status' => array(
+			'type' => 'enum(\'active\',\'deleted\')',
+			'null' => false,
+			'default' => 'active',
+			'collate' => 'utf8_unicode_ci',
+			'charset' => 'utf8',
+		),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => true)),
 	);
 
@@ -173,6 +180,9 @@ class TestAppSchema extends CakeSchema {
 		'float_field' => array('type' => 'float', 'null' => false, 'length' => '5,2', 'default' => ''),
 		'decimal_field' => array('type' => 'decimal', 'length' => '6,3', 'default' => '0.000'),
 		'huge_int' => array('type' => 'biginteger'),
+		'normal_int' => array('type' => 'integer'),
+		'small_int' => array('type' => 'smallinteger'),
+		'tiny_int' => array('type' => 'tinyinteger'),
 		'bool' => array('type' => 'boolean', 'null' => false, 'default' => false),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => true)),
 		'tableParameters' => array()
@@ -806,6 +816,14 @@ class CakeSchemaTest extends CakeTestCase {
 			'posts' => array(
 				'add' => array(
 					'summary' => array('type' => 'text', 'null' => true, 'after' => 'body'),
+					'status' => array(
+						'type' => 'enum(\'active\',\'deleted\')',
+						'null' => false,
+						'default' => 'active',
+						'collate' => 'utf8_unicode_ci',
+						'charset' => 'utf8',
+						'after' => 'updated',
+					),
 				),
 				'drop' => array(
 					'tableParameters' => array(),
