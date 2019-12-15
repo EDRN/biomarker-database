@@ -34,7 +34,7 @@ class BiomarkerDataset extends AppModel {
 		$q = "INSERT INTO `biomarker_datasets` (`biomarker_id`,`dataset_id`) VALUES ";
 		$values = array();
 		foreach ($datasetIds as $ds) {
-			$values[] = " ('{$id}','".mysql_real_escape_string($ds)."') ";
+			$values[] = " ('{$id}','".mysql_escape_mimic($ds)."') ";
 		}
 		$q .= implode(' , ',$values);
 		if (count($values) > 0) {

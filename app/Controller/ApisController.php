@@ -105,12 +105,12 @@ class ApisController extends AppController {
 			$searchWhere = " WHERE (";
 			// Check all the columns for similarity to the entered search.
 			for ( $i=0 ; $i<count($aColumns) ; $i++ ) {
-				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_real_escape_string( $_GET['sSearch'] )."%' OR ";
+				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_escape_mimic( $_GET['sSearch'] )."%' OR ";
 			}
 
 			// Also, search over biomarker IDs and aliases.
-			$searchWhere .= "id LIKE '%".mysql_real_escape_string($_GET['sSearch'])."%'";
-			$searchWhere .= " OR names LIKE '%".mysql_real_escape_string($_GET['sSearch'])."%'";
+			$searchWhere .= "id LIKE '%".mysql_escape_mimic($_GET['sSearch'])."%'";
+			$searchWhere .= " OR names LIKE '%".mysql_escape_mimic($_GET['sSearch'])."%'";
 			$searchWhere .= ')';
 		} 
 
@@ -122,7 +122,7 @@ class ApisController extends AppController {
 				} else {
 					$searchWhere .= " AND ";
 				}
-				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_real_escape_string($_GET['sSearch_'.$i])."%' ";
+				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_escape_mimic($_GET['sSearch_'.$i])."%' ";
 			}
 		}
 
@@ -135,7 +135,7 @@ class ApisController extends AppController {
 			// sorting of the results is logical when there are identical values in (a) certain column(s).
 			for ($i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++) {
 				if ($_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i])] == "true" ) {
-					$searchOrder .= $aColumns[intval($_GET['iSortCol_'.$i])]." ".mysql_real_escape_string( $_GET['sSortDir_'.$i] ) .", ";
+					$searchOrder .= $aColumns[intval($_GET['iSortCol_'.$i])]." ".mysql_escape_mimic( $_GET['sSortDir_'.$i] ) .", ";
 				}
 			}
 
@@ -150,8 +150,8 @@ class ApisController extends AppController {
 		$searchLimit = "";
 		/* Limit the number of returned results to the requested result "window". */
 		if (isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1') {
-			$searchLimit = " LIMIT ".mysql_real_escape_string( $_GET['iDisplayStart'] ).", ".
-				mysql_real_escape_string( $_GET['iDisplayLength'] );
+			$searchLimit = " LIMIT ".mysql_escape_mimic( $_GET['iDisplayStart'] ).", ".
+				mysql_escape_mimic( $_GET['iDisplayLength'] );
 		}
 
 		// Get the results!
@@ -213,7 +213,7 @@ class ApisController extends AppController {
 			$searchWhere = " WHERE ";
 			// Check all the columns for similarity to the entered search.
 			for ( $i=0 ; $i<count($aColumns) ; $i++ ) {
-				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_real_escape_string( $_GET['sSearch'] )."%' OR ";
+				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_escape_mimic( $_GET['sSearch'] )."%' OR ";
 			}
 			$searchWhere = substr_replace($searchWhere, "", -3);
 		} 
@@ -226,7 +226,7 @@ class ApisController extends AppController {
 				} else {
 					$searchWhere .= " AND ";
 				}
-				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_real_escape_string($_GET['sSearch_'.$i])."%' ";
+				$searchWhere .= $aColumns[$i]." LIKE '%".mysql_escape_mimic($_GET['sSearch_'.$i])."%' ";
 			}
 		}
 
@@ -239,7 +239,7 @@ class ApisController extends AppController {
 			// sorting of the results is logical when there are identical values in (a) certain column(s).
 			for ($i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++) {
 				if ($_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i])] == "true" ) {
-					$searchOrder .= $aColumns[intval($_GET['iSortCol_'.$i])]." ".mysql_real_escape_string( $_GET['sSortDir_'.$i] ) .", ";
+					$searchOrder .= $aColumns[intval($_GET['iSortCol_'.$i])]." ".mysql_escape_mimic( $_GET['sSortDir_'.$i] ) .", ";
 				}
 			}
 
@@ -254,8 +254,8 @@ class ApisController extends AppController {
 		$searchLimit = "";
 		//* Limit the number of returned results to the requested result "window".
 		if (isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1') {
-			$searchLimit = " LIMIT ".mysql_real_escape_string( $_GET['iDisplayStart'] ).", ".
-				mysql_real_escape_string( $_GET['iDisplayLength'] );
+			$searchLimit = " LIMIT ".mysql_escape_mimic( $_GET['iDisplayStart'] ).", ".
+				mysql_escape_mimic( $_GET['iDisplayLength'] );
 		}
 
 		$sites = $this->Site->runSiteSearch($searchWhere, $searchLimit, $searchOrder);
