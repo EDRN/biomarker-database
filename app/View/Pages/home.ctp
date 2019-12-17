@@ -19,7 +19,7 @@
 			</div>
 			<br class="clr"/>
 			</div>
-			<p>The EDRN Biomarker Database is a repository for the collection and annotation of the
+			<p>The EDRN Focus Biomarker Database is a repository for the collection and annotation of the
 			full spectrum of EDRN cancer biomarker research data.</p>
 			<p>The information in the database is curated and peer-reviewed for quality control. When
 			the quality has been assured, the data will be available to the public through
@@ -28,7 +28,7 @@
 			
 			<p>For specific questions
 				about this website, please email the webmaster at 
-				<a href="mailto:hkincaid@jpl.nasa.gov">hkincaid@jpl.nasa.gov</a>	
+				<a href="mailto:ic-portal@jpl.nasa.gov">ic-portal@jpl.nasa.gov</a>	
 			</p>
 			
 		</div>

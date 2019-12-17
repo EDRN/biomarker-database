@@ -25,7 +25,6 @@ class BiomarkerDataset extends AppModel {
 	}
 	
 	public function setDatasetsForBiomarker($id,$datasetIds = array()) {
-		
 		// Delete any existing entries
 		$q = "DELETE FROM `biomarker_datasets` WHERE `biomarker_id`='{$id}'";
 		$this->query($q);
@@ -43,7 +42,7 @@ class BiomarkerDataset extends AppModel {
 	}
 	
 	public function getEcasDatasets() {
-		$ecasRDFData = file_get_contents('http://edrn.jpl.nasa.gov/fmprodp3/rdf/dataset?type=ALL');
+		$ecasRDFData = file_get_contents('https://edrn-dev.jpl.nasa.gov/cancerdataexpo/rdf-data/edrnlabcas/@@rdf');
 		return ($this->rdfToArray($ecasRDFData));
 	}
 	

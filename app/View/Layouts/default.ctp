@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="/edrn-skin/css/edrn-informatics.css"/>
 	<?php echo $this->Html->css('bmdb-core.css');?>
 	<?php echo $this->Html->css('ajax-editor.css');?>
-	<title>EDRN Biomarker Database: <?php echo $title_for_layout;?></title>
+	<title>EDRN Focus Biomarker Database: <?php echo $title_for_layout;?></title>
 </head>
 <body>
 <div id="page">
@@ -33,7 +33,7 @@
 			echo "<a href=\"/users/login\">Log In</a>";
 		}?>
 	</div>
-	<h2 class="app-title" style="margin-top:146px;">EDRN Biomarker Database</h2>
+	<h2 class="app-title" style="margin-top:146px;">EDRN Focus Biomarker Database 🎯</h2>
 	<?php echo $this->fetch('content');?>
 </div>
 <div id="footer">

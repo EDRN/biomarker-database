@@ -28,7 +28,7 @@ class RdfController extends AppController {
 		$root   = PROJROOT;
 		echo <<<__END
 <h2>BMDB::RDF</h2>
-The EDRN Biomarker Database provides data exports in Resource Description Format (RDF). 
+The EDRN Focus Biomarker Database provides data exports in Resource Description Format (RDF). 
 There are currently three flavors of RDF export supported:
 
 <h3>RDF - Plone-3 (all)</h3>
