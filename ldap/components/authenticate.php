@@ -70,6 +70,8 @@ if (! isset($_SESSION['auth']))
    //---------------------------------------------------------------
 
    $ds = ldap_connect(MY_LDAP_SERVER);
+   ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+
 
    if (! $ds)
    {
