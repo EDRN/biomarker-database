@@ -177,7 +177,6 @@ class BiomarkersController extends AppController {
 	
 	function setPrimaryName($alias_id) {
 		$this->checkSession("/biomarkers");
-		$alias = $this->BiomarkerName->find($alias_id);
 		
 		// Load the requested alias
 		$this->BiomarkerName->id = $alias_id;
@@ -199,7 +198,6 @@ class BiomarkersController extends AppController {
 	
 	function setHgncName($alias_id) {
 		$this->checkSession("/biomarkers");
-		$alias = $this->BiomarkerName->find($alias_id);
 	
 		// Load the requested alias
 		$this->BiomarkerName->id = $alias_id;
