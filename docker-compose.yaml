@@ -12,12 +12,13 @@
 services:
     focusbmdb-app:
         container_name: focusbmdb-app
-        image: edrn-bmdb:latest
+        # image: edrn-bmdb:latest
+        image: nutjob4life/edrn-bmdb:${EDRN_FOCUSBMDB_VERSION:-latest}
         ports:
             -
-                # Container's 80 we stick onto 4134 for no reason
+                # Container's 80 we stick onto 2350 for no reason
                 target: 80
-                published: ${EDRN_FOCUSBMDB_PORT:-4134}
+                published: ${EDRN_FOCUSBMDB_PORT:-2350}
                 protocol: tcp
                 mode: host
         environment:
@@ -25,6 +26,7 @@ services:
             EDRN_FOCUSBMDB_PORT:
         networks:
             - motherboard
+            - default
         depends_on:
             - focusbmdb-db
         restart: always

@@ -13,7 +13,8 @@ Please note that the following environment varialbes are pertinent:
 -   `EDRN_FOCUSBMDB_PORT` set to the port number you'd like things to listen
     on; this maps the app's container's port to this number, from which you
     can then reverse-proxy to the world.
-
+-   `EDRN_FOCUSBMDB_VERSION` set to the version number to grab from the Docker
+    Hub.
 
 
 ### Image Builds
@@ -21,6 +22,12 @@ Please note that the following environment varialbes are pertinent:
 To build the image, run:
 
     docker image build --tag edrn-bmdb .
+
+You can tag it and send it to Docker Hub too:
+
+    docker login
+    docker image tag edrn-bmdb:latest nutjob4life/edrn-bmdb:latest
+    docker image push nutjob4life/edrn-bmdb:latest
 
 
 ### Preparing the Database
@@ -43,7 +50,7 @@ Then:
         --env MYSQL_PASSWORD=cbmdb \
         mysql:5.6.47
 
-Use something other than `SECRET` for the password and save the
+Use something other than `4CLJvuxyo9Tud2ag` for the password and save the
 `MYSQL_ROOT_PASSWORD` some place safe in case it's needed. From another window
 run `docker container stop initdb` after a few minutes.
 
