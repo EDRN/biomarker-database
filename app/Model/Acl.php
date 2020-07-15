@@ -5,7 +5,7 @@ class Acl extends AppModel {
 	var $useTable = "acl";
 	var $name     = "Acl";
 
-    var $host       = 'ldaps://edrn.jpl.nasa.gov';
+    var $host       = 'ldaps://edrn-ds.jpl.nasa.gov';
     var $port       = 636; //389;
     var $baseDn 	= 'dc=edrn,dc=jpl,dc=nasa,dc=gov';
     var $user       = 'uid=bmdb,dc=edrn,dc=jpl,dc=nasa,dc=gov';
