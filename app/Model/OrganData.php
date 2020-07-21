@@ -42,7 +42,7 @@ class OrganData extends AppModel
 		 */
 		'Publication' => array(
 			'className' => 'Publication',
-			'join_table'=> 'publications_organ_datas',
+			'join_table'=> 'publications_organ_data',
 			'foreignKey'=> 'organ_data_id',
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
@@ -53,7 +53,7 @@ class OrganData extends AppModel
 		 */
 		'Term' => array(
 			'className' => 'Term',
-			'join_table'=> 'organ_datas_terms',
+			'join_table'=> 'organ_data_terms',
 			'foreignKey'=> 'organ_data_id',
 			'associationForeignKey'=>'term_id',
 			'unique'=>true

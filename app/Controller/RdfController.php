@@ -116,7 +116,7 @@ __END;
 			}
 
 			// Grab organ information for the biomarker
-			$organData = $this->Biomarker->query("SELECT * FROM organ_datas as OrganData where biomarker_id={$b['Biomarker']['id']}");
+			$organData = $this->Biomarker->query("SELECT * FROM organ_data as OrganData where biomarker_id={$b['Biomarker']['id']}");
 
 			// Grab publication information
 			$publicationData = $this->Biomarker->query("SELECT publication_id FROM biomarkers_publications as BiomarkerPublications where biomarker_id={$b['Biomarker']['id']}");
@@ -125,7 +125,7 @@ __END;
 			$resourceData = $this->Biomarker->query("SELECT URL from biomarker_resources AS BiomarkerResources where biomarker_id={$b['Biomarker']['id']}");
 
 			// Grab studies' information
-			$studiesData = $this->Biomarker->query("select * from biomarker_study_datas join studies on biomarker_study_datas.study_id = studies.id where biomarker_study_datas.biomarker_id={$b['Biomarker']['id']}");
+			$studiesData = $this->Biomarker->query("select * from biomarker_study_data join studies on biomarker_study_data.study_id = studies.id where biomarker_study_data.biomarker_id={$b['Biomarker']['id']}");
 
 			$aboutURL = "http://{$this->getResourceBase()}/biomarkers/view/{$b['Biomarker']['id']}";
 			if ($biomarkerHgncName == 'Unknown') {
@@ -208,7 +208,7 @@ __END;
 					echo "      <rdf:Bag>\r\n";
 
 					foreach ($studiesData as $studyData) {
-						$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['biomarker_study_datas']['id']}";
+						$aboutURL = "http://{$this->getResourceBase()}/biomarkers/studies/{$b['Biomarker']['id']}/{$studyData['biomarker_study_data']['id']}";
 						echo "        <rdf:li>\r\n";
 						echo "          <bmdb:BiomarkerStudyData rdf:about=\"".$this->escapeEntities("{$aboutURL}")."\">\r\n";
 						echo "            <bmdb:referencesStudy rdf:resource=\"http://edrn.nci.nih.gov/data/protocols/{$studyData['studies']['FHCRC_ID']}\"/>\r\n";
@@ -218,10 +218,10 @@ __END;
 						//
 						// Sensitivity/Specificity Information
 						/*
-						if (count($studyData['biomarker_study_datas']['Sensitivity']) > 0) {
+						if (count($studyData['biomarker_study_data']['Sensitivity']) > 0) {
 							echo "            <bmdb:SensitivityDatas>\r\n";
 							echo "              <rdf:Bag>\r\n";
-							foreach ($studyData['biomarker_study_datas']['Sensitivity'] as $ordinal => $s) {
+							foreach ($studyData['biomarker_study_data']['Sensitivity'] as $ordinal => $s) {
 								$pv = $this->calculatePV($s['sensitivity'],$s['specificity'],$s['prevalence']);
 								echo "                <rdf:li>\r\n";
 								echo "                  <bmdb:SensitivityData rdf:about=\"{$aboutURL}/sensitivity-data-{$ordinal}\">\r\n";

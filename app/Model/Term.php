@@ -9,7 +9,7 @@ class Term extends AppModel {
 		 */
 		'OrganData' => array(
 			'className' => 'OrganData',
-			'join_table'=> 'organ_datas_terms',
+			'join_table'=> 'organ_data_terms',
 			'foreignKey'=> 'term_id',
 			'associationForeignKey' => 'organ_data_id'
 		),

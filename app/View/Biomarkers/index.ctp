@@ -26,7 +26,7 @@
 
 <h2>Biomarker Directory:</h2>
 <div class="hint" style="margin-top:-22px;margin-bottom:10px;color:#666;">
-&nbsp;&nbsp;Browse the directory listing, or search any field using the search box on the right.
+&nbsp;&nbsp;Browse the directory listing, or search any field using the search box on the right →
 </div>
 
 <br/>
