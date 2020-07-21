@@ -41,7 +41,7 @@ class BiomarkerStudyData extends AppModel {
 		 */
 		'Publication' => array(
 			'className' => 'Publication',
-			'join_table'=> 'biomarker_study_datas_publications',
+			'join_table'=> 'biomarker_study_data_publications',
 			'foreignKey'=> 'biomarker_study_data_id',
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
@@ -51,7 +51,7 @@ class BiomarkerStudyData extends AppModel {
 		 */
 		'Sensitivity' => array(
 			'className' => 'Sensitivity',
-			'join_table'=> 'biomarker_study_datas_sensitivities',
+			'join_table'=> 'biomarker_study_data_sensitivities',
 			'foreignKey'=> 'biomarker_study_data_id',
 			'associationForeignKey'=>'sensitivity_id',
 			'unique'=>true

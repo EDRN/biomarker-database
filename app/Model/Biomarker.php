@@ -143,7 +143,7 @@ class Biomarker extends AppModel
 	/* get important information about the biomarker-organ data pairs for a given biomarker */
 	public function getOrganDatasFor($biomarker_id) {
 		$q = "SELECT Biomarker.id, OrganData.id, Organ.name ".
-				"FROM biomarkers as Biomarker, organ_datas as OrganData, organs as Organ ".
+				"FROM biomarkers as Biomarker, organ_data as OrganData, organs as Organ ".
 					"WHERE Biomarker.id={$biomarker_id} ".
 						"AND OrganData.biomarker_id = {$biomarker_id} ".
 						"AND Organ.id = OrganData.organ_id";
@@ -156,6 +156,7 @@ class Biomarker extends AppModel
                          $where.
                          $order.
                          $limit;
+                header('X-BMDB-Query: '.$q);
                 return $this->query($q);
         }
 

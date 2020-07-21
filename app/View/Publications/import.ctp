@@ -21,7 +21,7 @@
 </div>
 <h2>Import Publication:</h2>
 <p style="margin-left:20px;margin-right:50px;">
-All that is required to import a PubMed publication into the EDRN Focus Biomarker Database is the PubMed ID of the 
+All that is required to import a PubMed publication into the EDRN Focus Bio Marker Data Base (BMDB) is the PubMed ID of the 
 publication you wish to import. This page communicates with the PubMed repository, requesting and retrieving
 the <em>Title, Author, Journal,</em> and <em>Date of Publication</em> automatically. 
 </p>

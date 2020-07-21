@@ -143,10 +143,10 @@ class AclsController extends AppController {
 					}
 					break;
 				case "biomarkerorgan":
-					$q = "SELECT `id` FROM `organ_datas` ";
+					$q = "SELECT `id` FROM `organ_data` ";
 					$objects = $this->Acl->query($q);
 					foreach ($objects as $object) {
-						$ids[] = $object['organ_datas']['id'];
+						$ids[] = $object['organ_data']['id'];
 					}
 					break;
 					break;

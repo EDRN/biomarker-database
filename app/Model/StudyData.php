@@ -41,7 +41,7 @@ class StudyData extends AppModel {
 		 */
 		'Publication' => array(
 			'className' => 'Publication',
-			'join_table'=> 'publications_study_datas',
+			'join_table'=> 'publications_study_data',
 			'foreignKey'=> 'study_data_id',
 			'associationForeignKey'=>'publication_id',
 			'unique'=>true
@@ -51,7 +51,7 @@ class StudyData extends AppModel {
 		 */
 		'Sensitivity' => array(
 			'className' => 'Sensitivity',
-			'join_table'=> 'sensitivities_study_datas',
+			'join_table'=> 'sensitivities_study_data',
 			'foreignKey'=> 'study_data_id',
 			'associationForeignKey'=>'sensitivity_id',
 			'unique'=>true

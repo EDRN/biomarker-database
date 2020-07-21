@@ -19,7 +19,7 @@
 			</div>
 			<br class="clr"/>
 			</div>
-			<p>The EDRN Focus Biomarker Database is a repository for the collection and annotation of the
+			<p>The EDRN Focus Bio Marker Data Base (BMDB) is a repository for the collection and annotation of the
 			full spectrum of EDRN cancer biomarker research data.</p>
 			<p>The information in the database is curated and peer-reviewed for quality control. When
 			the quality has been assured, the data will be available to the public through

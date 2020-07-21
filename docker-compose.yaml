@@ -1,0 +1,79 @@
+# EDRN Focus BMDB Composition
+# ===========================
+#
+# Sample Docker Composition for the Early Detection Research Network's "Focus
+# Bio Marker Data Base" (BMDB)
+
+---
+
+# Services
+# --------
+
+services:
+    focusbmdb-app:
+        container_name: focusbmdb-app
+        # image: edrn-bmdb:latest
+        image: nutjob4life/edrn-bmdb:${EDRN_FOCUSBMDB_VERSION:-latest}
+        ports:
+            -
+                # Container's 80 we stick onto 2350 for no reason
+                target: 80
+                published: ${EDRN_FOCUSBMDB_PORT:-2350}
+                protocol: tcp
+                mode: host
+        environment:
+            # Empty values inherit form host's environment
+            EDRN_FOCUSBMDB_PORT:
+        networks:
+            - motherboard
+            - default
+        depends_on:
+            - focusbmdb-db
+        restart: always
+        stop_grace_period: 23s
+        labels:
+            org.label-schema.name: Focus BMDB Application
+            org.label-schema.description: An Apache HTTPD+PHP+CakePHP app for the Focus Bio Marker Data Base.
+    focusbmdb-db:
+        container_name: focusbmdb-db
+        image: mysql:5.6.47
+        volumes:
+            -
+                # This volume must contain the prepared Focus BMDB MySQL database files
+                type: bind
+                source: ${EDRN_DATA_DIR}/mysql
+                target: /var/lib/mysql
+                consistency: consistent
+        networks:
+            - motherboard
+        restart: always
+        stop_grace_period: 13s
+        environment:
+            # Empty values inherit form host's environment
+            EDRN_DATA_DIR:
+        labels:
+            org.label-schema.name: Database
+            org.label-schema.description: MySQL database server for the EDRN Focus BMDB
+
+
+# Networks
+# --------
+
+networks:
+    motherboard:
+        driver: bridge
+        labels:
+            org.label-schema.name: EDRN Focus BMDB motherboard Network
+            org.label-schema.description: Internal bridge network so services can communicate.
+    default:
+        driver: bridge
+
+
+# Misc
+# ----
+#
+# Just some friendly metadata here
+
+version: '3.7'
+
+...

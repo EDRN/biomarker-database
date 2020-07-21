@@ -1,0 +1,9 @@
+*.txt
+*.md
+*.sublime-*
+docs
+Dockerfile
+docker-compose.yaml
+.git
+.gitingore
+.DS_Store
