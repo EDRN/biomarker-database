@@ -34,6 +34,31 @@ services:
         labels:
             org.label-schema.name: Focus BMDB Application
             org.label-schema.description: An Apache HTTPD+PHP+CakePHP app for the Focus Bio Marker Data Base.
+    focusbmdb-rdf:
+        container_name: focusbmdb-rdf
+        # image: edrn-bmdb-rdf:${EDRN_BMDB_RDF_VERSION:-latest}
+        image: nutjob4life/edrn-bmdb-rdf:${EDRN_BMDB_RDF_VERSION:-latest}
+        ports:
+            -
+                # Container's 6543 we stick onto 2351 for no reason
+                target: 6543
+                published: ${EDRN_BMDB_RDF_PORT:-2351}
+                protocol: tcp
+                mode: host
+        environment:
+            # Empty values inherit from host's environment
+            EDRN_BMDB_RDF_PORT:
+            BMDB_HOST: focusbmdb-db
+        networks:
+            - motherboard
+            - default
+        depends_on:
+            - focusbmdb-db
+        restart: always
+        stop_grace_period: 23s
+        labels:
+            org.label-schema.name: Focus BMDB RDF Server
+            org.label-schema.description: A Python WSGI+Pyramid server for RDF data about biomarkers
     focusbmdb-db:
         container_name: focusbmdb-db
         image: mysql:5.6.47
