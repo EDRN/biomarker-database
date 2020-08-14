@@ -3,7 +3,7 @@ name: "\U0001F195 Feature Request"
 about: Suggest an idea for a new feature in Focus BMDB
 title: ''
 labels: "\U0001F9D9‍♀️enhancement"
-assignees: ''
+assignees: nutjob4life
 
 ---
 
