@@ -42,7 +42,7 @@ class BiomarkerDataset extends AppModel {
 	}
 	
 	public function getEcasDatasets() {
-		$ecasRDFData = file_get_contents('https://edrn-dev.jpl.nasa.gov/cancerdataexpo/rdf-data/edrnlabcas/@@rdf');
+		$ecasRDFData = file_get_contents('https://edrn.jpl.nasa.gov/cancerdataexpo/static-sources/labcas-2-0-rdf/at_download/file');
 		return ($this->rdfToArray($ecasRDFData));
 	}
 	

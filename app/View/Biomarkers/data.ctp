@@ -28,14 +28,16 @@
 			<?php echo $biomarker['Biomarker']['modified']?></h5>
 
 <div style="margin-top:40px;padding-left:5px;">
-	<h3>eCAS Dataset Association Tool</h3>
+	<h3>LabCAS Dataset Association Tool</h3>
 	<p class="instructions">
-	This page lets you can associate datasets from eCAS with this biomarker (<?php echo $biomarkerName?> (id: <?php echo $biomarker['Biomarker']['id']?>)). 
-	The list of available eCAS datasets is on the left, and the list of eCAS datasets already associated with this biomarker is on the right. You
-	can associate an eCAS dataset with this biomarker by selecting the dataset from the left, and clicking "Move Selected Right." Likewise, you can disassociate
-	an eCAS dataset from this biomarker by selecting the dataset from the right, and clicking "Move Selected Left." Don't forget to click "Save Changes" when
+	This page lets you can associate datasets from LabCAS with this biomarker (<?php echo $biomarkerName?> (id: <?php echo $biomarker['Biomarker']['id']?>)). 
+	The list of available LabCAS datasets is on the left, and the list of LabCAS datasets already associated with this biomarker is on the right. You
+	can associate an LabCAS dataset with this biomarker by selecting the dataset from the left, and clicking "Move Selected Right." Likewise, you can disassociate
+	an LabCAS dataset from this biomarker by selecting the dataset from the right, and clicking "Move Selected Left." Don't forget to click "Save Changes" when
 	you have finished.
 	</p>
+    <p><strong>❗️ Note:</strong> The available datasets comes from an RDF source file at <code>https://edrn.jpl.nasa.gov/cancerdataexpo/static-sources/labcas-2-0-rdf/at_download/file</code>. If this is incorrect, you'll need to modify this software as the RDF source URL is hard-coded.
+    </p>
 	<strong>Note: </strong> Multiple entries can be moved at one time by holding down control (ctrl) on a PC (or command on a Mac) while clicking.
 </div>
 
