@@ -12,8 +12,8 @@
 services:
     focusbmdb-app:
         container_name: focusbmdb-app
-        image: edrn-bmdb:latest
-        # image: nutjob4life/edrn-bmdb:${EDRN_FOCUSBMDB_VERSION:-latest}
+        # image: edrn-bmdb:latest
+        image: nutjob4life/edrn-bmdb:${EDRN_FOCUSBMDB_VERSION:-latest}
         ports:
             -
                 # Container's 80 we stick onto 2350 for no reason
