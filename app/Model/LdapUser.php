@@ -4,7 +4,7 @@ class LdapUser extends AppModel
     var $name     = 'LdapUser';
     var $useTable = false;
 
-    var $host       = 'ldaps://edrn-ds.jpl.nasa.gov';
+    var $host       = 'ldaps://edrn.jpl.nasa.gov';
     var $port       = 636; //389;
     var $baseDn 	= 'dc=edrn,dc=jpl,dc=nasa,dc=gov';
     var $user       = 'uid=bmdb,dc=edrn,dc=jpl,dc=nasa,dc=gov';
