@@ -72,7 +72,8 @@ Access the database directly with:
     docker-compose --project-name edrnfocusbmdb exec focusbmdb-db mysql --user=cbmdb --password cbmdb
 
 If you need to alter views (see `fix-views.sql`) you'll need to replace
-`--user=cbmdb` with `--user=root` and use the secret MySQL root password.
+`--user=cbmdb` with `--user=root` and use the secret MySQL `root` password.
+The statements in `fix-datasets.sql` don't need `root`.
 
 And bring it all down with:
 

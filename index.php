@@ -20,6 +20,8 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+require_once '/var/www/html/vendor/autoload.php';
+
 /**
  *  Get CakePHP's root directory
  */

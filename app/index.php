@@ -14,4 +14,5 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+require_once '/var/www/html/vendor/autoload.php';
 require 'webroot' . DIRECTORY_SEPARATOR . 'index.php';

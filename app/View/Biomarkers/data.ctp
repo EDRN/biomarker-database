@@ -36,7 +36,7 @@
 	an LabCAS dataset from this biomarker by selecting the dataset from the right, and clicking "Move Selected Left." Don't forget to click "Save Changes" when
 	you have finished.
 	</p>
-    <p><strong>❗️ Note:</strong> The available datasets comes from an RDF source file at <code>https://edrn.jpl.nasa.gov/cancerdataexpo/static-sources/labcas-2-0-rdf/at_download/file</code>. If this is incorrect, you'll need to modify this software as the RDF source URL is hard-coded.
+    <p><strong>❗️ Note:</strong> The available datasets comes from an RDF source at <code>https://edrn.jpl.nasa.gov/cancerdataexpo/rdf-data/labcas/@@rdf</code>. If this is incorrect, you'll need to modify this software as the RDF source URL is hard-coded and Focus BMDB has no through-the-web control panel.
     </p>
 	<strong>Note: </strong> Multiple entries can be moved at one time by holding down control (ctrl) on a PC (or command on a Mac) while clicking.
 </div>

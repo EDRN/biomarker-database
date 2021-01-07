@@ -1,4 +1,5 @@
 <?php
+
 class RdfController extends AppController {
 
 	var $name = 'Rdf';
@@ -26,6 +27,23 @@ class RdfController extends AppController {
 	function index() {
 		$host = $_SERVER['HTTP_HOST'];
 		$root   = PROJROOT;
+
+		$foaf = new \EasyRdf\Graph("http://njh.me/foaf.rdf");
+		$foaf->load();
+		$me = $foaf->primaryTopic();
+		echo "<h1>My name is: ".$me->get('foaf:name')."</h1>\n";
+
+		// $collections = new \EasyRdf\Graph("https://edrn.jpl.nasa.gov/cancerdataexpo/rdf-data/labcas/@@rdf");
+		// $collections->load();
+		// foreach ($collections->resources() as $i => $j) {
+		// 	echo "<h3>An i</h3><pre>";
+		// 	var_dump($i);
+		// 	echo "</pre><h3>An j</h3><pre>";
+		// 	var_dump($j);
+		// 	echo "</pre>";
+		// }
+
+
 		echo <<<__END
 <h2>BMDB::RDF</h2>
 The EDRN Focus Biomarker Database provides data exports in Resource Description Format (RDF). 

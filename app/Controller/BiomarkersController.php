@@ -78,20 +78,20 @@ class BiomarkersController extends AppController {
 			$this->set('biomarker',$biomarker);
 			$this->set('biomarkerName',Biomarker::getDefaultName($biomarker));
 			
-			// Get list of eCAS Datasets that are associated
+			// Get list of LabCAS Collections that are associated
 			$dsAssociated = $this->BiomarkerDataset->getDatasetsForBiomarker($id);
 			
-			// Get list of eCAS Datasets that can be associated
-			$data        = $this->BiomarkerDataset->getEcasDatasets();
-			$data        = $data['rdf:RDF']['_children'];
+			// Get list of LabCAS Collections that can be associated
 			$dsAvailable = array();
-			foreach ($data as $pid => $pdata) {
-				$dsname = str_replace("edrn:",'',$pid);
-				$dsAvailable[$dsname] = array(
-					"name" => $dsname,
-					"id"   => '' // future use
+			$labCASCollections = new \EasyRdf\Graph("https://edrn.jpl.nasa.gov/cancerdataexpo/rdf-data/labcas/@@rdf");
+			$labCASCollections->load();
+			foreach ($labCASCollections->resources() as $uri => $resource) {
+				$trailingBit = substr(strrchr($uri, "="), 1);
+				$dsAvailable[$trailingBit] = array(
+					"name" => $trailingBit,
+					"id" => ''  // Andrew Hart had this listed as "future use"…hilarious now that I get to preserve it
 				);
-			}					
+			}
 			
 			// Filter out the ones that have already been associated
 			foreach ($dsAssociated as $dsId => $dsdata) {

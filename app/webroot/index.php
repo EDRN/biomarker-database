@@ -16,6 +16,8 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+require_once '/var/www/html/vendor/autoload.php';
+
 // PHP7 finally dropped mysql_real_escape_string, but if we're really going tojust rewrite this
 // crap in some non-crappy-PHP, then let's just reproduce that monstrosity
 
