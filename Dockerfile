@@ -9,7 +9,7 @@
 #
 # Built on (horrible) PHP 7.3 with Apache HTTPD running on Debian "Buster"
 
-FROM php:7.3-apache-buster
+FROM php:7.4-apache-buster
 
 
 # Horrible PHP Extensions
