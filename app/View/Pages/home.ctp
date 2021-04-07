@@ -14,12 +14,12 @@
 			<p style="margin-top:0px;margin-bottom:0px;line-height:25px;font-size:90%;float:left;">
 				If you are interested in accessing information about biomarkers under investigation within the
 				EDRN, please 
-				<a href="http://cancer.gov/edrn" style="text-decoration:underline;">Visit the EDRN Public Portal</a>
+				<a href="https://edrn.nci.nih.gov/" style="text-decoration:underline;">Visit the EDRN Public Portal</a>
 			</p> 
 			</div>
 			<br class="clr"/>
 			</div>
-			<p>The EDRN Focus Bio Marker Data Base (BMDB) is a repository for the collection and annotation of the
+			<p>The EDRN Focus <strong>B</strong>io<strong>m</strong>arker <strong>D</strong>ata<strong>b</strong>ase (BMDB) is a repository for the collection and annotation of the
 			full spectrum of EDRN cancer biomarker research data.</p>
 			<p>The information in the database is curated and peer-reviewed for quality control. When
 			the quality has been assured, the data will be available to the public through
