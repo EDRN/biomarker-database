@@ -37,7 +37,7 @@
 <tr>
   <td><a href="/apis/biomarkers">Biomarker Summary Information</a></td>
   <td>High-level information about all biomarkers in the database. Research-sensitive information is omitted from the data returned.</td>
-  <td>Public</td>
+  <td>Private</td>
   <td><a href="/apis/biomarkers">./apis/biomarkers</a></td>
 </tr>
 

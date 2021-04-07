@@ -37,6 +37,7 @@ class ApisController extends AppController {
 	 ******************************************************************/
 	
 	function biomarkers() {
+      $this->checkSession('/apis/biomarkers');
 
 	  $csv = array();
 
